@@ -2,6 +2,9 @@
 #include <nvrtc.h>
 #include <cuda.h>
 #include <iostream>
+#include <stdio.h>
+#include <string.h>
+
 
 #define NUM_THREADS 128
 #define NUM_BLOCKS 32
@@ -13,7 +16,7 @@
                 << nvrtcGetErrorString(result) << '\n';           \
       exit(1);                                                    \
     }                                                             \
-  } while(0)
+  } while (0)
 #define CUDA_SAFE_CALL(x)                                         \
   do {                                                            \
     CUresult result = x;                                          \
@@ -24,7 +27,7 @@
                 << msg << '\n';                                   \
       exit(1);                                                    \
     }                                                             \
-  } while(0)
+  } while (0)
 
 const char *saxpy = "                                           \n\
 extern \"C\" __global__                                         \n\
@@ -36,8 +39,7 @@ void saxpy(float a, float *x, float *y, float *out, size_t n)   \n\
   }                                                             \n\
 }                                                               \n";
 
-int main()
-{
+int main() {
   // Create an instance of nvrtcProgram with the SAXPY code string.
   nvrtcProgram prog;
   NVRTC_SAFE_CALL(
@@ -50,9 +52,9 @@ int main()
   // Compile the program for compute_30 with fmad disabled.
   const char *opts[] = {"--gpu-architecture=compute_30",
                         "--fmad=false"};
-  nvrtcResult compileResult = nvrtcCompileProgram(prog,  // prog
-                                                  2,     // numOptions
-                                                  opts); // options
+  nvrtcResult compileResult = nvrtcCompileProgram(prog,   // prog
+                                                  2,      // numOptions
+                                                  opts);  // options
   // Obtain compilation log from the program.
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(prog, &logSize));
