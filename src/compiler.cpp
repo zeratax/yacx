@@ -1,3 +1,4 @@
+// "Copyright 2019 Jona Abdinghoff"
 #include <nvrtc.h>
 #include <cuda.h>
 #include <iostream>

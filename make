@@ -1,5 +1,6 @@
 CC := g++ # This is the main compiler
 # CC := clang --analyze # and comment out the linker last line for sanity
+LINTER := cpplint
 SRCDIR := src
 BUILDDIR := build
 TARGET := bin/runner
@@ -26,6 +27,9 @@ clean:
 # Tests
 tester:
   $(CC) $(CFLAGS) test/tester.cpp $(INC) $(LIB) -o bin/tester
+
+lint:
+  $(LINTER) $(SRCDIR)/**/*
 
 # Spikes
 ticket:
