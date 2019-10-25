@@ -8,9 +8,9 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -Wl,-rpath,$CUDA_PATH/lib64
-LIB := -lnvrtc -lcuda -L $CUDA_PATH/lib64 
-INC := -I include -I $CUDA_PATH/include
+CFLAGS := -g -Wl,-rpath,$(CUDA_PATH)/lib64
+LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 
+INC := -I include -I $(CUDA_PATH)/include
 
 # Build
 $(TARGET): $(OBJECTS)
