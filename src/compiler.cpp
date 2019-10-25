@@ -1,11 +1,14 @@
 // "Copyright 2019 Jona Abdinghoff"
-#include <nvrtc.h>
-#include <cuda.h>
+// #include <nvrtc.h>
+// #include <cuda.h>
 #include <stdio.h>
+#include <string>
 #include <fstream>
+#include <iostream>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 
+/*
 #define NUM_THREADS 128
 #define NUM_BLOCKS 32
 #define NVRTC_SAFE_CALL(x)                                        \
@@ -28,66 +31,85 @@ namespace po = boost::program_options;
       exit(1);                                                    \
     }                                                             \
   } while (0)
+*/
 
-std::string load(const std::string& path) {
-    std::ifstream file(path);
-    return std::string((std::istreambuf_iterator<char>(file)),
-      std::istreambuf_iterator<char>());
+std::string load(const std::string &path) {
+  std::ifstream file(path);
+  return std::string((std::istreambuf_iterator<char>(file)),
+    std::istreambuf_iterator<char>());
+}
+
+std::string to_comma_seperated(const std::vector<std::string> vector) {
+  std::string result;
+  if (vector.size()) {
+    for (size_t i = 0; i < vector.size(); i++) {
+      result.append(vector[i]);
+      result.append(", ");
+    }
+    result.erase(result.end()-2, result.end());
+  }
+  return result;
 }
 
 bool process_command_line(int argc, char** argv,
-                          const std::string& kernel_path,
-                          const std::vector<char*>& options,
-                          const std::vector<char*>& headers) {
-  int iport;
+                          std::string *kernel_path,
+                          std::vector<std::string> *options,
+                          std::vector<std::string> *headers) {
   try {
     po::options_description desc("Program Usage", 1024, 512);
     desc.add_options()
       ("help",     "produce help message")
-      ("kernel,k",   po::value<std::string>(&kernel_path)->required(),
+      ("kernel,k",  po::value(kernel_path)->required(),
        "path to cuda kernel")
-      ("options,o",   po::value<std::string>(&options)->multitoken(),
+      ("options,o", po::value(options)->multitoken(),
        "compile options")
-      ("header,h",   po::value<std::vector<char*>(&headers)->multitoken(),
+      ("header,h",  po::value(headers)->multitoken(),
        "cuda kernel headers");
 
-      po::variables_map vm;
-      po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
 
-      if (vm.count("help")) {
-        std::cout << desc << "\n";
-        return false;
-      }
-
-      po::notify(vm);
-    }
-    catch(std::exception& e) {
-        std::cerr << "Error: " << e.what() << "\n";
-        return false;
-    }
-    catch(...) {
-        std::cerr << "Unknown error!" << "\n";
-        return false;
+    if (vm.count("help")) {
+      std::cout << desc << "\n";
+      return false;
     }
 
-    std::stringstream ss;
-    ss << iport;
-    port = ss.str();
+    po::notify(vm);
+  } catch(std::exception& e) {
+    std::cerr << "Error: " << e.what() << "\n";
+    return false;
+  } catch(...) {
+    std::cerr << "Unknown error!" << "\n";
+    return false;
+  }
 
-    return true;
+  return true;
 }
 
 int main(int argc, char** argv) {
-  std::string* kernel_path;
-  std::vector<char*> options;
-  std::vector<char*> headers;
+  std::string kernel_path;
+  std::vector<std::string> options;
+  std::vector<std::string> headers;
 
-  bool result = process_command_line(argc, argv, kernel_path, options, headers);
+  bool result = process_command_line(argc,
+                                     argv,
+                                     &kernel_path,
+                                     &options,
+                                     &headers);
   if (!result)
-      return 1;
+    return 1;
 
-  char* kernel_string = load(kernel_path);
+  std::string kernel_string = load(kernel_path);
+  std::string includeNames = to_comma_seperated(headers);
+  std::string compileOptions = to_comma_seperated(options);
 
+  std::cout << "Kernel String: \n'''\n" << kernel_string.c_str()  << "'''\n";
+  std::cout << "Kernel Path: "    << kernel_path    << "\n";
+  std::cout << "numHeaders: "     << headers.size() << "\n";
+  std::cout << "includeNames: "   << includeNames   << "\n";
+  std::cout << "compileOptions: " << compileOptions << "\n";
+
+  /*
   // Create an instance of nvrtcProgram with the kernel string.
   nvrtcProgram prog;
   NVRTC_SAFE_CALL(
@@ -96,11 +118,11 @@ int main(int argc, char** argv) {
                        "kernel.cu",     // name
                        headers.size(),  // numHeaders
                        NULL,            // headers
-                       &headers[0]));   // includeNames
+                       headers to char**));   // includeNames
   // Compile the program for compute_30 with fmad disabled.
-  nvrtcResult compileResult = nvrtcCompileProgram(prog,          // prog
-                                                  2,             // numOptions
-                                                  &options[0]);  // options
+  nvrtcResult compileResult = nvrtcCompileProgram(prog,                // prog
+                                                  options.size(),      // numOptions
+                                                  options to char**);  // options
   // Obtain compilation log from the program.
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(prog, &logSize));
@@ -108,9 +130,9 @@ int main(int argc, char** argv) {
   NVRTC_SAFE_CALL(nvrtcGetProgramLog(prog, log));
   std::cout << log << '\n';
   delete[] log;
-  if (compileResult != NVRTC_SUCCESS) {
+  if (compileResult != NVRTC_SUCCESS)
     exit(1);
-  }
+
   // Obtain PTX from the program.
   size_t ptxSize;
   NVRTC_SAFE_CALL(nvrtcGetPTXSize(prog, &ptxSize));
@@ -118,6 +140,6 @@ int main(int argc, char** argv) {
   NVRTC_SAFE_CALL(nvrtcGetPTX(prog, ptx));
   // Destroy the program.
   NVRTC_SAFE_CALL(nvrtcDestroyProgram(&prog));
-
+  */
   return 0;
 }
