@@ -1,13 +1,15 @@
 // "Copyright 2019 Jona Abdinghoff"
 // #include <nvrtc.h>
 // #include <cuda.h>
-#include <stdio.h>
-#include <string>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 
+#define HELP_WIDTH 1024
+#define HELP_HEIGHT 512
 /*
 #define NUM_THREADS 128
 #define NUM_BLOCKS 32
@@ -39,11 +41,11 @@ std::string load(const std::string &path) {
     std::istreambuf_iterator<char>());
 }
 
-std::string to_comma_seperated(const std::vector<std::string> vector) {
+std::string to_comma_separated(const std::vector<std::string>& vector) {
   std::string result;
-  if (vector.size()) {
-    for (size_t i = 0; i < vector.size(); i++) {
-      result.append(vector[i]);
+  if (!vector.empty()) {
+    for (const auto & i : vector) {
+      result.append(i);
       result.append(", ");
     }
     result.erase(result.end()-2, result.end());
@@ -56,7 +58,7 @@ bool process_command_line(int argc, char** argv,
                           std::vector<std::string> *options,
                           std::vector<std::string> *headers) {
   try {
-    po::options_description desc("Program Usage", 1024, 512);
+    po::options_description desc("Program Usage", HELP_WIDTH, HELP_HEIGHT);
     desc.add_options()
       ("help",     "produce help message")
       ("kernel,k",  po::value(kernel_path)->required(),
@@ -69,7 +71,7 @@ bool process_command_line(int argc, char** argv,
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
 
-    if (vm.count("help")) {
+    if (vm.count("help") != 0) {
       std::cout << desc << "\n";
       return false;
     }
@@ -96,12 +98,13 @@ int main(int argc, char** argv) {
                                      &kernel_path,
                                      &options,
                                      &headers);
-  if (!result)
+  if (!result) {
     return 1;
+}
 
   std::string kernel_string = load(kernel_path);
-  std::string includeNames = to_comma_seperated(headers);
-  std::string compileOptions = to_comma_seperated(options);
+  std::string includeNames = to_comma_separated(headers);
+  std::string compileOptions = to_comma_separated(options);
 
   std::cout << "Kernel String: \n'''\n" << kernel_string.c_str()  << "'''\n";
   std::cout << "Kernel Path: "    << kernel_path    << "\n";

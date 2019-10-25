@@ -1,0 +1,2 @@
+Checks: "*,-llvm-include-order,-fuchsia-default-arguments"
+HeaderFilterRegex: ".*"
