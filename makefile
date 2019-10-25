@@ -8,10 +8,11 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g # -Wall
-LIB := # -pthread -lmongoclient -L lib -lboost_thread-mt -lboost_filesystem-mt -lboost_system-mt
-INC := -I include
+CFLAGS := -g -Wl,-rpath,$CUDA_PATH/lib64
+LIB := -lnvrtc -lcuda -L $CUDA_PATH/lib64 
+INC := -I include -I $CUDA_PATH/include
 
+# Build
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
 	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
@@ -30,10 +31,6 @@ tester:
 
 # Linter
 lint:
-	$(LINTER) --filter=-legal/copyright,-readability/multiline_string $(SRCDIR)/*.* 
+	$(LINTER) --root=${CURDIR} --recursive . 
 
-# Spikes
-ticket:
-	$(CC) $(CFLAGS) spikes/ticket.cpp $(INC) $(LIB) -o bin/ticket
-
-.PHONY: clean
+.PHONY: clean, lint, tester

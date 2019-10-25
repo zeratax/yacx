@@ -1,10 +1,10 @@
 // "Copyright 2019 Jona Abdinghoff"
 #include <nvrtc.h>
 #include <cuda.h>
-#include <iostream>
 #include <stdio.h>
-#include <string.h>
-
+#include <fstream>
+#include <boost/program_options.hpp>
+namespace po = boost::program_options;
 
 #define NUM_THREADS 128
 #define NUM_BLOCKS 32
@@ -29,32 +29,78 @@
     }                                                             \
   } while (0)
 
-const char *saxpy = "                                           \n\
-extern \"C\" __global__                                         \n\
-void saxpy(float a, float *x, float *y, float *out, size_t n)   \n\
-{                                                               \n\
-  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;           \n\
-  if (tid < n) {                                                \n\
-    out[tid] = a * x[tid] + y[tid];                             \n\
-  }                                                             \n\
-}                                                               \n";
+std::string load(const std::string& path) {
+    std::ifstream file(path);
+    return std::string((std::istreambuf_iterator<char>(file)),
+      std::istreambuf_iterator<char>());
+}
 
-int main() {
-  // Create an instance of nvrtcProgram with the SAXPY code string.
+bool process_command_line(int argc, char** argv,
+                          const std::string& kernel_path,
+                          const std::vector<char*>& options,
+                          const std::vector<char*>& headers) {
+  int iport;
+  try {
+    po::options_description desc("Program Usage", 1024, 512);
+    desc.add_options()
+      ("help",     "produce help message")
+      ("kernel,k",   po::value<std::string>(&kernel_path)->required(),
+       "path to cuda kernel")
+      ("options,o",   po::value<std::string>(&options)->multitoken(),
+       "compile options")
+      ("header,h",   po::value<std::vector<char*>(&headers)->multitoken(),
+       "cuda kernel headers");
+
+      po::variables_map vm;
+      po::store(po::parse_command_line(argc, argv, desc), vm);
+
+      if (vm.count("help")) {
+        std::cout << desc << "\n";
+        return false;
+      }
+
+      po::notify(vm);
+    }
+    catch(std::exception& e) {
+        std::cerr << "Error: " << e.what() << "\n";
+        return false;
+    }
+    catch(...) {
+        std::cerr << "Unknown error!" << "\n";
+        return false;
+    }
+
+    std::stringstream ss;
+    ss << iport;
+    port = ss.str();
+
+    return true;
+}
+
+int main(int argc, char** argv) {
+  std::string* kernel_path;
+  std::vector<char*> options;
+  std::vector<char*> headers;
+
+  bool result = process_command_line(argc, argv, kernel_path, options, headers);
+  if (!result)
+      return 1;
+
+  char* kernel_string = load(kernel_path);
+
+  // Create an instance of nvrtcProgram with the kernel string.
   nvrtcProgram prog;
   NVRTC_SAFE_CALL(
-    nvrtcCreateProgram(&prog,         // prog
-                       saxpy,         // buffer
-                       "saxpy.cu",    // name
-                       0,             // numHeaders
-                       NULL,          // headers
-                       NULL));        // includeNames
+    nvrtcCreateProgram(&prog,           // prog
+                       kernel_string,   // buffer
+                       "kernel.cu",     // name
+                       headers.size(),  // numHeaders
+                       NULL,            // headers
+                       &headers[0]));   // includeNames
   // Compile the program for compute_30 with fmad disabled.
-  const char *opts[] = {"--gpu-architecture=compute_30",
-                        "--fmad=false"};
-  nvrtcResult compileResult = nvrtcCompileProgram(prog,   // prog
-                                                  2,      // numOptions
-                                                  opts);  // options
+  nvrtcResult compileResult = nvrtcCompileProgram(prog,          // prog
+                                                  2,             // numOptions
+                                                  &options[0]);  // options
   // Obtain compilation log from the program.
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(prog, &logSize));
@@ -72,54 +118,6 @@ int main() {
   NVRTC_SAFE_CALL(nvrtcGetPTX(prog, ptx));
   // Destroy the program.
   NVRTC_SAFE_CALL(nvrtcDestroyProgram(&prog));
-  // Load the generated PTX and get a handle to the SAXPY kernel.
-  CUdevice cuDevice;
-  CUcontext context;
-  CUmodule module;
-  CUfunction kernel;
-  CUDA_SAFE_CALL(cuInit(0));
-  CUDA_SAFE_CALL(cuDeviceGet(&cuDevice, 0));
-  CUDA_SAFE_CALL(cuCtxCreate(&context, 0, cuDevice));
-  CUDA_SAFE_CALL(cuModuleLoadDataEx(&module, ptx, 0, 0, 0));
-  CUDA_SAFE_CALL(cuModuleGetFunction(&kernel, module, "saxpy"));
-  // Generate input for execution, and create output buffers.
-  size_t n = NUM_THREADS * NUM_BLOCKS;
-  size_t bufferSize = n * sizeof(float);
-  float a = 5.1f;
-  float *hX = new float[n], *hY = new float[n], *hOut = new float[n];
-  for (size_t i = 0; i < n; ++i) {
-    hX[i] = static_cast<float>(i);
-    hY[i] = static_cast<float>(i * 2);
-  }
-  CUdeviceptr dX, dY, dOut;
-  CUDA_SAFE_CALL(cuMemAlloc(&dX, bufferSize));
-  CUDA_SAFE_CALL(cuMemAlloc(&dY, bufferSize));
-  CUDA_SAFE_CALL(cuMemAlloc(&dOut, bufferSize));
-  CUDA_SAFE_CALL(cuMemcpyHtoD(dX, hX, bufferSize));
-  CUDA_SAFE_CALL(cuMemcpyHtoD(dY, hY, bufferSize));
-  // Execute SAXPY.
-  void *args[] = { &a, &dX, &dY, &dOut, &n };
-  CUDA_SAFE_CALL(
-    cuLaunchKernel(kernel,
-                   NUM_BLOCKS, 1, 1,    // grid dim
-                   NUM_THREADS, 1, 1,   // block dim
-                   0, NULL,             // shared mem and stream
-                   args, 0));           // arguments
-  CUDA_SAFE_CALL(cuCtxSynchronize());
-  // Retrieve and print output.
-  CUDA_SAFE_CALL(cuMemcpyDtoH(hOut, dOut, bufferSize));
-  for (size_t i = 0; i < n; ++i) {
-    std::cout << a << " * " << hX[i] << " + " << hY[i]
-              << " = " << hOut[i] << '\n';
-  }
-  // Release resources.
-  CUDA_SAFE_CALL(cuMemFree(dX));
-  CUDA_SAFE_CALL(cuMemFree(dY));
-  CUDA_SAFE_CALL(cuMemFree(dOut));
-  CUDA_SAFE_CALL(cuModuleUnload(module));
-  CUDA_SAFE_CALL(cuCtxDestroy(context));
-  delete[] hX;
-  delete[] hY;
-  delete[] hOut;
+
   return 0;
 }
