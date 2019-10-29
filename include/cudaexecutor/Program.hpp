@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Headers.hpp"
 #include "Kernel.hpp"
 #include "util.hpp"
 
@@ -12,29 +13,13 @@
 
 namespace cudaexecutor {
 
-template <int DIM_GRID, int DIM_BLOCK> typedef struct Grid {
-  dim3 blocks(DIM_GRID);
-  dim3 threads(DIM_GRID);
-};
-
 class Program {
-  char *ptx;
-  char **args;
-  nvrtcProgram prog;
-  std::string kernel_name;
-  std::string name_expression;
-  Grid grid;
-  CUdevice cuDevice;
-  CUcontext context;
-  CUmodule module;
-  CUfunction kernel;
+  Headers headers;
+  std::string kernel_string;
 
 public:
-  Program(char *ptx, nvrtcProgram prog);
-  Program kernel(std::string kernel_name);
-  Program configure(Grid grid);
-  Program instantiate(std::string... types);
-  Program launch(std::vector<ProgramArg> program_args);
+  Program(std::kernel_string, Headers headers = Headers());
+  Kernel kernel(std::string function_name);
 };
 
 class ProgramArg {
