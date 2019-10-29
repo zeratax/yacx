@@ -1,55 +1,12 @@
-// "Copyright 2019 Jona Abdinghoff"
-// #include <nvrtc.h>
-// #include <cuda.h>
 #include <boost/program_options.hpp>
 #include <cstdio>
-#include <fstream>
-#include <iostream>
 #include <string>
-namespace po = boost::program_options;
 
-/*
-#define NUM_THREADS 128
-#define NUM_BLOCKS 32
-#define NVRTC_SAFE_CALL(x)                                        \
-  do {                                                            \
-    nvrtcResult result = x;                                       \
-    if (result != NVRTC_SUCCESS) {                                \
-      std::cerr << "\nerror: " #x " failed with error "           \
-                << nvrtcGetErrorString(result) << '\n';           \
-      exit(1);                                                    \
-    }                                                             \
-  } while (0)
-#define CUDA_SAFE_CALL(x)                                         \
-  do {                                                            \
-    CUresult result = x;                                          \
-    if (result != CUDA_SUCCESS) {                                 \
-      const char *msg;                                            \
-      cuGetErrorName(result, &msg);                               \
-      std::cerr << "\nerror: " #x " failed with error "           \
-                << msg << '\n';                                   \
-      exit(1);                                                    \
-    }                                                             \
-  } while (0)
-*/
+#include <util.hpp>
 
-std::string load(const std::string &path) {
-  std::ifstream file(path);
-  return std::string((std::istreambuf_iterator<char>(file)),
-                     std::istreambuf_iterator<char>());
-}
+using cudaexecutor::load, cudaexecutor::to_comma_separated
 
-std::string to_comma_separated(const std::vector<std::string> &vector) {
-  std::string result;
-  if (!vector.empty()) {
-    for (const auto &i : vector) {
-      result.append(i);
-      result.append(", ");
-    }
-    result.substr(0, result.length() - 2);
-  }
-  return result;
-}
+                          namespace po = boost::program_options;
 
 bool process_command_line(int argc, char **argv, std::string *kernel_path,
                           std::vector<std::string> *options,
@@ -105,37 +62,5 @@ int main(int argc, char **argv) {
   std::cout << "includeNames: " << includeNames << "\n";
   std::cout << "compileOptions: " << compileOptions << "\n";
 
-  /*
-// Create an instance of nvrtcProgram with the kernel string.
-nvrtcProgram prog;
-NVRTC_SAFE_CALL(
-nvrtcCreateProgram(&prog,           // prog
-                   kernel_string,   // buffer
-                   "kernel.cu",     // name
-                   headers.size(),  // numHeaders
-                   NULL,            // headers
-                   headers to char**));   // includeNames
-// Compile the program for compute_30 with fmad disabled.
-nvrtcResult compileResult = nvrtcCompileProgram(prog,                // prog
-                                              options.size(),      //
-numOptions options to char**);  // options
-// Obtain compilation log from the program.
-size_t logSize;
-NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(prog, &logSize));
-char *log = new char[logSize];
-NVRTC_SAFE_CALL(nvrtcGetProgramLog(prog, log));
-std::cout << log << '\n';
-delete[] log;
-if (compileResult != NVRTC_SUCCESS)
-exit(1);
-
-// Obtain PTX from the program.
-size_t ptxSize;
-NVRTC_SAFE_CALL(nvrtcGetPTXSize(prog, &ptxSize));
-char *ptx = new char[ptxSize];
-NVRTC_SAFE_CALL(nvrtcGetPTX(prog, ptx));
-// Destroy the program.
-NVRTC_SAFE_CALL(nvrtcDestroyProgram(&prog));
-*/
   return 0;
 }

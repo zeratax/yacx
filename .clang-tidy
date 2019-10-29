@@ -1,2 +1,2 @@
-Checks: "*,-llvm-include-order,-fuchsia-default-arguments"
+Checks: "*,-fuchsia-default-arguments"
 HeaderFilterRegex: ".*"

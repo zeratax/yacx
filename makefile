@@ -16,11 +16,16 @@ SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -Wall -g
-LIB := -lboost_program_options # -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
-INC := # -I include -I $(CUDA_PATH)/include
+LIB := -lboost_program_options  -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
+INC := -I include  -I $(CUDA_PATH)/include
 
 # Build
 all: directories $(TARGET)
+
+directories: ${OUT_DIR}
+
+${OUT_DIR}:
+	${MKDIR_P} ${OUT_DIR}
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
@@ -29,11 +34,6 @@ $(TARGET): $(OBJECTS)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
-
-directories: ${OUT_DIR}
-
-${OUT_DIR}:
-	${MKDIR_P} ${OUT_DIR}
 
 clean:
 	@echo " Cleaning..."; 

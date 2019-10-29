@@ -1,9 +1,17 @@
 {
     "cSpell.words": [
-        "NVRTC",
-        "saxpy",
         "CU",
-        "CUDA"
+        "CUDA",
+        "NVRTC",
+        "c",
+        "cmessage",
+        "cudacompiler",
+        "cudaexecutor",
+        "hdata",
+        "saxpy",
+        "udeviceptr",
+        "ufunction",
+        "umodule"
     ],
     "files.associations": {
         "cctype": "cpp",
