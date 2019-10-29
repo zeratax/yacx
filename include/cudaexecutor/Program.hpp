@@ -14,18 +14,18 @@
 namespace cudaexecutor {
 
 class Program {
-  Headers headers;
-  std::string kernel_string;
+  Headers _headers;
+  std::string _kernel_string;
 
 public:
-  Program(std::kernel_string, Headers headers = Headers());
+  Program(std::string kernel_string, Headers headers = Headers());
   Kernel kernel(std::string function_name);
 };
 
 class ProgramArg {
-  void *hdata;
-  CUdeviceptr ddata;
-  bool output;
+  void *_hdata;
+  CUdeviceptr _ddata;
+  bool _output;
 
 public:
   ProgramArg(const void *const data, bool output = false);

@@ -1,4 +1,4 @@
-#include "Program.hpp"
+#include "../include/cudaexecutor/Program.hpp"
 
 #define CUDA_SAFE_CALL(x)                                                      \
   do {                                                                         \
@@ -11,32 +11,29 @@
 using cudaexecutor::Program, cudaexecutor::ProgramArg;
 
 Program::Program(std::string kernel_string, Headers headers = Headers())
-    : this->kernel_string{kernel_string},
-    this->headers{headers} {}
+    : _kernel_string{kernel_string}, _headers{headers} {}
 
 Kernel Program::kernel(std::string function_name) {
   nvrtcProg prog = new nvrtcProg;
-  nvrtcCreateProgram(&this->prog,                 // prog
-                     this->kernel_string.c_str(), // buffer
-                     this->kernel_name.c_str(),   // name
-                     this->headers.size(),        // numHeaders
-                     this->headers.names(),       // headers
-                     this->headers.content());    // includeNames
+  nvrtcCreateProgram(&_prog,                 // prog
+                     _kernel_string.c_str(), // buffer
+                     _kernel_name.c_str(),   // name
+                     _headers.size(),        // numHeaders
+                     _headers.names(),       // headers
+                     _headers.content());    // includeNames
   return new Kernel(function_name, prog);
 }
 
 ProgramArg::ProgramArg(const void *const data, bool output = false)
-    : this->hdata{data},
-    this->output{output} {}
+    : _hdata{data}, _output{output} {}
 
 void ProgramArg::upload() {
-  CUDA_SAFE_CALL(cuMemAlloc(&this->ddata, sizeof(this->hdata)));
-  CUDA_SAFE_CALL(cuMemcpyHtoD(this->ddata, &this->hdata, sizeof(this->hdata)));
+  CUDA_SAFE_CALL(cuMemAlloc(&_ddata, sizeof(_hdata)));
+  CUDA_SAFE_CALL(cuMemcpyHtoD(_ddata, &_hdata, sizeof(_hdata)));
 }
 
 void ProgramArg::download() {
-  if (this->output)
-    CUDA_SAFE_CALL(
-        cuMemcpyDtoH(&this->hdata, this->ddata, sizeof(this->hdata)));
-  CUDA_SAFE_CALL(cuMemFree(this->ddata));
+  if (_output)
+    CUDA_SAFE_CALL(cuMemcpyDtoH(&_hdata, _ddata, sizeof(_hdata)));
+  CUDA_SAFE_CALL(cuMemFree(_ddata));
 }

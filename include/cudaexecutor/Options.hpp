@@ -6,11 +6,13 @@
 
 #include "util.hpp"
 
+#include <cuda.h>
+
 namespace cudaexecutor {
 
 class Option {};
 
-class CompilationOptions {
+class Options {
   std::vector<std::string> _options;
   mutable std::vector<const char *> _chOptions;
 
@@ -24,10 +26,10 @@ public:
 namespace detail {
 
 class BooleanOption {
-  const bool b;
+  const bool _b;
 
 public:
-  BooleanOption(bool b) : b{b} {}
+  BooleanOption(bool b) : _b{b} {}
   auto value() const { return (_b) ? "true" : "false"; }
 };
 
@@ -43,14 +45,11 @@ public:
       : arc(std::string("compute_") + std::to_string(major) +
             std::to_string(minor)) {}
 
-        GpuArchitecture(const CudaDeviceProp& prop)
-		: GpuArchitecture(prop.major, prop.minor
-	{}
+  GpuArchitecture(const CudaDeviceProp &prop)
+      : GpuArchitecture(prop.major, prop.minor) {}
 
-	auto name() const {
-    return "--gpu-architecture"; }
-	auto & value() const {
-    return arc; }
+  auto name() const { return "--gpu-architecture"; }
+  auto &value() const { return arc; }
 };
 
 class FMAD : public detail::BooleanOption {
@@ -63,7 +62,7 @@ class Fast_Math : public detail::BooleanOption {
 public:
   using detail::BooleanOption::BooleanOption;
   auto name() const { return "--use_fast_math"; }
-}
+};
 
 } // namespace options
 

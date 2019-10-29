@@ -15,7 +15,7 @@ HEADDEREXT := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -Wall -g
+CFLAGS := -std=c++17 -Wall -g
 LIB := -lboost_program_options  -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
 INC := -I include  -I $(CUDA_PATH)/include
 

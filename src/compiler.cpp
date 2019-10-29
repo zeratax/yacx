@@ -2,11 +2,11 @@
 #include <cstdio>
 #include <string>
 
-#include <util.hpp>
+#include "../include/cudaexecutor/util.hpp"
 
-using cudaexecutor::load, cudaexecutor::to_comma_separated
+using cudaexecutor::load, cudaexecutor::to_comma_separated;
 
-                          namespace po = boost::program_options;
+namespace po = boost::program_options;
 
 bool process_command_line(int argc, char **argv, std::string *kernel_path,
                           std::vector<std::string> *options,
