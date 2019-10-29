@@ -12,10 +12,9 @@ int main() {
   Device dev;
   Options options = Options(
       {options::GpuArchitecture(device.properties()), options::FMAD(false)});
-
   Program program(load("./examples/program.cu"));
-  std::vector<ProgramArg> program_args{};
 
+  std::vector<ProgramArg> program_args{};
   int[] array{5, 3, 3, 2, 7};
   int data {8};
   ProgramArg array_arg(&array, true);
@@ -30,7 +29,7 @@ int main() {
     .instantiate(type_of(data), 5)
     .compile(options)
     .configure(grid, block)
-    .launch(program_args)
+    .launch(program_args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }
