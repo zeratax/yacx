@@ -4,7 +4,7 @@
   do {                                                                         \
     CUresult result = x;                                                       \
     if (result != CUDA_SUCCESS) {                                              \
-      throw cuda_exception(result)                                             \
+      throw cuda_exception(result);                                            \
     }                                                                          \
   } while (0)
 

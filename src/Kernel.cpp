@@ -8,14 +8,14 @@
   do {                                                                         \
     nvrtcResult result = x;                                                    \
     if (result != NVRTC_SUCCESS) {                                             \
-      throw nvrtc_exception(result)                                            \
+      throw nvrtc_exception(result);                                           \
     }                                                                          \
   } while (0)
 #define CUDA_SAFE_CALL(x)                                                      \
   do {                                                                         \
     CUresult result = x;                                                       \
     if (result != CUDA_SUCCESS) {                                              \
-      throw cuda_exception(result)                                             \
+      throw cuda_exception(result);                                            \
     }                                                                          \
   } while (0)
 
@@ -91,9 +91,9 @@ Kernel Kernel::compile(Options options = Options()) {
   this->log = clog;
 
   if (compileResult != NVRTC_SUCCESS)
-    throw nvrtc_exception(result)
+    throw nvrtc_exception(result);
 
-        size_t ptxSize;
+  size_t ptxSize;
   NVRTC_SAFE_CALL(nvrtcGetPTXSize(this->prog, &ptxSize));
   char *ptx = new char[ptxSize];
   NVRTC_SAFE_CALL(nvrtcGetPTX(this->prog, ptx));
