@@ -2,8 +2,8 @@
 
 #-lcuda ist notwendig damit mit Cuda gelinkt wird
 C++FLAGS := -Wall -Wextra -pedantic -Werror -std=c++14 -fPIC 
-driverApiProg: driverApiProg.o #matSumKernel.cubin
-	g++ $(C++FLAGS) -o driverApiProg driverApiProg.o -lcuda
+out: driverApiProg.o #matSumKernel.cubin
+	g++ $(C++FLAGS) -o out driverApiProg.o -lcuda
 
 driverApiProg.o: driverApiProg.cpp
 	g++ $(C++FLAGS) -c driverApiProg.cpp -I $(CUDA_PATH)/include

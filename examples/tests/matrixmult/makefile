@@ -1,7 +1,7 @@
 C++FLAGS := -Wall -Wextra -pedantic -Werror -std=c++17 -fPIC
 NVCCflags := -arch=sm_30 -Xptxas="-v" -std=c++14
 
-TARGET = main
+TARGET = out
 C_FILES := $(wildcard *.cpp)
 OBJS := $(patsubst %.cpp, %.o, $(C_FILES))
 KERNELS := $(wildcard *.cu)
@@ -18,6 +18,6 @@ $(TARGET): $(OBJS)
 clean:
 	rm *.o $(TARGET) *.cubin
 run:
-	./driverApiProg
+	./$(TARGET)
 
 .PHONY: run clean

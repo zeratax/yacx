@@ -1,7 +1,7 @@
 # von André Hodapp
 
 C++FLAGS := -Wall -Wextra -pedantic -Werror -std=c++14 -fPIC 
-bestimmeAnzahlWorkitems: bestimmeAnzahlWorkitems.o 
+out: bestimmeAnzahlWorkitems.o 
 	g++ $(C++FLAGS) -o bestimmeAnzahlWorkitems bestimmeAnzahlWorkitems.o 
 
 bestimmeAnzahlWorkitems.o: bestimmeAnzahlWorkitems.cpp
@@ -9,6 +9,6 @@ bestimmeAnzahlWorkitems.o: bestimmeAnzahlWorkitems.cpp
 
 
 clean:
-	rm *.o bestimmeAnzahlWorkitems 
+	rm *.o out 
 run:
-	./bestimmeAnzahlWorkitems
+	./out
