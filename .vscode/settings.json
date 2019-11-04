@@ -80,6 +80,7 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "*.cu": "cpp"
+        "*.cu": "cpp",
+        "*.cuh": "cpp"
     }
 }
