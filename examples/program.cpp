@@ -15,7 +15,7 @@ int main() {
   Options options =
       Options({cudaexecutor::options::GpuArchitecture(device.properties()),
                cudaexecutor::options::FMAD(false)});
-  Program program(load("./examples/program.cu"));
+  Program program(load("./examples/kernel/program.cu"));
 
   std::vector<ProgramArg> program_args{};
   int[] array{5, 3, 3, 2, 7};

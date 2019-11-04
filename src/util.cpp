@@ -6,8 +6,7 @@ std::string cudaexecutor::load(const std::string &path) {
                      std::istreambuf_iterator<char>());
 }
 template <typename T>
-std::string
-cudaexecutor::to_comma_separated(const std::vector<T> &vector) {
+std::string cudaexecutor::to_comma_separated(const std::vector<T> &vector) {
   std::string result;
   if (!vector.empty()) {
     for (const auto &i : vector) {

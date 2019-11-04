@@ -25,7 +25,7 @@ class Kernel {
   CUmodule _module;
   CUfunction _kernel;
 
-public:
+ public:
   Kernel(std::string kernel_string, std::string function_name,
          Headers headers = Headers());
   Kernel configure(dim3 grid, dim3 block);
