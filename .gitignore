@@ -32,3 +32,8 @@
 *.app
 *.o
 bin/*
+out
+
+# CUDA
+*.cubin
+*.ptx

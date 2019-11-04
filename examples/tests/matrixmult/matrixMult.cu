@@ -25,7 +25,7 @@ extern "C" __global__ void MatrixMultKernel(float *Md, float *Nd, float *Pd,
     __syncthreads();
     for (int k = 0; k < TILE_WIDTH; k++) {
       #pragma unroll
-      for (int n{0}; n < 4; n++) {
+      for (int n = 0; n < 4; n++) {
         sum[n] += Ml[row_l + n][k] * Nl[k][col_l];
       }
     }
