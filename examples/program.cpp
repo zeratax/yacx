@@ -8,7 +8,7 @@
 #include <vector_types.h> // dim3
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::load, cudaexecutor::to_comma_separated;
+    cudaexecutor::Options, cudaexecutor::load, cudaexecutor::type_of, cudaexecutor::to_comma_separated;
 
 int main() {
   Device dev;

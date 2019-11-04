@@ -13,7 +13,7 @@ $(TARGET): $(OBJS)
 	g++ $(C++FLAGS) -c $< -o $@ -I $(CUDA_PATH)/include
 
 %.cubin: %.cu
-	nvcc $(NVCCflags) $< -o $@
+	nvcc $(NVCCflags) -c --cubin $< -o $@
 
 clean:
 	rm *.o $(TARGET) *.cubin

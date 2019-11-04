@@ -1,5 +1,7 @@
 #include "../include/cudaexecutor/util.hpp"
 
+#include <typeinfo> // operator typeid
+
 std::string cudaexecutor::load(const std::string &path) {
   std::ifstream file(path);
   return std::string((std::istreambuf_iterator<char>(file)),
@@ -16,4 +18,8 @@ std::string cudaexecutor::to_comma_separated(const std::vector<T> &vector) {
     result.substr(0, result.length() - 2);
   }
   return result;
+}
+
+template <typename T> std::string type_of(const T &variable) {
+  return std::string(typeid(variable).name())
 }

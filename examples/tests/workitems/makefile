@@ -7,7 +7,6 @@ out: bestimmeAnzahlWorkitems.o
 bestimmeAnzahlWorkitems.o: bestimmeAnzahlWorkitems.cpp
 	g++ $(C++FLAGS) -c bestimmeAnzahlWorkitems.cpp 
 
-
 clean:
 	rm *.o out 
 run:

@@ -5,6 +5,7 @@
         "NVRTC",
         "c",
         "cmessage",
+        "cubin",
         "cudacompiler",
         "cudaexecutor",
         "hdata",

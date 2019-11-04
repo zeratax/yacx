@@ -26,9 +26,10 @@ class ProgramArg {
   void *_hdata;
   CUdeviceptr _ddata;
   bool _output;
+  size_t _size;
 
 public:
-  ProgramArg(const void *const data, bool output = false);
+  ProgramArg(void *const data, size_t size, bool output = false);
   void upload();
   void download();
 };
