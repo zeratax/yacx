@@ -81,7 +81,7 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "*.cu": "cpp",
-        "*.cuh": "cpp"
+        "*.cu": "cuda",
+        "*.cuh": "cuda"
     }
 }
