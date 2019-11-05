@@ -1,5 +1,5 @@
-#ifndef _EXCEPTION_H_
-#define _EXCEPTION_H_
+#ifndef CUDAEXECUTOR_EXCEPTION_HPP_
+#define CUDAEXECUTOR_EXCEPTION_HPP_
 
 #include <cstdio>
 #include <string>
@@ -9,28 +9,36 @@
 
 namespace cudaexecutor {
 
-class cuda_exception : public std::exception {
+class cudaexec_exception : public std::exception {
   std::string _message;
+  std::string _file;
+  std::string _line;
 
 public:
-  explicit cuda_exception(int error) {
-    const char *cmessage = new char(64); // explicit destructor??
-    cuGetErrorName(static_cast<CUresult>(error), &cmessage);
-    _message = cmessage;
-  }
+  explicit cudaexec_exception(std::string message, std::string file = "",
+                              std::string line = "")
+      : _message{message}, _file{file}, _line{line} {};
   virtual const char *what() const throw() { return _message.c_str(); }
 };
 
-class nvrtc_exception : public std::exception {
-  std::string _message;
-
+class cuda_exception : public cudaexec_exception {
 public:
-  explicit nvrtc_exception(int error) {
-    _message = nvrtcGetErrorString(static_cast<nvrtcResult>(error));
+  explicit cuda_exception(int error, std::string file = "",
+                          std::string line = "") {
+    const char *cmessage = new char(64); // explicit destructor??
+    cuGetErrorName(static_cast<CUresult>(error), &cmessage);
+    cudaexec_exception{cmessage, file, line};
   }
-  virtual const char *what() const throw() { return _message.c_str(); }
+};
+
+class nvrtc_exception : public cudaexec_exception {
+public:
+  explicit nvrtc_exception(int error, std::string file = "",
+                           std::string line = "")
+      : cudaexec_exception{nvrtcGetErrorString(static_cast<nvrtcResult>(error)),
+                           file, line} {};
 };
 
 } // namespace cudaexecutor
 
-#endif // _EXCEPTION_H_
+#endif // CUDAEXECUTOR__EXCEPTION_HPP_

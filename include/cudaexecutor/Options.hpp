@@ -1,5 +1,5 @@
-#ifndef _OPTIONS_H_
-#define _OPTIONS_H_
+#ifndef CUDAEXECUTOR_OPTIONS_HPP_
+#define CUDAEXECUTOR_OPTIONS_HPP_
 
 #include <string>
 #include <vector>
@@ -20,7 +20,7 @@ public:
   void insert(const std::string &op);
   void insert(const std::string &name, const std::string &value) const;
   char **options() const;
-  auto numOptions() const { return _options.size(); };
+  auto numOptions() const { return _options.size(); }
 };
 
 namespace detail {
@@ -29,7 +29,7 @@ class BooleanOption {
   const bool _b;
 
 public:
-  BooleanOption(bool b) : _b{b} {}
+  explicit BooleanOption(bool b) : _b{b} {}
   auto value() const { return (_b) ? "true" : "false"; }
 };
 
@@ -45,7 +45,7 @@ public:
       : arc(std::string("compute_") + std::to_string(major) +
             std::to_string(minor)) {}
 
-  GpuArchitecture(const CudaDeviceProp &prop)
+  explicit GpuArchitecture(const CudaDeviceProp &prop)
       : GpuArchitecture(prop.major, prop.minor) {}
 
   auto name() const { return "--gpu-architecture"; }
@@ -68,4 +68,4 @@ public:
 
 } // namespace cudaexecutor
 
-#endif // _OPTIONS_H_
+#endif // CUDAEXECUTOR_OPTIONS_HPP_

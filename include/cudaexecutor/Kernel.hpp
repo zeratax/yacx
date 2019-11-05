@@ -1,5 +1,5 @@
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#ifndef CUDAEXECUTOR_KERNEL_HPP_
+#define CUDAEXECUTOR_KERNEL_HPP_
 
 #include <string>
 #include <vector>
@@ -9,6 +9,7 @@
 
 #include <cuda.h>
 #include <nvrtc.h>
+#include <vector_types.h>
 
 namespace cudaexecutor {
 
@@ -26,7 +27,7 @@ class Kernel {
   CUfunction _kernel;
 
 public:
-  Kernel(std::string kernel_string, std::string function_name,
+  Kernel(std::string function_name, nvrtcProgram *prog,
          Headers headers = Headers());
   Kernel configure(dim3 grid, dim3 block);
   template <typename T> Kernel instantiate(T types);
@@ -39,4 +40,4 @@ public:
 
 } // namespace cudaexecutor
 
-#endif // _KERNEL_H_
+#endif // CUDAEXECUTOR_KERNEL_HPP_

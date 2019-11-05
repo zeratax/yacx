@@ -1,5 +1,5 @@
-#ifndef _PROGRAM_DEF_H_
-#define _PROGRAM_DEF_H_
+#ifndef CUDAEXECUTOR_PROGRAM_HPP_
+#define CUDAEXECUTOR_PROGRAM_HPP_
 
 #include <string>
 #include <vector>
@@ -18,8 +18,8 @@ class Program {
   std::string _kernel_string;
 
 public:
-  Program(std::string kernel_string, Headers headers = Headers());
-  Kernel kernel(std::string function_name);
+  explicit Program(std::string kernel_string, Headers headers = Headers());
+  Kernel *kernel(std::string function_name);
 };
 
 class ProgramArg {
@@ -36,4 +36,4 @@ public:
 
 } // namespace cudaexecutor
 
-#endif // _PROGRAM_DEF_H_
+#endif // CUDAEXECUTOR_PROGRAM_HPP_

@@ -1,23 +1,16 @@
-#include "../include/cudaexecutor/Program.hpp"
-#include "../include/cudaexecutor/Device.hpp"
-#include "../include/cudaexecutor/Exception.hpp"
-#include "../include/cudaexecutor/Kernel.hpp"
-#include "../include/cudaexecutor/Options.hpp"
-#include "../include/cudaexecutor/util.hpp"
-
-#include <vector_types.h> // dim3
+#include "../include/cudaexecutor/main.hpp"
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::load, cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+    cudaexecutor::Options, cudaexecutor::load, cudaexecutor::type_of,
+    cudaexecutor::to_comma_separated;
 
 int main() {
-  Device dev;
-  Options options =
-      Options({cudaexecutor::options::GpuArchitecture(device.properties()),
+  Device device;
+  Options options{cudaexecutor::options::GpuArchitecture(device.properties()),
                cudaexecutor::options::FMAD(false)});
-  Program program(load("./examples/kernel/program.cu"));
+  Program program{load("./examples/kernel/program.cu")};
 
-  std::vector<ProgramArg> program_args{};
+  std::vector<ProgramArg> program_args;
   int[] array{5, 3, 3, 2, 7};
   int data{8};
   ProgramArg array_arg(&array, true);
@@ -28,10 +21,11 @@ int main() {
   dim3 grid(1);
   dim3 block(1);
   try {
-    program.kernel("my_kernel")
-        .instantiate(type_of(data), 5)
-        .compile(options)
-        .configure(grid, block)
+    program
+        .kernel("my_kernel")           // returns Kernel type
+        .instantiate(type_of(data), 5) // => Kernel
+        .compile(options)              // => Kernel
+        .configure(grid, block)        // => Kernel
         .launch(program_args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;

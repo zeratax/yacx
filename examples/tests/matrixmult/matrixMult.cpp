@@ -159,8 +159,8 @@ void MatrixMulCUDA(const float *h_M, const float *h_N, float *h_P,
   checkCudaErrors(cuMemcpyHtoD(d_M, &h_M, matrix_size));
   checkCudaErrors(cuMemcpyHtoD(d_N, &h_N, matrix_size));
 
-  dim3 block(16, 4, 1);
-  dim3 grid(WIDTH, WIDTH / 4, 1);
+  dim3 block(16, 4);
+  dim3 grid(WIDTH, WIDTH / 4);
 
   void *args[]{&d_M, &d_N, &d_P, &width};
   cuLaunchKernel(function, grid.x, grid.y, grid.z, // grid
