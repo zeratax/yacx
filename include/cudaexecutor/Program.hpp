@@ -17,7 +17,7 @@ class Program {
   Headers _headers;
   std::string _kernel_string;
 
-public:
+ public:
   explicit Program(std::string kernel_string, Headers headers = Headers());
   Kernel *kernel(std::string function_name);
 };
@@ -28,7 +28,7 @@ class ProgramArg {
   bool _output;
   size_t _size;
 
-public:
+ public:
   ProgramArg(void *const data, size_t size, bool output = false);
   void upload();
   void download();

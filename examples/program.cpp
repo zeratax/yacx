@@ -11,7 +11,7 @@ int main() {
   Program program{load("./examples/kernel/program.cu")};
 
   std::vector<ProgramArg> program_args;
-  int[] array{5, 3, 3, 2, 7};
+  int array[]{5, 3, 3, 2, 7};
   int data{8};
   ProgramArg array_arg(&array, true);
   ProgramArg data_arg(&data);

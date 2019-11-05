@@ -41,11 +41,12 @@ clean:
 
 # Format
 format:
-	$(FORMATER) -i -style=LLVM $(SOURCES) $(HEADERS)
+	$(FORMATER) -i -style=file $(SOURCES) $(HEADERS)
 
 # Linter
 lint:
 	$(LINTER) --root=${CURDIR} --recursive .
+	#clang-tidy src/ -system-headers=false
 
 # Tests
 tester:

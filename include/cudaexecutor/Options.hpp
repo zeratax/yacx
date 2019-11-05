@@ -16,7 +16,7 @@ class Options {
   std::vector<std::string> _options;
   mutable std::vector<const char *> _chOptions;
 
-public:
+ public:
   void insert(const std::string &op);
   void insert(const std::string &name, const std::string &value) const;
   char **options() const;
@@ -28,7 +28,7 @@ namespace detail {
 class BooleanOption {
   const bool _b;
 
-public:
+ public:
   explicit BooleanOption(bool b) : _b{b} {}
   auto value() const { return (_b) ? "true" : "false"; }
 };
@@ -40,7 +40,7 @@ namespace options {
 class GpuArchitecture {
   const std::string arc;
 
-public:
+ public:
   GpuArchitecture(int major, int minor)
       : arc(std::string("compute_") + std::to_string(major) +
             std::to_string(minor)) {}
@@ -53,13 +53,13 @@ public:
 };
 
 class FMAD : public detail::BooleanOption {
-public:
+ public:
   using detail::BooleanOption::BooleanOption;
   auto name() const { return "--fmad"; }
 };
 
 class Fast_Math : public detail::BooleanOption {
-public:
+ public:
   using detail::BooleanOption::BooleanOption;
   auto name() const { return "--use_fast_math"; }
 };

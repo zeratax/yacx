@@ -26,7 +26,7 @@ class Kernel {
   CUmodule _module;
   CUfunction _kernel;
 
-public:
+ public:
   Kernel(std::string function_name, nvrtcProgram *prog,
          Headers headers = Headers());
   Kernel configure(dim3 grid, dim3 block);

@@ -22,7 +22,7 @@
 using cudaexecutor::Kernel, cudaexecutor::Options, cudaexecutor::Headers,
     cudaexecutor::Program;
 
-Kernel::Kernel(std::function_name, nvrtcProgram prog)
+Kernel::Kernel(std::string function_name, nvrtcProgram prog)
     : _function_name{function_name}, _prog{prog} {
   CUDA_SAFE_CALL(cuInit(0));
   CUDA_SAFE_CALL(cuDeviceGet(&_cuDevice, 0));
