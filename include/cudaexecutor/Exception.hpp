@@ -11,13 +11,22 @@ namespace cudaexecutor {
 
 class exception : public std::exception {
  protected:
+  std::string _what;
   std::string _message;
   std::string _file;
   int _line;
 
  public:
   explicit exception(std::string message, std::string file = "", int line = 0)
-      : _message{message}, _file{file}, _line{line} {};
+      : _message{message}, _file{file}, _line{line} {
+    _what = std::string(_message + " in File: " + _file +
+                        ", Line: " + std::to_string(_line));
+  }
+  void set_message(std::string message) {
+    _message = message;
+    _what = std::string(_message + " in File: " + _file +
+                        ", Line: " + std::to_string(_line));
+  }
   virtual const char *what() const throw() { return _message.c_str(); }
 };
 
