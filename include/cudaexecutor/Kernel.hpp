@@ -4,12 +4,21 @@
 #include <string>
 #include <vector>
 
+#include "Exception.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
 #include <vector_types.h>
+
+#define NVRTC_SAFE_CALL(x)                                                     \
+  do {                                                                         \
+    nvrtcResult result = x;                                                    \
+    if (result != NVRTC_SUCCESS) {                                             \
+      throw nvrtc_exception(result, __FILE__, __LINE__);                       \
+    }                                                                          \
+  } while (0)
 
 namespace cudaexecutor {
 
@@ -35,6 +44,23 @@ class Kernel {
   Kernel compile(Options options = Options());
   std::string log() const { return _log; }
 };
+
+template <typename T> Kernel Kernel::instantiate(T type) {
+  std::string type_name;
+
+  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
+  _compiled = false;
+  _template_parameters.push_back(type_name);
+}
+
+template <typename T, typename... TS>
+Kernel Kernel::instantiate(T type, TS... types) {
+  std::string type_name;
+
+  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
+  _template_parameters.push_back(type_name);
+  Kernel::instantiate(types...);
+}
 
 } // namespace cudaexecutor
 

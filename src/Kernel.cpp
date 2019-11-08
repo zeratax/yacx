@@ -19,7 +19,7 @@
   } while (0)
 
 using cudaexecutor::Kernel, cudaexecutor::Options, cudaexecutor::Headers,
-    cudaexecutor::ProgramArg;
+    cudaexecutor::ProgramArg, cudaexecutor::to_comma_separated;
 
 Kernel::Kernel(std::string kernel_name, nvrtcProgram *prog)
     : _kernel_name{kernel_name}, _prog{prog} {
@@ -37,22 +37,6 @@ Kernel::~Kernel() {
 
   // Destroy the program.
   NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
-}
-
-template <typename T> Kernel Kernel::instantiate(T type) {
-  std::string type_name;
-  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
-
-  _compiled = false;
-  _template_parameters.push_back(type_name);
-}
-
-template <typename T, typename... TS>
-Kernel Kernel::instantiate(T type, TS... types) {
-  std::string type_name;
-  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
-  _template_parameters.push_back(type_name);
-  Kernel::instantiate(TS... types);
 }
 
 Kernel Kernel::configure(dim3 grid, dim3 block) {
@@ -97,9 +81,8 @@ Kernel Kernel::launch(std::vector<ProgramArg> args) {
 }
 
 Kernel Kernel::compile(Options options) {
-  _name_expression = _kernel_name + "<" +
-                     cudaexecutor::to_comma_separated(_template_parameters) +
-                     ">";
+  _name_expression =
+      _kernel_name + "<" + to_comma_separated(_template_parameters) + ">";
   NVRTC_SAFE_CALL(nvrtcAddNameExpression(*_prog, _name_expression.c_str()));
 
   nvrtcResult compileResult =

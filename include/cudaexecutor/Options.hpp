@@ -29,6 +29,24 @@ class Options {
   auto numOptions() const { return _options.size(); }
 };
 
+template <typename T> Options::Options(const T &t) { insertOptions(t); }
+
+template <typename T, typename... TS>
+Options::Options(const T &t, const TS &... ts) {
+  insertOptions(t);
+  insertOptions(ts...);
+}
+
+template <typename T> void Options::insertOptions(const T &t) {
+  insert(t.name(), t.value());
+}
+
+template <typename T, typename... TS>
+void Options::insertOptions(const T &t, const TS &... ts) {
+  insert(t.name(), t.value());
+  insertOptions(ts...);
+}
+
 namespace detail {
 
 class BooleanOption {
@@ -36,7 +54,6 @@ class BooleanOption {
 
  public:
   explicit BooleanOption(bool b) : _b{b} {}
-  std::string virtual name();
   auto value() const { return (_b) ? "true" : "false"; }
 };
 
