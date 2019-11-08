@@ -8,7 +8,7 @@
 #include <nvrtc.h>
 
 namespace cudaexecutor {
-
+//TODO(zeratax): Properly show line and file
 class exception : public std::exception {
  protected:
   std::string _what;
@@ -16,14 +16,15 @@ class exception : public std::exception {
   std::string _file;
   int _line;
 
- public:
-  explicit exception(std::string message, std::string file = "", int line = 0)
-      : _message{message}, _file{file}, _line{line} {
+  void set_message(std::string message) {
+    _message = message;
     _what = std::string(_message + " in File: " + _file +
                         ", Line: " + std::to_string(_line));
   }
-  void set_message(std::string message) {
-    _message = message;
+
+ public:
+  explicit exception(std::string message, std::string file = "", int line = 0)
+      : _message{message}, _file{file}, _line{line} {
     _what = std::string(_message + " in File: " + _file +
                         ", Line: " + std::to_string(_line));
   }
