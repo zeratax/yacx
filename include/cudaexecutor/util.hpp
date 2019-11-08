@@ -28,7 +28,7 @@ struct is_string
 };
 
 template <typename T>
-std::string cudaexecutor::to_comma_separated(const std::vector<T> &vector) {
+std::string to_comma_separated(const std::vector<T> &vector) {
   static_assert(is_string<T>::value, "vector element must be stringable");
   std::string result;
   if (!vector.empty()) {
