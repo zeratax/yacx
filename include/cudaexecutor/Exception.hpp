@@ -21,7 +21,7 @@ class exception : public std::exception {
   virtual const char *what() const throw() { return _message.c_str(); }
 };
 
-class cuda_exception : protected exception {
+class cuda_exception : public exception {
  public:
   explicit cuda_exception(CUresult error, std::string file = "", int line = 0)
       : exception{"", file, line} {

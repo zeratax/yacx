@@ -27,7 +27,9 @@ int main() {
         .compile(options)       // => Kernel
         .configure(grid, block) // => Kernel
         .launch(program_args);
-  } catch (const std::exception &e) {
+  } catch (const cudaexecutor::cuda_exception &e) {
+    std::cerr << e.what() << std::endl;
+  } catch (const cudaexecutor::nvrtc_exception &e) {
     std::cerr << e.what() << std::endl;
   }
 
