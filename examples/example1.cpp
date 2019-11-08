@@ -28,9 +28,9 @@ int main() {
         .configure(grid, block)        // => Kernel
         .launch(program_args);
   } catch (const cudaexecutor::cuda_exception &e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << e.file() << ":" << e.line() << " " << e.what() << std::endl;
   } catch (const cudaexecutor::nvrtc_exception &e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << e.file() << ":" << e.line() << " " << e.what() << std::endl;
   }
 
   std::vector<int> vec(array, array + 5);

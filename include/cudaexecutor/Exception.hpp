@@ -18,11 +18,9 @@ class exception : public std::exception {
  public:
   explicit exception(std::string message, std::string file = "", int line = 0)
       : _message{message}, _file{file}, _line{line} {};
-  virtual const char *what() const throw() {
-    std::string what = std::string("ERROR: ") + _message + "FILE: " + _file +
-                       "LINE: " + std::to_string(_line);
-    return what.c_str();
-  }
+  virtual const char *what() const throw() { return _message.c_str(); }
+  virtual const char *file() const { return _file.c_str(); }
+  virtual const int line() const { return _line; }
 };
 
 class cuda_exception : public exception {
