@@ -23,6 +23,7 @@ using cudaexecutor::Kernel, cudaexecutor::Options, cudaexecutor::Headers,
 
 Kernel::Kernel(std::string kernel_name, nvrtcProgram *prog)
     : _kernel_name{kernel_name}, _prog{prog} {
+  // optional parameter to take device, check if already initialized??
   CUDA_SAFE_CALL(cuInit(0));
   CUDA_SAFE_CALL(cuDeviceGet(&_cuDevice, 0));
   CUDA_SAFE_CALL(cuCtxCreate(&_context, 0, _cuDevice));
