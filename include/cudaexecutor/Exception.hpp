@@ -36,7 +36,7 @@ class cuda_exception : public exception {
       : exception{"", file, line} {
     const char *cmessage = new char(64); // explicit destructor??
     cuGetErrorName(error, &cmessage);
-    exception::_message = cmessage;
+    set_message(cmessage);
   }
 };
 
