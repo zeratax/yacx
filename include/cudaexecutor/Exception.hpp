@@ -27,7 +27,7 @@ class exception : public std::exception {
     _what = std::string(_message + " in File: " + _file +
                         ", Line: " + std::to_string(_line));
   }
-  virtual const char *what() const throw() { return _message.c_str(); }
+  virtual const char *what() const throw() { return _what.c_str(); }
 };
 
 class cuda_exception : public exception {
