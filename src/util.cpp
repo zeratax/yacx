@@ -21,5 +21,5 @@ std::string cudaexecutor::to_comma_separated(const std::vector<T> &vector) {
 }
 
 template <typename T> std::string type_of(const T &variable) {
-  return std::string(typeid(variable).name())
+  return std::string(typeid(variable).name());
 }

@@ -9,33 +9,33 @@
 
 namespace cudaexecutor {
 
-class cudaexec_exception : public std::exception {
+class exception : public std::exception {
+ protected:
   std::string _message;
   std::string _file;
-  std::string _line;
+  int _line;
 
  public:
-  explicit cudaexec_exception(std::string message, std::string file = "",
-                              std::string line = "")
+  explicit exception(std::string message, std::string file = "", int line = 0)
       : _message{message}, _file{file}, _line{line} {};
   virtual const char *what() const throw() { return _message.c_str(); }
 };
 
-class cuda_exception : public cudaexec_exception {
+class cuda_exception : protected exception {
  public:
-  explicit cuda_exception(CUresult error, std::string file = "",
-                          std::string line = "") {
+  explicit cuda_exception(CUresult error, std::string file = "", int line = 0)
+      : exception{"", file, line} {
     const char *cmessage = new char(64); // explicit destructor??
     cuGetErrorName(error, &cmessage);
-    cudaexec_exception{cmessage, file, line};
+    exception::_message = cmessage;
   }
 };
 
-class nvrtc_exception : public cudaexec_exception {
+class nvrtc_exception : public exception {
  public:
   explicit nvrtc_exception(nvrtcResult error, std::string file = "",
-                           std::string line = "")
-      : cudaexec_exception{nvrtcGetErrorString(error), file, line} {};
+                           int line = 0)
+      : exception{nvrtcGetErrorString(error), file, line} {};
 };
 
 } // namespace cudaexecutor

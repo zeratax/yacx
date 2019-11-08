@@ -1,12 +1,22 @@
-checkCudaErrors(cuDeviceGet(device, 0));
+#ifndef CUDAEXECUTOR_DEVICE_HPP_
+#define CUDAEXECUTOR_DEVICE_HPP_
 
-char name[50];
-// Returns an identifer string for the device.
-cuDeviceGetName(name, 50, *device);
-printf("> Using device 0: %s\n", name);
+#include <cuda.h>
+#include <string>
 
-checkCudaErrors(cuDeviceGetAttribute(
-    &major, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR, *device));
-checkCudaErrors(cuDeviceGetAttribute(
-    &minor, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR, *device));
-printf("> GPU Device has SM %d.%d compute capability\n", major, minor);
+namespace cudaexecutor {
+class Device {
+  int _minor, _major;
+  std::string _name;
+  CUdevice _device;
+
+ public:
+  Device();
+  int minor() const { return _minor; }
+  int major() const { return _major; }
+  std::string name() const { return _name; }
+};
+
+} // namespace cudaexecutor
+
+#endif // CUDAEXECUTOR_DEVICE_HPP_

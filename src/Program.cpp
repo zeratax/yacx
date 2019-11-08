@@ -1,6 +1,7 @@
 #include "../include/cudaexecutor/Program.hpp"
 #include "../include/cudaexecutor/Exception.hpp"
 #include "../include/cudaexecutor/Kernel.hpp"
+#include "../include/cudaexecutor/ProgramArg.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
@@ -18,7 +19,7 @@ using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel;
 Program::Program(std::string kernel_string, Headers headers = Headers())
     : _kernel_string{kernel_string}, _headers{headers} {}
 
-Kernel *Program::kernel(std::string function_name) {
+Kernel Program::kernel(std::string function_name) {
   nvrtcProgram *prog = new nvrtcProgram;
   nvrtcCreateProgram(prog,                   // prog
                      _kernel_string.c_str(), // buffer
@@ -26,7 +27,7 @@ Kernel *Program::kernel(std::string function_name) {
                      _headers.size(),        // numHeaders
                      _headers.names(),       // headers
                      _headers.content());    // includeNames
-  return new Kernel(function_name, prog);
+  return Kernel(function_name, prog);
 }
 
 ProgramArg::ProgramArg(void *const data, size_t size, bool output = false)

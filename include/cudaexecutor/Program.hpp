@@ -19,19 +19,7 @@ class Program {
 
  public:
   explicit Program(std::string kernel_string, Headers headers = Headers());
-  Kernel *kernel(std::string function_name);
-};
-
-class ProgramArg {
-  void *_hdata;
-  CUdeviceptr _ddata;
-  bool _output;
-  size_t _size;
-
- public:
-  ProgramArg(void *const data, size_t size, bool output = false);
-  void upload();
-  void download();
+  Kernel kernel(std::string function_name);
 };
 
 } // namespace cudaexecutor

@@ -4,22 +4,28 @@
 #include <string>
 #include <vector>
 
+#include "Device.hpp"
 #include "util.hpp"
 
 #include <cuda.h>
+#include <cuda_runtime.h>
 
 namespace cudaexecutor {
-
-class Option {};
 
 class Options {
   std::vector<std::string> _options;
   mutable std::vector<const char *> _chOptions;
 
  public:
+  Options() {}
+  template <typename T> Options(const T &t);
+  template <typename T, typename... TS> Options(const T &t, const TS &... ts);
   void insert(const std::string &op);
-  void insert(const std::string &name, const std::string &value) const;
-  char **options() const;
+  void insert(const std::string &name, const std::string &value);
+  template <typename T> void insertOptions(const T &t);
+  template <typename T, typename... TS>
+  void insertOptions(const T &t, const TS &... ts);
+  const char **options() const;
   auto numOptions() const { return _options.size(); }
 };
 
@@ -30,6 +36,7 @@ class BooleanOption {
 
  public:
   explicit BooleanOption(bool b) : _b{b} {}
+  std::string virtual name();
   auto value() const { return (_b) ? "true" : "false"; }
 };
 
@@ -45,8 +52,8 @@ class GpuArchitecture {
       : arc(std::string("compute_") + std::to_string(major) +
             std::to_string(minor)) {}
 
-  explicit GpuArchitecture(const CudaDeviceProp &prop)
-      : GpuArchitecture(prop.major, prop.minor) {}
+  explicit GpuArchitecture(const cudaexecutor::Device &device)
+      : GpuArchitecture(device.major(), device.minor()) {}
 
   auto name() const { return "--gpu-architecture"; }
   auto &value() const { return arc; }
