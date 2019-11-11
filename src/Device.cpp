@@ -18,7 +18,6 @@ Device::Device() {
   char *cname = new char[50]; // destruktor??
   CUDA_SAFE_CALL(cuDeviceGetName(cname, 50, _device));
   _name = cname;
-  std::free(cname);
 
   CUDA_SAFE_CALL(cuDeviceGetAttribute(
       &_major, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR, _device));

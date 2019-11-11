@@ -38,7 +38,6 @@ class cuda_exception : public exception {
     const char *cmessage = new char(64); // explicit destructor??
     cuGetErrorName(error, &cmessage);
     set_message(cmessage);
-    // std::free(cmessage); ?
   }
 };
 
