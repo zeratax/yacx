@@ -4,7 +4,59 @@ wrapper to easily compile and execute cuda kernels
 
 ## Usage
 
-### Example
+```c++
+#include "../include/cudaexecutor/main.hpp"
+
+using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
+    cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+
+int main() {
+  int array[]{5, 3, 3, 2, 7};
+  int data{8};
+  std::string kernel_string = "template<typename type, int size>"\
+    "__global__ void setKernel(type[] c, type val) {"\
+    "   auto idx = threadIdx.x * size;"\
+    "   #pragma unroll(size)"\
+    "   for (auto i = 0; i < size; i++) {"\
+    "       c[idx] = val;"\
+    "       idx++;"\
+    "   }"\
+    "}"
+
+  try {
+    Device device;
+    Options options{cudaexecutor::options::GpuArchitecture(device),
+                    cudaexecutor::options::FMAD(false)};
+    // Program program{load("./examples/kernel/program.cu")};
+    Program program{kernel_string};
+
+    std::vector<ProgramArg> program_args;
+    ProgramArg array_arg(&array, sizeof(int) * 5, true);
+    ProgramArg data_arg(&data, sizeof(int));
+    program_args.push_back(array_arg);
+    program_args.push_back(data_arg);
+
+    dim3 grid(1);
+    dim3 block(1);
+    program
+        .kernel("my_kernel")
+        .instantiate(type_of(data), 5)
+        .compile(options)
+        .configure(grid, block)
+        .launch(program_args);
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << std::endl;
+  }
+
+  std::vector<int> vec(array, array + 5);
+  std::cout << to_comma_separated(vec) << std::endl;
+
+  return 0;
+}
+```
+
+### Run Examples
 
 ```console
 $ make example1
