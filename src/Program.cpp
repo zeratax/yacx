@@ -19,12 +19,12 @@ Program::Program(std::string kernel_string, Headers headers)
     : _kernel_string{kernel_string}, _headers{headers} {}
 
 Kernel Program::kernel(std::string function_name) {
-  nvrtcProgram *prog = new nvrtcProgram;
-  nvrtcCreateProgram(prog,                   // prog
+  _prog = new nvrtcProgram; // destruktor?
+  nvrtcCreateProgram(_prog,                   // prog
                      _kernel_string.c_str(), // buffer
                      function_name.c_str(),  // name
                      _headers.size(),        // numHeaders
                      _headers.names(),       // headers
                      _headers.content());    // includeNames
-  return Kernel(function_name, prog);
+  return Kernel(function_name, _prog);
 }

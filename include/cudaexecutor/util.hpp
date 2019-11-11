@@ -2,6 +2,7 @@
 #define CUDAEXECUTOR_UTIL_HPP_
 
 #include <cstdio>
+#include <cxxabi.h>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -35,13 +36,21 @@ std::string to_comma_separated(const std::vector<T> &vector) {
       result.append(element);
       result.append(", ");
     }
-    result.substr(0, result.length() - 2);
+    result.erase(result.end() - 2, result.end());
   }
   return result;
 }
 
 template <typename T> std::string type_of(const T &variable) {
-  return std::string(typeid(variable).name());
+  int status;
+  std::string tname = typeid(T).name();
+  char *demangled_name =
+      abi::__cxa_demangle(tname.c_str(), NULL, NULL, &status);
+  if (status == 0) {
+    tname = demangled_name;
+    std::free(demangled_name);
+  }
+  return tname;
 }
 } // namespace cudaexecutor
 

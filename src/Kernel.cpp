@@ -91,17 +91,18 @@ Kernel Kernel::compile(Options options) {
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*_prog, &logSize));
-  char *clog = new char[logSize]; // destruktor??
+  char *clog = new char[logSize];
   NVRTC_SAFE_CALL(nvrtcGetProgramLog(*_prog, clog));
   _log = clog;
+  std::free(clog); // ?
 
   if (compileResult != NVRTC_SUCCESS)
     throw nvrtc_exception(compileResult);
 
   size_t ptxSize;
   NVRTC_SAFE_CALL(nvrtcGetPTXSize(*_prog, &ptxSize));
-  char *ptx = new char[ptxSize];
-  NVRTC_SAFE_CALL(nvrtcGetPTX(*_prog, ptx));
+  NVRTC_SAFE_CALL(nvrtcGetPTX(*_prog, _ptx)); // ptxSize ??
 
+  _compiled = true;
   return *this;
 }

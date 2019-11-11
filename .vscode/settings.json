@@ -82,6 +82,9 @@
         "valarray": "cpp",
         "variant": "cpp",
         "*.cu": "cuda",
-        "*.cuh": "cuda"
+        "*.cuh": "cuda",
+        "regex": "cpp",
+        "future": "cpp",
+        "shared_mutex": "cpp"
     }
 }

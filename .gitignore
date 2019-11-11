@@ -37,3 +37,6 @@ out
 # CUDA
 *.cubin
 *.ptx
+
+# EXTERNAL
+include/catch2

@@ -5,10 +5,8 @@
 
 void bestimmeAnzahlWorkitems(
     int *workitems, int *bloecke, const int &registerProSIMD,
-    const int &sharedSpeicherplatzProSIMD,
-    const int &Max_Anz_Workitems_Block,
-    const int &registerProWorkitem,
-    const int &sharedSpeicherplatzProWorkitem,
+    const int &sharedSpeicherplatzProSIMD, const int &Max_Anz_Workitems_Block,
+    const int &registerProWorkitem, const int &sharedSpeicherplatzProWorkitem,
     const int &Max_Anz_Blocke, const int &workitemsInsgesamt = 1024) {
   // setze die Anzahl der Workitems in eienm Block
   int itemsProBlock = Max_Anz_Workitems_Block;
