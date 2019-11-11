@@ -1,14 +1,23 @@
-# CUDA COMPILER
+# CUDA EXECUTOR
 
-compiles any cuda kernel
+wrapper to easily compile and execute cuda kernels
 
 ## Usage
 
 ### Example
 
 ```console
-$ make
+$ make example1
+$ ./bin/runner
 ```
+
+### Tests
+
+```console
+$ make check
+```
+
+For more info run `./bin/tester -?`
 
 ## Resources
 

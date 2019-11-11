@@ -58,6 +58,7 @@ Kernel Kernel::instantiate(T type, TS... types) {
   std::string type_name;
 
   NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
+  _compiled = false;
   _template_parameters.push_back(type_name);
   Kernel::instantiate(types...);
 }
