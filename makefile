@@ -59,6 +59,6 @@ build_tests: directories $(OBJECTS)
 check: build_tests
 	@echo " Linking... $(TEST_OBJ)";
 	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
-	@./bin/tester
+	@./bin/tester -d yes
 
 .PHONY: clean, lint, directories, format 

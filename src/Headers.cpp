@@ -1,19 +1,24 @@
 #include "../include/cudaexecutor/Headers.hpp"
 
+#include <algorithm>
+#include <cstdio>
+
 using cudaexecutor::Header, cudaexecutor::Headers;
 
 const char **Headers::content() const {
-  std::vector<const char *> result; // new?
-  for (const auto &header : this->headers) {
-    result.push_back(header.get_content());
-  }
-  return &result[0];
+  _chHeaders.resize(_headers.size());
+  std::transform(_headers.begin(), _headers.end(), _chHeaders.begin(),
+                 [](const auto &s) { return s.content(); });
+  return _chHeaders.data();
 }
 
 const char **Headers::names() const {
-  std::vector<const char *> result; // new?
-  for (const auto &name : this->headers) {
-    result.push_back(name.get_name());
-  }
-  return &result[0];
+  _chHeaders.resize(_headers.size());
+  std::transform(_headers.begin(), _headers.end(), _chHeaders.begin(),
+                 [](const auto &s) { return s.name(); });
+  return _chHeaders.data();
 }
+
+Headers::Headers(const Header &header) { insert(header); }
+
+Headers::Headers(const std::string &path) { insert(path); }

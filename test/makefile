@@ -9,7 +9,7 @@ TARGET := ../bin/tester
 SRCEXT := cpp
 HEADDEREXT := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
-HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
+HEADERS := $(shell find $(LIBDIR) -type f -name '*.$(HEADDEREXT)')
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1
 LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 

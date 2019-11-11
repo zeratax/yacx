@@ -11,6 +11,7 @@
 
 using cudaexecutor::Device;
 
+// https://stackoverflow.com/a/478960
 std::string exec(const char *cmd) {
   std::array<char, 128> buffer;
   std::string result;
@@ -27,5 +28,10 @@ std::string exec(const char *cmd) {
 TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
   Device dev;
 
-  REQUIRE(dev.name() == exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\""));
+  std::string name =
+      exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
+
+  name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
+
+  REQUIRE(dev.name() == name);
 }
