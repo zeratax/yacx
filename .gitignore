@@ -27,6 +27,7 @@
 *.lib
 
 # Executables
+cmake-build-debug/
 *.exe
 *.out
 *.app
@@ -40,3 +41,4 @@ out
 
 # EXTERNAL
 include/catch2
+lib/
