@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.9)
+#cmake_minimum_required(VERSION 3.15)
 project(cudacompiler VERSION 0.0.1)
 
 enable_language(CXX CUDA)
@@ -7,7 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-add_compile_definitions(NVRTC_GET_TYPE_NAME=1)
+#add_compile_definitions(NVRTC_GET_TYPE_NAME=1) # requires cmake 3.12
+add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 enable_testing()
 
@@ -20,9 +22,11 @@ link_libraries(cuda nvrtc)
 
 file(GLOB SOURCES "src/*.cpp")
 
+# EXAMPLES
 add_executable(example_program ${SOURCES} examples/example_program.cpp)
 target_compile_options(example_program PUBLIC -Wall)
 
+## TESTS
 #add_subdirectory(lib/Catch2)
 #find_package(Catch2 REQUIRED)
 
