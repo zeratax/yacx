@@ -35,9 +35,12 @@ class cuda_exception : public exception {
  public:
   explicit cuda_exception(CUresult error, std::string file = "", int line = 0)
       : exception{"", file, line} {
-    const char *cmessage = new char(64); // explicit destructor??
+    const char *cmessage = new char[64];
     cuGetErrorName(error, &cmessage);
     set_message(cmessage);
+    // std::unique_ptr<const char*> cmessage = std::make_unique<const char*>(64);
+    // cuGetErrorName(error, cmessage.get());
+    // set_message(cmessage.get()[0]);
   }
 };
 

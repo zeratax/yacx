@@ -16,4 +16,4 @@ matSumKernel.cubin: matSumKernel.cu
 clean:
 	rm *.o driverApiProg *.cubin
 run:
-	./driverApiProg
+	./out

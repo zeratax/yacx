@@ -9,8 +9,10 @@
 #include <type_traits>
 #include <typeinfo> // operator typeid
 #include <vector>
+
 namespace cudaexecutor {
 
+void debug(const std::string &message);
 std::string load(const std::string &path);
 template <typename T>
 std::string to_comma_separated(const std::vector<T> &vector);

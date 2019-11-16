@@ -18,6 +18,12 @@ using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel;
 Program::Program(std::string kernel_string, Headers headers)
     : _kernel_string{kernel_string}, _headers{headers} {}
 
+Program::~Program() {
+  // exception in destruktor??
+  // Destroy the program.
+  NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
+}
+
 Kernel Program::kernel(std::string function_name) {
   _prog = new nvrtcProgram;                  // destruktor?
   nvrtcCreateProgram(_prog,                  // prog

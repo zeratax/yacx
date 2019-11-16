@@ -3,6 +3,8 @@
 #include "../include/cudaexecutor/Headers.hpp"
 #include "../include/cudaexecutor/util.hpp"
 
+#include <memory>
+
 #define NVRTC_SAFE_CALL(x)                                                     \
   do {                                                                         \
     nvrtcResult result = x;                                                    \
@@ -35,9 +37,6 @@ Kernel::~Kernel() {
   // Release resources.
   CUDA_SAFE_CALL(cuModuleUnload(_module));
   CUDA_SAFE_CALL(cuCtxDestroy(_context));
-
-  // Destroy the program.
-  NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
 }
 
 Kernel Kernel::configure(dim3 grid, dim3 block) {
@@ -91,9 +90,9 @@ Kernel Kernel::compile(Options options) {
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*_prog, &logSize));
-  char *clog = new char[logSize]; // destruktor??
-  NVRTC_SAFE_CALL(nvrtcGetProgramLog(*_prog, clog));
-  _log = clog;
+  std::unique_ptr<char[]> clog = std::make_unique<char[]>(logSize);
+  NVRTC_SAFE_CALL(nvrtcGetProgramLog(*_prog, clog.get()));
+  _log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS)
     throw nvrtc_exception(compileResult);

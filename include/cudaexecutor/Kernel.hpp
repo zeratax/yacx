@@ -23,7 +23,7 @@
 namespace cudaexecutor {
 
 class Kernel {
-  char *_ptx;
+  char *_ptx; // shared pointer?
   dim3 _grid, _block;
   std::vector<std::string> _template_parameters;
   std::string _kernel_name, _name_expression, _log;

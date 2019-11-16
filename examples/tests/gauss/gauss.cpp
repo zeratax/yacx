@@ -191,7 +191,7 @@ void initModule(const CUcontext &context, CUmodule *module,
   std::string nameModule("gauss");
   std::string module_file = nameModule;
   module_file.append(".cubin");
-  std::string kernel_name("gausFilterKernel");
+  std::string kernel_name("gaussFilterKernel");
 
   // kompiliereCubinFile(nameModule.c_str());
   ladeModulUndFunktion(context, module, function,
