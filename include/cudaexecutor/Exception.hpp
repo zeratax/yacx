@@ -3,9 +3,11 @@
 
 #include <cstdio>
 #include <string>
+#include <utility>
 
 #include <cuda.h>
 #include <nvrtc.h>
+#include <memory>
 
 namespace cudaexecutor {
 // TODO(zeratax): Properly show line and file
@@ -17,32 +19,38 @@ class exception : public std::exception {
   int _line;
 
   void set_message(std::string message) {
-    _message = message;
+    _message = std::move(message);
     _what = std::string(_message + " in File: " + _file +
                         ", Line: " + std::to_string(_line));
   }
 
  public:
-  explicit exception(std::string message, std::string file = "", int line = 0)
-      : _message{message}, _file{file}, _line{line} {
-    _what = std::string(_message + " in File: " + _file +
-                        ", Line: " + std::to_string(_line));
+  explicit exception(std::string message, std::string file = "", int line = 0);
+  [[nodiscard]] const char *what() const noexcept override {
+    return _what.c_str();
   }
-  virtual const char *what() const throw() { return _what.c_str(); }
 };
+
+exception::exception(std::string message, std::string file, int line)
+    : _message{std::move(message)}, _file{std::move(file)}, _line{line} {
+  _what = std::string(_message + " in File: " + _file +
+                      ", Line: " + std::to_string(_line));
+}
 
 class cuda_exception : public exception {
  public:
-  explicit cuda_exception(CUresult error, std::string file = "", int line = 0)
-      : exception{"", file, line} {
-    const char *cmessage = new char[64];
-    cuGetErrorName(error, &cmessage);
-    set_message(cmessage);
-    // std::unique_ptr<const char*> cmessage = std::make_unique<const char*>(64);
-    // cuGetErrorName(error, cmessage.get());
-    // set_message(cmessage.get()[0]);
-  }
+  explicit cuda_exception(CUresult error, std::string file = "", int line = 0);
 };
+
+cuda_exception::cuda_exception(CUresult error, std::string file, int line)
+    : exception{"", std::move(file), line} {
+//  const char *cmessage = new char[64];
+//  cuGetErrorName(error, &cmessage);
+//  set_message(cmessage);
+   std::unique_ptr<const char*> cmessage = std::make_unique<const char*>(64);
+   cuGetErrorName(error, cmessage.get());
+   set_message(*cmessage);
+}
 
 class nvrtc_exception : public exception {
  public:

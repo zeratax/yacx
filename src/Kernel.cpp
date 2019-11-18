@@ -4,6 +4,7 @@
 #include "../include/cudaexecutor/util.hpp"
 
 #include <memory>
+#include <utility>
 
 #define NVRTC_SAFE_CALL(x)                                                     \
   do {                                                                         \
@@ -24,16 +25,16 @@ using cudaexecutor::Kernel, cudaexecutor::Options, cudaexecutor::Headers,
     cudaexecutor::ProgramArg, cudaexecutor::to_comma_separated;
 
 Kernel::Kernel(std::string kernel_name, nvrtcProgram *prog)
-    : _kernel_name{kernel_name}, _prog{prog} {
+    : _kernel_name{std::move(kernel_name)}, _prog{prog} {
   // optional parameter to take device, check if already initialized??
   CUDA_SAFE_CALL(cuInit(0));
   CUDA_SAFE_CALL(cuDeviceGet(&_cuDevice, 0));
   CUDA_SAFE_CALL(cuCtxCreate(&_context, 0, _cuDevice));
-  CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx, 0, 0, 0));
+  CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx, 0, nullptr, nullptr));
 }
 
 Kernel::~Kernel() {
-  // Exceptions in deconstructor usually a bad idea??
+  // Exceptions in destructor usually a bad idea??
   // Release resources.
   CUDA_SAFE_CALL(cuModuleUnload(_module));
   CUDA_SAFE_CALL(cuCtxDestroy(_context));
@@ -69,8 +70,8 @@ Kernel Kernel::launch(std::vector<ProgramArg> args) {
   CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from kernel
                                 _grid.x, _grid.y, _grid.z,    // grid dim
                                 _block.x, _block.y, _block.z, // block dim
-                                0, NULL,          // shared mem and stream
-                                kernel_args, 0)); // arguments
+                                0, nullptr,             // shared mem and stream
+                                kernel_args, nullptr)); // arguments
   CUDA_SAFE_CALL(cuCtxSynchronize());
 
   // download results to host
@@ -80,7 +81,7 @@ Kernel Kernel::launch(std::vector<ProgramArg> args) {
   return *this;
 }
 
-Kernel Kernel::compile(Options options) {
+Kernel Kernel::compile(const Options &options) {
   _name_expression =
       _kernel_name + "<" + to_comma_separated(_template_parameters) + ">";
   NVRTC_SAFE_CALL(nvrtcAddNameExpression(*_prog, _name_expression.c_str()));
@@ -90,7 +91,7 @@ Kernel Kernel::compile(Options options) {
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*_prog, &logSize));
-  std::unique_ptr<char[]> clog = std::make_unique<char[]>(logSize);
+  auto clog = std::make_unique<char[]>(logSize);
   NVRTC_SAFE_CALL(nvrtcGetProgramLog(*_prog, clog.get()));
   _log = clog.get();
 

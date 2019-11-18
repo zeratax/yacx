@@ -41,7 +41,7 @@ class Kernel {
   template <typename T> Kernel instantiate(T type);
   template <typename T, typename... TS> Kernel instantiate(T type, TS... types);
   Kernel launch(std::vector<ProgramArg> program_args);
-  Kernel compile(Options options = Options());
+  Kernel compile(const Options &options = Options());
   std::string log() const { return _log; }
 };
 

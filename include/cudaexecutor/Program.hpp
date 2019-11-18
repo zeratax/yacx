@@ -21,7 +21,7 @@ class Program {
  public:
   explicit Program(std::string kernel_string, Headers headers = Headers());
   ~Program();
-  Kernel kernel(std::string function_name);
+  Kernel kernel(const std::string &function_name);
 };
 
 } // namespace cudaexecutor

@@ -15,10 +15,10 @@ DIRS := bin build $(LIBDIR)/catch2
  
 SRCEXT := cpp
 HEADDEREXT := hpp
-SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-TESTS := $(shell find $(TESTDIR) -type f -name *.$(SRCEXT))
-EXAMPLES := $(shell find $(EXAMPLES) -type f -name *.$(SRCEXT))
-HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
+SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
+TESTS := $(shell find $(TESTDIR) -type f -name '*.$(SRCEXT)')
+EXAMPLES := $(shell find $(EXAMPLEDIR) -type f -name '*.$(SRCEXT)')
+HEADERS := $(shell find $(LIBDIR) -type f -name '*.$(HEADDEREXT)')
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 TEST_OBJ = $(OBJECTS) $(patsubst $(TESTDIR)/%,$(BUILDDIR)/%,$(TESTS:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1

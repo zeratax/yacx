@@ -64,6 +64,7 @@ $ ./bin/runner
 ```
 
 ### Tests
+Makes use of the (Catch2)[https://github.com/catchorg/Catch2] test-framework
 
 ```console
 $ make check

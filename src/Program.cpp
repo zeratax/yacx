@@ -5,6 +5,8 @@
 #include <cuda.h>
 #include <nvrtc.h>
 
+#include <utility>
+
 #define CUDA_SAFE_CALL(x)                                                      \
   do {                                                                         \
     CUresult result = x;                                                       \
@@ -16,7 +18,7 @@
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel;
 
 Program::Program(std::string kernel_string, Headers headers)
-    : _kernel_string{kernel_string}, _headers{headers} {}
+    : _kernel_string{std::move(kernel_string)}, _headers{std::move(headers)} {}
 
 Program::~Program() {
   // exception in destruktor??
@@ -24,8 +26,8 @@ Program::~Program() {
   NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
 }
 
-Kernel Program::kernel(std::string function_name) {
-  _prog = new nvrtcProgram;                  // destruktor?
+Kernel Program::kernel(const std::string &function_name) {
+  _prog = new nvrtcProgram;                  // destructor?
   nvrtcCreateProgram(_prog,                  // prog
                      _kernel_string.c_str(), // buffer
                      function_name.c_str(),  // name
