@@ -33,9 +33,9 @@ int main() {
 
     std::vector<ProgramArg> program_args;
     program_args.emplace_back(ProgramArg(&a));
-    //    program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
-    //    program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
-    //    program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
+    // program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
+    // program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
+    // program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
     program_args.emplace_back(ProgramArg{&hX, bufferSize});
     program_args.emplace_back(ProgramArg{&hY, bufferSize});
     program_args.emplace_back(ProgramArg{&hOut, bufferSize, true, false});
