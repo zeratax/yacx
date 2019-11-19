@@ -25,7 +25,9 @@ file(GLOB SOURCES "src/*.cpp")
 # EXAMPLES
 add_executable(example_saxpy ${SOURCES} examples/example_saxpy.cpp)
 add_executable(example_program ${SOURCES} examples/example_program.cpp)
-target_compile_options(example_program PUBLIC -Wall)
+add_executable(example_template ${SOURCES} examples/example_template.cpp)
+target_compile_options(example_program PUBLIC -Wall -Dcurrent_log_level=loglevel::DEBUG1)
+target_compile_options(example_template PUBLIC -Wall -Dcurrent_log_level=loglevel::DEBUG1)
 target_compile_options(example_saxpy PUBLIC -Wall -Dcurrent_log_level=loglevel::DEBUG1)
 
 ## TESTS

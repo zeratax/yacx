@@ -1,5 +1,6 @@
 #include "../include/cudaexecutor/Program.hpp"
 #include "../include/cudaexecutor/Logger.hpp"
+#include "../include/cudaexecutor/Kernel.hpp"
 
 #include <nvrtc.h>
 
@@ -31,5 +32,5 @@ Kernel Program::kernel(const std::string &function_name) {
                      _headers.size(),        // numHeaders
                      _headers.content(),     // headers
                      _headers.names());      // includeNames
-  return Kernel(function_name, _prog);
+  return Kernel(function_name, *_prog);
 }

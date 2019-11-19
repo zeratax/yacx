@@ -42,7 +42,7 @@ class logIt {
   else                                                                         \
     logIt(level, current_log_level, __FILE__, __LINE__)
 #else
-#define logger(level) logIt(level, loglevel::NONE, __FILE__, __LINE__)
+#define logger(level) logIt(level, loglevel::ERROR, __FILE__, __LINE__)
 #endif
 
 } // namespace cudaexecutor

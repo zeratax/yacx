@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Exception.hpp"
+#include "Logger.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
 
@@ -19,7 +20,7 @@ class Kernel {
   dim3 _grid, _block;
   std::vector<std::string> _template_parameters;
   std::string _kernel_name, _name_expression, _log;
-  nvrtcProgram *_prog; // maybe not a pointer?
+  nvrtcProgram _prog;
   CUdevice _cuDevice;
   CUcontext _context;
   CUmodule _module;
@@ -27,32 +28,29 @@ class Kernel {
   bool _compiled = false;
 
  public:
-  Kernel(std::string function_name, nvrtcProgram *prog);
+  Kernel(std::string function_name, nvrtcProgram prog);
   ~Kernel();
-  Kernel configure(dim3 grid, dim3 block);
-  template <typename T> Kernel instantiate(T type);
-  template <typename T, typename... TS> Kernel instantiate(T type, TS... types);
-  Kernel launch(std::vector<ProgramArg> program_args);
-  Kernel compile(const Options &options = Options());
+  Kernel &configure(dim3 grid, dim3 block);
+  template <typename T> Kernel &instantiate(T type);
+  template <typename T, typename... TS> Kernel &instantiate(T type, TS... types);
+  Kernel &launch(std::vector<ProgramArg> program_args);
+  Kernel &compile(const Options &options = Options());
   [[nodiscard]] std::string log() const { return _log; }
 };
 
-template <typename T> Kernel Kernel::instantiate(T type) {
-  std::string type_name;
-
-  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
+template <typename T> Kernel &Kernel::instantiate(T type) {
   _compiled = false;
-  _template_parameters.push_back(type_name);
+  _template_parameters.push_back(type);
+  logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
+  return *this;
 }
 
 template <typename T, typename... TS>
-Kernel Kernel::instantiate(T type, TS... types) {
-  std::string type_name;
-
-  NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
+Kernel &Kernel::instantiate(T type, TS... types) {
   _compiled = false;
-  _template_parameters.push_back(type_name);
-  Kernel::instantiate(types...);
+  _template_parameters.push_back(type);
+  logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
+  return Kernel::instantiate(types...);
 }
 
 } // namespace cudaexecutor
