@@ -12,14 +12,6 @@
 #include <nvrtc.h>
 #include <vector_types.h>
 
-#define NVRTC_SAFE_CALL(x)                                                     \
-  do {                                                                         \
-    nvrtcResult result = x;                                                    \
-    if (result != NVRTC_SUCCESS) {                                             \
-      throw nvrtc_exception(result, __FILE__, __LINE__);                       \
-    }                                                                          \
-  } while (0)
-
 namespace cudaexecutor {
 
 class Kernel {
@@ -42,7 +34,7 @@ class Kernel {
   template <typename T, typename... TS> Kernel instantiate(T type, TS... types);
   Kernel launch(std::vector<ProgramArg> program_args);
   Kernel compile(const Options &options = Options());
-  std::string log() const { return _log; }
+  [[nodiscard]] std::string log() const { return _log; }
 };
 
 template <typename T> Kernel Kernel::instantiate(T type) {

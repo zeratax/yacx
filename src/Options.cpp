@@ -1,7 +1,6 @@
 #include "../include/cudaexecutor/Options.hpp"
 
 #include <algorithm>
-#include <cstdio>
 
 using cudaexecutor::Options;
 

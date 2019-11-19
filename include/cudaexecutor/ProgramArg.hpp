@@ -7,12 +7,12 @@ namespace cudaexecutor {
 class ProgramArg {
   void *_hdata;
   CUdeviceptr _ddata;
-  bool _output;
+  bool _download, _upload;
   size_t _size;
 
  public:
-  ProgramArg(void *data, size_t size, bool output = false);
-  void *content() const { return _hdata; }
+  ProgramArg(void *data, size_t size, bool download = false, bool upload = true);
+  void *content();
   void upload();
   void download();
 };

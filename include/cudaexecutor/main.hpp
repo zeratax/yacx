@@ -1,6 +1,7 @@
 #ifndef CUDAEXECUTOR_MAIN_HPP_
 #define CUDAEXECUTOR_MAIN_HPP_
 
+#include "Logger.hpp"
 #include "Device.hpp"
 #include "Exception.hpp"
 #include "Kernel.hpp"

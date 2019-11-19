@@ -14,9 +14,9 @@
 namespace cudaexecutor {
 
 class Program {
-  Headers _headers;
-  nvrtcProgram *_prog;
   std::string _kernel_string;
+  Headers _headers;
+  nvrtcProgram *_prog = nullptr;
 
  public:
   explicit Program(std::string kernel_string, Headers headers = Headers());

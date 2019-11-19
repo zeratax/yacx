@@ -1,14 +1,6 @@
 #include "../include/cudaexecutor/Device.hpp"
 #include "../include/cudaexecutor/Exception.hpp"
 
-#define CUDA_SAFE_CALL(x)                                                      \
-  do {                                                                         \
-    CUresult result = x;                                                       \
-    if (result != CUDA_SUCCESS) {                                              \
-      throw cuda_exception(result, std::string(__FILE__), __LINE__);           \
-    }                                                                          \
-  } while (0)
-
 using cudaexecutor::Device;
 
 Device::Device() {

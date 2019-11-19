@@ -26,8 +26,10 @@ LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64
 INC := -I $(LIBDIR) -I $(CUDA_PATH)/include
 
 # Build
-example1: example
+example_program: example
 	@echo " $(CC) build/example_program.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_program.o $(OBJECTS) -o $(TARGET) $(LIB)
+example_saxpy: example
+	@echo " $(CC) build/example_saxpy.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_saxpy.o $(OBJECTS) -o $(TARGET) $(LIB)
 example: directories $(OBJECTS)
 	+$(MAKE) -C examples
 
