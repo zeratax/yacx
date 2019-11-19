@@ -49,7 +49,6 @@ Kernel Kernel::launch(std::vector<ProgramArg> args) {
   void *kernel_args[args.size()];
   int i{0};
   for (auto &arg : args) {
-    logger(loglevel::DEBUG) << "uploading argument " << i;
     arg.upload();
     kernel_args[i++] = arg.content();
   }
