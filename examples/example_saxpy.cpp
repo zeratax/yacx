@@ -38,11 +38,11 @@ int main() {
     //    program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
     program_args.emplace_back(ProgramArg{&hX, bufferSize});
     program_args.emplace_back(ProgramArg{&hY, bufferSize});
-    program_args.emplace_back(ProgramArg{&hOut, bufferSize, true});
+    program_args.emplace_back(ProgramArg{&hOut, bufferSize, true, false});
     program_args.emplace_back(ProgramArg(&n));
 
-    dim3 grid(NUM_THREADS);
-    dim3 block(NUM_BLOCKS);
+    dim3 grid(NUM_BLOCKS);
+    dim3 block(NUM_THREADS);
     program.kernel("saxpy")
         .compile()
         .configure(grid, block)

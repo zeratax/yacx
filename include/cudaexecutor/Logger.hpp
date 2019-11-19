@@ -7,7 +7,7 @@
 
 namespace cudaexecutor {
 
-enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG };
+enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
 
 class logIt {
   loglevel _level;

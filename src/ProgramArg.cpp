@@ -16,33 +16,34 @@ ProgramArg::ProgramArg(void *const data, size_t size, bool download, bool copy,
 
 void ProgramArg::upload() {
   if (_upload) {
+    logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&_ddata, _size));
     if (_copy)
+      // somehow breaks the program?
+      // logger(loglevel::DEBUG1) << "copying data to device";
       CUDA_SAFE_CALL(cuMemcpyHtoD(_ddata, _hdata, _size));
+  } else {
+    logger(loglevel::DEBUG1) << "NOT uploading argument";
   }
 }
 
 void ProgramArg::download() {
   if (_download) {
-    logger(loglevel::DEBUG) << "downloading argument";
+    logger(loglevel::DEBUG1) << "downloading argument";
     CUDA_SAFE_CALL(cuMemcpyDtoH(_hdata, _ddata, _size));
   } else {
-    logger(loglevel::DEBUG) << "NOT downloading argument";
+    logger(loglevel::DEBUG1) << "NOT downloading argument";
   }
 
   if (_upload) {
-    logger(loglevel::DEBUG) << "freeing argument from device";
+    logger(loglevel::DEBUG1) << "freeing argument from device";
     CUDA_SAFE_CALL(cuMemFree(_ddata));
   } else {
-    logger(loglevel::DEBUG) << "NOT freeing argument from device";
+    logger(loglevel::DEBUG1) << "NOT freeing argument from device";
   }
 }
 
 void *ProgramArg::content() {
-  if (_upload) {
-    logger(loglevel::DEBUG) << "uploading argument";
-    return &_ddata;
-  }
-  logger(loglevel::DEBUG) << "NOT uploading argument";
+  if (_upload) return &_ddata;
   return _hdata;
 }

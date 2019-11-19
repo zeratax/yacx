@@ -64,7 +64,7 @@ Kernel Kernel::launch(std::vector<ProgramArg> args) {
 
   // launch the kernel
 
-  logger(loglevel::INFO) << "launching" << name << " <" << _name_expression << ">";
+  logger(loglevel::INFO) << "launching " << name << "<" << _name_expression << ">";
   CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from kernel
                                 _grid.x, _grid.y, _grid.z,    // grid dim
                                 _block.x, _block.y, _block.z, // block dim

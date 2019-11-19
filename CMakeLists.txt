@@ -26,7 +26,7 @@ file(GLOB SOURCES "src/*.cpp")
 add_executable(example_saxpy ${SOURCES} examples/example_saxpy.cpp)
 add_executable(example_program ${SOURCES} examples/example_program.cpp)
 target_compile_options(example_program PUBLIC -Wall)
-target_compile_options(example_saxpy PUBLIC -Wall -Dcurrent_log_level=loglevel::DEBUG)
+target_compile_options(example_saxpy PUBLIC -Wall -Dcurrent_log_level=loglevel::DEBUG1)
 
 ## TESTS
 #add_subdirectory(lib/Catch2)
