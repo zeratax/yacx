@@ -5,6 +5,7 @@
 #include <cxxabi.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <type_traits>
 #include <typeinfo> // operator typeid
@@ -31,13 +32,13 @@ struct is_string
 template <typename T>
 std::string to_comma_separated(const std::vector<T> &vector) {
   static_assert(is_string<T>::value, "vector element must be stringable");
+  std::ostringstream oss;
   std::string result;
   if (!vector.empty()) {
     for (const auto &i : vector) {
-      std::string element{i};
-      result.append(element);
-      result.append(", ");
+      oss << i << ", ";
     }
+    result = oss.str();
     result.erase(result.end() - 2, result.end());
   }
   return result;
