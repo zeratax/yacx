@@ -79,9 +79,11 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args) {
   for (auto &arg : args)
     arg.download();
 
-  logger(loglevel::DEBUG) << "freeing resources";
+  logger(loglevel::DEBUG) << "freeing resources2";
   CUDA_SAFE_CALL(cuModuleUnload(_module));
+  logger(loglevel::DEBUG) << "freeing resources3";
   CUDA_SAFE_CALL(cuCtxDestroy(_context));
+  logger(loglevel::DEBUG) << "freeing resources4";
 
   return *this;
 }
