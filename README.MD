@@ -33,7 +33,7 @@ int main() {
     Program program{kernel_string};
 
     std::vector<ProgramArg> program_args;
-    program_args.emplace_back(ProgramArg{array_arg(array.data(), sizeof(int) * 5, true)});
+    program_args.emplace_back(ProgramArg{array.data(), sizeof(int) * 5, true});
     program_args.emplace_back(ProgramArg{&data});
 
     dim3 grid(1);
