@@ -5,6 +5,7 @@ wrapper to easily compile and execute cuda kernels
 ## Usage
 
 ```c++
+#include <array>
 #include "../include/cudaexecutor/main.hpp"
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
@@ -12,7 +13,7 @@ using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::type_of, cudaexecutor::to_comma_separated;
 
 int main() {
-  int array[]{5, 3, 3, 2, 7};
+  std::array<int, 5> array{5, 3, 3, 2, 7};
   int data{8};
   std::string kernel_string = "template<typename type, int size>"\
     "__global__ void setKernel(type[] c, type val) {"\
@@ -32,10 +33,8 @@ int main() {
     Program program{kernel_string};
 
     std::vector<ProgramArg> program_args;
-    ProgramArg array_arg(&array, sizeof(int) * 5, true);
-    ProgramArg data_arg(&data, sizeof(int));
-    program_args.push_back(array_arg);
-    program_args.push_back(data_arg);
+    program_args.emplace_back(ProgramArg{array_arg(array.data(), sizeof(int) * 5, true)});
+    program_args.emplace_back(ProgramArg{&data});
 
     dim3 grid(1);
     dim3 block(1);
@@ -49,7 +48,7 @@ int main() {
     std::cerr << e.what() << std::endl;
   }
 
-  std::vector<int> vec(array, array + 5);
+  std::vector<int> vec(array.begin(), array.end());
   std::cout << to_comma_separated(vec) << std::endl;
 
   return 0;
@@ -64,7 +63,7 @@ $ ./bin/runner
 ```
 
 ### Tests
-Makes use of the (Catch2)[https://github.com/catchorg/Catch2] test-framework
+Makes use of the [Catch2](https://github.com/catchorg/Catch2) test-framework
 
 ```console
 $ make check
