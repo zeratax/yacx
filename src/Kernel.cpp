@@ -79,10 +79,12 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args) {
   for (auto &arg : args)
     arg.download();
 
-  logger(loglevel::DEBUG) << "freeing resources2";
-  CUDA_SAFE_CALL(cuModuleUnload(_module));
+  logger(loglevel::DEBUG) << "freeing resources";
+    //CUDA_SAFE_CALL(cuModuleUnload(_module)); //Verursacht SIGSEGV bei werfen eines Fehlers?
+    try { CUDA_SAFE_CALL(cuModuleUnload(_module));} catch (const std::exception& e) {  logger(loglevel::DEBUG) << "CUDAException geworfen " << e.what(); }
   logger(loglevel::DEBUG) << "freeing resources3";
-  CUDA_SAFE_CALL(cuCtxDestroy(_context));
+    try { CUDA_SAFE_CALL(cuCtxDestroy(_context));} catch (const std::exception& e) {  logger(loglevel::DEBUG) << "CUDAException geworfen " << e.what(); }
+  //CUDA_SAFE_CALL(cuCtxDestroy(_context));
   logger(loglevel::DEBUG) << "freeing resources4";
 
   return *this;

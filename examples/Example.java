@@ -1,7 +1,7 @@
 public class Example{
 
     public static void main(String[] args){
-        Executor.loadLibrary();
+        Executor.init();
 
         //Testdata
         float n = 128*32;

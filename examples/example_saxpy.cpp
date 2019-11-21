@@ -33,14 +33,11 @@ int main() {
         "}"};
 
     std::vector<ProgramArg> program_args;
-    program_args.emplace_back(ProgramArg(&a, 4, false, true));
-    // program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
+    program_args.emplace_back(ProgramArg(&a));
     program_args.emplace_back(ProgramArg(&hX, bufferSize, false, true));
     program_args.emplace_back(ProgramArg{&hY, bufferSize, false, true});
     program_args.emplace_back(ProgramArg{&hOut, bufferSize, true, false});
-    program_args.emplace_back(ProgramArg(&n, 4, false, true));
+    program_args.emplace_back(ProgramArg(&n));
 
     dim3 grid(NUM_BLOCKS);
     dim3 block(NUM_THREADS);
@@ -49,7 +46,8 @@ int main() {
         .configure(grid, block)
         .launch(program_args);
   } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
+      std::cerr << "Error:" << std::endl;
+      std::cerr << e.what() << std::endl;
   }
 
   for (int j = 0; j < n; ++j) {
