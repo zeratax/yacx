@@ -207,7 +207,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     break;
   case 200:
     ret.append("CUDA_ERROR_INVALID_IMAGE");
-    description = "This indicates that the device program image is invalid. "
+    description = "This indicates that the device kernel image is invalid. "
                   "This can also indicate an invalid CUDA module.";
     break;
   case 201:
@@ -249,7 +249,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 209:
     ret.append("CUDA_ERROR_NO_BINARY_FOR_GPU");
     description =
-        "This indicates that there is no program image available that is "
+        "This indicates that there is no kernel image available that is "
         "suitable for the device. This can occur when a user specifies code "
         "generation options for a particular CUDA source file that do not "
         "include the corresponding device configuration.";
@@ -313,7 +313,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     break;
   case 300:
     ret.append("CUDA_ERROR_INVALID_SOURCE");
-    description = "This indicates that the device program source is invalid.";
+    description = "This indicates that the device kernel source is invalid.";
     break;
   case 301:
     ret.append("CUDA_ERROR_FILE_NOT_FOUND");
@@ -361,7 +361,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     break;
   case 700:
     ret.append("CUDA_ERROR_ILLEGAL_ADDRESS");
-    description = "While executing a program, the device encountered a load or "
+    description = "While executing a kernel, the device encountered a load or "
                   "store instruction on an invalid memory address. This leaves "
                   "the process in an inconsistent state and any further CUDA "
                   "work will return the same error. To continue using CUDA, "
@@ -372,8 +372,8 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     description =
         "This indicates that a launch did not occur because it did not have "
         "appropriate resources. This error usually indicates that the user has "
-        "attempted to pass too many arguments to the device program, or the "
-        "kernel launch specifies too many threads for the program's register "
+        "attempted to pass too many arguments to the device kernel, or the "
+        "kernel launch specifies too many threads for the kernel's register "
         "count. Passing arguments of the wrong size (i.e. a 64-bit pointer "
         "when a 32-bit int is expected) is equivalent to passing too many "
         "arguments and can also result in this error.";
@@ -381,7 +381,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 702:
     ret.append("CUDA_ERROR_LAUNCH_TIMEOUT");
     description =
-        "This indicates that the device program took too long to execute. This "
+        "This indicates that the device kernel took too long to execute. This "
         "can only occur if timeouts are enabled - see the device attribute "
         "CU_DEVICE_ATTRIBUTE_KERNEL_EXEC_TIMEOUT for more information. This "
         "leaves the process in an inconsistent state and any further CUDA work "
@@ -390,7 +390,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     break;
   case 703:
     ret.append("CUDA_ERROR_LAUNCH_INCOMPATIBLE_TEXTURING");
-    description = "This error indicates a program launch that uses an "
+    description = "This error indicates a kernel launch that uses an "
                   "incompatible texturing mode.";
     break;
   case 704:
@@ -419,7 +419,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 710:
     ret.append("CUDA_ERROR_ASSERT");
     description =
-        "A device-side assert triggered during program execution. The context "
+        "A device-side assert triggered during kernel execution. The context "
         "cannot be used anymore, and must be destroyed. All existing device "
         "memory allocations from this context are invalid and must be "
         "reconstructed if the program is to continue using CUDA.";
@@ -444,7 +444,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 714:
     ret.append("CUDA_ERROR_HARDWARE_STACK_ERROR ");
     description =
-        "While executing a program, the device encountered a stack error. This "
+        "While executing a kernel, the device encountered a stack error. This "
         "can be due to stack corruption or exceeding the stack size limit. "
         "This leaves the process in an inconsistent state and any further CUDA "
         "work will return the same error. To continue using CUDA, the process "
@@ -453,14 +453,14 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 715:
     ret.append("CUDA_ERROR_ILLEGAL_INSTRUCTION");
     description =
-        "While executing a program, the device encountered an illegal "
+        "While executing a kernel, the device encountered an illegal "
         "instruction. This leaves the process in an inconsistent state and any "
         "further CUDA work will return the same error. To continue using CUDA, "
         "the process must be terminated and relaunched.";
     break;
   case 716:
     ret.append("CUDA_ERROR_MISALIGNED_ADDRESS");
-    description = "While executing a program, the device encountered a load or "
+    description = "While executing a kernel, the device encountered a load or "
                   "store instruction on a memory address which is not aligned. "
                   "This leaves the process in an inconsistent state and any "
                   "further CUDA work will return the same error. To continue "
@@ -469,7 +469,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 717:
     ret.append("CUDA_ERROR_INVALID_ADDRESS_SPACE");
     description =
-        "While executing a program, the device encountered an instruction which "
+        "While executing a kernel, the device encountered an instruction which "
         "can only operate on memory locations in certain address spaces "
         "(global, shared, or local), but was supplied a memory address not "
         "belonging to an allowed address space. This leaves the process in an "
@@ -480,7 +480,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 718:
     ret.append("CUDA_ERROR_INVALID_PC");
     description =
-        "While executing a program, the device program counter wrapped its "
+        "While executing a kernel, the device program counter wrapped its "
         "address space. This leaves the process in an inconsistent state and "
         "any further CUDA work will return the same error. To continue using "
         "CUDA, the process must be terminated and relaunched.";
@@ -488,7 +488,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
   case 719:
     ret.append("CUDA_ERROR_LAUNCH_FAILED");
     description =
-        "An exception occurred on the device while executing a program. Common "
+        "An exception occurred on the device while executing a kernel. Common "
         "causes include dereferencing an invalid device pointer and accessing "
         "out of bounds shared memory. Less common cases can be system specific "
         "- more information about these cases can be found in the system "
@@ -500,7 +500,7 @@ std::string cudaexecutor::detail::whichError(const CUresult &error) {
     ret.append("CUDA_ERROR_COOPERATIVE_LAUNCH_TOO_LARGE");
     description =
         "This error indicates that the number of blocks launched per grid for "
-        "a program that was launched via either cuLaunchCooperativeKernel or "
+        "a kernel that was launched via either cuLaunchCooperativeKernel or "
         "cuLaunchCooperativeKernelMultiDevice exceeds the maximum number of "
         "blocks as allowed by cuOccupancyMaxActiveBlocksPerMultiprocessor or "
         "cuOccupancyMaxActiveBlocksPerMultiprocessorWithFlags times the number "

@@ -1,9 +1,4 @@
-//
-// Created by hadis on 11/22/19.
-//
-
-#ifndef CUDACOMPILER_KERNEL_H
-#define CUDACOMPILER_KERNEL_H
+#pragma once
 
 #include "ProgramArg.hpp"
 #include <cudaexecutor/Logger.hpp>
