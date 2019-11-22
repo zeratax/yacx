@@ -47,6 +47,10 @@ clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
+# Execute
+run:
+	@$(TARGET)
+
 # Format
 format:
 	$(FORMATER) -i -style=file $(SOURCES) $(HEADERS) $(TESTS) $(EXAMPLES)
@@ -63,6 +67,6 @@ build_tests: directories $(OBJECTS)
 check: build_tests
 	@echo " Linking... $(TEST_OBJ)";
 	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
-	@./bin/tester -d yes
+	@$(TESTTARGET) -d yes
 
-.PHONY: clean, lint, directories, format 
+.PHONY: clean, lint, directories, format, run, check 
