@@ -1,11 +1,11 @@
-#include <../../include/cudaexecutor/Programm.hpp>
-
-#include <../../include/cudaexecutor/Logger.hpp>
-#include <../../include/cudaexecutor/Exception.hpp>
+#include "Program.h"
+#include "../../include/cudaexecutor/Program.hpp"
+#include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/cudaexecutor/Exception.hpp"
 
 using cudaexecutor::Program;
 
-JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jkernelString){
+JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jstring jkernelString){
     try {
         auto kernelStringPtr = env->GetStringUTFChars(jkernelString, nullptr);
 
@@ -17,24 +17,19 @@ JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jkernelS
         auto obj = env->NewObject(cls, methodID, ptr);
 
         return obj;
-    } catch (CUresultException error){
+    } catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, (std::string("Executor failure: ") + err.what());
-    }catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
+        env->ThrowNew(jClass, "Executor failure while creating Program");
 
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure");
+        return NULL;
     }
 }
 
-JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jkernelName){
+JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jstring jkernelName){
     try{
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
 
@@ -48,19 +43,21 @@ JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jkernel
         auto obj = env->NewObject(cls, methodID, kernelPtr);
 
         return obj;
-    } catch (CUresultException error){
+    } catch (nvrtcResultException error){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, (std::string("Executor failure: ") + err.what());
+        env->ThrowNew(jClass, (std::string("Executor failure while creating Kernel: ") + err.what());
     }catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, "Executor failure");
+        env->ThrowNew(jClass, "Executor failure while creating Kernel");
+
+        return NULL;
     }
 }

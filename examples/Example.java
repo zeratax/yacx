@@ -3,8 +3,11 @@ public class Example{
     public static void main(String[] args){
         Executor.init();
 
+        final int numThreads = 8;
+        final int numBlocks = 8;
+
         //Testdata
-        float n = 128*32;
+        float n = numThreads*numBlocks;
         float a = 5.1f;
         float[] x = new float[n];
         float[] y = new float[n];
@@ -21,11 +24,14 @@ public class Example{
         outArg = KernelArg.create(n*4);
         nArg = KernelArg.create(new float[]{a}, false);
 
-        //Create Kernel
-        Kernel saxpyKernel = Kernel.create(loadFile("kernels/saxpy"), "saxpy", "");
+        //Create Program
+        Program saxpy = Program.create(loadFile("kernels/saxpy"));
 
-        //Run Kernel
-        double runtime = Executor.execute(saxpyKernel, new KernelArg[]{aArg, xArg, yArg, outArg, nArg});
+        //Create Kernel
+        Kernel saxpyKernel = saxpy.kernel("saxpy");
+
+        //Compile and launch Kernel
+        saxpyKernel.compileAndLaunch(new KernelArg[]{aArg, xArg, yArg, outArg, nArg}, numThreads, numBlocks);
 
         //Get Result
     }

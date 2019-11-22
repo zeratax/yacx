@@ -25,6 +25,7 @@ Program::~Program() {
 Kernel Program::kernel(const std::string &function_name) {
   logger(loglevel::DEBUG) << "creating a kernel for function: "
                           << function_name;
+  //TODO NVRTC_SAFE_CALL um nvrtcCreateProgram?
   _prog = new nvrtcProgram;                  // destructor?
   nvrtcCreateProgram(_prog,                  // prog
                      _kernel_string.c_str(), // buffer
