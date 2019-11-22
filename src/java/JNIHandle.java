@@ -1,5 +1,3 @@
-package opencl.executor;
-
 abstract public class JNIHandle {
     JNIHandle(long handle) {
         nativeHandle = handle;
