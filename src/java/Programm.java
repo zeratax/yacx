@@ -3,6 +3,7 @@ public class Programm  extends JNIHandle {
 
     public native Program program(String kernelName);
 
+
     Programm(long handle){
         super(handle);
     }
