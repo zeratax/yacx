@@ -5,6 +5,7 @@ public class Program extends JNIHandle {
     public native void launch(KernelArg[] args);
 
     Program(long handle) {
+
         super(handle);
     }
 
