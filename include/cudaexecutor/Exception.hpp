@@ -60,7 +60,9 @@ class CUresultException : public std::exception {
 
  public:
   explicit CUresultException(const std::string &error) { this->error = error; }
-  [[nodiscard]] const char *what() const noexcept override { return error.c_str(); }
+  [[nodiscard]] const char *what() const noexcept override {
+    return error.c_str();
+  }
 };
 
 /*
@@ -73,8 +75,12 @@ class nvrtcResultException : public std::exception {
   std::string error;
 
  public:
-  explicit nvrtcResultException(const std::string &error) { this->error = error; }
-  [[nodiscard]] const char *what() const noexcept override { return error.c_str(); }
+  explicit nvrtcResultException(const std::string &error) {
+    this->error = error;
+  }
+  [[nodiscard]] const char *what() const noexcept override {
+    return error.c_str();
+  }
 };
 
 // This will throw as an error the proper CUDA error strings

@@ -76,57 +76,60 @@ std::string cudaexecutor::detail::descriptionFkt(const std::string &desc) {
 }
 
 /*
-* returns the type of nvrtc error
-* the different errors are in :
-* https://docs.nvidia.com/cuda/nvrtc/index.html#group__error_1g31e41ef222c0ea75b4c48f715b3cd9f0
-* and the program itself is in https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
-*/
-std::string cudaexecutor::detail::whichNvrtcResultError(const nvrtcResult& error) {
+ * returns the type of nvrtc error
+ * the different errors are in :
+ * https://docs.nvidia.com/cuda/nvrtc/index.html#group__error_1g31e41ef222c0ea75b4c48f715b3cd9f0
+ * and the program itself is in
+ * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
+ */
+std::string
+cudaexecutor::detail::whichNvrtcResultError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
   ret.append("~");
   std::string description;
-  switch (error)
-  {
+  switch (error) {
   case 0:
     ret = "NO_Error: 0~NVRTC_SUCCESS";
     break;
-  case 1: //NVRTC_ERROR_OUT_OF_MEMORY
+  case 1: // NVRTC_ERROR_OUT_OF_MEMORY
     ret = "1~NVRTC_ERROR_OUT_OF_MEMORY";
     break;
-  case 2: //NVRTC_ERROR_PROGRAM_CREATION_FAILURE
+  case 2: // NVRTC_ERROR_PROGRAM_CREATION_FAILURE
     ret = "2~NVRTC_ERROR_PROGRAM_CREATION_FAILURE";
     break;
-  case 3: //NVRTC_ERROR_INVALID_INPUT
+  case 3: // NVRTC_ERROR_INVALID_INPUT
     ret = "3~NVRTC_ERROR_INVALID_INPUT";
     break;
-  case 4: //NVRTC_ERROR_INVALID_PROGRAM
+  case 4: // NVRTC_ERROR_INVALID_PROGRAM
     ret = "4~NVRTC_ERROR_INVALID_PROGRAM";
     break;
-  case 5: //NVRTC_ERROR_INVALID_OPTION
+  case 5: // NVRTC_ERROR_INVALID_OPTION
     ret = "5~NVRTC_ERROR_INVALID_OPTION";
     break;
-  case 6: //NVRTC_ERROR_COMPILATION
+  case 6: // NVRTC_ERROR_COMPILATION
     ret = "6~NVRTC_ERROR_COMPILATION";
     break;
-  case 7: //NVRTC_ERROR_BUILTIN_OPERATION_FAILURE
+  case 7: // NVRTC_ERROR_BUILTIN_OPERATION_FAILURE
     ret = "7~NVRTC_ERROR_BUILTIN_OPERATION_FAILURE";
     break;
-  case 8: //NVRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION
+  case 8: // NVRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION
     ret = "8~NVRTC_ERROR_NO_NAME_EXPRESSIONS_AFTER_COMPILATION";
     break;
-  case 9: //NVRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION
+  case 9: // NVRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION
     ret = "9~NVRTC_ERROR_NO_LOWERED_NAMES_BEFORE_COMPILATION";
     break;
-  case 10: //NVRTC_ERROR_NAME_EXPRESSION_NOT_VALID
+  case 10: // NVRTC_ERROR_NAME_EXPRESSION_NOT_VALID
     ret = "10~NVRTC_ERROR_NAME_EXPRESSION_NOT_VALID";
     break;
-  case 11: //NVRTC_ERROR_INTERNAL_ERROR
+  case 11: // NVRTC_ERROR_INTERNAL_ERROR
     ret = "11~NVRTC_ERROR_INTERNAL_ERROR";
     break;
   default:
     ret.append("~error_unknown");
-    description = "''It's a trap! Abort! We never left the CPU o(╥﹏╥)o'' But seriously: I don't know what happened, because it isn't even documented by NVIDIA.";
+    description = "''It's a trap! Abort! We never left the CPU o(╥﹏╥)o'' But "
+                  "seriously: I don't know what happened, because it isn't "
+                  "even documented by NVIDIA.";
     break;
   }
   return ret;

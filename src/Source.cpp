@@ -34,4 +34,3 @@ Program Source::program(const std::string &function_name) {
                      _headers.names());      // includeNames
   return Program(function_name, *_prog);
 }
-
