@@ -30,7 +30,7 @@ void ProgramArg::upload() {
 void ProgramArg::download() {
   if (_download) {
     logger(loglevel::DEBUG1) << "downloading argument";
-    CUDA_SAFE_CALL(cuMemcpyDtoH(_hdata, _ddata, _size));
+    CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(_hdata), _ddata, _size));
   } else {
     logger(loglevel::DEBUG1) << "NOT downloading argument";
   }
@@ -43,7 +43,7 @@ void ProgramArg::download() {
   }
 }
 
-void *ProgramArg::content() {
+const void *ProgramArg::content() {
   if (_upload) return &_ddata;
   return _hdata;
 }

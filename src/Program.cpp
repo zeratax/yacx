@@ -17,7 +17,6 @@ Program::Program(std::string kernel_string, Headers headers)
 }
 
 Program::~Program() {
-    // exception in destructor??
     logger(loglevel::DEBUG) << "destroying Program";
     // NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
     nvrtcDestroyProgram(_prog);

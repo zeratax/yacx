@@ -18,11 +18,8 @@ Kernel::Kernel(std::string kernel_name, nvrtcProgram prog)
 }
 
 Kernel::~Kernel() {
-    // Exceptions in destructor usually a bad idea??
     // Release resources.
     logger(loglevel::DEBUG) << "destroying Kernel " << _kernel_name;
-    //  CUDA_SAFE_CALL(cuModuleUnload(_module));
-    //  CUDA_SAFE_CALL(cuCtxDestroy(_context));
 }
 
 Kernel &Kernel::configure(dim3 grid, dim3 block) {
@@ -46,7 +43,7 @@ Kernel &Kernel::launch(std::vector <ProgramArg> args) {
     CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx, 0, nullptr, nullptr));
 
     logger(loglevel::DEBUG) << "uploading arguemnts";
-    void *kernel_args[args.size()];
+    const void *kernel_args[args.size()];
     int i{0};
     for (auto &arg : args) {
         arg.upload();
@@ -63,28 +60,23 @@ Kernel &Kernel::launch(std::vector <ProgramArg> args) {
     CUDA_SAFE_CALL(cuModuleGetFunction(&_kernel, _module, name));
 
     // launch the kernel
-
     logger(loglevel::INFO) << "launching " << name << "<" << _name_expression
                            << ">";
     CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from kernel
                                   _grid.x, _grid.y, _grid.z,    // grid dim
                                   _block.x, _block.y, _block.z, // block dim
                                   0, nullptr,             // shared mem and stream
-                                  kernel_args, nullptr)); // arguments
+                                  const_cast<void **>(kernel_args), nullptr)); // arguments
     CUDA_SAFE_CALL(cuCtxSynchronize());
     logger(loglevel::INFO) << "done!";
 
     // download results to host
     logger(loglevel::DEBUG) << "downloading arguments";
     for (auto &arg : args)
-        arg.download();
+         arg.download();
 
     logger(loglevel::DEBUG) << "freeing resources";
-    //try {
-        CUDA_SAFE_CALL(cuModuleUnload(_module));
-    //} catch (const std::exception &e) {
-    //    std::cerr << e.what() << std::endl;
-    //}
+    CUDA_SAFE_CALL(cuModuleUnload(_module));
 
     CUDA_SAFE_CALL(cuCtxDestroy(_context));
 

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#define NUM_THREADS 16
+#define NUM_THREADS 256
 #define NUM_BLOCKS 32
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
@@ -10,12 +10,12 @@ using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::type_of, cudaexecutor::to_comma_separated;
 
 int main() {
+  const float DELTA = 0.01f;
   size_t SIZE = 5;
   size_t n = NUM_THREADS * NUM_BLOCKS;
   size_t bufferSize = n * sizeof(float);
   float a = 5.1f;
-  float *hX = new float[n], *hY = new float[n], *hOut = new float[n];
-  //  std::array<float, NUM_THREADS * NUM_BLOCKS> hX, hY, hOut;
+  std::array<float, NUM_THREADS * NUM_BLOCKS> hX, hY, hOut;
   for (size_t i = 0; i < n; ++i) {
     hX[i] = static_cast<float>(i);
     hY[i] = static_cast<float>(i * 2);
@@ -33,37 +33,33 @@ int main() {
 
     std::vector<ProgramArg> program_args;
     program_args.emplace_back(ProgramArg{&a});
-    // program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
-    program_args.emplace_back(ProgramArg{&hX, bufferSize});
-    program_args.emplace_back(ProgramArg{&hY, bufferSize});
-    program_args.emplace_back(ProgramArg{&hOut, bufferSize, true, false});
+    program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
+    program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
+    program_args.emplace_back(ProgramArg(hOut.data(), bufferSize, true, false));
     program_args.emplace_back(ProgramArg{&n});
 
     dim3 grid(NUM_BLOCKS);
     dim3 block(NUM_THREADS);
-    program.kernel("saxpy")
-        .compile()
-        .configure(grid, block)
-        .launch(program_args);
+    Kernel kernel = program.kernel("saxpy");
+        kernel.compile();
+        kernel.configure(grid, block);
+        kernel.launch(program_args);
   } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "exception caught: " << e.what() << std::endl;
   }
 
-  for (int j = 0; j < n; ++j) {
-    float expected = hX[j] * a + hY[j];
-    if (expected != hOut[j])
+  bool correct = true;
+  for (int j = 0; j < hOut.size(); ++j) {
+    float expected = hX.at(j) * a + hY.at(j);
+    if ((expected - hOut.at(j)) > DELTA) {
+      correct = false;
       std::cout << "Expected: " << expected << " != "
-                << " Result: " << hOut[j] << std::endl;
+                << " Result: " << hOut.at(j) << std::endl;
+    }   
   }
 
-  // std::vector<int> vec(hOut.data(), hOut.data() + n);
-  // std::cout << "Result: " << to_comma_separated(vec) << std::endl;
-
-  delete[] hX;
-  delete[] hY;
-  delete[] hOut;
+  if (correct)
+    std::cout << "Everything was calculated correctly!!!" << std::endl;
 
   return 0;
 }
