@@ -1,7 +1,7 @@
-#include <Program.h>
-#include <../../include/cudaexecutor/Program.hpp>
-#include <../../include/cudaexecutor/Logger.hpp>
-#include <../../include/cudaexecutor/Exception.hpp>
+#include "Program.h"
+#include "../../include/cudaexecutor/Program.hpp"
+#include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/cudaexecutor/Exception.hpp"
 
 using cudaexecutor::Program;
 
@@ -17,20 +17,15 @@ JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jstring 
         auto obj = env->NewObject(cls, methodID, ptr);
 
         return obj;
-    } catch (CUresultException error){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, (std::string("Executor failure while creating Program: ") + err.what());
-    }catch (...){
+    } catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
         env->ThrowNew(jClass, "Executor failure while creating Program");
+
+        return NULL;
     }
 }
 
@@ -48,7 +43,7 @@ JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jstring
         auto obj = env->NewObject(cls, methodID, kernelPtr);
 
         return obj;
-    } catch (CUresultException error){
+    } catch (nvrtcResultException error){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
@@ -62,5 +57,7 @@ JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jstring
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
         env->ThrowNew(jClass, "Executor failure while creating Kernel");
+
+        return NULL;
     }
 }

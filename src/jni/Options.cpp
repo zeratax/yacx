@@ -1,6 +1,5 @@
-#include <Program.h>
-#include <../../include/cudaexecutor/Options.hpp>
-#include <../../include/cudaexecutor/Logger.hpp>
+#include "../../include/cudaexecutor/Options.hpp"
+#include "../../include/cudaexecutor/Logger.hpp"
 
 JNIEXPORT void JNICALL Java_Options_insert__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
     try {
@@ -57,5 +56,7 @@ JNIEXPORT jstring JNICALL Java_Options_options (JNIEnv *, jobject){
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
         env->ThrowNew(jClass, "Executor failure while inserting Option");
+
+        return NULL;
     }
 }
