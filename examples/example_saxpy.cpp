@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#define NUM_THREADS 128
+#define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
@@ -21,6 +21,7 @@ int main() {
     hY[i] = static_cast<float>(i * 2);
   }
 
+
   try {
     Program program{
         "extern \"C\" __global__\n"
@@ -33,11 +34,8 @@ int main() {
 
     std::vector<ProgramArg> program_args;
     program_args.emplace_back(ProgramArg(&a));
-    // program_args.emplace_back(ProgramArg(hX.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hY.data(), bufferSize));
-    // program_args.emplace_back(ProgramArg(hOut.data(), bufferSize));
-    program_args.emplace_back(ProgramArg{&hX, bufferSize});
-    program_args.emplace_back(ProgramArg{&hY, bufferSize});
+    program_args.emplace_back(ProgramArg(&hX, bufferSize, false, true));
+    program_args.emplace_back(ProgramArg{&hY, bufferSize, false, true});
     program_args.emplace_back(ProgramArg{&hOut, bufferSize, true, false});
     program_args.emplace_back(ProgramArg(&n));
 
@@ -48,7 +46,8 @@ int main() {
         .configure(grid, block)
         .launch(program_args);
   } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
+      std::cerr << "Error:" << std::endl;
+      std::cerr << e.what() << std::endl;
   }
 
   for (int j = 0; j < n; ++j) {
