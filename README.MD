@@ -59,7 +59,7 @@ int main() {
 
 ```console
 $ make example_program
-$ ./bin/runner
+$ make run
 ```
 
 ### Tests
