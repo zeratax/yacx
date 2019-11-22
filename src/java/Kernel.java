@@ -1,8 +1,14 @@
 
 public class Kernel extends JNIHandle {
-    public static native Kernel create(String kernelCode, String kernelName, String buildOptions);
-    public native void compile(Options options);
+    public native void compile();
+    public native void configure(int numThreads, int numBlocks);
     public native void launch(KernelArg[] args);
+
+    public void compileAndLaunch(KernelArg[] args, int numThreads, int numBlocks){
+        compile();
+        configure(numThreads, numBlocks);
+        launch(args);
+    }
 
     Kernel(long handle) {
         super(handle);
