@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_OPTIONS_HPP_
-#define CUDAEXECUTOR_OPTIONS_HPP_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -92,4 +91,3 @@ class Fast_Math : public detail::BooleanOption {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_OPTIONS_HPP_

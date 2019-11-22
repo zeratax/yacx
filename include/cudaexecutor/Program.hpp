@@ -1,29 +1,47 @@
-#ifndef CUDAEXECUTOR_PROGRAM_HPP_
-#define CUDAEXECUTOR_PROGRAM_HPP_
+#pragma once
 
 #include <string>
 #include <vector>
 
-#include "Headers.hpp"
+#include "Exception.hpp"
 #include "Kernel.hpp"
-#include "util.hpp"
+#include "Logger.hpp"
+#include "Options.hpp"
+#include "ProgramArg.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
+#include <vector_types.h>
 
 namespace cudaexecutor {
 
 class Program {
-  std::string _kernel_string;
-  Headers _headers;
-  nvrtcProgram *_prog = nullptr;
+  char *_ptx; // shared pointer?
+  std::vector<std::string> _template_parameters;
+  std::string _kernel_name, _name_expression, _log;
+  nvrtcProgram _prog;
 
  public:
-  explicit Program(std::string kernel_string, Headers headers = Headers());
+  Program(std::string function_name, nvrtcProgram prog);
   ~Program();
-  Kernel kernel(const std::string &function_name);
+  template <typename T> Program &instantiate(T type);
+  template <typename T, typename... TS>
+  Program &instantiate(T type, TS... types);
+  Kernel compile(const Options &options = Options());
+  [[nodiscard]] std::string log() const { return _log; }
 };
 
-} // namespace cudaexecutor
+template <typename T> Program &Program::instantiate(T type) {
+  _template_parameters.push_back(type);
+  logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
+  return *this;
+}
 
-#endif // CUDAEXECUTOR_PROGRAM_HPP_
+template <typename T, typename... TS>
+Program &Program::instantiate(T type, TS... types) {
+  _template_parameters.push_back(type);
+  logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
+  return Program::instantiate(types...);
+}
+
+} // namespace cudaexecutor

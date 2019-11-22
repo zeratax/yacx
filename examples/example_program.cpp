@@ -1,6 +1,6 @@
 #include "../include/cudaexecutor/main.hpp"
 
-using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::type_of, cudaexecutor::to_comma_separated;
 
@@ -11,16 +11,16 @@ int main() {
     Device device;
     Options options{cudaexecutor::options::GpuArchitecture(device),
                     cudaexecutor::options::FMAD(false)};
-    Program program{"template<typename type, int size>\n"
-                    "__global__ void my_kernel(type[] c, type val) {\n"
-                    "    auto idx = threadIdx.x * size;\n"
-                    "\n"
-                    "    #pragma unroll(size)\n"
-                    "    for (auto i = 0; i < size; i++) {\n"
-                    "        c[idx] = val;\n"
-                    "        idx++;\n"
-                    "    }\n"
-                    "}"};
+    Source source{"template<typename type, int size>\n"
+                  "__global__ void my_kernel(type[] c, type val) {\n"
+                  "    auto idx = threadIdx.x * size;\n"
+                  "\n"
+                  "    #pragma unroll(size)\n"
+                  "    for (auto i = 0; i < size; i++) {\n"
+                  "        c[idx] = val;\n"
+                  "        idx++;\n"
+                  "    }\n"
+                  "}"};
 
     std::vector<ProgramArg> program_args;
     ProgramArg array_arg(&array, sizeof(int) * 5, true);
@@ -30,8 +30,8 @@ int main() {
 
     dim3 grid(1);
     dim3 block(1);
-    Kernel test = program
-                      .kernel("my_kernel")
+    Kernel test = source
+                      .program("my_kernel")
                       // .instantiate(type_of(data), 5)
                       // .instantiate<float, std::integral_constant<int, 5>>()
                       .instantiate("int", "int 5")
