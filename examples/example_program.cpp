@@ -30,8 +30,7 @@ int main() {
 
     dim3 grid(1);
     dim3 block(1);
-    Kernel test = program
-                      .kernel("my_kernel")
+    program.kernel("my_kernel")
                       // .instantiate(type_of(data), 5)
                       // .instantiate<float, std::integral_constant<int, 5>>()
                       .instantiate("int", "int 5")

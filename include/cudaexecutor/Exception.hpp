@@ -59,7 +59,7 @@ class CUresultException : public std::exception {
   std::string error;
 
  public:
-  explicit CUresultException(const std::string &error) { this->error = error; }
+  explicit CUresultException(const std::string &error) : error{error} {}
   [[nodiscard]] const char *what() const noexcept override { return error.c_str(); }
 };
 
@@ -128,7 +128,7 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
 
 // This will throw as an error the proper CUDA error strings
 // in the event that a CUDA host call returns an error
-#define CUDA_SAFE_CALL(error) __checkCUresultError(error, __FILE__, __LINE__);
+#define CUDA_SAFE_CALL(error) cudaexecutor::__checkCUresultError(error, __FILE__, __LINE__);
 inline void __checkCUresultError(const CUresult error, const char *file,
                                  const int line) {
   if (CUDA_SUCCESS != error) {
@@ -212,8 +212,6 @@ inline void __checkCUresultError(const CUresult error, const char *file,
       throw CUresultException<(CUresult)304>(exception);
     case 400:
       throw CUresultException<(CUresult)400>(exception);
-    case 401:
-      throw CUresultException<(CUresult)401>(exception);
     case 500:
       throw CUresultException<(CUresult)500>(exception);
     case 600:
@@ -260,30 +258,6 @@ inline void __checkCUresultError(const CUresult error, const char *file,
       throw CUresultException<(CUresult)800>(exception);
     case 801:
       throw CUresultException<(CUresult)801>(exception);
-    case 802:
-      throw CUresultException<(CUresult)802>(exception);
-    case 803:
-      throw CUresultException<(CUresult)803>(exception);
-    case 804:
-      throw CUresultException<(CUresult)804>(exception);
-    case 900:
-      throw CUresultException<(CUresult)900>(exception);
-    case 901:
-      throw CUresultException<(CUresult)901>(exception);
-    case 902:
-      throw CUresultException<(CUresult)902>(exception);
-    case 903:
-      throw CUresultException<(CUresult)903>(exception);
-    case 904:
-      throw CUresultException<(CUresult)904>(exception);
-    case 905:
-      throw CUresultException<(CUresult)905>(exception);
-    case 906:
-      throw CUresultException<(CUresult)906>(exception);
-    case 907:
-      throw CUresultException<(CUresult)907>(exception);
-    case 908:
-      throw CUresultException<(CUresult)908>(exception);
     case 999:
       throw CUresultException<(CUresult)999>(exception);
     default:
