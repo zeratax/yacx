@@ -48,7 +48,7 @@ int main() {
     bool correct = true;
     for (int j = 0; j < hOut.size(); ++j) {
         float expected = hX.at(j) * a + hY.at(j);
-        if (expected != hOut.at(j)) {
+        if (expected - hOut.at(j) > DELTA) {
             correct = false;
             std::cout << "Expected: " << expected << " != "
                       << " Result: " << hOut.at(j) << std::endl;
