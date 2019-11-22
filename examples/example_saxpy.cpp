@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#define NUM_THREADS 256
+#define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
 using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
@@ -20,6 +20,7 @@ int main() {
     hX[i] = static_cast<float>(i);
     hY[i] = static_cast<float>(i * 2);
   }
+
 
   try {
     Program program{
@@ -45,7 +46,7 @@ int main() {
         kernel.configure(grid, block);
         kernel.launch(program_args);
   } catch (const std::exception &e) {
-    std::cerr << "exception caught: " << e.what() << std::endl;
+    std::cerr << "Error:\n" << e.what() << std::endl;
   }
 
   bool correct = true;
