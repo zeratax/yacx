@@ -1,9 +1,9 @@
-public class Programm  extends JNIHandle {
-    public static native Programm create(String kernelString);
+public class Program  extends JNIHandle {
+    public static native Program create(String kernelString);
 
     public native Kernel kernel(String kernelName);
 
-    Programm(long handle){
+    Program(long handle){
         super(handle);
     }
 }

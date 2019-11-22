@@ -13,6 +13,4 @@ public class Kernel extends JNIHandle {
     Kernel(long handle) {
         super(handle);
     }
-
-    public native void build();
 }
