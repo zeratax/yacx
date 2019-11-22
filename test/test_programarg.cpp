@@ -42,7 +42,7 @@ TEST_CASE("ProgramArg can be constructed", "[cudaexecutor::ProgramArg]") {
   CUDA_SAFE_CALL(cuDeviceGet(&cuDevice, 0));
   CUDA_SAFE_CALL(cuCtxCreate(&context, 0, cuDevice));
   //  (cuModuleLoadDataEx(&module, ptx, 0, 0, 0));
-  //  (cuModuleGetFunction(&kernel, module, "saxpy"));
+  //  (cuModuleGetFunction(&program, module, "saxpy"));
 
   SECTION("ProgramArg can be uploaded and downloaded") {
     for (auto &arg : program_args)
