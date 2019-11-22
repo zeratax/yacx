@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_DEVICE_HPP_
-#define CUDAEXECUTOR_DEVICE_HPP_
+#pragma once
 
 #include <cuda.h>
 #include <string>
@@ -19,4 +18,3 @@ class Device {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_DEVICE_HPP_

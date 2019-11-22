@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_HEADERS_HPP_
-#define CUDAEXECUTOR_HEADERS_HPP_
+#pragma once
 
 #include "util.hpp"
 #include <iostream>
@@ -57,4 +56,3 @@ Headers::Headers(const T &arg, const TS &... args) : Headers{args...} {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_HEADERS_HPP_
