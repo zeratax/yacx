@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_PROGRAMARG_HPP_
-#define CUDAEXECUTOR_PROGRAMARG_HPP_
+#pragma once
 
 #include <cuda.h>
 

@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_UTIL_HPP_
-#define CUDAEXECUTOR_UTIL_HPP_
+#pragma once
 
 #include "Exception.hpp"
 

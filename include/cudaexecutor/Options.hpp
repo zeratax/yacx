@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_OPTIONS_HPP_
-#define CUDAEXECUTOR_OPTIONS_HPP_
+#pragma once
 
 #include <string>
 #include <vector>

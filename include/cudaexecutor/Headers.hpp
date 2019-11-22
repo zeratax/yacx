@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_HEADERS_HPP_
-#define CUDAEXECUTOR_HEADERS_HPP_
+#pragma once
 
 #include "util.hpp"
 #include <iostream>
