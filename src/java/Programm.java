@@ -1,7 +1,8 @@
 public class Programm  extends JNIHandle {
     public static native Programm create(String kernelString);
 
-    public native Kernel kernel(String kernelName);
+    public native Program program(String kernelName);
+
 
     Programm(long handle){
         super(handle);

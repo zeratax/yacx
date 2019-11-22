@@ -21,10 +21,10 @@ public class Example{
         outArg = KernelArg.create(n*4);
         nArg = KernelArg.create(new float[]{a}, false);
 
-        //Create Kernel
-        Kernel saxpyKernel = Kernel.create(loadFile("kernels/saxpy"), "saxpy", "");
+        //Create Program
+        Program saxpyKernel = Program.create(loadFile("kernels/saxpy"), "saxpy", "");
 
-        //Run Kernel
+        //Run Program
         double runtime = Executor.execute(saxpyKernel, new KernelArg[]{aArg, xArg, yArg, outArg, nArg});
 
         //Get Result

@@ -5,7 +5,7 @@
 #define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
-using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::type_of, cudaexecutor::to_comma_separated;
 
@@ -23,7 +23,7 @@ int main() {
 
 
   try {
-    Program program{
+    Source source{
         "extern \"C\" __global__\n"
         "void saxpy(float a, float *x, float *y, float *out, size_t n) {\n"
         "  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;\n"
@@ -41,7 +41,7 @@ int main() {
 
     dim3 grid(NUM_BLOCKS);
     dim3 block(NUM_THREADS);
-    program.kernel("saxpy")
+      source.program("saxpy")
         .compile()
         .configure(grid, block)
         .launch(program_args);
