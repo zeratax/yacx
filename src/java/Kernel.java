@@ -1,7 +1,6 @@
 
 public class Kernel extends JNIHandle {
-    public native void compile();
-    public native void configure(int numThreads, int numBlocks);
+    public native void compile(Options options);
     public native void launch(KernelArg[] args);
 
     public void compileAndLaunch(KernelArg[] args, int numThreads, int numBlocks){
@@ -13,6 +12,4 @@ public class Kernel extends JNIHandle {
     Kernel(long handle) {
         super(handle);
     }
-
-    public native void build();
 }

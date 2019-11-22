@@ -7,7 +7,7 @@
 
 void JNICALL Java_JNIHandle_dispose(JNIEnv *env, jobject obj)
 {
-    auto ptr = getHandle<JNIHandle>(env, obj);
+    auto ptr = getHandle(env, obj);
     clearHandle(env, obj);
     delete ptr;
 }
