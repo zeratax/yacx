@@ -58,7 +58,7 @@ int main() {
 ### Run Examples
 
 ```console
-$ make example1
+$ make example_program
 $ ./bin/runner
 ```
 
