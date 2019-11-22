@@ -7,9 +7,9 @@
 #include <memory>
 #include <utility>
 
-using cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::Options, cudaexecutor::Headers,
-    cudaexecutor::ProgramArg, cudaexecutor::to_comma_separated,
-    cudaexecutor::loglevel;
+using cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::Options,
+    cudaexecutor::Headers, cudaexecutor::ProgramArg,
+    cudaexecutor::to_comma_separated, cudaexecutor::loglevel;
 
 Program::Program(std::string kernel_name, nvrtcProgram prog)
     : _kernel_name{std::move(kernel_name)}, _prog{prog} {
@@ -58,12 +58,12 @@ Kernel Program::compile(const Options &options) {
     NVRTC_SAFE_CALL(compileResult);
   }
 
-
   size_t ptxSize;
   NVRTC_SAFE_CALL(nvrtcGetPTXSize(_prog, &ptxSize));
   _ptx = new char[ptxSize];
   NVRTC_SAFE_CALL(nvrtcGetPTX(_prog, _ptx));
 
   logger(loglevel::INFO) << "Program compiled";
-  return Kernel {_ptx, _template_parameters, _kernel_name, _name_expression, _prog};
+  return Kernel{_ptx, _template_parameters, _kernel_name, _name_expression,
+                _prog};
 }

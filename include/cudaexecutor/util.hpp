@@ -45,7 +45,7 @@ std::string to_comma_separated(const std::vector<T> &vector) {
   return result;
 }
 
-//template <typename T> std::string type_of(const T &variable) {
+// template <typename T> std::string type_of(const T &variable) {
 //  int status;
 //  std::string tname = typeid(T).name();
 //  char *demangled_name =
@@ -62,7 +62,6 @@ template <typename T> std::string type_of(const T &variable) {
   NVRTC_SAFE_CALL(nvrtcGetTypeName<T>(&type_name));
   return type_name;
 }
-
 
 } // namespace cudaexecutor
 

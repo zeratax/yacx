@@ -4,10 +4,10 @@
 #include <vector>
 
 #include "Exception.hpp"
+#include "Kernel.hpp"
 #include "Logger.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
-#include "Kernel.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
@@ -25,7 +25,8 @@ class Program {
   Program(std::string function_name, nvrtcProgram prog);
   ~Program();
   template <typename T> Program &instantiate(T type);
-  template <typename T, typename... TS> Program &instantiate(T type, TS... types);
+  template <typename T, typename... TS>
+  Program &instantiate(T type, TS... types);
   Kernel compile(const Options &options = Options());
   [[nodiscard]] std::string log() const { return _log; }
 };
@@ -44,4 +45,3 @@ Program &Program::instantiate(T type, TS... types) {
 }
 
 } // namespace cudaexecutor
-

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Logger.hpp"
 #include "Device.hpp"
 #include "Exception.hpp"
-#include "Program.hpp"
+#include "Logger.hpp"
 #include "Options.hpp"
+#include "Program.hpp"
 #include "Source.hpp"
 #include "util.hpp"
 

@@ -24,4 +24,3 @@ class Source {
 };
 
 } // namespace cudaexecutor
-
