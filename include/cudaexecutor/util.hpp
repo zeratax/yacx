@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_UTIL_HPP_
-#define CUDAEXECUTOR_UTIL_HPP_
+#pragma once
 
 #include "Exception.hpp"
 
@@ -67,4 +66,3 @@ template <typename T> std::string type_of(const T &variable) {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_UTIL_HPP_

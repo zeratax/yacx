@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_MAIN_HPP_
-#define CUDAEXECUTOR_MAIN_HPP_
+#pragma once
 
 #include "Logger.hpp"
 #include "Device.hpp"
@@ -11,4 +10,3 @@
 
 #include <vector_types.h>
 
-#endif // CUDAEXECUTOR_MAIN_HPP_

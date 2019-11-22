@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_PROGRAMARG_HPP_
-#define CUDAEXECUTOR_PROGRAMARG_HPP_
+#pragma once
 
 #include <cuda.h>
 
@@ -20,4 +19,3 @@ class ProgramArg {
   CUdeviceptr deviceptr() { return _ddata; }
 };
 } // namespace cudaexecutor
-#endif // CUDAEXECUTOR_PROGRAMARG_HPP_

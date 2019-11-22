@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_LOGGER_HPP
-#define CUDAEXECUTOR_LOGGER_HPP
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -47,4 +46,3 @@ class logIt {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_LOGGER_HPP
