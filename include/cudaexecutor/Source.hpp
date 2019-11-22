@@ -25,4 +25,3 @@ class Source {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_PROGRAM_HPP_

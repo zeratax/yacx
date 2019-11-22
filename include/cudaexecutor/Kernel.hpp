@@ -35,4 +35,3 @@ public:
 }
 
 
-#endif //CUDACOMPILER_KERNEL_H

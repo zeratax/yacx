@@ -46,4 +46,3 @@ class logIt {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_LOGGER_HPP

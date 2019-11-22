@@ -91,4 +91,3 @@ class Fast_Math : public detail::BooleanOption {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_OPTIONS_HPP_

@@ -18,4 +18,3 @@ class Device {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_DEVICE_HPP_

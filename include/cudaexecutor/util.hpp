@@ -66,4 +66,3 @@ template <typename T> std::string type_of(const T &variable) {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_UTIL_HPP_

@@ -294,4 +294,3 @@ inline void __checkCUresultError(const CUresult error, const char *file,
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_EXCEPTION_HPP_

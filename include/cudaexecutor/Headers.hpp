@@ -56,4 +56,3 @@ Headers::Headers(const T &arg, const TS &... args) : Headers{args...} {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_HEADERS_HPP_

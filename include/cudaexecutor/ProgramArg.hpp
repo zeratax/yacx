@@ -19,4 +19,3 @@ class ProgramArg {
   CUdeviceptr deviceptr() { return _ddata; }
 };
 } // namespace cudaexecutor
-#endif // CUDAEXECUTOR_PROGRAMARG_HPP_

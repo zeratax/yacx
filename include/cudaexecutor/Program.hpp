@@ -45,4 +45,3 @@ Program &Program::instantiate(T type, TS... types) {
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_KERNEL_HPP_

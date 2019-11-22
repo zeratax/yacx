@@ -10,4 +10,3 @@
 
 #include <vector_types.h>
 
-#endif // CUDAEXECUTOR_MAIN_HPP_
