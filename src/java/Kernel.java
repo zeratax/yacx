@@ -1,11 +1,9 @@
 
 public class Kernel extends JNIHandle {
-    public native void compile(Options options);
     public native void configure(int numThreads, int numBlocks);
     public native void launch(KernelArg[] args);
 
-    public void compileAndLaunch(KernelArg[] args, int numThreads, int numBlocks){
-        compile();
+    public void launch(KernelArg[] args, int numThreads, int numBlocks){
         configure(numThreads, numBlocks);
         launch(args);
     }

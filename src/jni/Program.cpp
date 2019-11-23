@@ -1,22 +1,35 @@
 #include "Program.h"
-#include "../../include/cudaexecutor/Program.hpp"
+#include "Handle.h"
 #include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/cudaexecutor/Source.hpp"
+#include "../../include/cudaexecutor/Program.hpp"
+#include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/Exception.hpp"
 
-using cudaexecutor::Program;
+using cudaexecutor::loglevel, cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::nvrtcResultException;
 
-JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jstring jkernelString){
+jobject Java_Program_create (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     try {
-        auto kernelStringPtr = env->GetStringUTFChars(jkernelString, nullptr);
+        auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
+        auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
 
-        auto ptr = new Program{*kernelStringPtr};
+        Source source{kernelSourcePtr};
+        Program* programPtr = new Program{source.program(kernelNamePtr)};
 
-        env->ReleaseStringUTFChars(jkernelString, kernelStringPtr);
+        env->ReleaseStringUTFChars(jkernelSource, kernelSourcePtr);
+        env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
 
         auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, ptr);
+        auto obj = env->NewObject(cls, methodID, programPtr);
 
         return obj;
+    } catch (nvrtcResultException<> err){
+        jclass jClass = env->FindClass("ExecutorFailureException");
+
+        if(!jClass)
+            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
+
+        env->ThrowNew(jClass, (std::string("Executor failure while creating Program: ") + err.what()).c_str());
     } catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
@@ -29,34 +42,31 @@ JNIEXPORT jobject JNICALL Java_Program_create (JNIEnv* env, jclass cls, jstring 
     }
 }
 
-JNIEXPORT jobject JNICALL Java_Program_kernel (JNIEnv* env, jobject obj, jstring jkernelName){
+jobject Java_Program_compile (JNIEnv* env, jobject obj){
     try{
-        auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
+        auto programPtr = getHandle<Program>(env, obj);
 
-        auto ptr = getHandle<executor::Kernel>(env, obj);
-        auto kernelPtr = ptr->kernel(kernelNamePtr);
+        Kernel* kernelPtr = new Kernel{programPtr->compile()};
 
-        env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
+        jclass jKernel = env->FindClass("Kernel");
+        auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
+        auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
-        jclass jClass = env->FindClass("Kernel");
-        auto methodID = env->GetMethodID(jClass, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelPtr);
-
-        return obj;
-    } catch (nvrtcResultException error){
+        return kernelObj;
+    } catch (nvrtcResultException<> err){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, (std::string("Executor failure while creating Kernel: ") + err.what());
-    }catch (...){
+        env->ThrowNew(jClass, (std::string("Executor failure while creating Program: ") + err.what()).c_str());
+    } catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, "Executor failure while creating Kernel");
+        env->ThrowNew(jClass, "Executor failure while compiling Kernel");
 
         return NULL;
     }

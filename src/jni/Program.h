@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     Program
  * Method:    create
- * Signature: (Ljava/lang/String;)LProgram;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)LProgram;
  */
 JNIEXPORT jobject JNICALL Java_Program_create
-  (JNIEnv *, jclass, jstring);
+  (JNIEnv *, jclass, jstring, jstring);
 
 /*
  * Class:     Program
- * Method:    kernel
- * Signature: (Ljava/lang/String;)LKernel;
+ * Method:    compile
+ * Signature: ()LKernel;
  */
-JNIEXPORT jobject JNICALL Java_Program_kernel
-  (JNIEnv *, jobject, jstring);
+JNIEXPORT jobject JNICALL Java_Program_compile
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

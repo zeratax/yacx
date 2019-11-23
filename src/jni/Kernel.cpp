@@ -1,76 +1,59 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#include <jni.h>
-#pragma GCC diagnostic pop
-
+#include "Kernel.h"
 #include "Handle.h"
-#include "ProgramArg.hpp"
-#include "../../include/cudaexecutor/Kernel.hpp"
-#include "../../include/cudaexecutor/Exception.hpp"
+#include "ProgramArgJNI.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/cudaexecutor/Exception.hpp"
+#include "../../include/cudaexecutor/Kernel.hpp"
+#include "../../include/cudaexecutor/ProgramArg.hpp"
 
-void Java_Kernel_compile(JNIEnv *env, jobject obj)
+using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI, cudaexecutor::CUresultException;
+
+void Java_Kernel_configure(JNIEnv *env, jobject obj, jint jgrid, jint jblock)
 {
-    auto ptr = getHandle(env, obj);
-
     try {
-        ptr->compile();
-    }catch(nvrtcResultException err){
-        jclass jClass = env->FindClass("ExecutorFailureException");
+        auto kernelPtr = getHandle<Kernel>(env, obj);
 
-        if(!jClass)
-            logger(logLevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
+        dim3 grid{static_cast<unsigned int> (jgrid)};
+        dim3 block{static_cast<unsigned int> (jblock)};
 
-        env->ThrowNew(jClass, (std::string("Executor failure: ") + err.what());
-    }catch(...){
+        kernelPtr->configure(grid, block);
+    } catch (...){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, "Executor failure");
+        env->ThrowNew(jClass, "Executor failure while configuring Kernel");
     }
-
-
 }
 
-void Java_Kernel_configure(JNIEnv *env, jobject obj, jint grid, jint block)
-{
-    auto ptr = getHandle(env, obj);
-    dim3 gridS(grid);
-    dim3 blockS(block);
-
-    ptr->configure(grid, block);
-}
-
-void Java_Kernel_launch(JNIEnv *env, jobject jKernel, jobjectArray jArgs)
+void Java_Kernel_launch(JNIEnv *env, jobject obj, jobjectArray jArgs)
 {
     try{
-        auto ptr = getHandle(env, obj);
+        auto kernelPtr = getHandle<Kernel>(env, obj);
 
-        std::vector<KernelArg*> args(env->GetArrayLength(jArgs));
-        int i = 0;
-        for(auto& p : args){
-            auto obj = env->GetObjectArrayElement(jArgs, i);
-            p = getHandle(env, obj);
-            ++i;
+        std::vector<ProgramArg> args(env->GetArrayLength(jArgs));
+        for(int i = 0; i < args.size(); i++){
+            auto jprogramArg = env->GetObjectArrayElement(jArgs, i);
+            auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, jprogramArg);
+            args.push_back(*programArgJNIPtr->programArgPtr());
         }
 
-        ptr->launch();
-    } catch(nvrtcResultException err){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(logLevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, (std::string("Executor failure: ") + err.what());
-    }catch(...){
+        kernelPtr->launch(args);
+    }  catch (CUresultException<> err){
         jclass jClass = env->FindClass("ExecutorFailureException");
 
         if(!jClass)
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
 
-        env->ThrowNew(jClass, "Executor failure");
+        env->ThrowNew(jClass, (std::string("Executor failure while launching Kernel: ") + err.what()).c_str());
+    } catch (...){
+        jclass jClass = env->FindClass("ExecutorFailureException");
+
+        if(!jClass)
+            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
+
+        env->ThrowNew(jClass, "Executor failure while launching Kernel");
     }
 }
 

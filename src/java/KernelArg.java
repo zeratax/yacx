@@ -1,5 +1,3 @@
-
-
 public class KernelArg extends JNIHandle {
     public static native KernelArg create(float array);
     public static native KernelArg create(int array);

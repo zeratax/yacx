@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     Kernel
- * Method:    compile
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_Kernel_compile
-  (JNIEnv *, jobject);
-
-/*
- * Class:     Kernel
  * Method:    configure
  * Signature: (II)V
  */
@@ -30,14 +22,6 @@ JNIEXPORT void JNICALL Java_Kernel_configure
  */
 JNIEXPORT void JNICALL Java_Kernel_launch
   (JNIEnv *, jobject, jobjectArray);
-
-/*
- * Class:     Kernel
- * Method:    build
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_Kernel_build
-  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }
