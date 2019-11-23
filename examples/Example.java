@@ -18,22 +18,23 @@ public class Example{
 
         //Initialize Arguments
         KernelArg aArg, xArg, yArg, outArg, nArg;
-        aArg = KernelArg.create(new float[]{a}, false);
+        aArg = KernelArg.create(a);
         xArg = KernelArg.create(x, false);
         yArg = KernelArg.create(y, false);
         outArg = KernelArg.create(n*4);
-        nArg = KernelArg.create(new float[]{a}, false);
+        nArg = KernelArg.create(n);
 
         //Create Program
-        Program saxpy = Program.create(loadFile("kernels/saxpy"));
+        Program saxpy = Program.create(loadFile("kernels/saxpy"), "saxpy");
 
         //Create Kernel
-        Kernel saxpyKernel = saxpy.kernel("saxpy");
+        Kernel saxpyKernel = saxpy.compile();
 
         //Compile and launch Kernel
-        saxpyKernel.compileAndLaunch(new KernelArg[]{aArg, xArg, yArg, outArg, nArg}, numThreads, numBlocks);
+        saxpyKernel.launch(new KernelArg[]{aArg, xArg, yArg, outArg, nArg}, numThreads, numBlocks);
 
         //Get Result
+        float[] out = outArg.asFloatArray();
     }
 
     private static String loadFile(String filename){
