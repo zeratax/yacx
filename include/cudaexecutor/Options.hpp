@@ -5,13 +5,14 @@
 
 #include "Device.hpp"
 #include "util.hpp"
+#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <cuda_runtime.h>
 
 namespace cudaexecutor {
 
-class Options {
+class Options : JNIHandle {
   std::vector<std::string> _options;
   mutable std::vector<const char *> _chOptions;
 

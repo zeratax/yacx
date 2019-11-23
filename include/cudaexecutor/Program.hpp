@@ -8,6 +8,7 @@
 #include "Logger.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
+#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
@@ -15,7 +16,7 @@
 
 namespace cudaexecutor {
 
-class Program {
+class Program : JNIHandle {
   char *_ptx; // shared pointer?
   std::vector<std::string> _template_parameters;
   std::string _kernel_name, _name_expression, _log;

@@ -18,6 +18,7 @@ class ProgramArg {
   const void *content();
   void upload();
   void download();
+  const size_t size() { return _size; }
   CUdeviceptr deviceptr() { return _ddata; }
 };
 } // namespace cudaexecutor
