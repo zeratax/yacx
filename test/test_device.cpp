@@ -1,6 +1,8 @@
 #include "../include/catch2/catch.hpp"
 
 #include "../include/cudaexecutor/Device.hpp"
+#include "../include/cudaexecutor/Exception.hpp"
+
 
 #include <array>
 #include <cstdio>
@@ -26,12 +28,15 @@ std::string exec(const char *cmd) {
 }
 
 TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
-  Device dev;
+  try {
+    Device dev;
+    std::string name =
+        exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
 
-  std::string name =
-      exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
+    name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
 
-  name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
-
-  REQUIRE(dev.name() == name);
+    REQUIRE(dev.name() == name);
+  } catch (cudaexecutor::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
+    FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver couldn't detect it");
+  }
 }

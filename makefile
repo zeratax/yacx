@@ -47,6 +47,9 @@ clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
+run: $(TARGET)
+	@$(TARGET)
+
 # Format
 format:
 	$(FORMATER) -i -style=file $(SOURCES) $(HEADERS) $(TESTS) $(EXAMPLES)
@@ -57,12 +60,13 @@ lint:
 	#clang-tidy src/ -system-headers=false
 
 # Tests
-build_tests: directories $(OBJECTS)
+download_catch: directories
 	@wget -nc -P $(LIBDIR)/catch2 https://raw.githubusercontent.com/catchorg/Catch2/master/single_include/catch2/catch.hpp
+$(TESTTARGET): download_catch $(OBJECTS)
 	+$(MAKE) -C test
-check: build_tests
 	@echo " Linking... $(TEST_OBJ)";
 	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
-	@./bin/tester -d yes
+check: $(TESTTARGET)
+	@$(TESTTARGET) -d yes
 
 .PHONY: clean, lint, directories, format 
