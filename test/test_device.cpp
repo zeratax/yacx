@@ -1,10 +1,8 @@
-#include "../include/catch2/catch.hpp"
-
 #include "../include/cudaexecutor/Device.hpp"
 #include "../include/cudaexecutor/Exception.hpp"
 
-
 #include <array>
+#include <catch2/catch>
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -37,6 +35,7 @@ TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
 
     REQUIRE(dev.name() == name);
   } catch (cudaexecutor::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
-    FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver couldn't detect it");
+    FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver "
+         "couldn't detect it");
   }
 }

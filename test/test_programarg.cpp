@@ -1,7 +1,6 @@
-#include "../include/catch2/catch.hpp"
-
 #include "../include/cudaexecutor/ProgramArg.hpp"
 
+#include <catch2/catch>
 #include <cuda.h>
 #include <iostream>
 
