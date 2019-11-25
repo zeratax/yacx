@@ -49,7 +49,9 @@ clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
-run: $(TARGET)
+
+# Execute
+run:
 	@$(TARGET)
 
 # Format
@@ -74,3 +76,4 @@ check: $(TESTTARGET)
 	@$(TESTTARGET) -d yes
 
 .PHONY: clean, lint, directories, format, init_submodules, check, run
+

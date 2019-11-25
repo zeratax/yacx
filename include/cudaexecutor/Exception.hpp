@@ -1,5 +1,4 @@
-#ifndef CUDAEXECUTOR_EXCEPTION_HPP_
-#define CUDAEXECUTOR_EXCEPTION_HPP_
+#pragma once
 
 #include <cstdio>
 #include <exception>
@@ -301,4 +300,3 @@ inline void __checkCUresultError(const CUresult error, const char *file,
 
 } // namespace cudaexecutor
 
-#endif // CUDAEXECUTOR_EXCEPTION_HPP_
