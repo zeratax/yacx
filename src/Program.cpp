@@ -32,8 +32,10 @@ Kernel Program::compile(const Options &options) {
     for (auto &parameter : _template_parameters)
       logger(loglevel::DEBUG) << parameter;
 
-    _name_expression =
-        _kernel_name + "<" + to_comma_separated(_template_parameters) + ">";
+    _name_expression = _kernel_name + "<" +
+                       to_comma_separated(_template_parameters.begin(),
+                                          _template_parameters.end()) +
+                       ">";
     logger(loglevel::DEBUG)
         << "which results in the following name expression: "
         << _name_expression;

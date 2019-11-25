@@ -1,8 +1,7 @@
-#include "../include/catch2/catch.hpp"
-
 #include "../include/cudaexecutor/Options.hpp"
 #include "../include/cudaexecutor/util.hpp"
 
+#include <catch2/catch.hpp>
 #include <string>
 #include <vector>
 
@@ -15,11 +14,14 @@ TEST_CASE("Vectors can be comma seperated",
   std::vector<int> int_vec{1, 2, 3, 4, 5};
   std::vector<int> empty_vec;
 
-  REQUIRE(to_comma_separated(string_vec) == "andre, hasan, jona, felix");
+  REQUIRE(to_comma_separated(string_vec.begin(), string_vec.end()) ==
+          "andre, hasan, jona, felix");
   string_vec.pop_back();
-  REQUIRE(to_comma_separated(string_vec) == "andre, hasan, jona");
-  REQUIRE(to_comma_separated(int_vec) == "1, 2, 3, 4, 5");
-  REQUIRE(to_comma_separated(empty_vec) == "");
+  REQUIRE(to_comma_separated(string_vec.begin(), string_vec.end()) ==
+          "andre, hasan, jona");
+  REQUIRE(to_comma_separated(int_vec.begin(), int_vec.end()) ==
+          "1, 2, 3, 4, 5");
+  REQUIRE(to_comma_separated(empty_vec.begin(), empty_vec.end()) == "");
 }
 
 TEST_CASE("Displays the type of a variable", "[cudaexecutor::type_of]") {
