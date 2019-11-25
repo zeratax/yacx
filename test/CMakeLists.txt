@@ -31,7 +31,7 @@ if(NOT EXISTS "${catch2_dir}/CMakeLists.txt")
     message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
-add_subdirectory(${catch2_dir} ${CMAKE_CURRENT_SOURCE_DIR}/build)
+add_subdirectory(${catch2_dir} ${CMAKE_CURRENT_BINARY_DIR}/build)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${catch2_dir}/contrib/")
 
 target_link_libraries(tests Catch2::Catch2)

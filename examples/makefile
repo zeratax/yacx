@@ -2,7 +2,7 @@ CC := g++ # This is the main compiler
 # CC := clang --analyze # and comment out the linker last line for sanity
 
 SRCDIR := .
-LIBDIR := ../include
+INCDIR := ../include
 BUILDDIR := ../build
 TARGET := ../bin/runner
  
@@ -13,7 +13,7 @@ HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1
 LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
-INC := -I $(LIBDIR) -I $(CUDA_PATH)/include
+INC := -I $(INCDIR) -I $(CUDA_PATH)/include
 
 # Build
 all: $(OBJECTS)

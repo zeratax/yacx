@@ -11,12 +11,15 @@ add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)
 
-link_directories("$ENV{CUDA_PATH}/lib64")
+include_directories("$ENV{CUDA_PATH}/include")
+link_directories("$ENV{CUDA_PATH}/lib64") # there are windows specific paths for this
 link_libraries(cuda nvrtc)
 
+#file(GLOB SOURCES "src/*.cpp")
 set(SOURCES ${PROJECT_SOURCE_DIR}/src/Device.cpp, ${PROJECT_SOURCE_DIR}/src/Headers.cpp, ${PROJECT_SOURCE_DIR}/src/Exception.cpp, ${PROJECT_SOURCE_DIR}/src/Kernel.cpp, ${PROJECT_SOURCE_DIR}/src/Options.cpp, ${PROJECT_SOURCE_DIR}/src/Program.cpp, ${PROJECT_SOURCE_DIR}/src/ProgramArg.cpp, ${PROJECT_SOURCE_DIR}/src/Source.cpp, ${PROJECT_SOURCE_DIR}/src/util.cpp)
 
-option(PACKAGE_TESTS "Build the tests" ON)
+set(PACKAGE_TEST_DEFAULT ${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+option(PACKAGE_TESTS "Build the tests" PACKAGE_TEST_DEFAULT)
 if(PACKAGE_TESTS)
     enable_testing()
     add_subdirectory(test)

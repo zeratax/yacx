@@ -5,13 +5,15 @@ FORMATER := clang-format
 MKDIR_P = mkdir -p
 
 SRCDIR := src
-LIBDIR := include
+LIBDIR := lib
+INCDIR := include
+VENDOR := exclude
 TESTDIR := test
 BUILDDIR := build
 EXAMPLEDIR := examples
 TARGET := bin/runner
 TESTTARGET := bin/tester
-DIRS := bin build
+DIRS := bin build lib
  
 SRCEXT := cpp
 HEADDEREXT := hpp
@@ -23,7 +25,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 TEST_OBJ = $(OBJECTS) $(patsubst $(TESTDIR)/%,$(BUILDDIR)/%,$(TESTS:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1
 LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
-INC := -I $(LIBDIR) -I $(CUDA_PATH)/include
+INC := -I $(INCDIR) -I $(CUDA_PATH)/include
 
 # Build
 example_program: example
@@ -66,7 +68,7 @@ init_submodules:
 $(TESTTARGET): init_submodules directories $(OBJECTS)
 	+$(MAKE) -C test
 	@echo " Linking... $(TEST_OBJ)";
-	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB) -I extern/catch2/single_include"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB) -I extern/catch2/single_include
+	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
 
 check: $(TESTTARGET)
 	@$(TESTTARGET) -d yes
