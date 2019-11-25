@@ -1,6 +1,6 @@
 #include "../include/cudaexecutor/Options.hpp"
 
-#include <catch2/catch>
+#include <catch2/catch.hpp>
 #include <string.h>
 
 using cudaexecutor::Options;

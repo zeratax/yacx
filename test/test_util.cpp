@@ -1,7 +1,7 @@
 #include "../include/cudaexecutor/Options.hpp"
 #include "../include/cudaexecutor/util.hpp"
 
-#include <catch2/catch>
+#include <catch2/catch.hpp>
 #include <string>
 #include <vector>
 

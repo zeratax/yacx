@@ -1,6 +1,6 @@
 #include "../include/cudaexecutor/Headers.hpp"
-z
-#include <catch2/catch>
+
+#include <catch2/catch.hpp>
 #include <string.h>
 #include <string>
 

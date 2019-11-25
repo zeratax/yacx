@@ -1,5 +1,5 @@
 file(GLOB TESTS "*.cpp")
-file(GLOB SOURCES "../src/*.cpp")
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_header1.hpp
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
@@ -8,25 +8,32 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_header2.hpp
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pixel.hpp
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
 
-include(FetchContent)
-FetchContent_Declare(
-        catch2
-        PREFIX ${PROJECT_SOURCE_DIR}/lib/catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-)
 
 add_executable(tests ${SOURCES} ${TESTS})
-FetchContent_GetProperties(catch2)
-if(NOT catch2_POPULATED)
-    message(STATUS "downloading Catch2")
-    FetchContent_Populate(catch2)
-    add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
+SET(catch2_dir ${PROJECT_SOURCE_DIR}/extern/catch2)
+
+find_package(Git QUIET)
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    # Update submodules as needed
+    option(GIT_SUBMODULE "Check submodules during build" ON)
+    if(GIT_SUBMODULE)
+        message(STATUS "Submodule update")
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                RESULT_VARIABLE GIT_SUBMOD_RESULT)
+        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+            message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+        endif()
+    endif()
 endif()
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${catch2_SOURCE_DIR}/contrib/")
-enable_testing(true)
+
+if(NOT EXISTS "${catch2_dir}/CMakeLists.txt")
+    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif()
+
+add_subdirectory(${catch2_dir} ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${catch2_dir}/contrib/")
+
 target_link_libraries(tests Catch2::Catch2)
 
 include(CTest)

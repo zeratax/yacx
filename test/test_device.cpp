@@ -2,7 +2,7 @@
 #include "../include/cudaexecutor/Exception.hpp"
 
 #include <array>
-#include <catch2/catch>
+#include <catch2/catch.hpp>
 #include <cstdio>
 #include <iostream>
 #include <memory>

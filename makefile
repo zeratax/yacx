@@ -11,7 +11,7 @@ BUILDDIR := build
 EXAMPLEDIR := examples
 TARGET := bin/runner
 TESTTARGET := bin/tester
-DIRS := bin build $(LIBDIR)/catch2
+DIRS := bin build
  
 SRCEXT := cpp
 HEADDEREXT := hpp
@@ -60,13 +60,15 @@ lint:
 	#clang-tidy src/ -system-headers=false
 
 # Tests
-download_catch: directories
-	@wget -nc -P $(LIBDIR)/catch2 https://raw.githubusercontent.com/catchorg/Catch2/master/single_include/catch2/catch.hpp
-$(TESTTARGET): download_catch $(OBJECTS)
+init_submodules:
+	@git submodule update --init --recursive
+
+$(TESTTARGET): init_submodules directories $(OBJECTS)
 	+$(MAKE) -C test
 	@echo " Linking... $(TEST_OBJ)";
-	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
+	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB) -I extern/catch2/single_include"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB) -I extern/catch2/single_include
+
 check: $(TESTTARGET)
 	@$(TESTTARGET) -d yes
 
-.PHONY: clean, lint, directories, format 
+.PHONY: clean, lint, directories, format, init_submodules, check, run
