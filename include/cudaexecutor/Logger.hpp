@@ -39,7 +39,7 @@ class logIt {
   if (static_cast<int>(level) > static_cast<int>(current_log_level))           \
     ;                                                                          \
   else                                                                         \
-    logIt(level, current_log_level, __FILE__, __LINE__)
+    cudaexecutor::logIt(level, current_log_level, __FILE__, __LINE__)
 #else
 #define logger(level) logIt(level, loglevel::ERROR, __FILE__, __LINE__)
 #endif
