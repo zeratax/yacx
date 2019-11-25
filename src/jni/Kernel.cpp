@@ -32,7 +32,8 @@ void Java_Kernel_launch(JNIEnv *env, jobject obj, jobjectArray jArgs)
     try{
         auto kernelPtr = getHandle<Kernel>(env, obj);
 
-        std::vector<ProgramArg> args(env->GetArrayLength(jArgs));
+        std::vector<ProgramArg> args;
+        args.reserve(env->GetArrayLength(jArgs));
         for(int i = 0; i < args.size(); i++){
             auto jprogramArg = env->GetObjectArrayElement(jArgs, i);
             auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, jprogramArg);

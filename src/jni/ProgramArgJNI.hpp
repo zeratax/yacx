@@ -9,9 +9,8 @@ namespace jni {
         cudaexecutor::ProgramArg* programArg;
 
     public:
-        ProgramArgJNI(void* data, size_t size, bool download, bool copy, bool upload);
-        ProgramArgJNI(void* data, size_t size) : ProgramArgJNI{data, size, false, false, false} {};
+        ProgramArgJNI(void* data, size_t size, bool download = false, bool copy = true, bool upload = false);
         ~ProgramArgJNI();
-        cudaexecutor::ProgramArg* programArgPtr() {return programArg;}
+        cudaexecutor::ProgramArg* programArgPtr() { return programArg; }
     };
 } // namespace jni
