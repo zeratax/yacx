@@ -1,17 +1,21 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 public class Example{
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
         Executor.init();
 
         final int numThreads = 8;
         final int numBlocks = 8;
 
         //Testdata
-        float n = numThreads*numBlocks;
+        int n = numThreads*numBlocks;
         float a = 5.1f;
         float[] x = new float[n];
         float[] y = new float[n];
-        for (size_t i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             x[i] = i;
             y[i] = 2*i;
         }
@@ -37,7 +41,7 @@ public class Example{
         float[] out = outArg.asFloatArray();
     }
 
-    private static String loadFile(String filename){
-        return new String(Files.readAllBytes(new File(kernelName).toPath()));
+    private static String loadFile(String filename) throws IOException {
+        return new String(Files.readAllBytes(new File(filename).toPath()));
     }
 }
