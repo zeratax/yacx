@@ -25,7 +25,7 @@ public class Example{
         aArg = KernelArg.create(a);
         xArg = KernelArg.create(x, false);
         yArg = KernelArg.create(y, false);
-        outArg = KernelArg.create(n*4);
+        outArg = KernelArg.createOutput(n*4);
         nArg = KernelArg.create(n);
 
         //Create Program
