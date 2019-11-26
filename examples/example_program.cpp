@@ -30,19 +30,19 @@ int main() {
 
     dim3 grid(1);
     dim3 block(1);
-    Kernel test = source
-                      .program("my_kernel")
-                      // .instantiate(type_of(data), 5)
-                      // .instantiate<float, std::integral_constant<int, 5>>()
-                      .instantiate("int", "int 5")
-                      .compile(options)
-                      .configure(grid, block)
-                      .launch(program_args);
+    source
+        .program("my_kernel")
+        // .instantiate(type_of(data), 5)
+        // .instantiate<float, std::integral_constant<int, 5>>()
+        .instantiate("int", "int 5")
+        .compile(options)
+        .configure(grid, block)
+        .launch(program_args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }
 
-  std::cout << to_comma_separated(array, array+5) << std::endl;
+  std::cout << to_comma_separated(array, array + 5) << std::endl;
 
   delete[] array;
 

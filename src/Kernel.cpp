@@ -24,8 +24,6 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 
 Kernel &Kernel::launch(std::vector<ProgramArg> args) {
   logger(loglevel::DEBUG) << "launching Kernel";
-  if(_compile)
-    throw std::illegal
 
   // check if device already initialised
   CUDA_SAFE_CALL(cuDeviceGet(&_cuDevice, 0));

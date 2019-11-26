@@ -7,22 +7,9 @@ namespace cudaexecutor {
   \class ProgramArg ProgramArg.hpp
   \brief Class to help launch Kernel with given arguments
   Arguments are automatically uploaded and downloaded.
-  \example
-  <code>
-  kernel.program("add");
-  kernel.compile();
-  kernel.configure(grid, block);
-  int result{};
-  args.emplace_back(ProgramArg{int 1});
-  args.emplace_back(ProgramArg{int 2});
-  args.emplace_back(ProgramArg{int 3});
-  args.emplace_back(ProgramArg{int 4});
-  args.emplace_back(ProgramArg{result, sizeof(4), true});
-  kernel.launch(args)
-  </code>
-
- Will execute the Kernel with <code>add(1, 2, 3, 4, result)</code>;
- and the result will be downloaded from device to host
+  \example program_args.cpp
+    Will execute the Kernel with <code>add(1, 2, 3, 4, result)</code>;
+    and the result will be downloaded from device to host
 */
 class ProgramArg {
  public:

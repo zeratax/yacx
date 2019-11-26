@@ -44,12 +44,7 @@ class Headers {
   /*!
   \class Headers Headers.hpp
   \brief List of Header for Source
-  \example
-  <code>
-      Headers headers;
-      headers.insert(Header{"pixel.hpp"});
-      Source source{load("gauss.cu"), headers};
-  </code>
+  \example headersexample.cpp
 */
  public:
   Headers() {}

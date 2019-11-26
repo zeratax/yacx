@@ -12,16 +12,7 @@ namespace cudaexecutor {
 /*!
   \class Kernel Kernel.hpp
   \brief Class to help launch and configure a CUDA kernel
-  \example
-  <code>
-  Kernel kernel = program.compile();
-  kernel.configure(16, 32);
-  kernel.launch(program_args1);
-  kernel.launch(program_args2);
-  kernel.configure(128, 256);
-  kernel.launch(program_args1);
-  kernel.launch(program_args2);
-  </code>
+  \example kernel_launch.cpp
 */
 class Kernel {
  public:

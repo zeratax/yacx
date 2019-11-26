@@ -22,7 +22,7 @@
  * The following example shows a general use case for the C++
  * bindings
  *
- * \include[lineno] example_program.cpp
+ * \include example_program.cpp
  * \example example_program.cpp
  * \endcode
  *

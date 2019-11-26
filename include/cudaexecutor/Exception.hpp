@@ -71,23 +71,7 @@ class CUresultException : public std::exception {
   \brief Exception class for NVRTC errors
   \tparam name Name of the NVRTC Error, e.g.
   <code>NVRTC_ERROR_OUT_OF_MEMORY</code>
-  \example
-  <code>
-  try {
-      throw cudaexecutor::nvrtcResultException<NVRTC_ERROR_COMPILATION>
-  } catch(nvrtcResultException<(nvrtcResult)1>& e) {
-      std::cout << "Wrong Exception caught" <<
-      std::endl; std::cout << e.what() << std::endl;
-  }
-  catch(CUresultException<NVRTC_ERROR_COMPILATION>& e) {
-      std::cout << "Correct Exception caught" << std::endl;
-      std::cout << e.what() << std::endl;
-  }
-  catch(std::exception& e) {
-      std::cout << "other Error\n";
-      std::cout << e.what() << std::endl;
-  }
-  </code>
+  \example nvrtcexception.cpp
 */
 template <nvrtcResult name = (nvrtcResult)0>
 class nvrtcResultException : public std::exception {
