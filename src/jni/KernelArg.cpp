@@ -10,23 +10,14 @@ using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::ProgramArg, j
 template <typename T>
 jobject createProgramArg(JNIEnv* env, jclass cls, T value)
 {
-    try {
+    BEGIN_TRY
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{&value, sizeof(T)};
 
         auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 jobject Java_KernelArg_create__F(JNIEnv* env, jclass cls, jfloat value){
@@ -47,7 +38,7 @@ jobject Java_KernelArg_create__Z(JNIEnv* env, jclass cls, jboolean value){
 
 
 jobject Java_KernelArg_create___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray, jboolean output){
-    try {
+    BEGIN_TRY
         auto arrayPtr = env->GetFloatArrayElements(jarray, nullptr);
 
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
@@ -58,20 +49,11 @@ jobject Java_KernelArg_create___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray,
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 jobject Java_KernelArg_create___3IZ(JNIEnv* env, jclass cls, jintArray jarray, jboolean output){
-    try {
+    BEGIN_TRY
         auto arrayPtr = env->GetIntArrayElements(jarray, nullptr);
 
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
@@ -82,20 +64,11 @@ jobject Java_KernelArg_create___3IZ(JNIEnv* env, jclass cls, jintArray jarray, j
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 jobject Java_KernelArg_create___3DZ(JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean output){
-    try {
+    BEGIN_TRY
         auto arrayPtr = env->GetDoubleArrayElements(jarray, nullptr);
 
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
@@ -106,20 +79,11 @@ jobject Java_KernelArg_create___3DZ(JNIEnv* env, jclass cls, jdoubleArray jarray
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 jobject Java_KernelArg_create___3ZZ(JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean output){
-    try {
+    BEGIN_TRY
         auto arrayPtr = env->GetBooleanArrayElements(jarray, nullptr);
 
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
@@ -130,42 +94,24 @@ jobject Java_KernelArg_create___3ZZ(JNIEnv* env, jclass cls, jbooleanArray jarra
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 
 jobject Java_KernelArg_createOutput(JNIEnv* env, jclass cls, jlong argSize){
-    try {
+    BEGIN_TRY
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{NULL, static_cast<size_t> (argSize), true, false, true};
 
         auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
         auto obj = env->NewObject(cls, methodID, programArgPtr);
 
         return obj;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("creating ProgramArg")
 }
 
 
 jfloatArray Java_KernelArg_asFloatArray(JNIEnv* env, jobject obj){
-    try {
+    BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
@@ -176,20 +122,11 @@ jfloatArray Java_KernelArg_asFloatArray(JNIEnv* env, jobject obj){
         env->SetFloatArrayRegion(res, 0, dataSize / sizeof(jfloat),
                                  reinterpret_cast<const jfloat*>(data));
         return res;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("converting ProgramArg to Java-FloatArray")
 }
 
 jintArray Java_KernelArg_asIntArray(JNIEnv* env, jobject obj){
-    try {
+    BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
@@ -200,20 +137,11 @@ jintArray Java_KernelArg_asIntArray(JNIEnv* env, jobject obj){
         env->SetIntArrayRegion(res, 0, dataSize / sizeof(jint),
                                  reinterpret_cast<const jint*>(data));
         return res;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("converting ProgramArg to Java-IntArray")
 }
 
 jdoubleArray Java_KernelArg_asDoubleArray(JNIEnv* env, jobject obj){
-    try {
+    BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
@@ -224,20 +152,11 @@ jdoubleArray Java_KernelArg_asDoubleArray(JNIEnv* env, jobject obj){
         env->SetDoubleArrayRegion(res, 0, dataSize / sizeof(jdouble),
                                  reinterpret_cast<const jdouble*>(data));
         return res;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("converting ProgramArg to Java-DoubleArray")
 }
 
 jbooleanArray Java_KernelArg_asBooleanArray(JNIEnv* env, jobject obj){
-    try {
+    BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
@@ -248,14 +167,5 @@ jbooleanArray Java_KernelArg_asBooleanArray(JNIEnv* env, jobject obj){
         env->SetBooleanArrayRegion(res, 0, dataSize / sizeof(jboolean),
                                  reinterpret_cast<const jboolean*>(data));
         return res;
-    } catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while creating ProgramArg");
-
-        return NULL;
-    }
+    END_TRY("converting ProgramArg to Java-BooleanArray")
 }

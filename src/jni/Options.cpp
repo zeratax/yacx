@@ -6,25 +6,18 @@
 using cudaexecutor::loglevel, cudaexecutor::Options;
 
 void Java_Options_insert__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
-    try {
+    BEGIN_TRY
         auto optionPtr = env->GetStringUTFChars(joption, nullptr);
 
         auto optionsPtr = getHandle<Options>(env, obj);
         optionsPtr->insert(optionPtr);
 
         env->ReleaseStringUTFChars(joption, optionPtr);
-    }catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while inserting Option");
-    }
+    END_TRY("inserting Option")
 }
 
 void Java_Options_insert__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jname, jstring jvalue){
-    try {
+    BEGIN_TRY
         auto namePtr = env->GetStringUTFChars(jname, nullptr);
         auto valuePtr = env->GetStringUTFChars(jvalue, nullptr);
 
@@ -33,12 +26,5 @@ void Java_Options_insert__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, j
 
         env->ReleaseStringUTFChars(jname, namePtr);
         env->ReleaseStringUTFChars(jvalue, valuePtr);
-    }catch (...){
-        jclass jClass = env->FindClass("ExecutorFailureException");
-
-        if(!jClass)
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";
-
-        env->ThrowNew(jClass, "Executor failure while inserting Option");
-    }
+    END_TRY("inserting Option")
 }
