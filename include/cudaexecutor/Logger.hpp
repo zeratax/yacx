@@ -22,7 +22,8 @@ enum class loglevel {
   \class logIt Logger.hpp
   \brief Class to log events at different levels
 */
-class logIt {
+class logIt
+{
  public:
   //!
   //! \param level level at which the message is set
