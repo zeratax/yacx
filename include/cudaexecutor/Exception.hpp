@@ -13,61 +13,82 @@
 namespace cudaexecutor {
 
 namespace detail {
-/*
- * returns the number of columns of the terminal
- */
+
+//!
+//! \return  the number of columns of the terminal
 unsigned int askTerminalSize();
 
-/*
- * split a string in C++
- * source: http://www.martinbroadhurst.com/how-to-split-a-string-in-c.html
- */
+//! split a string in C++
+//! source: <a link="http://www.martinbroadhurst.com/how-to-split-a-string-in-c.html">www.martinbroadhurst.com</a>
+//! \tparam Container
+//! \param str
+//! \param cont
+//! \param delim
 template <class Container>
 void split(const std::string &str, Container &cont, char delim = ' ');
 
-/*
- * this function indents the lines of the descripton to make look nicer :)
- */
+//! this function indents the lines of the descripton to make look nicer
+//! \param desc
+//! \return
 std::string descriptionFkt(const std::string &desc);
 
-/*
- * returns the type of error
- * the different errors are in :
- * https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__TYPES.html#group__CUDA__TYPES_1gc6c391505e117393cc2558fff6bfc2e9
- */
+//!
+//! \param error see <a href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__TYPES.html#group__CUDA__TYPES_1gc6c391505e117393cc2558fff6bfc2e9">CUDA Driver API Documentation</a>
+//! \return description of error
 std::string whichError(const CUresult &error);
 
-/*
- * returns the type of nvrtc error
- * the different errors are in :
- * https://docs.nvidia.com/cuda/nvrtc/index.html#group__error_1g31e41ef222c0ea75b4c48f715b3cd9f0
- * and the program itself is in
- * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
- */
+//! more info see <a href="https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h">NVRTC Github Repository</a>
+//! \param error see <a href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__error_1g31e41ef222c0ea75b4c48f715b3cd9f0">NVRTC Documentation</a>
+//! \return description of error
 std::string whichNvrtcResultError(const nvrtcResult &error);
 
 } // namespace detail
 
-/*
- *Template class for CUresult Exceptions
- *CUresult name is the name and class_type of the exception
- */
+/*!
+  \class CUresultException Exception.hpp
+  \brief Exception class for CUDA driver api errors
+  \tparam name Name of the CUDA Error, e.g. <code>CUDA_ERROR_NO_DEVICE</code>
+  \example cudaexception.cpp
+*/
 template <CUresult name = (CUresult)0>
 class CUresultException : public std::exception {
- private:
-  std::string error;
-
  public:
+  //!
+  //! \param error description of exception
   explicit CUresultException(const std::string &error) { this->error = error; }
+  //!
+  //! \return description of exception
   [[nodiscard]] const char *what() const noexcept override {
     return error.c_str();
   }
+
+ private:
+  std::string error;
 };
 
-/*
- *Template class for nvrtcResult Exceptions
- *nvrtcResult name is the name and class_type of the exception
- */
+/*!
+  \class nvrtcResultException Exception.hpp
+  \brief Exception class for NVRTC errors
+  \tparam name Name of the NVRTC Error, e.g.
+  <code>NVRTC_ERROR_OUT_OF_MEMORY</code>
+  \example
+  <code>
+  try {
+      throw cudaexecutor::nvrtcResultException<NVRTC_ERROR_COMPILATION>
+  } catch(nvrtcResultException<(nvrtcResult)1>& e) {
+      std::cout << "Wrong Exception caught" <<
+      std::endl; std::cout << e.what() << std::endl;
+  }
+  catch(CUresultException<NVRTC_ERROR_COMPILATION>& e) {
+      std::cout << "Correct Exception caught" << std::endl;
+      std::cout << e.what() << std::endl;
+  }
+  catch(std::exception& e) {
+      std::cout << "other Error\n";
+      std::cout << e.what() << std::endl;
+  }
+  </code>
+*/
 template <nvrtcResult name = (nvrtcResult)0>
 class nvrtcResultException : public std::exception {
  private:
@@ -82,8 +103,7 @@ class nvrtcResultException : public std::exception {
   }
 };
 
-// This will throw as an error the proper CUDA error strings
-// in the event that a CUDA host call returns an error
+//! throws a nvrtcResultException if something went wrong
 #define NVRTC_SAFE_CALL(error)                                                 \
   __checkNvrtcResultError(error, __FILE__, __LINE__);
 inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
@@ -131,8 +151,7 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
   }
 }
 
-// This will throw as an error the proper CUDA error strings
-// in the event that a CUDA host call returns an error
+//! throws a CUresultException if something went wrong
 #define CUDA_SAFE_CALL(error) __checkCUresultError(error, __FILE__, __LINE__);
 inline void __checkCUresultError(const CUresult error, const char *file,
                                  const int line) {
@@ -299,4 +318,3 @@ inline void __checkCUresultError(const CUresult error, const char *file,
 }
 
 } // namespace cudaexecutor
-

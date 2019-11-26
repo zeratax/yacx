@@ -1,3 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Jona Abdinghoff
+ *
+ * LICENSE TEXT
+ ******************************************************************************/
+
+/*! \file
+ *
+ *   \brief C++ bindings to easily compile and execute CUDA kernels
+ *   \author Jona Abdinghoff
+ *
+ *   \version 0.1.0
+ *   \date November 2019
+ *
+ */
+
+/*! \mainpage
+ * \section intro Introduction
+ *
+ * \section example Example
+ *
+ * The following example shows a general use case for the C++
+ * bindings
+ *
+ * \include[lineno] example_program.cpp
+ * \example example_program.cpp
+ * \endcode
+ *
+ */
+
 #pragma once
 
 #include "Device.hpp"

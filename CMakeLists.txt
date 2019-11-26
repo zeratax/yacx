@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.09)
-project(cudaexecutor VERSION 0.0.1)
+project(cudaexecutor VERSION 0.1.0)
 
 enable_language(CXX CUDA)
 
