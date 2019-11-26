@@ -41,4 +41,6 @@ out
 
 # EXTERNAL
 include/catch2
-lib/
+
+# documentation
+docs/

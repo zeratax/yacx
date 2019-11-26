@@ -7,7 +7,7 @@ Device::Device() {
   CUDA_SAFE_CALL(cuInit(0));
   CUDA_SAFE_CALL(cuDeviceGet(&_device, 0));
 
-  char cname[50]; // destruktor??
+  char cname[50];
   CUDA_SAFE_CALL(cuDeviceGetName(cname, 50, _device));
   _name = cname;
 

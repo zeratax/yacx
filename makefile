@@ -5,13 +5,15 @@ FORMATER := clang-format
 MKDIR_P = mkdir -p
 
 SRCDIR := src
-LIBDIR := include
+LIBDIR := lib
+INCDIR := include
+VENDOR := exclude
 TESTDIR := test
 BUILDDIR := build
 EXAMPLEDIR := examples
 TARGET := bin/runner
 TESTTARGET := bin/tester
-DIRS := bin build $(LIBDIR)/catch2
+DIRS := bin build lib
  
 SRCEXT := cpp
 HEADDEREXT := hpp
@@ -23,7 +25,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 TEST_OBJ = $(OBJECTS) $(patsubst $(TESTDIR)/%,$(BUILDDIR)/%,$(TESTS:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1
 LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
-INC := -I $(LIBDIR) -I $(CUDA_PATH)/include
+INC := -I $(INCDIR) -I $(CUDA_PATH)/include
 
 # Build
 example_program: example
@@ -47,6 +49,11 @@ clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
+
+# Execute
+run:
+	@$(TARGET)
+
 # Format
 format:
 	$(FORMATER) -i -style=file $(SOURCES) $(HEADERS) $(TESTS) $(EXAMPLES)
@@ -57,12 +64,16 @@ lint:
 	#clang-tidy src/ -system-headers=false
 
 # Tests
-build_tests: directories $(OBJECTS)
-	@wget -nc -P $(LIBDIR)/catch2 https://raw.githubusercontent.com/catchorg/Catch2/master/single_include/catch2/catch.hpp
+init_submodules:
+	@git submodule update --init --recursive
+
+$(TESTTARGET): init_submodules directories $(OBJECTS)
 	+$(MAKE) -C test
-check: build_tests
 	@echo " Linking... $(TEST_OBJ)";
 	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)
-	@./bin/tester -d yes
 
-.PHONY: clean, lint, directories, format 
+check: $(TESTTARGET)
+	@$(TESTTARGET) -d yes
+
+.PHONY: clean, lint, directories, format, init_submodules, check, run
+
