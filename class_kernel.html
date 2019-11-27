@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CudaExecutor: Programm Class Reference</title>
+<title>CudaExecutor: Kernel Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,40 +62,39 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="class_programm-members.html">List of all members</a>  </div>
+<a href="class_kernel-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Programm Class Reference</div>  </div>
+<div class="title">Kernel Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Inheritance diagram for Programm:</div>
+Inheritance diagram for Kernel:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_programm.png" usemap="#Programm_map" alt=""/>
-  <map id="Programm_map" name="Programm_map">
+  <img src="class_kernel.png" usemap="#Kernel_map" alt=""/>
+  <map id="Kernel_map" name="Kernel_map">
 <area href="class_j_n_i_handle.html" alt="JNIHandle" shape="rect" coords="0,0,71,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac45c89f0960f8c4f4c91e7041eb0e052"><td class="memItemLeft" align="right" valign="top"><a id="ac45c89f0960f8c4f4c91e7041eb0e052"></a>
-native <a class="el" href="class_program.html">Program</a>&#160;</td><td class="memItemRight" valign="bottom"><b>program</b> (String kernelName)</td></tr>
-<tr class="separator:ac45c89f0960f8c4f4c91e7041eb0e052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bdb964ecc29733f60176e0c5471c3b6"><td class="memItemLeft" align="right" valign="top"><a id="a8bdb964ecc29733f60176e0c5471c3b6"></a>
+native void&#160;</td><td class="memItemRight" valign="bottom"><b>configure</b> (int numThreads, int numBlocks)</td></tr>
+<tr class="separator:a8bdb964ecc29733f60176e0c5471c3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e808a4d3e44425a84d9cab863b66841"><td class="memItemLeft" align="right" valign="top"><a id="a1e808a4d3e44425a84d9cab863b66841"></a>
+native void&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (<a class="el" href="class_kernel_arg.html">KernelArg</a>[] args)</td></tr>
+<tr class="separator:a1e808a4d3e44425a84d9cab863b66841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b8307304732980ee49a5b2d0cb8fb46"><td class="memItemLeft" align="right" valign="top"><a id="a4b8307304732980ee49a5b2d0cb8fb46"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (<a class="el" href="class_kernel_arg.html">KernelArg</a>[] args, int numThreads, int numBlocks)</td></tr>
+<tr class="separator:a4b8307304732980ee49a5b2d0cb8fb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_j_n_i_handle"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_j_n_i_handle')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_j_n_i_handle.html">JNIHandle</a></td></tr>
 <tr class="memitem:a1d96510dd25683f754bdb6088c18fca3 inherit pub_methods_class_j_n_i_handle"><td class="memItemLeft" align="right" valign="top"><a id="a1d96510dd25683f754bdb6088c18fca3"></a>
 native void&#160;</td><td class="memItemRight" valign="bottom"><b>dispose</b> ()</td></tr>
 <tr class="separator:a1d96510dd25683f754bdb6088c18fca3 inherit pub_methods_class_j_n_i_handle"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d3242f99249aefc84c19353b7e7121c"><td class="memItemLeft" align="right" valign="top"><a id="a0d3242f99249aefc84c19353b7e7121c"></a>
-static native <a class="el" href="class_programm.html">Programm</a>&#160;</td><td class="memItemRight" valign="bottom"><b>create</b> (String kernelString)</td></tr>
-<tr class="separator:a0d3242f99249aefc84c19353b7e7121c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/java/Programm.java</li>
+<li>src/java/Kernel.java</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
