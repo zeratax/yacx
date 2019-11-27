@@ -1,13 +1,14 @@
 
-public class Program extends JNIHandle {
-    public static native Program create(String kernelCode, String kernelName, String buildOptions);
-    public native void compile(Options options);
+public class Kernel extends JNIHandle {
+    public native void configure(int numThreads, int numBlocks);
     public native void launch(KernelArg[] args);
 
-    Program(long handle) {
-
-        super(handle);
+    public void launch(KernelArg[] args, int numThreads, int numBlocks){
+        configure(numThreads, numBlocks);
+        launch(args);
     }
 
-    public native void build();
+    Kernel(long handle) {
+        super(handle);
+    }
 }

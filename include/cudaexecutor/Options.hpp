@@ -5,6 +5,7 @@
 
 #include "Device.hpp"
 #include "util.hpp"
+#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -16,7 +17,7 @@ namespace cudaexecutor {
   \brief Options for compiling a Program
   \example options_construct.cpp
 */
-class Options {
+class Options : JNIHandle {
  public:
   //! empty Options constructor
   Options() {}

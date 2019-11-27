@@ -9,19 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     Kernel
- * Method:    create
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)LKernel;
+ * Method:    configure
+ * Signature: (II)V
  */
-JNIEXPORT jobject JNICALL Java_Kernel_create
-  (JNIEnv *, jclass, jstring, jstring, jstring);
-
-/*
- * Class:     Kernel
- * Method:    compile
- * Signature: (LOptions;)V
- */
-JNIEXPORT void JNICALL Java_Kernel_compile
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT void JNICALL Java_Kernel_configure
+  (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     Kernel
@@ -30,14 +22,6 @@ JNIEXPORT void JNICALL Java_Kernel_compile
  */
 JNIEXPORT void JNICALL Java_Kernel_launch
   (JNIEnv *, jobject, jobjectArray);
-
-/*
- * Class:     Kernel
- * Method:    build
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_Kernel_build
-  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

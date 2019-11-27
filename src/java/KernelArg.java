@@ -1,10 +1,8 @@
-
-
 public class KernelArg extends JNIHandle {
-    public static native KernelArg create(float array);
-    public static native KernelArg create(int array);
-    public static native KernelArg create(double array);
-    public static native KernelArg create(boolean array);
+    public static native KernelArg create(float value);
+    public static native KernelArg create(int value);
+    public static native KernelArg create(double value);
+    public static native KernelArg create(boolean value);
 
     public static native KernelArg create(float[] array, boolean output);
     public static native KernelArg create(int[] array, boolean output);

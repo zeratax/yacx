@@ -1,5 +1,5 @@
 public class Executor{
-    public static void loadLibrary()
+    public static void init()
     {
         System.loadLibrary("cudaexecutor-jni");
     }

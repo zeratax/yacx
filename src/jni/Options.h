@@ -23,14 +23,6 @@ JNIEXPORT void JNICALL Java_Options_insert__Ljava_lang_String_2
 JNIEXPORT void JNICALL Java_Options_insert__Ljava_lang_String_2Ljava_lang_String_2
   (JNIEnv *, jobject, jstring, jstring);
 
-/*
- * Class:     Options
- * Method:    options
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_Options_options
-  (JNIEnv *, jobject);
-
 #ifdef __cplusplus
 }
 #endif

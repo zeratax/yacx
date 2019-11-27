@@ -8,6 +8,7 @@
 #include "Logger.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
+#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <nvrtc.h>
@@ -19,7 +20,7 @@ namespace cudaexecutor {
   \class Program Program.hpp
   \brief Class to instantiate and compile Source (kernel strings)
 */
-class Program {
+class Program : JNIHandle {
  public:
   //!
   //! \param function_name function name in kernel string

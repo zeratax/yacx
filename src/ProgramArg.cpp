@@ -44,7 +44,7 @@ void ProgramArg::download() {
 }
 
 const void *ProgramArg::content() {
-//  if (_upload)
-//    return &_ddata;
+  if (_upload)
+    return &_ddata;
   return _hdata;
 }

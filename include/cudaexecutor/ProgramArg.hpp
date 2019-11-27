@@ -38,13 +38,14 @@ class ProgramArg {
   void upload();
   //! downloads data to host
   void download();
+  const size_t size() { return _size; }
 
  private:
   const void *_hdata;
+  const size_t _size;
   CUdeviceptr _ddata;
   const bool _download;
-  const bool _upload;
   const bool _copy;
-  size_t _size;
+  const bool _upload;
 };
 } // namespace cudaexecutor
