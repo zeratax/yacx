@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     Kernel
  * Method:    configure
- * Signature: (II)V
+ * Signature: (IIIIII)V
  */
 JNIEXPORT void JNICALL Java_Kernel_configure
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     Kernel

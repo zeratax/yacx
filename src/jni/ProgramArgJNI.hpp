@@ -12,5 +12,6 @@ namespace jni {
         ProgramArgJNI(void* data, size_t size, bool download = false, bool copy = true, bool upload = false);
         ~ProgramArgJNI();
         cudaexecutor::ProgramArg* programArgPtr() { return programArg; }
+        void* getHostData() { return _hdata; }
     };
 } // namespace jni

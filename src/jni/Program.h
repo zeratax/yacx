@@ -20,8 +20,16 @@ JNIEXPORT jobject JNICALL Java_Program_create
  * Method:    compile
  * Signature: ()LKernel;
  */
-JNIEXPORT jobject JNICALL Java_Program_compile
+JNIEXPORT jobject JNICALL Java_Program_compile__
   (JNIEnv *, jobject);
+
+/*
+ * Class:     Program
+ * Method:    compile
+ * Signature: (LOptions;)LKernel;
+ */
+JNIEXPORT jobject JNICALL Java_Program_compile__LOptions_2
+  (JNIEnv *, jobject, jobject);
 
 #ifdef __cplusplus
 }

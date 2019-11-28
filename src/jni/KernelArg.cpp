@@ -113,7 +113,7 @@ jobject Java_KernelArg_createOutput(JNIEnv* env, jclass cls, jlong argSize){
 jfloatArray Java_KernelArg_asFloatArray(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
-        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto data = programArgJNIPtr->getHostData();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
 
         auto res = env->NewFloatArray(dataSize / sizeof(jfloat));
