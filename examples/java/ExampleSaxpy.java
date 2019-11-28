@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class Example{
+public class ExampleSaxpy {
 
     public static void main(String[] args) throws IOException{
         Executor.init();
@@ -29,7 +29,8 @@ public class Example{
         nArg = KernelArg.create(n);
 
         //Create Program
-        Program saxpy = Program.create(loadFile("kernels/saxpy"), "saxpy");
+        String kernelString = Utils.loadFile("../examples/kernels/saxpy.cu");
+        Program saxpy = Program.create(kernelString, "saxpy");
 
         //Create Kernel
         Kernel saxpyKernel = saxpy.compile();
@@ -39,9 +40,17 @@ public class Example{
 
         //Get Result
         float[] out = outArg.asFloatArray();
-    }
 
-    private static String loadFile(String filename) throws IOException {
-        return new String(Files.readAllBytes(new File(filename).toPath()));
+        boolean correct = true;
+        for (int j = 0; j <  out.length; ++j) {
+            float expected = x[j] * a + y[j];
+            if ((expected - out[j]) > 10e-5) {
+              correct = false;
+              System.err.println("Exepected " + expected + " != Result " + out[j]);
+             }
+        }
+
+         if (correct)
+             System.out.println("Everything was calculated correctly!!!");
     }
 }

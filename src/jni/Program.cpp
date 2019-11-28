@@ -3,10 +3,11 @@
 #include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Source.hpp"
 #include "../../include/cudaexecutor/Program.hpp"
+#include "../../include/cudaexecutor/Options.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/Exception.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::nvrtcResultException;
+using cudaexecutor::loglevel, cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Options, cudaexecutor::Kernel, cudaexecutor::nvrtcResultException;
 
 jobject Java_Program_create (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY
@@ -26,7 +27,7 @@ jobject Java_Program_create (JNIEnv* env, jclass cls, jstring jkernelSource, jst
     END_TRY("creating program")
 }
 
-jobject Java_Program_compile (JNIEnv* env, jobject obj){
+jobject Java_Program_compile__ (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programPtr = getHandle<Program>(env, obj);
 
@@ -39,4 +40,23 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
 
         return kernelObj;
     END_TRY("compiling kernel")
+}
+
+jobject Java_Program_compile__LOptions_2(JNIEnv* env, jobject obj, jobject joptions){
+    BEGIN_TRY
+        auto programPtr = getHandle<Program>(env, obj);
+        const auto optionsPtr = getHandle<Options>(env, joptions);
+
+        //Kernel* kernelPtr = new Kernel{programPtr->compile(optionsPtr)}; TODO
+        Kernel* kernelPtr = new Kernel{programPtr->compile()};
+
+        jclass jKernel = env->FindClass("Kernel");
+        auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
+        auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
+
+        return kernelObj;
+
+    END_TRY("compiling kernel")
+
+
 }
