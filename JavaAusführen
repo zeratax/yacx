@@ -12,11 +12,11 @@ mkdir -p build
 mkdir -p build/base
 mkdir -p build/jni
 cd build/base
-g++ -c -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"/tmp/tmp.cTlciDtCIj/include" -fPIC -DNVRTC_GET_TYPE_NAME=1 -std=c++17 -Dcurrent_log_level=loglevel::DEBUG1 -c ../../src/*.cpp
+g++ -c -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"DER_PFAD_ZUM_PROJEKT/include" -fPIC -DNVRTC_GET_TYPE_NAME=1 -std=c++17 -Dcurrent_log_level=loglevel::DEBUG1 -c ../../src/*.cpp
 cd ../jni
-g++ -c -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"/tmp/tmp.cTlciDtCIj/include" -fPIC -DNVRTC_GET_TYPE_NAME=1 -std=c++17 -Dcurrent_log_level=loglevel::DEBUG1 -c ../../src/jni/*.cpp
+g++ -c -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"DER_PFAD_ZUM_PROJEKT/include" -fPIC -DNVRTC_GET_TYPE_NAME=1 -std=c++17 -Dcurrent_log_level=loglevel::DEBUG1 -c ../../src/jni/*.cpp
 cd ..
-g++ -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"/tmp/tmp.cTlciDtCIj/include" -shared -o libcudaexecutor-jni.so base/*.o jni/*.o -lcuda -lnvrtc
+g++ -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include/linux" -I"DER_PFAD_ZUM_PROJEKT/include" -shared -o libcudaexecutor-jni.so base/*.o jni/*.o -lcuda -lnvrtc
 
 
 #Das Java-Zeug ausführen
