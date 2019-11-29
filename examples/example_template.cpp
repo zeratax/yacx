@@ -1,4 +1,4 @@
-#include "../include/cudaexecutor/main.hpp"
+#include "cudaexecutor/main.hpp"
 
 using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,

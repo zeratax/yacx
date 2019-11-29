@@ -2,6 +2,7 @@
 
 #include <cuda.h>
 #include <string>
+#include <vector_types.h>
 
 namespace cudaexecutor {
 
@@ -18,6 +19,8 @@ class Device {
   std::string name() const { return _name; }
   CUdevice get() { return _device; }
   size_t total_memory() { return _memory; }
+  void max_block_dim(dim3 *block);
+  void max_grid_dim(dim3 *grid);
 
  private:
   void set_device_properties(const CUdevice &device);

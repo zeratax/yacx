@@ -74,8 +74,9 @@ Kernel Program::compile(const Options &options) {
   const char *name = _kernel_name.c_str(); // copy??
   if (!_name_expression.empty()) {
     logger(loglevel::DEBUG) << "getting lowered name for function";
-    NVRTC_SAFE_CALL(nvrtcGetLoweredName(*_prog, _name_expression.c_str(), &name))
+    NVRTC_SAFE_CALL(
+        nvrtcGetLoweredName(*_prog, _name_expression.c_str(), &name))
   }
   // templated kernel string needs to be demangled to launch
-  return Kernel{std::move(ptx), name};
+  return Kernel{std::move(ptx), std::string{name}};
 }

@@ -22,7 +22,7 @@ class Kernel {
   //! \param _ptx
   //! \param kernel_name
   //! \param demangled_name
-  Kernel(std::shared_ptr<char[]> _ptx, const char *demangled_name);
+  Kernel(std::shared_ptr<char[]> _ptx, std::string demangled_name);
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
@@ -35,7 +35,7 @@ class Kernel {
 
  private:
   std::shared_ptr<char[]> _ptx; // shared pointer?
-  const char *_demangled_name;
+  std::string _demangled_name;
 
   dim3 _grid, _block;
   CUcontext _context;

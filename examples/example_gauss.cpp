@@ -1,4 +1,4 @@
-#include "../include/cudaexecutor/main.hpp"
+#include "cudaexecutor/main.hpp"
 #include "kernels/gauss.h"
 
 #include <cmath>

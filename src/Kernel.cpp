@@ -4,8 +4,8 @@
 
 using cudaexecutor::Kernel, cudaexecutor::loglevel;
 
-Kernel::Kernel(std::shared_ptr<char[]> ptx, const char *demangled_name)
-    : _ptx{std::move(ptx)}, _demangled_name{demangled_name} {
+Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
+    : _ptx{std::move(ptx)}, _demangled_name{std::move(demangled_name)} {
   logger(loglevel::DEBUG) << "created templated Kernel " << _demangled_name;
 }
 
@@ -32,19 +32,18 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
     arg.upload();
     kernel_args[i++] = arg.content();
   }
-  logger(loglevel::DEBUG) << "getting function for " << _demangled_name;
-  // const char *name;
-  CUDA_SAFE_CALL(cuModuleGetFunction(&_kernel, _module, _demangled_name));
-
-  // launch the program
+  logger(loglevel::DEBUG) << "getting function for " << _demangled_name.c_str();
+  CUDA_SAFE_CALL(
+      cuModuleGetFunction(&_kernel, _module, _demangled_name.c_str()));
 
   logger(loglevel::INFO) << "launching " << _demangled_name;
+  CUDA_SAFE_CALL(cuCtxSynchronize());
   CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from program
                                 _grid.x, _grid.y, _grid.z,    // grid dim
                                 _block.x, _block.y, _block.z, // block dim
                                 0, nullptr, // shared mem and stream
-                                const_cast<void **>(kernel_args),
-                                nullptr)); // arguments
+                                const_cast<void **>(kernel_args), // arguments
+                                nullptr));
   CUDA_SAFE_CALL(cuCtxSynchronize());
   logger(loglevel::INFO) << "done!";
 
