@@ -4,6 +4,7 @@
 
 #include <nvrtc.h>
 
+#include <memory>
 #include <utility>
 
 using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Program,
@@ -23,12 +24,12 @@ Source::~Source() {
 
 Program Source::program(const std::string &kernel_name) {
   logger(loglevel::DEBUG) << "creating a program for function: " << kernel_name;
-  _prog = new nvrtcProgram;                  // shared pointer
-  NVRTC_SAFE_CALL(nvrtcCreateProgram(_prog,                  // prog
+  auto _prog = std::make_unique<nvrtcProgram>(); // custom deleter??
+  NVRTC_SAFE_CALL(nvrtcCreateProgram(_prog.get(),            // progam
                                      _kernel_string.c_str(), // buffer
                                      kernel_name.c_str(),    // name
                                      _headers.size(),        // numHeaders
                                      _headers.content(),     // headers
                                      _headers.names()));     // includeNames
-  return Program(kernel_name, *_prog);
+  return Program{kernel_name, std::move(_prog)};
 }

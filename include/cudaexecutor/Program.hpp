@@ -1,9 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include "Exception.hpp"
 #include "Kernel.hpp"
 #include "Logger.hpp"
@@ -12,7 +8,11 @@
 #include "util.hpp"
 
 #include <cuda.h>
+#include <iostream>
+#include <memory>
 #include <nvrtc.h>
+#include <string>
+#include <vector>
 #include <vector_types.h>
 
 namespace cudaexecutor {
@@ -26,7 +26,7 @@ class Program {
   //!
   //! \param function_name function name in kernel string
   //! \param prog
-  Program(std::string kernel_name, nvrtcProgram prog);
+  Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog);
   ~Program();
   //! instantiate template parameter
   //! \tparam T
@@ -51,10 +51,9 @@ class Program {
   [[nodiscard]] std::string log() const { return _log; }
 
  private:
-  char *_ptx; // shared pointer?
   std::vector<std::string> _template_parameters;
   std::string _kernel_name, _name_expression, _log;
-  nvrtcProgram _prog;
+  std::shared_ptr<nvrtcProgram> _prog;
 };
 
 template <typename T> Program &Program::instantiate(T type) {

@@ -31,7 +31,6 @@ class Source {
  private:
   std::string _kernel_string;
   Headers _headers;
-  nvrtcProgram *_prog = nullptr;
 };
 
 } // namespace cudaexecutor

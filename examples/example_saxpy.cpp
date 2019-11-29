@@ -1,7 +1,7 @@
 #include "../include/cudaexecutor/main.hpp"
 
-#define NUM_THREADS 4
-#define NUM_BLOCKS 4
+#define NUM_THREADS 32
+#define NUM_BLOCKS 16
 
 using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
@@ -17,8 +17,6 @@ int main() {
     hX.at(i) = static_cast<float>(i);
     hY.at(i) = static_cast<float>(i * 2);
   }
-
-  hOut.fill(10);
 
   try {
     Source source{

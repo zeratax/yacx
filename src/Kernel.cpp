@@ -4,8 +4,8 @@
 
 using cudaexecutor::Kernel, cudaexecutor::loglevel;
 
-Kernel::Kernel(char *ptx, const char *demangled_name)
-    : _ptx{ptx}, _demangled_name{demangled_name} {
+Kernel::Kernel(std::shared_ptr<char[]> ptx, const char *demangled_name)
+    : _ptx{std::move(ptx)}, _demangled_name{demangled_name} {
   logger(loglevel::DEBUG) << "created templated Kernel " << _demangled_name;
 }
 
@@ -25,7 +25,8 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args) {
   CUDA_SAFE_CALL(cuDeviceGet(&_cuDevice, 0));
 
   CUDA_SAFE_CALL(cuCtxCreate(&_context, 0, _cuDevice));
-  CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx, 0, nullptr, nullptr));
+  logger(loglevel::DEBUG1) << _ptx.get();
+  CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx.get(), 0, nullptr, nullptr));
 
   logger(loglevel::DEBUG) << "uploading arguments";
   const void *kernel_args[args.size()];
