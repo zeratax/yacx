@@ -43,7 +43,7 @@ int main() {
         .instantiate(5, type_of(data))
         .compile(options)
         .configure(grid, block)
-        .launch(program_args);
+        .launch(program_args, device);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     exit(1);

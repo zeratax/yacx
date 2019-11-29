@@ -16,12 +16,16 @@ class Device {
   [[nodiscard]] int minor() const { return _minor; }
   [[nodiscard]] int major() const { return _major; }
   std::string name() const { return _name; }
-  CUdevice device() { return _device; }
+  CUdevice get() { return _device; }
+  size_t total_memory() { return _memory; }
 
  private:
+  void set_device_properties(const CUdevice &device);
+
   int _minor, _major;
   std::string _name;
   CUdevice _device;
+  size_t _memory;
 };
 
 } // namespace cudaexecutor
