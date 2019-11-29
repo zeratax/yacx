@@ -1,11 +1,11 @@
 #include "../include/cudaexecutor/main.hpp"
 
-#define NUM_THREADS 16
-#define NUM_BLOCKS 32
+#define NUM_THREADS 4
+#define NUM_BLOCKS 4
 
 using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+    cudaexecutor::type_of;
 
 int main() {
   const float DELTA{0.01f};
@@ -14,9 +14,11 @@ int main() {
   float a{5.1f};
   std::array<float, NUM_THREADS * NUM_BLOCKS> hX, hY, hOut;
   for (size_t i{0}; i < n; ++i) {
-    hX[i] = static_cast<float>(i);
-    hY[i] = static_cast<float>(i * 2);
+    hX.at(i) = static_cast<float>(i);
+    hY.at(i) = static_cast<float>(i * 2);
   }
+
+  hOut.fill(10);
 
   try {
     Source source{
@@ -43,6 +45,7 @@ int main() {
         .launch(program_args);
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
+    exit(1);
   }
 
   bool correct = true;

@@ -40,7 +40,7 @@ class ProgramArg {
   void download();
 
  private:
-  const void *_hdata;
+  void *_hdata;
   CUdeviceptr _ddata;
   const bool _download;
   const bool _upload;

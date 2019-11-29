@@ -1,5 +1,5 @@
-#include "../include/cudaexecutor/Device.hpp"
-#include "../include/cudaexecutor/Exception.hpp"
+#include "cudaexecutor/Device.hpp"
+#include "cudaexecutor/Exception.hpp"
 
 using cudaexecutor::Device;
 
@@ -15,4 +15,7 @@ Device::Device() {
       &_major, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR, _device));
   CUDA_SAFE_CALL(cuDeviceGetAttribute(
       &_minor, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR, _device));
+}
+cudaexecutor::Device::Device(std::string name) {
+
 }

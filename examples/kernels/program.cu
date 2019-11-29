@@ -1,17 +1,7 @@
-// template<int N, typename T>
-// __global__ void my_kernel(T* data) {
-//     T data0 = data[0];
-//     for( int i=0; i<N-1; ++i ) {
-//         data[0] *= data0;
-//     }
-// }
-template<typename type, int size>
-__global__ void setKernel(type[] c, type val) {
-    auto idx = threadIdx.x * size;
+template<int N, typename T>
+extern "C" __global__ void my_kernel(T* array, T data) {
+     for( int i=0; i<N; ++i ) {
+         array[i] = data;
+     }
+ }
 
-    #pragma unroll(size)
-    for (auto i = 0; i < size; i++) {
-        c[idx] = val;
-        idx++;
-    }
-}

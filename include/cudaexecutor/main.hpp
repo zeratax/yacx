@@ -30,13 +30,14 @@
 
 #pragma once
 
-#include "Device.hpp"
-#include "Exception.hpp"
-#include "Logger.hpp"
-#include "Options.hpp"
-#include "Program.hpp"
-#include "Source.hpp"
-#include "util.hpp"
+#include "cudaexecutor/Device.hpp"
+#include "cudaexecutor/Headers.hpp"
+#include "cudaexecutor/Exception.hpp"
+#include "cudaexecutor/Logger.hpp"
+#include "cudaexecutor/Options.hpp"
+#include "cudaexecutor/Program.hpp"
+#include "cudaexecutor/Source.hpp"
+#include "cudaexecutor/util.hpp"
 
 #include <vector_types.h>
 

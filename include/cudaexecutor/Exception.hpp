@@ -40,7 +40,7 @@ std::string whichError(const CUresult &error);
 //! more info see <a href="https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h">NVRTC Github Repository</a>
 //! \param error see <a href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__error_1g31e41ef222c0ea75b4c48f715b3cd9f0">NVRTC Documentation</a>
 //! \return description of error
-std::string whichNvrtcResultError(const nvrtcResult &error);
+std::string whichError(const nvrtcResult &error);
 
 } // namespace detail
 
@@ -94,7 +94,7 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
                                     const int line) {
   if (NVRTC_SUCCESS != error) {
     // create string for exception
-    std::string exception = detail::whichNvrtcResultError(error);
+    std::string exception = detail::whichError(error);
     exception = exception + "\n->occoured in file:[" + file + ":" +
                 std::to_string(line) + "]\n";
     // choose which error to throw

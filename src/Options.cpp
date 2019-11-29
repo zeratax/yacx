@@ -1,4 +1,4 @@
-#include "../include/cudaexecutor/Options.hpp"
+#include "cudaexecutor/Options.hpp"
 
 #include <algorithm>
 

@@ -32,6 +32,6 @@ extern "C" __global__ void MatrixMultKernel(float *Md, float *Nd, float *Pd,
   }
   #pragma unroll
   for (int n{0}; n < 4; n++) {
-    Pd[(row + n) * width + col] = sum[4];
+    Pd[(row + n) * width + col] = sum[n];
   }
 }

@@ -1,6 +1,6 @@
-#include "../include/cudaexecutor/ProgramArg.hpp"
-#include "../include/cudaexecutor/Exception.hpp"
-#include "../include/cudaexecutor/Logger.hpp"
+#include "cudaexecutor/ProgramArg.hpp"
+#include "cudaexecutor/Exception.hpp"
+#include "cudaexecutor/Logger.hpp"
 
 using cudaexecutor::ProgramArg, cudaexecutor::loglevel;
 
@@ -44,7 +44,10 @@ void ProgramArg::download() {
 }
 
 const void *ProgramArg::content() {
-//  if (_upload)
-//    return &_ddata;
+  if (_upload) {
+    logger(loglevel::DEBUG1) << "returning device pointer";
+    return &_ddata;
+  }
+  logger(loglevel::DEBUG1) << "returning host pointer";
   return _hdata;
 }
