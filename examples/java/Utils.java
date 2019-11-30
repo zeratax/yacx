@@ -4,6 +4,6 @@ import java.nio.file.Files;
 
 public class Utils {
     public static String loadFile(String filename) throws IOException {
-        return new String(Files.readAllBytes(new File(filename).toPath()));
+        return new String(Files.readAllBytes(new File("../examples/kernels", filename).toPath()));
     }
 }

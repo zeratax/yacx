@@ -9,18 +9,18 @@ extern "C" {
 #endif
 /*
  * Class:     Kernel
- * Method:    configure
+ * Method:    configureInternal
  * Signature: (IIIIII)V
  */
-JNIEXPORT void JNICALL Java_Kernel_configure
+JNIEXPORT void JNICALL Java_Kernel_configureInternal
   (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     Kernel
- * Method:    launch
+ * Method:    launchInternel
  * Signature: ([LKernelArg;)V
  */
-JNIEXPORT void JNICALL Java_Kernel_launch
+JNIEXPORT void JNICALL Java_Kernel_launchInternel
   (JNIEnv *, jobject, jobjectArray);
 
 #ifdef __cplusplus

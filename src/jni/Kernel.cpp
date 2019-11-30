@@ -2,13 +2,12 @@
 #include "Handle.h"
 #include "ProgramArgJNI.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
-#include "../../include/cudaexecutor/Exception.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/ProgramArg.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI, cudaexecutor::CUresultException;
+using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI;
 
-void Java_Kernel_configure(JNIEnv *env, jobject obj, jint jgrid1, jint jgrid2, jint jgrid3, jint jblock1, jint jblock2, jint jblock3)
+void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid1, jint jgrid2, jint jgrid3, jint jblock1, jint jblock2, jint jblock3)
 {
     BEGIN_TRY
         auto kernelPtr = getHandle<Kernel>(env, obj);
@@ -20,7 +19,7 @@ void Java_Kernel_configure(JNIEnv *env, jobject obj, jint jgrid1, jint jgrid2, j
     END_TRY("configuring Kernel")
 }
 
-void Java_Kernel_launch(JNIEnv *env, jobject obj, jobjectArray jArgs)
+void Java_Kernel_launchInternel(JNIEnv *env, jobject obj, jobjectArray jArgs)
 {
     BEGIN_TRY
         auto kernelPtr = getHandle<Kernel>(env, obj);
@@ -32,7 +31,6 @@ void Java_Kernel_launch(JNIEnv *env, jobject obj, jobjectArray jArgs)
             auto jprogramArg = env->GetObjectArrayElement(jArgs, i);
             auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, jprogramArg);
             args.push_back(*programArgJNIPtr->programArgPtr());
-            logger(loglevel::ERROR) << "SIZE Argument " << i << " " << programArgJNIPtr->programArgPtr()->size();
         }
 
         kernelPtr->launch(args);

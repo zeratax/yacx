@@ -1,4 +1,4 @@
-#include "KernelArg.h"
+#include "ArrayArg.h"
 #include "Handle.h"
 #include "ProgramArgJNI.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
@@ -7,37 +7,7 @@
 
 using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::ProgramArg, jni::ProgramArgJNI;
 
-template <typename T>
-jobject createProgramArg(JNIEnv* env, jclass cls, T value)
-{
-    BEGIN_TRY
-        ProgramArgJNI* programArgPtr = new ProgramArgJNI{&value, sizeof(T)};
-
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, programArgPtr);
-
-        return obj;
-    END_TRY("creating ProgramArg")
-}
-
-jobject Java_KernelArg_create__F(JNIEnv* env, jclass cls, jfloat value){
-    return createProgramArg(env, cls, value);
-}
-
-jobject Java_KernelArg_create__I(JNIEnv* env, jclass cls, jint value){
-    return createProgramArg(env, cls, value);
-}
-
-jobject Java_KernelArg_create__D(JNIEnv* env, jclass cls, jdouble value){
-    return createProgramArg(env, cls, value);
-}
-
-jobject Java_KernelArg_create__Z(JNIEnv* env, jclass cls, jboolean value){
-    return createProgramArg(env, cls, value);
-}
-
-
-jobject Java_KernelArg_create___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray, jboolean output){
+jobject Java_ArrayArg_createInternal___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray, jboolean output){
     BEGIN_TRY
         auto arrayPtr = env->GetFloatArrayElements(jarray, nullptr);
 
@@ -52,11 +22,11 @@ jobject Java_KernelArg_create___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray,
     END_TRY("creating ProgramArg")
 }
 
-jobject Java_KernelArg_create___3IZ(JNIEnv* env, jclass cls, jintArray jarray, jboolean output){
+jobject Java_ArrayArg_createInternal___3IZ(JNIEnv* env, jclass cls, jintArray jarray, jboolean output){
     BEGIN_TRY
         auto arrayPtr = env->GetIntArrayElements(jarray, nullptr);
 
-        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
+        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jint), output, true, true};
 
         env->ReleaseIntArrayElements(jarray, arrayPtr, JNI_ABORT);
 
@@ -67,11 +37,26 @@ jobject Java_KernelArg_create___3IZ(JNIEnv* env, jclass cls, jintArray jarray, j
     END_TRY("creating ProgramArg")
 }
 
-jobject Java_KernelArg_create___3DZ(JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean output){
+jobject Java_ArrayArg_createInternal___3JZ(JNIEnv* env, jclass cls, jlongArray jarray, jboolean output){
+    BEGIN_TRY
+        auto arrayPtr = env->GetLongArrayElements(jarray, nullptr);
+
+        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jlong), output, true, true};
+
+        env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
+        auto obj = env->NewObject(cls, methodID, programArgPtr);
+
+        return obj;
+    END_TRY("creating ProgramArg")
+}
+
+jobject Java_ArrayArg_createInternal___3DZ(JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean output){
     BEGIN_TRY
         auto arrayPtr = env->GetDoubleArrayElements(jarray, nullptr);
 
-        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
+        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jdouble), output, true, true};
 
         env->ReleaseDoubleArrayElements(jarray, arrayPtr, JNI_ABORT);
 
@@ -82,11 +67,11 @@ jobject Java_KernelArg_create___3DZ(JNIEnv* env, jclass cls, jdoubleArray jarray
     END_TRY("creating ProgramArg")
 }
 
-jobject Java_KernelArg_create___3ZZ(JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean output){
+jobject Java_ArrayArg_createInternal___3ZZ(JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean output){
     BEGIN_TRY
         auto arrayPtr = env->GetBooleanArrayElements(jarray, nullptr);
 
-        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jfloat), output, true, true};
+        ProgramArgJNI* programArgPtr = new ProgramArgJNI{arrayPtr, env->GetArrayLength(jarray) * sizeof(jboolean), output, true, true};
 
         env->ReleaseBooleanArrayElements(jarray, arrayPtr, JNI_ABORT);
 
@@ -98,7 +83,7 @@ jobject Java_KernelArg_create___3ZZ(JNIEnv* env, jclass cls, jbooleanArray jarra
 }
 
 
-jobject Java_KernelArg_createOutput(JNIEnv* env, jclass cls, jlong argSize){
+jobject Java_ArrayArg_createOutputInternal(JNIEnv* env, jclass cls, jlong argSize){
     BEGIN_TRY
         ProgramArgJNI* programArgPtr = new ProgramArgJNI{NULL, static_cast<size_t> (argSize), true, false, true};
 
@@ -110,7 +95,7 @@ jobject Java_KernelArg_createOutput(JNIEnv* env, jclass cls, jlong argSize){
 }
 
 
-jfloatArray Java_KernelArg_asFloatArray(JNIEnv* env, jobject obj){
+jfloatArray Java_ArrayArg_asFloatArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->getHostData();
@@ -125,7 +110,7 @@ jfloatArray Java_KernelArg_asFloatArray(JNIEnv* env, jobject obj){
     END_TRY("converting ProgramArg to Java-FloatArray")
 }
 
-jintArray Java_KernelArg_asIntArray(JNIEnv* env, jobject obj){
+jintArray Java_ArrayArg_asIntArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
@@ -135,12 +120,27 @@ jintArray Java_KernelArg_asIntArray(JNIEnv* env, jobject obj){
         if (res == nullptr) return nullptr;
 
         env->SetIntArrayRegion(res, 0, dataSize / sizeof(jint),
-                                 reinterpret_cast<const jint*>(data));
+                               reinterpret_cast<const jint*>(data));
         return res;
     END_TRY("converting ProgramArg to Java-IntArray")
 }
 
-jdoubleArray Java_KernelArg_asDoubleArray(JNIEnv* env, jobject obj){
+jlongArray Java_ArrayArg_asLongArrayInternal(JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
+        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto dataSize = programArgJNIPtr->programArgPtr()->size();
+
+        auto res = env->NewLongArray(dataSize / sizeof(jlong));
+        if (res == nullptr) return nullptr;
+
+        env->SetLongArrayRegion(res, 0, dataSize / sizeof(jlong),
+                               reinterpret_cast<const jlong*>(data));
+        return res;
+    END_TRY("converting ProgramArg to Java-IntArray")
+}
+
+jdoubleArray Java_ArrayArg_asDoubleArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
@@ -150,12 +150,12 @@ jdoubleArray Java_KernelArg_asDoubleArray(JNIEnv* env, jobject obj){
         if (res == nullptr) return nullptr;
 
         env->SetDoubleArrayRegion(res, 0, dataSize / sizeof(jdouble),
-                                 reinterpret_cast<const jdouble*>(data));
+                                  reinterpret_cast<const jdouble*>(data));
         return res;
     END_TRY("converting ProgramArg to Java-DoubleArray")
 }
 
-jbooleanArray Java_KernelArg_asBooleanArray(JNIEnv* env, jobject obj){
+jbooleanArray Java_ArrayArg_asBooleanArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
         auto data = programArgJNIPtr->programArgPtr()->content();
@@ -165,7 +165,7 @@ jbooleanArray Java_KernelArg_asBooleanArray(JNIEnv* env, jobject obj){
         if (res == nullptr) return nullptr;
 
         env->SetBooleanArrayRegion(res, 0, dataSize / sizeof(jboolean),
-                                 reinterpret_cast<const jboolean*>(data));
+                                   reinterpret_cast<const jboolean*>(data));
         return res;
     END_TRY("converting ProgramArg to Java-BooleanArray")
 }

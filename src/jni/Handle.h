@@ -19,6 +19,8 @@ void setHandle(JNIEnv* env, jobject obj, T* t)
 
 void clearHandle(JNIEnv* env, jobject obj);
 
+jobjectArray createStringArray(JNIEnv* env, const char** stringArray, int size);
+
 #define BEGIN_TRY try {
 #define END_TRY(message)                                                                                        \
      } catch (const std::exception &err) {                                                                      \
@@ -27,14 +29,15 @@ void clearHandle(JNIEnv* env, jobject obj);
         if(!jClass) {                                                                                           \
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";                           \
         }                                                                                                       \
+                                                                                                                \
         env->ThrowNew(jClass, (std::string("Executor failure while ") + message + ": " + err.what()).c_str());  \
     } catch (...) {                                                                                             \
         jclass jClass = env->FindClass("ExecutorFailureException");                                             \
                                                                                                                 \
         if(!jClass) {                                                                                           \
             logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";                           \
-         }                                                                                                      \
+        }                                                                                                       \
+                                                                                                                \
         env->ThrowNew(jClass, (std::string("Executor failure while ") + message).c_str());                      \
     }
-
 #endif
