@@ -11,10 +11,12 @@ extern "C" {
 #define ValueArg_FLOAT 1L
 #undef ValueArg_INT
 #define ValueArg_INT 2L
+#undef ValueArg_LONG
+#define ValueArg_LONG 3L
 #undef ValueArg_DOUBLE
-#define ValueArg_DOUBLE 3L
+#define ValueArg_DOUBLE 4L
 #undef ValueArg_BOOLEAN
-#define ValueArg_BOOLEAN 4L
+#define ValueArg_BOOLEAN 5L
 /*
  * Class:     ValueArg
  * Method:    createInternal
@@ -30,6 +32,14 @@ JNIEXPORT jobject JNICALL Java_ValueArg_createInternal__F
  */
 JNIEXPORT jobject JNICALL Java_ValueArg_createInternal__I
   (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     ValueArg
+ * Method:    createInternal
+ * Signature: (J)LValueArg;
+ */
+JNIEXPORT jobject JNICALL Java_ValueArg_createInternal__J
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     ValueArg
@@ -61,6 +71,14 @@ JNIEXPORT jfloat JNICALL Java_ValueArg_asFloatInternal
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_ValueArg_asIntInternal
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     ValueArg
+ * Method:    asLongInternal
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_ValueArg_asLongInternal
   (JNIEnv *, jobject);
 
 /*
