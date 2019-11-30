@@ -19,7 +19,7 @@ Source::Source(std::string kernel_string, Headers headers)
 Source::~Source() {
   // exception in destructor??
   logger(loglevel::DEBUG) << "destroying Source";
-  //NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog));
+  //NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog)); //TODO
 }
 
 Program Source::program(const std::string &function_name) {
