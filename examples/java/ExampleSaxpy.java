@@ -1,6 +1,4 @@
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class ExampleSaxpy {
 
@@ -21,15 +19,16 @@ public class ExampleSaxpy {
         }
 
         //Initialize Arguments
-        KernelArg aArg, xArg, yArg, outArg, nArg;
-        aArg = KernelArg.create(a);
-        xArg = KernelArg.create(x, false);
-        yArg = KernelArg.create(y, false);
-        outArg = KernelArg.createOutput(n*4);
-        nArg = KernelArg.create(n);
+        ValueArg aArg, nArg;
+        ArrayArg xArg, yArg, outArg;
+        aArg = ValueArg.create(a);
+        xArg = ArrayArg.create(x, false);
+        yArg = ArrayArg.create(y, false);
+        outArg = ArrayArg.createOutput(n*4);
+        nArg = ValueArg.create(n);
 
         //Create Program
-        String kernelString = Utils.loadFile("../examples/kernels/saxpy.cu");
+        String kernelString = Utils.loadFile("saxpy.cu");
         Program saxpy = Program.create(kernelString, "saxpy");
 
         //Create Kernel

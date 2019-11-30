@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "util.hpp"
+#include "JNIHandle.hpp"
 
 namespace cudaexecutor {
 /*!
@@ -40,7 +41,7 @@ struct is_header
           std::is_same<std::string, typename std::decay<T>::type>,
           std::is_same<cudaexecutor::Header, typename std::decay<T>::type>> {};
 
-class Headers {
+class Headers : JNIHandle {
   /*!
   \class Headers Headers.hpp
   \brief List of Header for Source

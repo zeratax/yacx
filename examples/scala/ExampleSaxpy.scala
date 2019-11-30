@@ -17,20 +17,20 @@ object ExampleSaxpy {
         }
 
         //Initialize Arguments
-        val aArg = KernelArg.create(a)
-        val xArg = KernelArg.create(x, false)
-        val yArg = KernelArg.create(y, false)
-        val outArg = KernelArg.createOutput(n*4)
-        val nArg = KernelArg.create(n)
+        val aArg = ValueArg.create(a)
+        val xArg = ArrayArg.create(x, false)
+        val yArg = ArrayArg.create(y, false)
+        val outArg = ArrayArg.createOutput(n*4)
+        val nArg = ValueArg.create(n)
 
         //Create Program
-        val kernelString = Utils.loadFile("../examples/kernels/saxpy.cu")
+        val kernelString = Utils.loadFile("saxpy.cu")
         val saxpy = Program.create(kernelString, "saxpy")
 
         //Create Kernel
         val saxpyKernel = saxpy.compile()
 
-        //Compile and launch Kernel
+        //Launch Kernel
         saxpyKernel.launch(Array[KernelArg](aArg, xArg, yArg, outArg, nArg), numThreads, numBlocks)
 
         //Get Result
