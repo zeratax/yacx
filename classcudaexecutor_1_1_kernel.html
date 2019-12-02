@@ -79,18 +79,54 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8099e5650734e3fd769fd1447b07484e"><td class="memItemLeft" align="right" valign="top"><a id="a8099e5650734e3fd769fd1447b07484e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Kernel</b> (char *_ptx, std::vector&lt; std::string &gt; template_parameters, std::string kernel_name, std::string name_expression, nvrtcProgram prog)</td></tr>
-<tr class="separator:a8099e5650734e3fd769fd1447b07484e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d0137c607cf9a8768b2a8f16d8cca6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a1d0137c607cf9a8768b2a8f16d8cca6d">Kernel</a> (std::shared_ptr&lt; char[]&gt; _ptx, std::string demangled_name)</td></tr>
+<tr class="separator:a1d0137c607cf9a8768b2a8f16d8cca6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a5f993a9d123092e80ec722ecd4a11a6e">configure</a> (dim3 grid, dim3 block)</td></tr>
 <tr class="separator:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a648596ea2876aef86f16497e20d8e447"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a648596ea2876aef86f16497e20d8e447">launch</a> (std::vector&lt; <a class="el" href="classcudaexecutor_1_1_program_arg.html">ProgramArg</a> &gt; program_args)</td></tr>
-<tr class="separator:a648596ea2876aef86f16497e20d8e447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df924a268e34ec2c3f74acc1cf38f5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a2df924a268e34ec2c3f74acc1cf38f5f">launch</a> (std::vector&lt; <a class="el" href="classcudaexecutor_1_1_program_arg.html">ProgramArg</a> &gt; program_args, <a class="el" href="classcudaexecutor_1_1_device.html">Device</a> device=<a class="el" href="classcudaexecutor_1_1_device.html">Device</a>())</td></tr>
+<tr class="separator:a2df924a268e34ec2c3f74acc1cf38f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to help launch and configure a CUDA kernel. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_program_8cpp-example.html#_a2">example_program.cpp</a>.</dd>
-</dl></div><h2 class="groupheader">Member Function Documentation</h2>
+</dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a1d0137c607cf9a8768b2a8f16d8cca6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d0137c607cf9a8768b2a8f16d8cca6d">&#9670;&nbsp;</a></span>Kernel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cudaexecutor::Kernel::Kernel </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; char[]&gt;&#160;</td>
+          <td class="paramname"><em>_ptx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>demangled_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>create a <a class="el" href="classcudaexecutor_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> based on a templated kernel string </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_ptx</td><td></td></tr>
+    <tr><td class="paramname">kernel_name</td><td></td></tr>
+    <tr><td class="paramname">demangled_name</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5f993a9d123092e80ec722ecd4a11a6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f993a9d123092e80ec722ecd4a11a6e">&#9670;&nbsp;</a></span>configure()</h2>
 
@@ -127,8 +163,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a648596ea2876aef86f16497e20d8e447"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a648596ea2876aef86f16497e20d8e447">&#9670;&nbsp;</a></span>launch()</h2>
+<a id="a2df924a268e34ec2c3f74acc1cf38f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2df924a268e34ec2c3f74acc1cf38f5f">&#9670;&nbsp;</a></span>launch()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,8 +173,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a>&amp; cudaexecutor::Kernel::launch </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; <a class="el" href="classcudaexecutor_1_1_program_arg.html">ProgramArg</a> &gt;&#160;</td>
-          <td class="paramname"><em>program_args</em></td><td>)</td>
+          <td class="paramname"><em>program_args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classcudaexecutor_1_1_device.html">Device</a>&#160;</td>
+          <td class="paramname"><em>device</em> = <code><a class="el" href="classcudaexecutor_1_1_device.html">Device</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

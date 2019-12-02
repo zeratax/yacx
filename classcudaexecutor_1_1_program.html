@@ -88,8 +88,8 @@ Inheritance diagram for cudaexecutor::Program:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a12c1f277f83631cce6ee4f970f6e8fdc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program.html#a12c1f277f83631cce6ee4f970f6e8fdc">Program</a> (std::string function_name, nvrtcProgram prog)</td></tr>
-<tr class="separator:a12c1f277f83631cce6ee4f970f6e8fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70cf98f664408ede2787e4505365a82a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program.html#a70cf98f664408ede2787e4505365a82a">Program</a> (std::string kernel_name, std::shared_ptr&lt; nvrtcProgram &gt; prog)</td></tr>
+<tr class="separator:a70cf98f664408ede2787e4505365a82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_program.html">Program</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program.html#a56f5f93427fdcdec8a9622e9cbeeef11">instantiate</a> (T type)</td></tr>
 <tr class="separator:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,22 +104,22 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to instantiate and compile <a class="el" href="classcudaexecutor_1_1_source.html" title="Class to wrap kernel strings. ">Source</a> (kernel strings) </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a12c1f277f83631cce6ee4f970f6e8fdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12c1f277f83631cce6ee4f970f6e8fdc">&#9670;&nbsp;</a></span>Program()</h2>
+<a id="a70cf98f664408ede2787e4505365a82a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70cf98f664408ede2787e4505365a82a">&#9670;&nbsp;</a></span>Program()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">cudaexecutor::Program::Program </td>
+          <td class="memname">Program::Program </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>function_name</em>, </td>
+          <td class="paramname"><em>kernel_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">nvrtcProgram&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; nvrtcProgram &gt;&#160;</td>
           <td class="paramname"><em>prog</em>&#160;</td>
         </tr>
         <tr>
