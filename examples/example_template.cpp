@@ -1,6 +1,6 @@
 #include "cudaexecutor/main.hpp"
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::type_of;
 
@@ -10,8 +10,8 @@ int main() {
     Source source{"template<typename T>\n"
                   "__global__ void f3(int *result) { *result = sizeof(T); }"};
 
-    std::vector<ProgramArg> program_args;
-    program_args.push_back(ProgramArg{&result, sizeof(int), true});
+    std::vector<KernelArg> args;
+    args.push_back(KernelArg{&result, sizeof(int), true});
 
     dim3 grid(1);
     dim3 block(1);
@@ -19,7 +19,7 @@ int main() {
                       .instantiate("int")
                       .compile()
                       .configure(grid, block)
-                      .launch(program_args);
+                      .launch(args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }

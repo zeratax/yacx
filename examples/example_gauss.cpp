@@ -10,7 +10,7 @@
 #define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::type_of, cudaexecutor::Headers, cudaexecutor::Header;
 
@@ -98,18 +98,18 @@ int main(int argc, char **argv) {
     size_t size_pixel = height * width * sizeof(Pixel);
     size_t size_weights = 5 * 5 * sizeof(float);
 
-    std::vector<ProgramArg> program_args;
-    program_args.emplace_back(ProgramArg{image, size_pixel, true});
-    program_args.emplace_back(ProgramArg{weights, size_weights});
-    program_args.emplace_back(ProgramArg{&width});
-    program_args.emplace_back(ProgramArg{&height});
+    std::vector<KernelArg> args;
+    args.emplace_back(KernelArg{image, size_pixel, true});
+    args.emplace_back(KernelArg{weights, size_weights});
+    args.emplace_back(KernelArg{&width});
+    args.emplace_back(KernelArg{&height});
 
     dim3 block;
     dim3 grid(width, height);
     source.program("gaussFilterKernel")
         .compile()
         .configure(grid, block)
-        .launch(program_args);
+        .launch(args);
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
   }

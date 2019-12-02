@@ -69,17 +69,17 @@ class Headers {
   const char **names() const;
   //!
   //! \return number of header files
-  int size() const { return _headers.size(); }
+  int size() const { return m_headers.size(); }
   //! inserts Header
   //! \param path path to header file
-  void insert(std::string const &path) { _headers.push_back(Header(path)); }
+  void insert(std::string const &path) { m_headers.push_back(Header(path)); }
   //! inserts Header
   //! \param header
-  void insert(Header header) { _headers.push_back(header); }
+  void insert(Header header) { m_headers.push_back(header); }
 
  private:
-  std::vector<Header> _headers;
-  mutable std::vector<const char *> _chHeaders;
+  std::vector<Header> m_headers;
+  mutable std::vector<const char *> m_chHeaders;
 };
 
 template <typename T, typename... TS>

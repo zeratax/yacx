@@ -10,7 +10,7 @@
 #include <random>
 #include <string>
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::Kernel;
 
@@ -101,14 +101,14 @@ int main() {
 
     // Set arguments
 
-    std::vector<ProgramArg> args;
-    // args.emplace_back(ProgramArg{M.data(), matrix_size});
-    // args.emplace_back(ProgramArg{N.data(), matrix_size});
-    // args.emplace_back(ProgramArg{P_cuda.data(), matrix_size, true, false});
-    args.emplace_back(ProgramArg{M, matrix_size});
-    args.emplace_back(ProgramArg{N, matrix_size});
-    args.emplace_back(ProgramArg{P_cuda, matrix_size, true, false});
-    args.emplace_back(ProgramArg{const_cast<size_t *>(&WIDTH)});
+    std::vector<KernelArg> args;
+    // args.emplace_back(KernelArg{M.data(), matrix_size});
+    // args.emplace_back(KernelArg{N.data(), matrix_size});
+    // args.emplace_back(KernelArg{P_cuda.data(), matrix_size, true, false});
+    args.emplace_back(KernelArg{M, matrix_size});
+    args.emplace_back(KernelArg{N, matrix_size});
+    args.emplace_back(KernelArg{P_cuda, matrix_size, true, false});
+    args.emplace_back(KernelArg{const_cast<size_t *>(&WIDTH)});
 
     // Compile Kernels
 

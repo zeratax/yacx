@@ -3,7 +3,7 @@
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Device, cudaexecutor::load, cudaexecutor::type_of;
 
 int main() {
@@ -28,12 +28,12 @@ int main() {
         "  }\n"
         "}"};
 
-    std::vector<ProgramArg> program_args;
-    program_args.emplace_back(ProgramArg{&a});
-    program_args.emplace_back(ProgramArg{hX.data(), bufferSize});
-    program_args.emplace_back(ProgramArg{hY.data(), bufferSize});
-    program_args.emplace_back(ProgramArg{hOut.data(), bufferSize, true, false});
-    program_args.emplace_back(ProgramArg{const_cast<size_t *>(&N)});
+    std::vector<KernelArg> args;
+    args.emplace_back(KernelArg{&a});
+    args.emplace_back(KernelArg{hX.data(), bufferSize});
+    args.emplace_back(KernelArg{hY.data(), bufferSize});
+    args.emplace_back(KernelArg{hOut.data(), bufferSize, true, false});
+    args.emplace_back(KernelArg{const_cast<size_t *>(&N)});
 
     std::cout << "Selected " << dev.name() << " with "
               << (dev.total_memory() / 1024) / 1024 << "mb" << std::endl;
@@ -46,7 +46,7 @@ int main() {
     source.program("saxpy")
         .compile()
         .configure(grid, block)
-        .launch(program_args, dev);
+        .launch(args, dev);
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);

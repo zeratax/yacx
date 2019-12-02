@@ -1,9 +1,9 @@
 #include "KernelArg.h"
-#include "Handle.h"
-#include "ProgramArgJNI.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Program.hpp"
-#include "../../include/cudaexecutor/ProgramArg.hpp"
+#include "Handle.h"
+#include "ProgramArgJNI.hpp"
+#include "cudaexecutor/KernelArg.hpp"
 
 using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::ProgramArg, jni::ProgramArgJNI;
 

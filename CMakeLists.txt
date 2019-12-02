@@ -17,7 +17,7 @@ link_directories("$ENV{CUDA_PATH}/lib64") # there are windows specific paths for
 link_libraries(cuda nvrtc)
 
 #file(GLOB SOURCES "src/*.cpp")
-set(SOURCES ${PROJECT_SOURCE_DIR}/src/Device.cpp, ${PROJECT_SOURCE_DIR}/src/Headers.cpp, ${PROJECT_SOURCE_DIR}/src/Exception.cpp, ${PROJECT_SOURCE_DIR}/src/Kernel.cpp, ${PROJECT_SOURCE_DIR}/src/Options.cpp, ${PROJECT_SOURCE_DIR}/src/Program.cpp, ${PROJECT_SOURCE_DIR}/src/ProgramArg.cpp, ${PROJECT_SOURCE_DIR}/src/Source.cpp, ${PROJECT_SOURCE_DIR}/src/util.cpp)
+set(SOURCES ${PROJECT_SOURCE_DIR}/src/Device.cpp, ${PROJECT_SOURCE_DIR}/src/Headers.cpp, ${PROJECT_SOURCE_DIR}/src/Exception.cpp, ${PROJECT_SOURCE_DIR}/src/Kernel.cpp, ${PROJECT_SOURCE_DIR}/src/Options.cpp, ${PROJECT_SOURCE_DIR}/src/Program.cpp, ${PROJECT_SOURCE_DIR}/src/KernelArg.cpp, ${PROJECT_SOURCE_DIR}/src/Source.cpp, ${PROJECT_SOURCE_DIR}/src/util.cpp)
 
 if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
     set(PACKAGE_TEST_DEFAULT ON)

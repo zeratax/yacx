@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../include/cudaexecutor/JNIHandle.hpp"
-#include "../../include/cudaexecutor/ProgramArg.hpp"
+#include "cudaexecutor/KernelArg.hpp"
 
 namespace jni {
     class ProgramArgJNI : cudaexecutor::JNIHandle {

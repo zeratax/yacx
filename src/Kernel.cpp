@@ -5,25 +5,25 @@
 using cudaexecutor::Kernel, cudaexecutor::loglevel;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
-    : _ptx{std::move(ptx)}, _demangled_name{std::move(demangled_name)} {
-  logger(loglevel::DEBUG) << "created templated Kernel " << _demangled_name;
+    : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
+  logger(loglevel::DEBUG) << "created templated Kernel " << m_demangled_name;
 }
 
 Kernel &Kernel::configure(dim3 grid, dim3 block) {
   logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
                           << grid.y << ", " << grid.z << " and block "
                           << block.x << ", " << block.y << ", " << block.z;
-  _grid = grid;
-  _block = block;
+  m_grid = grid;
+  m_block = block;
   return *this;
 }
 
-Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
+Kernel &Kernel::launch(std::vector<KernelArg> args, Device device) {
   logger(loglevel::DEBUG) << "creating context and loading module";
 
-  CUDA_SAFE_CALL(cuCtxCreate(&_context, 0, device.get()));
-  logger(loglevel::DEBUG1) << _ptx.get();
-  CUDA_SAFE_CALL(cuModuleLoadDataEx(&_module, _ptx.get(), 0, nullptr, nullptr));
+  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+  logger(loglevel::DEBUG1) << m_ptx.get();
+  CUDA_SAFE_CALL(cuModuleLoadDataEx(&m_module, m_ptx.get(), 0, nullptr, nullptr));
 
   logger(loglevel::DEBUG) << "uploading arguments";
   const void *kernel_args[args.size()];
@@ -32,15 +32,15 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
     arg.upload();
     kernel_args[i++] = arg.content();
   }
-  logger(loglevel::DEBUG) << "getting function for " << _demangled_name.c_str();
+  logger(loglevel::DEBUG) << "getting function for " << m_demangled_name.c_str();
   CUDA_SAFE_CALL(
-      cuModuleGetFunction(&_kernel, _module, _demangled_name.c_str()));
+      cuModuleGetFunction(&m_kernel, m_module, m_demangled_name.c_str()));
 
-  logger(loglevel::INFO) << "launching " << _demangled_name;
+  logger(loglevel::INFO) << "launching " << m_demangled_name;
   //CUDA_SAFE_CALL(cuCtxSynchronize());
-  CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from program
-                                _grid.x, _grid.y, _grid.z,    // grid dim
-                                _block.x, _block.y, _block.z, // block dim
+  CUDA_SAFE_CALL(cuLaunchKernel(m_kernel, // function from program
+                                m_grid.x, m_grid.y, m_grid.z,    // grid dim
+                                m_block.x, m_block.y, m_block.z, // block dim
                                 0, nullptr, // shared mem and stream
                                 const_cast<void **>(kernel_args), // arguments
                                 nullptr));
@@ -53,8 +53,8 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
     arg.download();
 
   logger(loglevel::DEBUG) << "freeing resources";
-  CUDA_SAFE_CALL(cuModuleUnload(_module));
-  CUDA_SAFE_CALL(cuCtxDestroy(_context));
+  CUDA_SAFE_CALL(cuModuleUnload(m_module));
+  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
   return *this;
 }
