@@ -1,50 +1,51 @@
-#include "../include/cudaexecutor/main.hpp"
+#include "cudaexecutor/main.hpp"
+#include <experimental/iterator>
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+    cudaexecutor::type_of;
 
 int main() {
-  int *array = new int[5]{5, 3, 3, 2, 7};
-  int data{8};
+  std::array<int, 32> array;
+  array.fill(0);
+  int data{1};
   try {
     Device device;
     Options options{cudaexecutor::options::GpuArchitecture(device),
                     cudaexecutor::options::FMAD(false)};
-    Source source{"template<typename type, int size>\n"
-                  "__global__ void my_kernel(type[] c, type val) {\n"
-                  "    auto idx = threadIdx.x * size;\n"
-                  "\n"
-                  "    #pragma unroll(size)\n"
-                  "    for (auto i = 0; i < size; i++) {\n"
-                  "        c[idx] = val;\n"
-                  "        idx++;\n"
-                  "    }\n"
-                  "}"};
+    options.insert("--std", "c++14");
+    Source source{
+        "template<typename type, int size>\n"
+        "__global__ void my_kernel(type* c, type val) {\n"
+        "    auto idx = blockIdx.x * blockDim.x + threadIdx.x;\n"
+        "\n"
+        "    #pragma unroll(size)\n"
+        "    for (auto i = idx * size; i < idx * size + size; i++) {\n"
+        "        c[i] = idx + val;\n"
+        "    }\n"
+        "}"};
 
-    std::vector<ProgramArg> program_args;
-    ProgramArg array_arg(&array, sizeof(int) * 5, true);
-    ProgramArg data_arg(&data);
-    program_args.push_back(array_arg);
-    program_args.push_back(data_arg);
+    std::vector<KernelArg> args;
+    args.emplace_back(
+        KernelArg{array.data(), sizeof(int) * array.size(), true});
+    args.emplace_back(KernelArg{&data});
 
-    dim3 grid(1);
+    dim3 grid(8);
     dim3 block(1);
-    source
-        .program("my_kernel")
-        // .instantiate(type_of(data), 5)
-        // .instantiate<float, std::integral_constant<int, 5>>()
-        .instantiate("int", "int 5")
+    source.program("my_kernel")
+        .instantiate(type_of(data), 4)
         .compile(options)
         .configure(grid, block)
-        .launch(program_args);
+        .launch(args, device);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
+    exit(1);
   }
 
-  std::cout << to_comma_separated(array, array + 5) << std::endl;
-
-  delete[] array;
+  std::cout << '\n';
+  std::copy(array.begin(), array.end(),
+            std::experimental::make_ostream_joiner(std::cout, ", "));
+  std::cout << std::endl;
 
   return 0;
 }

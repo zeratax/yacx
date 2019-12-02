@@ -1,5 +1,5 @@
 // Copyright 2019 André Hodapp
-#include "../include/cudaexecutor/Exception.hpp"
+#include "cudaexecutor/Exception.hpp"
 
 /*
  * returns the number of columns of the terminal
@@ -83,7 +83,7 @@ std::string cudaexecutor::detail::descriptionFkt(const std::string &desc) {
  * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
  */
 std::string
-cudaexecutor::detail::whichNvrtcResultError(const nvrtcResult &error) {
+cudaexecutor::detail::whichError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
   ret.append("~");

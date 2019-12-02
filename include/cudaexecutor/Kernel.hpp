@@ -1,9 +1,11 @@
 #pragma once
 
-#include "ProgramArg.hpp"
-#include <cudaexecutor/Logger.hpp>
+#include "Device.hpp"
+#include "KernelArg.hpp"
+#include "Logger.hpp"
 
 #include <cuda.h>
+#include <memory>
 #include <nvrtc.h>
 #include <vector>
 #include <vector_types.h>
@@ -12,14 +14,16 @@ namespace cudaexecutor {
 /*!
   \class Kernel Kernel.hpp
   \brief Class to help launch and configure a CUDA kernel
-  \example kernel_launch.cpp
+  \example docs/kernel_launch.cpp
+  \example example_saxpy.cpp
 */
 class Kernel {
  public:
-  //TODO: kernel should only need PTX, nvrtcProgram and a kernel name
-  explicit Kernel(char *_ptx, std::vector<std::string> template_parameters,
-                  std::string kernel_name, std::string name_expression,
-                  nvrtcProgram prog);
+  //! create a Kernel based on a templated kernel string
+  //! \param ptx
+  //! \param kernel_name
+  //! \param demangled_name
+  Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name);
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
@@ -28,19 +32,16 @@ class Kernel {
   //!
   //! \param program_args
   //! \return this (for method chaining)
-  Kernel &launch(std::vector<ProgramArg> program_args);
+  Kernel &launch(std::vector<KernelArg> program_args, Device device = Device());
 
  private:
-  char *_ptx; // shared pointer?
-  std::vector<std::string> _template_parameters;
-  std::string _kernel_name, _name_expression;
-  nvrtcProgram _prog;
+  std::shared_ptr<char[]> m_ptx; // shared pointer?
+  std::string m_demangled_name;
 
-  dim3 _grid, _block;
-  CUdevice _cuDevice;
-  CUcontext _context;
-  CUmodule _module;
-  CUfunction _kernel;
+  dim3 m_grid, m_block;
+  CUcontext m_context;
+  CUmodule m_module;
+  CUfunction m_kernel;
 };
 
 } // namespace cudaexecutor

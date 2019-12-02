@@ -1,17 +1,19 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
 #include "Exception.hpp"
+#include "JNIHandle.hpp"
 #include "Kernel.hpp"
+#include "KernelArg.hpp"
 #include "Logger.hpp"
 #include "Options.hpp"
-#include "ProgramArg.hpp"
-#include "JNIHandle.hpp"
+#include "util.hpp"
 
 #include <cuda.h>
+#include <iostream>
+#include <memory>
 #include <nvrtc.h>
+#include <string>
+#include <vector>
 #include <vector_types.h>
 
 namespace cudaexecutor {
@@ -19,13 +21,16 @@ namespace cudaexecutor {
 /*!
   \class Program Program.hpp
   \brief Class to instantiate and compile Source (kernel strings)
+  \example example_template.cpp
+  \example example_program.cpp
+  \example example_matrix_multiply.cpp
 */
 class Program : JNIHandle {
  public:
   //!
   //! \param function_name function name in kernel string
   //! \param prog
-  Program(std::string function_name, nvrtcProgram prog);
+  Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog);
   ~Program();
   //! instantiate template parameter
   //! \tparam T
@@ -41,29 +46,35 @@ class Program : JNIHandle {
   template <typename T, typename... TS>
   Program &instantiate(T type, TS... types);
   //! compile Program to Kernel
-  //! \param options see <a href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__options">NVRTC documentation</a> for supported Options
-  //! \return a compiled Kernel
+  //! \param options see <a
+  //! href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__options">NVRTC
+  //! documentation</a> for supported Options \return a compiled Kernel
   Kernel compile(const Options &options = Options());
   //!
   //! \return log of compilation
-  [[nodiscard]] std::string log() const { return _log; }
+  [[nodiscard]] std::string log() const { return m_log; }
 
  private:
-  char *_ptx; // shared pointer?
-  std::vector<std::string> _template_parameters;
-  std::string _kernel_name, _name_expression, _log;
-  nvrtcProgram _prog;
+  std::vector<std::string> m_template_parameters;
+  std::string m_kernel_name, m_name_expression, m_log;
+  std::shared_ptr<nvrtcProgram> m_prog;
 };
 
 template <typename T> Program &Program::instantiate(T type) {
-  _template_parameters.push_back(type);
+  static_assert(is_string<T>::value, "must be stringable");
+  std::ostringstream buffer;
+  buffer << type << std::flush;
+  m_template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
   return *this;
 }
 
 template <typename T, typename... TS>
 Program &Program::instantiate(T type, TS... types) {
-  _template_parameters.push_back(type);
+  static_assert(is_string<T>::value, "must be stringable");
+  std::ostringstream buffer;
+  buffer << type << std::flush;
+  m_template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
   return Program::instantiate(types...);
 }

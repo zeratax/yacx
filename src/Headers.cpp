@@ -1,4 +1,4 @@
-#include "../include/cudaexecutor/Headers.hpp"
+#include "cudaexecutor/Headers.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -6,17 +6,17 @@
 using cudaexecutor::Header, cudaexecutor::Headers;
 
 const char **Headers::content() const {
-  _chHeaders.resize(_headers.size());
-  std::transform(_headers.begin(), _headers.end(), _chHeaders.begin(),
+  m_chHeaders.resize(m_headers.size());
+  std::transform(m_headers.begin(), m_headers.end(), m_chHeaders.begin(),
                  [](const auto &s) { return s.content(); });
-  return _chHeaders.data();
+  return m_chHeaders.data();
 }
 
 const char **Headers::names() const {
-  _chHeaders.resize(_headers.size());
-  std::transform(_headers.begin(), _headers.end(), _chHeaders.begin(),
+  m_chHeaders.resize(m_headers.size());
+  std::transform(m_headers.begin(), m_headers.end(), m_chHeaders.begin(),
                  [](const auto &s) { return s.name(); });
-  return _chHeaders.data();
+  return m_chHeaders.data();
 }
 
 Headers::Headers(const Header &header) { insert(header); }

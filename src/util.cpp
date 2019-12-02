@@ -1,4 +1,7 @@
-#include "../include/cudaexecutor/util.hpp"
+#include "cudaexecutor/util.hpp"
+
+#include <string>
+#include <vector>
 
 std::string cudaexecutor::load(const std::string &path) {
   std::ifstream file(path);

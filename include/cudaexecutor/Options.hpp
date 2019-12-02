@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "Device.hpp"
-#include "util.hpp"
 #include "JNIHandle.hpp"
+#include "util.hpp"
 
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -15,7 +15,7 @@ namespace cudaexecutor {
 /*!
   \class Options Options.hpp
   \brief Options for compiling a Program
-  \example options_construct.cpp
+  \example docs/options_construct.cpp
 */
 class Options : JNIHandle {
  public:
@@ -54,11 +54,11 @@ class Options : JNIHandle {
   const char **options() const;
   //!
   //! \return number of Options
-  auto numOptions() const { return _options.size(); }
+  auto numOptions() const { return m_options.size(); }
 
  private:
-  std::vector<std::string> _options;
-  mutable std::vector<const char *> _chOptions;
+  std::vector<std::string> m_options;
+  mutable std::vector<const char *> m_chOptions;
 };
 
 template <typename T> Options::Options(const T &t) { insertOptions(t); }
@@ -82,11 +82,12 @@ void Options::insertOptions(const T &t, const TS &... ts) {
 namespace detail {
 
 class BooleanOption {
-  const bool _b;
-
  public:
-  explicit BooleanOption(bool b) : _b{b} {}
-  auto value() const { return (_b) ? "true" : "false"; }
+  explicit BooleanOption(bool b) : m_b{b} {}
+  auto value() const { return (m_b) ? "true" : "false"; }
+
+ private:
+  const bool m_b;
 };
 
 } // namespace detail
@@ -94,18 +95,19 @@ class BooleanOption {
 namespace options {
 
 class GpuArchitecture {
-  const std::string arc;
-
  public:
   GpuArchitecture(int major, int minor)
-      : arc(std::string("compute_") + std::to_string(major) +
-            std::to_string(minor)) {}
+      : m_arc(std::string("compute_") + std::to_string(major) +
+              std::to_string(minor)) {}
 
   explicit GpuArchitecture(const cudaexecutor::Device &device)
       : GpuArchitecture(device.major(), device.minor()) {}
 
   auto name() const { return "--gpu-architecture"; }
-  auto &value() const { return arc; }
+  auto &value() const { return m_arc; }
+
+ private:
+  const std::string m_arc;
 };
 
 class FMAD : public detail::BooleanOption {
@@ -123,4 +125,3 @@ class Fast_Math : public detail::BooleanOption {
 } // namespace options
 
 } // namespace cudaexecutor
-

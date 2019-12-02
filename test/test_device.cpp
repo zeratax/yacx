@@ -27,13 +27,25 @@ std::string exec(const char *cmd) {
 
 TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
   try {
-    Device dev;
     std::string name =
         exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
 
     name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
 
-    REQUIRE(dev.name() == name);
+    SECTION("first device") {
+      Device dev;
+      REQUIRE(dev.name() == name);
+    }
+    SECTION("by name") {
+      Device dev{name};
+      REQUIRE(dev.name() == name);
+      REQUIRE_THROWS_AS(
+          [&]() {
+            Device dev{std::string{"Radeon RX Vega 64"}};
+          }(),
+          std::invalid_argument);
+    }
+
   } catch (cudaexecutor::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
     FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver "
          "couldn't detect it");

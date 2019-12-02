@@ -1,11 +1,11 @@
 #include "Kernel.h"
 #include "Handle.h"
-#include "ProgramArgJNI.hpp"
+#include "KernelArgJNI.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
-#include "../../include/cudaexecutor/ProgramArg.hpp"
+#include "../../include/cudaexecutor/KernelArg.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI;
+using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid1, jint jgrid2, jint jgrid3, jint jblock1, jint jblock2, jint jblock3)
 {
@@ -25,12 +25,12 @@ void Java_Kernel_launchInternel(JNIEnv *env, jobject obj, jobjectArray jArgs)
         auto kernelPtr = getHandle<Kernel>(env, obj);
         auto argumentsLength = env->GetArrayLength(jArgs);
 
-        std::vector<ProgramArg> args;
+        std::vector<KernelArg> args;
         args.reserve(argumentsLength);
         for(int i = 0; i < argumentsLength; i++){
-            auto jprogramArg = env->GetObjectArrayElement(jArgs, i);
-            auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, jprogramArg);
-            args.push_back(*programArgJNIPtr->programArgPtr());
+            auto jkernelArg = env->GetObjectArrayElement(jArgs, i);
+            auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, jkernelArg);
+            args.push_back(*kernelArgJNIPtr->kernelArgPtr());
         }
 
         kernelPtr->launch(args);

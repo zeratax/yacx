@@ -1,36 +1,35 @@
 #include "cudaexecutor/Source.hpp"
-#include "../include/cudaexecutor/Logger.hpp"
+#include "cudaexecutor/Logger.hpp"
 #include "cudaexecutor/Program.hpp"
 
 #include <nvrtc.h>
 
+#include <memory>
 #include <utility>
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Program,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Program,
     cudaexecutor::loglevel;
 
 Source::Source(std::string kernel_string, Headers headers)
-    : _kernel_string{std::move(kernel_string)}, _headers{std::move(headers)} {
+    : m_kernel_string{std::move(kernel_string)}, m_headers{std::move(headers)} {
   logger(loglevel::DEBUG) << "created a Source with program string:\n'''\n"
-                          << _kernel_string << "\n'''";
-  logger(loglevel::DEBUG) << "Source uses " << headers.size() << " Headers.";
+                          << m_kernel_string << "\n'''";
+  logger(loglevel::DEBUG) << "Source uses " << m_headers.size() << " Headers.";
 }
 
 Source::~Source() {
   // exception in destructor??
   logger(loglevel::DEBUG) << "destroying Source";
-  //NVRTC_SAFE_CALL(nvrtcDestroyProgram(_prog)); //TODO
 }
 
-Program Source::program(const std::string &function_name) {
-  logger(loglevel::DEBUG) << "creating a program for function: "
-                          << function_name;
-  _prog = new nvrtcProgram;                  // destructor?
-  nvrtcCreateProgram(_prog,                  // prog
-                     _kernel_string.c_str(), // buffer
-                     function_name.c_str(),  // name
-                     _headers.size(),        // numHeaders
-                     _headers.content(),     // headers
-                     _headers.names());      // includeNames
-  return Program(function_name, *_prog);
+Program Source::program(const std::string &kernel_name) {
+  logger(loglevel::DEBUG) << "creating a program for function: " << kernel_name;
+  auto _prog = std::make_unique<nvrtcProgram>(); // custom deleter??
+  NVRTC_SAFE_CALL(nvrtcCreateProgram(_prog.get(),            // progam
+                                     m_kernel_string.c_str(), // buffer
+                                     kernel_name.c_str(),    // name
+                                     m_headers.size(),        // numHeaders
+                                     m_headers.content(),     // headers
+                                     m_headers.names()));     // includeNames
+  return Program{kernel_name, std::move(_prog)};
 }
