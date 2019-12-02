@@ -1,21 +1,21 @@
-#include "cudaexecutor/ProgramArg.hpp"
+#include "cudaexecutor/KernelArg.hpp"
 #include "cudaexecutor/Exception.hpp"
 #include "cudaexecutor/Logger.hpp"
 
-using cudaexecutor::ProgramArg, cudaexecutor::loglevel;
+using cudaexecutor::KernelArg, cudaexecutor::loglevel;
 
-ProgramArg::ProgramArg(void *const data, size_t size, bool download, bool copy,
+KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                        bool upload)
     : m_hdata{data}, m_size{size},
       m_download{download}, m_copy{copy}, m_upload{
                                                                        upload} {
-  logger(loglevel::DEBUG) << "created ProgramArg with size: " << size
+  logger(loglevel::DEBUG) << "created KernelArg with size: " << size
                           << ", which should " << (m_upload ? "be" : "not be")
                           << " uploaded and should "
                           << (m_download ? "be" : "not be") << " downloaded";
 }
 
-void ProgramArg::upload() {
+void KernelArg::upload() {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
@@ -28,7 +28,7 @@ void ProgramArg::upload() {
   }
 }
 
-void ProgramArg::download() {
+void KernelArg::download() {
   if (m_download) {
     logger(loglevel::DEBUG1) << "downloading argument";
     CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(m_hdata), m_ddata, m_size));
@@ -44,7 +44,7 @@ void ProgramArg::download() {
   }
 }
 
-const void *ProgramArg::content() {
+const void *KernelArg::content() {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "returning device pointer";
     return &m_ddata;

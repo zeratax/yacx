@@ -7,7 +7,7 @@
 #include <memory>
 #include <utility>
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Program,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Program,
     cudaexecutor::loglevel;
 
 Source::Source(std::string kernel_string, Headers headers)

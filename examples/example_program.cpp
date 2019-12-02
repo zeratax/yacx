@@ -1,7 +1,7 @@
 #include "cudaexecutor/main.hpp"
 #include <experimental/iterator>
 
-using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
     cudaexecutor::type_of;
 
@@ -25,10 +25,10 @@ int main() {
         "    }\n"
         "}"};
 
-    std::vector<ProgramArg> program_args;
-    program_args.emplace_back(
-        ProgramArg{array.data(), sizeof(int) * array.size(), true});
-    program_args.emplace_back(ProgramArg{&data});
+    std::vector<KernelArg> args;
+    args.emplace_back(
+        KernelArg{array.data(), sizeof(int) * array.size(), true});
+    args.emplace_back(KernelArg{&data});
 
     dim3 grid(8);
     dim3 block(1);
@@ -36,7 +36,7 @@ int main() {
         .instantiate(type_of(data), 4)
         .compile(options)
         .configure(grid, block)
-        .launch(program_args, device);
+        .launch(args, device);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     exit(1);

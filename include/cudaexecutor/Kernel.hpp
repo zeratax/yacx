@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Device.hpp"
+#include "KernelArg.hpp"
 #include "Logger.hpp"
-#include "ProgramArg.hpp"
 
 #include <cuda.h>
 #include <memory>
@@ -31,7 +31,7 @@ class Kernel {
   //!
   //! \param program_args
   //! \return this (for method chaining)
-  Kernel &launch(std::vector<ProgramArg> program_args, Device device = Device());
+  Kernel &launch(std::vector<KernelArg> program_args, Device device = Device());
 
  private:
   std::shared_ptr<char[]> m_ptx; // shared pointer?

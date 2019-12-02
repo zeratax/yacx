@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Exception.hpp"
+#include "JNIHandle.hpp"
 #include "Kernel.hpp"
+#include "KernelArg.hpp"
 #include "Logger.hpp"
 #include "Options.hpp"
-#include "ProgramArg.hpp"
 #include "util.hpp"
-#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <iostream>

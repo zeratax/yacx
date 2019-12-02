@@ -1,10 +1,10 @@
 #include "Kernel.h"
-#include "Handle.h"
-#include "ProgramArgJNI.hpp"
-#include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Exception.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
-#include "../../include/cudaexecutor/ProgramArg.hpp"
+#include "../../include/cudaexecutor/Logger.hpp"
+#include "Handle.h"
+#include "ProgramArgJNI.hpp"
+#include "cudaexecutor/KernelArg.hpp"
 
 using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI, cudaexecutor::CUresultException;
 

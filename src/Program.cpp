@@ -10,7 +10,7 @@
 #include <utility>
 
 using cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::Options,
-    cudaexecutor::Headers, cudaexecutor::ProgramArg, cudaexecutor::loglevel,
+    cudaexecutor::Headers, cudaexecutor::KernelArg, cudaexecutor::loglevel,
     cudaexecutor::detail::whichError, cudaexecutor::detail::descriptionFkt;
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)

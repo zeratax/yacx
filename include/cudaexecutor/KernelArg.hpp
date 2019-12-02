@@ -11,7 +11,7 @@ namespace cudaexecutor {
     Will execute the Kernel with <code>add(1, 2, 3, 4, result)</code>;
     and the result will be downloaded from device to host
 */
-class ProgramArg {
+class KernelArg {
  public:
   //! A constructor
   /*!
@@ -23,11 +23,11 @@ class ProgramArg {
    * \param upload allocate the argument on the device (not necessary for basic
    * types, e.g. int)
    */
-  ProgramArg(void *data, size_t size, bool download = false, bool copy = true,
+  KernelArg(void *data, size_t size, bool download = false, bool copy = true,
              bool upload = true);
   //! A constructor for basic types, e.g. int
   //! \param data pointer to argument for kernel function
-  explicit ProgramArg(void *data) : ProgramArg{data, 0, false, false, false} {};
+  explicit KernelArg(void *data) : KernelArg{data, 0, false, false, false} {};
   //!
   //! \return pointer to host data
   const void *content();

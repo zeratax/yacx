@@ -18,7 +18,7 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
+Kernel &Kernel::launch(std::vector<KernelArg> args, Device device) {
   logger(loglevel::DEBUG) << "creating context and loading module";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
