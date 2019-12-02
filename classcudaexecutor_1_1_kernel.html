@@ -79,8 +79,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1d0137c607cf9a8768b2a8f16d8cca6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a1d0137c607cf9a8768b2a8f16d8cca6d">Kernel</a> (std::shared_ptr&lt; char[]&gt; _ptx, std::string demangled_name)</td></tr>
-<tr class="separator:a1d0137c607cf9a8768b2a8f16d8cca6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0bb713a4f07eb8304525731d0d1a9f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#af0bb713a4f07eb8304525731d0d1a9f9">Kernel</a> (std::shared_ptr&lt; char[]&gt; ptx, std::string demangled_name)</td></tr>
+<tr class="separator:af0bb713a4f07eb8304525731d0d1a9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a5f993a9d123092e80ec722ecd4a11a6e">configure</a> (dim3 grid, dim3 block)</td></tr>
 <tr class="separator:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9c8bc3dd108df5120cbb687800c4bb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#ac9c8bc3dd108df5120cbb687800c4bb2">launch</a> (std::vector&lt; <a class="el" href="classcudaexecutor_1_1_kernel_arg.html">KernelArg</a> &gt; program_args, <a class="el" href="classcudaexecutor_1_1_device.html">Device</a> device=<a class="el" href="classcudaexecutor_1_1_device.html">Device</a>())</td></tr>
@@ -90,17 +90,17 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Class to help launch and configure a CUDA kernel. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_program_8cpp-example.html#_a2">example_program.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1d0137c607cf9a8768b2a8f16d8cca6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d0137c607cf9a8768b2a8f16d8cca6d">&#9670;&nbsp;</a></span>Kernel()</h2>
+<a id="af0bb713a4f07eb8304525731d0d1a9f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0bb713a4f07eb8304525731d0d1a9f9">&#9670;&nbsp;</a></span>Kernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">cudaexecutor::Kernel::Kernel </td>
+          <td class="memname">Kernel::Kernel </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; char[]&gt;&#160;</td>
-          <td class="paramname"><em>_ptx</em>, </td>
+          <td class="paramname"><em>ptx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>create a <a class="el" href="classcudaexecutor_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> based on a templated kernel string </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">_ptx</td><td></td></tr>
+    <tr><td class="paramname">ptx</td><td></td></tr>
     <tr><td class="paramname">kernel_name</td><td></td></tr>
     <tr><td class="paramname">demangled_name</td><td></td></tr>
   </table>

@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['options',['options',['../classcudaexecutor_1_1_options.html#a76c4d3d2f65099b5fe8d5bfdcb22ea72',1,'cudaexecutor::Options::options() const'],['../classcudaexecutor_1_1_options.html#ab565c100912654825537360ec8d8910a',1,'cudaexecutor::Options::Options()'],['../classcudaexecutor_1_1_options.html#ac15279e144f38da992fad689755a66c7',1,'cudaexecutor::Options::Options(const T &amp;t)'],['../classcudaexecutor_1_1_options.html#aeb2d911d2a18bb79dd51efb19cb0c134',1,'cudaexecutor::Options::Options(const T &amp;t, const TS &amp;... ts)']]]
+  ['major',['major',['../classcudaexecutor_1_1_device.html#ae2078e1d90452c7eeac55dc90fa90e87',1,'cudaexecutor::Device']]],
+  ['max_5fblock_5fdim',['max_block_dim',['../classcudaexecutor_1_1_device.html#a3d7f11438902e714311b41d01ad24e53',1,'cudaexecutor::Device']]],
+  ['max_5fgrid_5fdim',['max_grid_dim',['../classcudaexecutor_1_1_device.html#ad79c81d07b5c49be6d8cc194a5e649e2',1,'cudaexecutor::Device']]],
+  ['minor',['minor',['../classcudaexecutor_1_1_device.html#a19f1b50a0d16ea57d3f64a0c7a6c664a',1,'cudaexecutor::Device']]]
 ];
