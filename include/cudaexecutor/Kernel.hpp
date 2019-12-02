@@ -15,6 +15,7 @@ namespace cudaexecutor {
   \class Kernel Kernel.hpp
   \brief Class to help launch and configure a CUDA kernel
   \example docs/kernel_launch.cpp
+  \example example_saxpy.cpp
 */
 class Kernel {
  public:

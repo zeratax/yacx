@@ -21,6 +21,9 @@ namespace cudaexecutor {
 /*!
   \class Program Program.hpp
   \brief Class to instantiate and compile Source (kernel strings)
+  \example example_template.cpp
+  \example example_program.cpp
+  \example example_matrix_multiply.cpp
 */
 class Program : JNIHandle {
  public:
