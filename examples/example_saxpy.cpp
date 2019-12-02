@@ -53,7 +53,8 @@ int main() {
   }
 
   bool correct = true;
-  for (int j = 1; j < hOut.size(); ++j) {
+
+  for (size_t j = 0; j < hOut.size(); ++j) {
     float expected = hX.at(j) * a + hY.at(j);
     if ((expected - hOut.at(j)) > DELTA) {
       correct = false;
