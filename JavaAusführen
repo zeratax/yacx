@@ -21,8 +21,17 @@ g++ -I"/usr/lib/jvm/java-1.8.0-openjdk-amd64/include" -I"/usr/lib/jvm/java-1.8.0
 
 #Das Java-Zeug ausführen
 
-cd DER_PFAD_ZUM_PROJEKT
+cd DER_PFAD_ZUM_PROJEKT/build
 cp ../src/java/*.java ../build/ 
 cp ../examples/java/*.java ../build/
 javac *.java
-java -Djava.library.path=DER_PFAD_ZUM_PROJEKT/build/ NAME_DER_JAVA_KLASSE
+java -ea -Djava.library.path=DER_PFAD_ZUM_PROJEKT/build/ NAME_DER_JAVA_KLASSE
+
+
+#Das Scala-Zeug ausführen
+
+cp ../src/java/*.java ../build/
+cp ../examples/scala/*.scala ../build/
+javac *.java
+scalac *.scala
+scala -J-ea -Djava.library.path=DER_PFAD_ZUM_PROJEKT/build/ NAME_DER_SCALA_KLASSE
