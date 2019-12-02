@@ -1,11 +1,11 @@
 #include "ProgramArgJNI.hpp"
 
 #include <cstring>
+#include <stdio.h>
 
 using jni::ProgramArgJNI, cudaexecutor::ProgramArg;
 
-ProgramArgJNI::ProgramArgJNI(void *const data, size_t size, bool download, bool copy,
-                       bool upload) {
+ProgramArgJNI::ProgramArgJNI(void* const data, size_t size, bool download, bool copy, bool upload) {
     _hdata = malloc(size);
     if (data)
         std::memcpy(_hdata, data, size);

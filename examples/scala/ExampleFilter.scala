@@ -1,11 +1,11 @@
 object ExampleFilter {
 
     def main(args: Array[String]) : Unit = {
-        Executor.init()
+        Executor.loadLibary()
 
         var SIZE_INT = 4
-        var numThreads = 8
-        var numBlocks = 8
+        var numThreads = 16
+        var numBlocks = 2
 
         //Testdata
         var length = 16;
@@ -20,7 +20,7 @@ object ExampleFilter {
         //Initialize Arguments
         val srcArg = ArrayArg.create(src, false)
         val outArg = ArrayArg.createOutput(length * SIZE_INT)
-        val counterArg = ArrayArg.createOutput(SIZE_INT);
+        val counterArg = ArrayArg.create(Array[Int](0), true);
         val nArg = ValueArg.create(length);
 
         //Create Program
@@ -39,6 +39,6 @@ object ExampleFilter {
 
         //Print Result
         println("Counter: " + counter);
-        println("Result:  " + out.mkString(", "))
+        println("Result:  " + out.take(counter).mkString(", "))
     }
 }

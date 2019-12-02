@@ -1,7 +1,7 @@
 object ExampleSaxpy {
 
     def main(args: Array[String]) : Unit = {
-        Executor.init()
+        Executor.loadLibary();
 
         var numThreads = 8
         var numBlocks = 8
