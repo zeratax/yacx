@@ -1,21 +1,20 @@
 object ExampleFilter {
+    private final var SIZE_INT = 4
 
     def main(args: Array[String]) : Unit = {
+        //Load Libary
         Executor.loadLibary()
 
-        var SIZE_INT = 4
-        var numThreads = 16
-        var numBlocks = 2
-
         //Testdata
+        var numThreads = 16
+        var numBlocks = 1
+
         var length = 16;
         var src = new Array[Int](length);
 
         for (i <- 0 until length){
             src(i) = i;
         }
-
-        println(src.mkString(", "))
 
         //Initialize Arguments
         val srcArg = ArrayArg.create(src, false)
@@ -27,7 +26,7 @@ object ExampleFilter {
         val kernelString = Utils.loadFile("filter_k.cu")
         val filter = Program.create(kernelString, "filter_k")
 
-        //Create Kernel
+        //Create compiled Kernel
         val filterKernel = filter.compile()
 
         //Launch Kernel
@@ -38,7 +37,9 @@ object ExampleFilter {
         var counter = counterArg.asIntArray()(0)
 
         //Print Result
+        println("\nInput:\n[" + src.mkString(", ") + "]")
+        println("\nResult:")
         println("Counter: " + counter);
-        println("Result:  " + out.take(counter).mkString(", "))
+        println("Result:\n[" + out.take(counter).mkString(", ") + "]")
     }
 }

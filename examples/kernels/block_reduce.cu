@@ -1,4 +1,4 @@
-#import "/tmp/tmp.cTlciDtCIj/examples/kernels/block_reduce.h"
+#import "block_reduce.h"
 
 extern "C" __global__
 void deviceReduceKernel(long* in, long* out, int N) {

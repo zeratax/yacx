@@ -1,12 +1,13 @@
 object ExampleSaxpy {
 
     def main(args: Array[String]) : Unit = {
+        //Load Libary
         Executor.loadLibary();
 
+        //Testdata
         var numThreads = 8
         var numBlocks = 8
 
-        //Testdata
         var n = numThreads*numBlocks
         var a = 5.1f
         var x = new Array[Float](n)
@@ -27,7 +28,7 @@ object ExampleSaxpy {
         val kernelString = Utils.loadFile("saxpy.cu")
         val saxpy = Program.create(kernelString, "saxpy")
 
-        //Create Kernel
+        //Create compiled Kernel
         val saxpyKernel = saxpy.compile()
 
         //Launch Kernel
@@ -36,6 +37,7 @@ object ExampleSaxpy {
         //Get Result
         var out = outArg.asFloatArray()
 
+        //Check Result
         var correct = true
         for (j <- 0 until n) {
             var expected = x(j) * a + y(j)
@@ -46,6 +48,6 @@ object ExampleSaxpy {
         }
 
          if (correct)
-             println("Everything was calculated correctly!!!")
+             println("\nEverything was calculated correctly!!!")
     }
 }
