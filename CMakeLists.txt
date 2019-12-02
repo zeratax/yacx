@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.09)
-project(cudaexecutor VERSION 0.1.0)
-
-enable_language(CXX CUDA)
+project(cudaexecutor VERSION 0.2.0 LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -12,12 +10,66 @@ add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 include_directories(include)
 include_directories(include/cudaexecutor)
 
-include_directories("$ENV{CUDA_PATH}/include")
-link_directories("$ENV{CUDA_PATH}/lib64") # there are windows specific paths for this
 link_libraries(cuda nvrtc)
 
-#file(GLOB SOURCES "src/*.cpp")
-set(SOURCES ${PROJECT_SOURCE_DIR}/src/Device.cpp, ${PROJECT_SOURCE_DIR}/src/Headers.cpp, ${PROJECT_SOURCE_DIR}/src/Exception.cpp, ${PROJECT_SOURCE_DIR}/src/Kernel.cpp, ${PROJECT_SOURCE_DIR}/src/Options.cpp, ${PROJECT_SOURCE_DIR}/src/Program.cpp, ${PROJECT_SOURCE_DIR}/src/KernelArg.cpp, ${PROJECT_SOURCE_DIR}/src/Source.cpp, ${PROJECT_SOURCE_DIR}/src/util.cpp)
+file(GLOB SOURCES "src/*.cpp")
+file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
+SET(JAVA_SOURCE_FILES
+        "src/java/Executor.java"
+        "src/java/ExecutorFailureException.java"
+        "src/java/JNIHandle.java"
+        "src/java/Kernel.java"
+        "src/java/KernelArg.java"
+        "src/java/Options.java"
+        "src/java/Program.java"
+        "src/java/Utils.java")
+
+add_library(cudaexecutor SHARED ${SOURCES})
+
+option(JNI_ENABLED "Build JNI" ON)
+if (JNI_ENABLED)
+    message(STATUS "JNI enabled")
+    find_package(Java REQUIRED)
+    include(UseJava)
+
+    # Build Java classes
+    FILE(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/java/bin")
+    SET(class_files)
+    FOREACH (_java_path ${JAVA_SOURCE_FILES})
+        get_filename_component(_java_file ${_java_path} NAME)
+        # _java_file: relative file name
+        # _class_file: relative class name
+        STRING(REGEX REPLACE "\\.java$"
+                ".class" _class_file
+                "${_java_file}")
+        ADD_CUSTOM_COMMAND(
+                OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/${_class_file}"
+                COMMAND
+                ${Java_JAVAC_EXECUTABLE}
+                ${CMAKE_JAVA_COMPILE_FLAGS}
+                -sourcepath "${PROJECT_SOURCE_DIR}/src/java"
+                -d "${CMAKE_CURRENT_BINARY_DIR}/java/bin"
+                "${PROJECT_SOURCE_DIR}/src/java/${_java_file}"
+                DEPENDS "${PROJECT_SOURCE_DIR}/src/java/${_java_file}")
+        LIST(APPEND class_files "java/bin/${_class_file}")
+    ENDFOREACH ()
+    ADD_CUSTOM_TARGET(JavaJNIClasses ALL DEPENDS ${class_files})
+
+    FIND_PACKAGE(JNI REQUIRED)
+
+    include_directories(${JNI_INCLUDE_DIRS})
+    add_library(cudaexecutor-jni SHARED ${JNI_SOURCE_FILES})
+    target_link_libraries(cudaexecutor-jni cudaexecutor ${JNI_LIBRARIES})
+    SET_TARGET_PROPERTIES(
+            cudaexecutor-jni PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}"
+            LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
+endif ()
+
 
 if (${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
     set(PACKAGE_TEST_DEFAULT ON)
