@@ -9,6 +9,8 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_header2.hpp
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pixel.hpp
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_compare.hpp
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
 
 
 add_executable(tests ${SOURCES} ${TESTS})
