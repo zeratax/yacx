@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CudaExecutor: cudaexecutor::ProgramArg Class Reference</title>
+<title>CudaExecutor: cudaexecutor::KernelArg Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,58 +60,52 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>cudaexecutor</b></li><li class="navelem"><a class="el" href="classcudaexecutor_1_1_program_arg.html">ProgramArg</a></li>  </ul>
+<li class="navelem"><b>cudaexecutor</b></li><li class="navelem"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html">KernelArg</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classcudaexecutor_1_1_program_arg-members.html">List of all members</a>  </div>
+<a href="classcudaexecutor_1_1_kernel_arg-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">cudaexecutor::ProgramArg Class Reference</div>  </div>
+<div class="title">cudaexecutor::KernelArg Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Class to help launch <a class="el" href="classcudaexecutor_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> with given arguments Arguments are automatically uploaded and downloaded.  
- <a href="classcudaexecutor_1_1_program_arg.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="_program_arg_8hpp_source.html">ProgramArg.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f7b3471c2e769716e32cb0e0a7a00e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#a1f7b3471c2e769716e32cb0e0a7a00e5">ProgramArg</a> (void *data, size_t size, bool <a class="el" href="classcudaexecutor_1_1_program_arg.html#a361f96b407b8f1b5fbeefad59af22cf8">download</a>=false, bool copy=true, bool <a class="el" href="classcudaexecutor_1_1_program_arg.html#a6583241e6d079f8316469a2766f7278d">upload</a>=true)</td></tr>
-<tr class="memdesc:a1f7b3471c2e769716e32cb0e0a7a00e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor.  <a href="#a1f7b3471c2e769716e32cb0e0a7a00e5">More...</a><br /></td></tr>
-<tr class="separator:a1f7b3471c2e769716e32cb0e0a7a00e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeea9f89e703697602ac3633d5102788"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#aeeea9f89e703697602ac3633d5102788">ProgramArg</a> (void *data)</td></tr>
-<tr class="separator:aeeea9f89e703697602ac3633d5102788"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f8f190ad175a5d413365dea580bbfb2"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#a8f8f190ad175a5d413365dea580bbfb2">content</a> ()</td></tr>
-<tr class="separator:a8f8f190ad175a5d413365dea580bbfb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d8acb380943cec67e2e94aed2a2f49a"><td class="memItemLeft" align="right" valign="top">CUdeviceptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#a7d8acb380943cec67e2e94aed2a2f49a">deviceptr</a> ()</td></tr>
-<tr class="separator:a7d8acb380943cec67e2e94aed2a2f49a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6583241e6d079f8316469a2766f7278d"><td class="memItemLeft" align="right" valign="top"><a id="a6583241e6d079f8316469a2766f7278d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#a6583241e6d079f8316469a2766f7278d">upload</a> ()</td></tr>
-<tr class="memdesc:a6583241e6d079f8316469a2766f7278d"><td class="mdescLeft">&#160;</td><td class="mdescRight">uploads data to device <br /></td></tr>
-<tr class="separator:a6583241e6d079f8316469a2766f7278d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a361f96b407b8f1b5fbeefad59af22cf8"><td class="memItemLeft" align="right" valign="top"><a id="a361f96b407b8f1b5fbeefad59af22cf8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_program_arg.html#a361f96b407b8f1b5fbeefad59af22cf8">download</a> ()</td></tr>
-<tr class="memdesc:a361f96b407b8f1b5fbeefad59af22cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">downloads data to host <br /></td></tr>
-<tr class="separator:a361f96b407b8f1b5fbeefad59af22cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f6b0c102455a921303efcf6e87bbe14"><td class="memItemLeft" align="right" valign="top"><a id="a2f6b0c102455a921303efcf6e87bbe14"></a>
+<tr class="memitem:a278c32cca1e46d03c3e7088732f222ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#a278c32cca1e46d03c3e7088732f222ae">KernelArg</a> (void *data, size_t size, bool <a class="el" href="classcudaexecutor_1_1_kernel_arg.html#aec1affc6b58089aa8fe1401765bd562a">download</a>=false, bool copy=true, bool <a class="el" href="classcudaexecutor_1_1_kernel_arg.html#a85396c4b43f3808697f94817d55ecd5d">upload</a>=true)</td></tr>
+<tr class="memdesc:a278c32cca1e46d03c3e7088732f222ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor.  <a href="#a278c32cca1e46d03c3e7088732f222ae">More...</a><br /></td></tr>
+<tr class="separator:a278c32cca1e46d03c3e7088732f222ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77205a85a94f5b5035ab597758e0f9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#af77205a85a94f5b5035ab597758e0f9d">KernelArg</a> (void *data)</td></tr>
+<tr class="separator:af77205a85a94f5b5035ab597758e0f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf9d26b5171bfd5c7ee584d3646b9c4"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#afbf9d26b5171bfd5c7ee584d3646b9c4">content</a> ()</td></tr>
+<tr class="separator:afbf9d26b5171bfd5c7ee584d3646b9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef8ff801b422c4bbe7577419243c038f"><td class="memItemLeft" align="right" valign="top">CUdeviceptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#aef8ff801b422c4bbe7577419243c038f">deviceptr</a> ()</td></tr>
+<tr class="separator:aef8ff801b422c4bbe7577419243c038f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85396c4b43f3808697f94817d55ecd5d"><td class="memItemLeft" align="right" valign="top"><a id="a85396c4b43f3808697f94817d55ecd5d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#a85396c4b43f3808697f94817d55ecd5d">upload</a> ()</td></tr>
+<tr class="memdesc:a85396c4b43f3808697f94817d55ecd5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">uploads data to device <br /></td></tr>
+<tr class="separator:a85396c4b43f3808697f94817d55ecd5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec1affc6b58089aa8fe1401765bd562a"><td class="memItemLeft" align="right" valign="top"><a id="aec1affc6b58089aa8fe1401765bd562a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel_arg.html#aec1affc6b58089aa8fe1401765bd562a">download</a> ()</td></tr>
+<tr class="memdesc:aec1affc6b58089aa8fe1401765bd562a"><td class="mdescLeft">&#160;</td><td class="mdescRight">downloads data to host <br /></td></tr>
+<tr class="separator:aec1affc6b58089aa8fe1401765bd562a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b3e00b56f2543ee9cff0036b1608a2"><td class="memItemLeft" align="right" valign="top"><a id="a49b3e00b56f2543ee9cff0036b1608a2"></a>
 const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</td></tr>
-<tr class="separator:a2f6b0c102455a921303efcf6e87bbe14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a49b3e00b56f2543ee9cff0036b1608a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to help launch <a class="el" href="classcudaexecutor_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> with given arguments Arguments are automatically uploaded and downloaded. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_program_8cpp-example.html#_a1">example_program.cpp</a>.</dd>
+<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_program_8cpp-example.html#_a1">example_program.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1f7b3471c2e769716e32cb0e0a7a00e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f7b3471c2e769716e32cb0e0a7a00e5">&#9670;&nbsp;</a></span>ProgramArg() <span class="overload">[1/2]</span></h2>
+<a id="a278c32cca1e46d03c3e7088732f222ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a278c32cca1e46d03c3e7088732f222ae">&#9670;&nbsp;</a></span>KernelArg() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ProgramArg::ProgramArg </td>
+          <td class="memname">cudaexecutor::KernelArg::KernelArg </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -162,8 +156,8 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
 
 </div>
 </div>
-<a id="aeeea9f89e703697602ac3633d5102788"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeeea9f89e703697602ac3633d5102788">&#9670;&nbsp;</a></span>ProgramArg() <span class="overload">[2/2]</span></h2>
+<a id="af77205a85a94f5b5035ab597758e0f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af77205a85a94f5b5035ab597758e0f9d">&#9670;&nbsp;</a></span>KernelArg() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +166,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">cudaexecutor::ProgramArg::ProgramArg </td>
+          <td class="memname">cudaexecutor::KernelArg::KernelArg </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -195,14 +189,14 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8f8f190ad175a5d413365dea580bbfb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f8f190ad175a5d413365dea580bbfb2">&#9670;&nbsp;</a></span>content()</h2>
+<a id="afbf9d26b5171bfd5c7ee584d3646b9c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf9d26b5171bfd5c7ee584d3646b9c4">&#9670;&nbsp;</a></span>content()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const void * ProgramArg::content </td>
+          <td class="memname">const void * KernelArg::content </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -213,8 +207,8 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
 
 </div>
 </div>
-<a id="a7d8acb380943cec67e2e94aed2a2f49a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d8acb380943cec67e2e94aed2a2f49a">&#9670;&nbsp;</a></span>deviceptr()</h2>
+<a id="aef8ff801b422c4bbe7577419243c038f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef8ff801b422c4bbe7577419243c038f">&#9670;&nbsp;</a></span>deviceptr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +217,7 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">CUdeviceptr cudaexecutor::ProgramArg::deviceptr </td>
+          <td class="memname">CUdeviceptr cudaexecutor::KernelArg::deviceptr </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -240,8 +234,8 @@ const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/cudaexecutor/<a class="el" href="_program_arg_8hpp_source.html">ProgramArg.hpp</a></li>
-<li>src/ProgramArg.cpp</li>
+<li>include/cudaexecutor/<a class="el" href="_kernel_arg_8hpp_source.html">KernelArg.hpp</a></li>
+<li>src/KernelArg.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
