@@ -3,35 +3,35 @@ public class ValueArg extends KernelArg {
 
     private final static byte FLOAT = 1, INT = 2, LONG = 3, DOUBLE = 4, BOOLEAN = 5;
 
-    public static ValueArg create(float value){
+    public static ValueArg create(float value) {
         ValueArg arg = createInternal(value);
         arg.type = FLOAT;
 
         return arg;
     }
 
-    public static ValueArg create(int value){
+    public static ValueArg create(int value) {
         ValueArg arg = createInternal(value);
         arg.type = INT;
 
         return arg;
     }
 
-    public static ValueArg create(long value){
+    public static ValueArg create(long value) {
         ValueArg arg = createInternal(value);
         arg.type = LONG;
 
         return arg;
     }
 
-    public static ValueArg create(double value){
+    public static ValueArg create(double value) {
         ValueArg arg = createInternal(value);
         arg.type = DOUBLE;
 
         return arg;
     }
 
-    public static ValueArg create(boolean value){
+    public static ValueArg create(boolean value) {
         ValueArg arg = createInternal(value);
         arg.type = BOOLEAN;
 
@@ -44,31 +44,31 @@ public class ValueArg extends KernelArg {
     private static native ValueArg createInternal(double value);
     private static native ValueArg createInternal(boolean value);
 
-    public float asFloat(){
+    public float asFloat() {
         assert(type == FLOAT);
 
         return asFloatInternal();
     }
 
-    public int asInt(){
+    public int asInt() {
         assert(type == INT);
 
         return asIntInternal();
     }
 
-    public long asLong(){
+    public long asLong() {
         assert(type == LONG);
 
         return asLongInternal();
     }
 
-    public double asDouble(){
+    public double asDouble() {
         assert(type == DOUBLE);
 
         return asDoubleInternal();
     }
 
-    public boolean asBoolean(){
+    public boolean asBoolean() {
         assert(type == BOOLEAN);
 
         return asBooleanInternal();
@@ -80,7 +80,7 @@ public class ValueArg extends KernelArg {
     private native double asDoubleInternal();
     private native boolean asBooleanInternal();
 
-    ValueArg(long handle){
+    ValueArg(long handle) {
         super(handle);
     }
 }

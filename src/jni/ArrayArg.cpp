@@ -113,7 +113,7 @@ jfloatArray Java_ArrayArg_asFloatArrayInternal(JNIEnv* env, jobject obj){
 jintArray Java_ArrayArg_asIntArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
-        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto data = programArgJNIPtr->getHostData();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
 
         auto res = env->NewIntArray(dataSize / sizeof(jint));
@@ -128,7 +128,7 @@ jintArray Java_ArrayArg_asIntArrayInternal(JNIEnv* env, jobject obj){
 jlongArray Java_ArrayArg_asLongArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
-        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto data = programArgJNIPtr->getHostData();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
 
         auto res = env->NewLongArray(dataSize / sizeof(jlong));
@@ -143,7 +143,7 @@ jlongArray Java_ArrayArg_asLongArrayInternal(JNIEnv* env, jobject obj){
 jdoubleArray Java_ArrayArg_asDoubleArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
-        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto data = programArgJNIPtr->getHostData();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
 
         auto res = env->NewDoubleArray(dataSize / sizeof(jdouble));
@@ -158,7 +158,7 @@ jdoubleArray Java_ArrayArg_asDoubleArrayInternal(JNIEnv* env, jobject obj){
 jbooleanArray Java_ArrayArg_asBooleanArrayInternal(JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programArgJNIPtr = getHandle<ProgramArgJNI>(env, obj);
-        auto data = programArgJNIPtr->programArgPtr()->content();
+        auto data = programArgJNIPtr->getHostData();
         auto dataSize = programArgJNIPtr->programArgPtr()->size();
 
         auto res = env->NewBooleanArray(dataSize / sizeof(jboolean));

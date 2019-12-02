@@ -3,7 +3,7 @@ import java.io.IOException;
 public class ExampleSaxpy {
 
     public static void main(String[] args) throws IOException{
-        Executor.init();
+        Executor.loadLibary();
 
         final int numThreads = 8;
         final int numBlocks = 8;

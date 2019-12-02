@@ -4,34 +4,36 @@ import java.util.Arrays;
 public class ExampleBlockReduce {
 
     public static void main(String[] args) throws IOException{
-        Executor.init();
+        Executor.loadLibary();();
+
+        int arraySize = 1024;
 
         final int SIZE_LONG = 8;
-        final int numThreads = 8;
-        final int numBlocks = 8;
+        final int numThreads = 512;
+        final int numBlocks = Math.min((arraySize + numThreads - 1) / numThreads, 1024);
 
-        //Testdata
-        long val = 32;
-        int n = 32;
+        long[] in = new long[arraySize];
+        for (int i = 0; i < in.length; i++){
+            in[i] = i;
+        }
 
         //Initialize Argument
-        KernelArg valArg = ValueArg.create(val);
-        ArrayArg outArg = ArrayArg.createOutput(n * SIZE_LONG);
-        KernelArg nArg = ValueArg.create(n);
+        ArrayArg inArg = ArrayArg.create(in, false);
+        ArrayArg outArg = ArrayArg.createOutput(arraySize * SIZE_LONG);
+        KernelArg nArg = ValueArg.create(arraySize);
 
         //Load kernelString
-        String kernelString = Utils.loadFile("block_reduce_Test.cu");
-        //Headers included in kernelString
+        String kernelString = Utils.loadFile("block_reduce.cu");
         Headers headers = Headers.createHeaders("/tmp/tmp.cTlciDtCIj/examples/kernels/block_reduce.h");
         //Create Program
-        Program blockReduce = Program.create(kernelString, "blockReduceSumTest", headers);
+        Program blockReduce = Program.create(kernelString, "deviceReduceKernel", headers);
 
         //Create Kernel
         Options options = Options.createOptions("-arch=compute_35");
         Kernel blockReduceKernel = blockReduce.compile(options);
 
         //Compile and launch Kernel
-        blockReduceKernel.launch(new KernelArg[]{valArg, outArg, nArg}, numThreads, numBlocks);
+        blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, numThreads, numBlocks);
 
         //Get Result
         long[] out = outArg.asLongArray();

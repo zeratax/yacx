@@ -29,7 +29,7 @@ public class Program extends JNIHandle {
 
     private native Kernel compileInternal(Options options);
 
-    Program(long handle){
+    Program(long handle) {
         super(handle);
     }
 }

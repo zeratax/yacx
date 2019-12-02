@@ -62,31 +62,31 @@ public class ArrayArg extends KernelArg {
 
     private static native ArrayArg createOutputInternal(long size);
 
-    public float[] asFloatArray(){
+    public float[] asFloatArray() {
         assert(type == FLOAT || type == 0);
 
         return asFloatArrayInternal();
     }
 
-    public int[] asIntArray(){
+    public int[] asIntArray() {
         assert(type == INT || type == 0);
 
         return asIntArrayInternal();
     }
 
-    public long[] asLongArray(){
+    public long[] asLongArray() {
         assert(type == LONG || type == 0);
 
         return asLongArrayInternal();
     }
 
-    public double[] asDoubleArray(){
+    public double[] asDoubleArray() {
         assert(type == DOUBLE || type == 0);
 
         return asDoubleArrayInternal();
     }
 
-    public boolean[] asBooleanArray(){
+    public boolean[] asBooleanArray() {
         assert(type == BOOLEAN || type == 0);
 
         return asBooleanArrayInternal();
@@ -98,7 +98,7 @@ public class ArrayArg extends KernelArg {
     private native double[] asDoubleArrayInternal();
     private native boolean[] asBooleanArrayInternal();
 
-    ArrayArg(long handle){
+    ArrayArg(long handle) {
         super(handle);
     }
 }
