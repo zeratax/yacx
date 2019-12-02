@@ -14,7 +14,7 @@ Device::Device() {
   CUDA_SAFE_CALL(cuDeviceGet(&device, 0));
   this->set_device_properties(device);
 }
-cudaexecutor::Device::Device(std::string name) {
+Device::Device(std::string name) {
   int number{};
   char cname[50];
   CUdevice device;
@@ -36,8 +36,8 @@ cudaexecutor::Device::Device(std::string name) {
   std::copy(devices.begin(), devices.end(),
             std::experimental::make_ostream_joiner(buffer, ", "));
   throw std::invalid_argument(
-      "Could not find device with this name! Available devices : " +
-      buffer.str());
+      "Could not find device with this name! Available devices: [" +
+      buffer.str() + ']');
 }
 
 void Device::set_device_properties(const CUdevice &device) {
