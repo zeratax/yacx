@@ -34,13 +34,13 @@ class Kernel {
   Kernel &launch(std::vector<ProgramArg> program_args, Device device = Device());
 
  private:
-  std::shared_ptr<char[]> _ptx; // shared pointer?
-  std::string _demangled_name;
+  std::shared_ptr<char[]> m_ptx; // shared pointer?
+  std::string m_demangled_name;
 
-  dim3 _grid, _block;
-  CUcontext _context;
-  CUmodule _module;
-  CUfunction _kernel;
+  dim3 m_grid, m_block;
+  CUcontext m_context;
+  CUmodule m_module;
+  CUfunction m_kernel;
 };
 
 } // namespace cudaexecutor

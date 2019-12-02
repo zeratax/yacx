@@ -49,19 +49,19 @@ class Program : JNIHandle {
   Kernel compile(const Options &options = Options());
   //!
   //! \return log of compilation
-  [[nodiscard]] std::string log() const { return _log; }
+  [[nodiscard]] std::string log() const { return m_log; }
 
  private:
-  std::vector<std::string> _template_parameters;
-  std::string _kernel_name, _name_expression, _log;
-  std::shared_ptr<nvrtcProgram> _prog;
+  std::vector<std::string> m_template_parameters;
+  std::string m_kernel_name, m_name_expression, m_log;
+  std::shared_ptr<nvrtcProgram> m_prog;
 };
 
 template <typename T> Program &Program::instantiate(T type) {
   static_assert(is_string<T>::value, "must be stringable");
   std::ostringstream buffer;
   buffer << type << std::flush;
-  _template_parameters.push_back(buffer.str());
+  m_template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
   return *this;
 }
@@ -71,7 +71,7 @@ Program &Program::instantiate(T type, TS... types) {
   static_assert(is_string<T>::value, "must be stringable");
   std::ostringstream buffer;
   buffer << type << std::flush;
-  _template_parameters.push_back(buffer.str());
+  m_template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
   return Program::instantiate(types...);
 }

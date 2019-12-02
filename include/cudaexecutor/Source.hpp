@@ -29,8 +29,8 @@ class Source {
   Program program(const std::string &kernel_name);
 
  private:
-  std::string _kernel_string;
-  Headers _headers;
+  std::string m_kernel_string;
+  Headers m_headers;
 };
 
 } // namespace cudaexecutor

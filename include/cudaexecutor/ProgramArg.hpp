@@ -33,19 +33,19 @@ class ProgramArg {
   const void *content();
   //!
   //! \return pointer to device data
-  CUdeviceptr deviceptr() { return _ddata; }
+  CUdeviceptr deviceptr() { return m_ddata; }
   //! uploads data to device
   void upload();
   //! downloads data to host
   void download();
-  const size_t size() { return _size; }
+  const size_t size() { return m_size; }
 
  private:
-  const void *_hdata;
-  const size_t _size;
-  CUdeviceptr _ddata;
-  const bool _download;
-  const bool _copy;
-  const bool _upload;
+  const void *m_hdata;
+  const size_t m_size;
+  CUdeviceptr m_ddata;
+  const bool m_download;
+  const bool m_copy;
+  const bool m_upload;
 };
 } // namespace cudaexecutor

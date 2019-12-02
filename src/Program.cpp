@@ -14,16 +14,16 @@ using cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::Options,
     cudaexecutor::detail::whichError, cudaexecutor::detail::descriptionFkt;
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
-    : _kernel_name{std::move(kernel_name)}, _prog{std::move(prog)} {
-  logger(loglevel::DEBUG) << "created Program " << _kernel_name;
+    : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
+  logger(loglevel::DEBUG) << "created Program " << m_kernel_name;
   CUDA_SAFE_CALL(cuInit(0));
 }
 
 Program::~Program() {
   // Exceptions in destructor usually a bad idea??
   // Release resources.
-  logger(loglevel::DEBUG) << "destroying Program " << _kernel_name;
-  nvrtcResult error = nvrtcDestroyProgram(_prog.get());
+  logger(loglevel::DEBUG) << "destroying Program " << m_kernel_name;
+  nvrtcResult error = nvrtcDestroyProgram(m_prog.get());
   if (error != NVRTC_SUCCESS) {
     auto description = whichError(error);
     std::cout << descriptionFkt(description) << std::endl;
@@ -32,50 +32,50 @@ Program::~Program() {
 
 Kernel Program::compile(const Options &options) {
   logger(loglevel::INFO) << "compiling Program";
-  if (!_template_parameters.empty()) {
+  if (!m_template_parameters.empty()) {
     logger(loglevel::DEBUG) << "with following template parameters:";
-    for (auto &parameter : _template_parameters)
+    for (auto &parameter : m_template_parameters)
       logger(loglevel::DEBUG) << parameter;
 
     std::ostringstream buffer;
-    std::copy(_template_parameters.begin(), _template_parameters.end(),
+    std::copy(m_template_parameters.begin(), m_template_parameters.end(),
               std::experimental::make_ostream_joiner(buffer, ", "));
-    _name_expression = _kernel_name + "<" + buffer.str() + ">";
+    m_name_expression = m_kernel_name + "<" + buffer.str() + ">";
 
     logger(loglevel::DEBUG)
         << "which results in the following name expression: "
-        << _name_expression;
-    NVRTC_SAFE_CALL(nvrtcAddNameExpression(*_prog, _name_expression.c_str()));
+        << m_name_expression;
+    NVRTC_SAFE_CALL(nvrtcAddNameExpression(*m_prog, m_name_expression.c_str()));
   } else {
     logger(loglevel::DEBUG1) << "with no template parameters";
   }
 
   nvrtcResult compileResult =
-      nvrtcCompileProgram(*_prog, options.numOptions(), options.options());
+      nvrtcCompileProgram(*m_prog, options.numOptions(), options.options());
 
   size_t logSize;
-  NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*_prog, &logSize));
+  NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*m_prog, &logSize));
   auto clog = std::make_unique<char[]>(logSize);
-  NVRTC_SAFE_CALL(nvrtcGetProgramLog(*_prog, clog.get()));
-  _log = clog.get();
+  NVRTC_SAFE_CALL(nvrtcGetProgramLog(*m_prog, clog.get()));
+  m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    logger(loglevel::ERROR) << _log;
+    logger(loglevel::ERROR) << m_log;
     NVRTC_SAFE_CALL(compileResult);
   }
 
   size_t ptxSize;
-  NVRTC_SAFE_CALL(nvrtcGetPTXSize(*_prog, &ptxSize));
+  NVRTC_SAFE_CALL(nvrtcGetPTXSize(*m_prog, &ptxSize));
   auto ptx = std::make_unique<char[]>(ptxSize);
-  NVRTC_SAFE_CALL(nvrtcGetPTX(*_prog, ptx.get()));
+  NVRTC_SAFE_CALL(nvrtcGetPTX(*m_prog, ptx.get()));
 
   logger(loglevel::INFO) << "Program compiled";
   // lowered name
-  const char *name = _kernel_name.c_str(); // copy??
-  if (!_name_expression.empty()) {
+  const char *name = m_kernel_name.c_str(); // copy??
+  if (!m_name_expression.empty()) {
     logger(loglevel::DEBUG) << "getting lowered name for function";
     NVRTC_SAFE_CALL(
-        nvrtcGetLoweredName(*_prog, _name_expression.c_str(), &name))
+        nvrtcGetLoweredName(*m_prog, m_name_expression.c_str(), &name))
   }
   // templated kernel string needs to be demangled to launch
   return Kernel{std::move(ptx), std::string{name}};

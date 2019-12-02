@@ -14,21 +14,21 @@ class Device {
  public:
   Device();
   explicit Device(std::string name);
-  [[nodiscard]] int minor() const { return _minor; }
-  [[nodiscard]] int major() const { return _major; }
-  std::string name() const { return _name; }
-  CUdevice get() { return _device; }
-  size_t total_memory() { return _memory; }
+  [[nodiscard]] int minor() const { return m_minor; }
+  [[nodiscard]] int major() const { return m_major; }
+  std::string name() const { return m_name; }
+  CUdevice get() { return m_device; }
+  size_t total_memory() { return m_memory; }
   void max_block_dim(dim3 *block);
   void max_grid_dim(dim3 *grid);
 
  private:
   void set_device_properties(const CUdevice &device);
 
-  int _minor, _major;
-  std::string _name;
-  CUdevice _device;
-  size_t _memory;
+  int m_minor, m_major;
+  std::string m_name;
+  CUdevice m_device;
+  size_t m_memory;
 };
 
 } // namespace cudaexecutor

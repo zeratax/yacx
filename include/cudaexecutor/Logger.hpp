@@ -31,25 +31,25 @@ class logIt {
   //! \param line line where the logger was called
   logIt(loglevel level, loglevel current_level, const char *file,
         const int line)
-      : _level{level}, _current_level{current_level} {
-    _buffer << "LOGGER:[" << file << ":" << line << "]: ";
+      : m_level{level}, m_current_level{current_level} {
+    m_buffer << "LOGGER:[" << file << ":" << line << "]: ";
   }
 
   template <typename T> logIt &operator<<(T const &value) {
-    _buffer << value;
+    m_buffer << value;
     return *this;
   }
 
   ~logIt() {
-    _buffer << std::endl;
-    if (static_cast<int>(_level) <= static_cast<int>(_current_level))
-      std::cerr << _buffer.str();
+    m_buffer << std::endl;
+    if (static_cast<int>(m_level) <= static_cast<int>(m_current_level))
+      std::cerr << m_buffer.str();
   }
 
  private:
-  loglevel _level;
-  loglevel _current_level;
-  std::ostringstream _buffer;
+  loglevel m_level;
+  loglevel m_current_level;
+  std::ostringstream m_buffer;
 }; // namespace cudaexecutor
 
 //! set log level at compilation
