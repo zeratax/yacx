@@ -39,6 +39,9 @@ out
 *.cubin
 *.ptx
 
+# Output
+examples/kernels/output.ppm
+
 # EXTERNAL
 include/catch2
 

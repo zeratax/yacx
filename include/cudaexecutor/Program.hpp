@@ -1,17 +1,19 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
 #include "Exception.hpp"
 #include "Kernel.hpp"
 #include "Logger.hpp"
 #include "Options.hpp"
 #include "ProgramArg.hpp"
+#include "util.hpp"
 #include "JNIHandle.hpp"
 
 #include <cuda.h>
+#include <iostream>
+#include <memory>
 #include <nvrtc.h>
+#include <string>
+#include <vector>
 #include <vector_types.h>
 
 namespace cudaexecutor {
@@ -25,7 +27,7 @@ class Program : JNIHandle {
   //!
   //! \param function_name function name in kernel string
   //! \param prog
-  Program(std::string function_name, nvrtcProgram prog);
+  Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog);
   ~Program();
   //! instantiate template parameter
   //! \tparam T
@@ -41,29 +43,35 @@ class Program : JNIHandle {
   template <typename T, typename... TS>
   Program &instantiate(T type, TS... types);
   //! compile Program to Kernel
-  //! \param options see <a href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__options">NVRTC documentation</a> for supported Options
-  //! \return a compiled Kernel
+  //! \param options see <a
+  //! href="https://docs.nvidia.com/cuda/nvrtc/index.html#group__options">NVRTC
+  //! documentation</a> for supported Options \return a compiled Kernel
   Kernel compile(const Options &options = Options());
   //!
   //! \return log of compilation
   [[nodiscard]] std::string log() const { return _log; }
 
  private:
-  char *_ptx; // shared pointer?
   std::vector<std::string> _template_parameters;
   std::string _kernel_name, _name_expression, _log;
-  nvrtcProgram _prog;
+  std::shared_ptr<nvrtcProgram> _prog;
 };
 
 template <typename T> Program &Program::instantiate(T type) {
-  _template_parameters.push_back(type);
+  static_assert(is_string<T>::value, "must be stringable");
+  std::ostringstream buffer;
+  buffer << type << std::flush;
+  _template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
   return *this;
 }
 
 template <typename T, typename... TS>
 Program &Program::instantiate(T type, TS... types) {
-  _template_parameters.push_back(type);
+  static_assert(is_string<T>::value, "must be stringable");
+  std::ostringstream buffer;
+  buffer << type << std::flush;
+  _template_parameters.push_back(buffer.str());
   logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
   return Program::instantiate(types...);
 }

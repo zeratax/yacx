@@ -1,4 +1,4 @@
-#include "../include/cudaexecutor/Headers.hpp"
+#include "cudaexecutor/Headers.hpp"
 
 #include <algorithm>
 #include <cstdio>

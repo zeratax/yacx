@@ -26,12 +26,11 @@ class Source {
   //! create a Program
   //! \param function_name kernel name in kernel string
   //! \return a Program
-  Program program(const std::string &function_name);
+  Program program(const std::string &kernel_name);
 
  private:
   std::string _kernel_string;
   Headers _headers;
-  nvrtcProgram *_prog = nullptr;
 };
 
 } // namespace cudaexecutor

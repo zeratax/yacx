@@ -1,8 +1,8 @@
-#include "../include/cudaexecutor/main.hpp"
+#include "cudaexecutor/main.hpp"
 
 using cudaexecutor::Source, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+    cudaexecutor::type_of;
 
 int main() {
   int result{};
