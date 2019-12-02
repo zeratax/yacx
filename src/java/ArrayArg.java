@@ -101,4 +101,9 @@ public class ArrayArg extends KernelArg {
     ArrayArg(long handle) {
         super(handle);
     }
+
+    @Override
+    public String toString() {
+        return "ArrayArg (Type: " + type + ") " + super.toString();
+    }
 }

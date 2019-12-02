@@ -3,7 +3,7 @@
 #include "../../include/cudaexecutor/Options.hpp"
 #include "../../include/cudaexecutor/Logger.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Options;
+using cudaexecutor::Options;
 
 jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
     BEGIN_TRY

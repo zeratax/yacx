@@ -39,6 +39,28 @@ public class Kernel extends JNIHandle {
 
     public native void launchInternel(KernelArg[] args);
 
+    public void launch(KernelArg[] args, Device device) {
+        assert(args != null);
+        assert(device != null);
+        if (!configured)
+            throw new ExecutorFailureException("Kernel not configured");
+
+        launchInternel(args, device);
+    }
+
+    public native void launchInternel(KernelArg[] args, Device device);
+
+    public void launch(KernelArg[] args, String devicename) {
+        assert(args != null);
+        assert(devicename != null && devicename.length() > 0);
+        if (!configured)
+            throw new ExecutorFailureException("Kernel not configured");
+
+        launchInternel(args, devicename);
+    }
+
+    public native void launchInternel(KernelArg[] args, String devicename);
+
     Kernel(long handle) {
         super(handle);
 

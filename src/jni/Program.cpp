@@ -7,7 +7,7 @@
 #include "../../include/cudaexecutor/Options.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Headers, cudaexecutor::Options, cudaexecutor::Kernel;
+using cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Headers, cudaexecutor::Options, cudaexecutor::Kernel;
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY

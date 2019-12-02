@@ -83,4 +83,9 @@ public class ValueArg extends KernelArg {
     ValueArg(long handle) {
         super(handle);
     }
+
+    @Override
+    public String toString(){
+        return "ValueArg (Type: " + type + ") " + super.toString();
+    }
 }

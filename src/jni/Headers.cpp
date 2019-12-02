@@ -3,7 +3,7 @@
 #include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Headers.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Headers;
+using cudaexecutor::Headers;
 
 jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     BEGIN_TRY

@@ -55,4 +55,9 @@ public class Headers extends JNIHandle {
     Headers(long handle) {
         super(handle);
     }
+
+    @Override
+    public String toString(){
+        return "Headers " + names();
+    }
 }

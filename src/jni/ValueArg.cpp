@@ -5,7 +5,7 @@
 #include "../../include/cudaexecutor/Program.hpp"
 #include "../../include/cudaexecutor/KernelArg.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::KernelArg, jni::KernelArgJNI;
+using cudaexecutor::Program, cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 template <typename T>
 jobject createKernelArg (JNIEnv* env, jclass cls, T value){

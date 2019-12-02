@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Options extends JNIHandle {
 
     public static Options createOptions(String option) {
@@ -31,5 +33,10 @@ public class Options extends JNIHandle {
 
     Options(long handle) {
         super(handle);
+    }
+
+    @Override
+    public String toString(){
+        return "Options " + Arrays.toString(options());
     }
 }

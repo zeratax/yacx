@@ -5,7 +5,7 @@
 #include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/KernelArg.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::KernelArg, jni::KernelArgJNI;
+using cudaexecutor::Kernel, cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid1, jint jgrid2, jint jgrid3, jint jblock1, jint jblock2, jint jblock3)
 {

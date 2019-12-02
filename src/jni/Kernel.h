@@ -20,8 +20,24 @@ JNIEXPORT void JNICALL Java_Kernel_configureInternal
  * Method:    launchInternel
  * Signature: ([LKernelArg;)V
  */
-JNIEXPORT void JNICALL Java_Kernel_launchInternel
+JNIEXPORT void JNICALL Java_Kernel_launchInternel___3LKernelArg_2
   (JNIEnv *, jobject, jobjectArray);
+
+/*
+ * Class:     Kernel
+ * Method:    launchInternel
+ * Signature: ([LKernelArg;LDevice;)V
+ */
+JNIEXPORT void JNICALL Java_Kernel_launchInternel___3LKernelArg_2LDevice_2
+  (JNIEnv *, jobject, jobjectArray, jobject);
+
+/*
+ * Class:     Kernel
+ * Method:    launchInternel
+ * Signature: ([LKernelArg;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_Kernel_launchInternel___3LKernelArg_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jobjectArray, jstring);
 
 #ifdef __cplusplus
 }

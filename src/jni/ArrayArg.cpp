@@ -5,7 +5,7 @@
 #include "../../include/cudaexecutor/Program.hpp"
 #include "../../include/cudaexecutor/KernelArg.hpp"
 
-using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::KernelArg, jni::KernelArgJNI;
+using cudaexecutor::Program, cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 jobject Java_ArrayArg_createInternal___3FZ(JNIEnv* env, jclass cls, jfloatArray jarray, jboolean output){
     BEGIN_TRY
