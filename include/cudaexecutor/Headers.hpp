@@ -44,7 +44,7 @@ class Headers {
   /*!
   \class Headers Headers.hpp
   \brief List of Header for Source
-  \example headersexample.cpp
+  \example docs/headers.cpp
 */
  public:
   Headers() {}

@@ -47,3 +47,4 @@ include/catch2
 
 # documentation
 docs/
+!examples/docs/

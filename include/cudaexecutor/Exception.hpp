@@ -48,7 +48,7 @@ std::string whichError(const nvrtcResult &error);
   \class CUresultException Exception.hpp
   \brief Exception class for CUDA driver api errors
   \tparam name Name of the CUDA Error, e.g. <code>CUDA_ERROR_NO_DEVICE</code>
-  \example cudaexception.cpp
+  \example docs/cudaexeption.cpp
 */
 template <CUresult name = (CUresult)0>
 class CUresultException : public std::exception {
@@ -71,7 +71,7 @@ class CUresultException : public std::exception {
   \brief Exception class for NVRTC errors
   \tparam name Name of the NVRTC Error, e.g.
   <code>NVRTC_ERROR_OUT_OF_MEMORY</code>
-  \example nvrtcexception.cpp
+  \example docs/nvrtcexception.cpp
 */
 template <nvrtcResult name = (nvrtcResult)0>
 class nvrtcResultException : public std::exception {

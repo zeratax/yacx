@@ -1,15 +1,14 @@
 #include "cudaexecutor/Exception.hpp"
+#include <nvrtc.h>
 
-using cudaexecutor::CUresultException;
+using cudaexecutor::nvrtcResultException;
 
-int nBytes = 10;
-CUdeviceptr d_A;
 try {
-  checkCUresultError(cuMemAlloc(&d_A, (unsigned int)nBytes));
-} catch (CUresultException<(CUresult)1> &e) { // CUDA_ERROR_INVALID_VALUE
+  NVRTC_SAFE_CALL(nvrtcCompileProgram(nullptr, 0, NULL));
+} catch (nvrtcResultException<(nvrtcResult)1> &e) {
   std::cout << "Wrong Exception caught" << std::endl;
   std::cout << e.what() << std::endl;
-} catch (CUresultException<CUDA_ERROR_NOT_INITIALIZED> &e) {
+} catch (nvrtcResultException<NVRTC_ERROR_COMPILATION> &e) {
   std::cout << "Correct Exception caught" << std::endl;
   std::cout << e.what() << std::endl;
 } catch (std::exception &e) {

@@ -15,7 +15,7 @@ namespace cudaexecutor {
 /*!
   \class Options Options.hpp
   \brief Options for compiling a Program
-  \example options_construct.cpp
+  \example docs/options_construct.cpp
 */
 class Options : JNIHandle {
  public:

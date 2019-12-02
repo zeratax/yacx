@@ -22,20 +22,20 @@ class Device {
   //! \param name Name of the cuda device, e.g.'Tesla K20c'
   explicit Device(std::string name);
   //! Minor compute capability version number
-  //! \return
+  //! \return version number
   [[nodiscard]] int minor() const { return m_minor; }
   //! Major compute capability version number
-  //! \return
+  //! \return version number
   [[nodiscard]] int major() const { return m_major; }
   //! identifer string for the device
-  //! \return
+  //! \return identifer string
   std::string name() const { return m_name; }
   //!
   //! \return
   CUdevice get() { return m_device; }
   //! Memory available on device for __constant__ variables in a CUDA C kernel
   //! in bytes
-  //! \return
+  //! \return Memory in bytes
   size_t total_memory() { return m_memory; }
   //!
   //! \param block returns block with maximum dimension
