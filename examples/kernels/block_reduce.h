@@ -3,9 +3,9 @@
 #include "warp_reduce.h"
 
 __inline__ __device__
-long long blockReduceSum(long long val) {
+long blockReduceSum(long val) {
 
-    static __shared__ long long shared[32]; // Shared mem for 32 partial sums
+    static __shared__ long shared[32]; // Shared mem for 32 partial sums
     int lane = threadIdx.x % warpSize;
     int wid = threadIdx.x / warpSize;
 

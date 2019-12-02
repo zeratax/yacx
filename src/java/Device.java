@@ -22,7 +22,7 @@ public class Device extends JNIHandle {
 
     @Override
     public String toString(){
-        return "Device: " + getName() + " (Memory: " + getMemorySize() + " Bytes, Blocks: " + Arrays.toString(getMaxBlock())
+        return "Device: " + getName() + " (Memory: " + getMemorySize()/1024/1024 + " MebiBytes, Blocks: " + Arrays.toString(getMaxBlock())
             + ", Grids: " + Arrays.toString(getMaxGrid()) + ")";
     }
 }

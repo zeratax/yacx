@@ -4,12 +4,13 @@ import java.util.Arrays;
 public class ExampleBlockReduce {
     private static final int SIZE_LONG = 8;
 
+    //TODO False Result
     public static void main(String[] args) throws IOException {
         //Load Libary
         Executor.loadLibary();
 
         //Testdata
-        int arraySize = 1024;
+        int arraySize = 16;
 
         final int numThreads = 512;
         final int numBlocks = Math.min((arraySize + numThreads - 1) / numThreads, 1024);
@@ -26,15 +27,11 @@ public class ExampleBlockReduce {
 
         //Load kernelString
         String kernelString = Utils.loadFile("block_reduce.cu");
-        //Set required Headers
-        Headers headers = Headers.createHeaders("/tmp/tmp.cTlciDtCIj/examples/kernels/block_reduce.h");
         //Create Program
-        Program blockReduce = Program.create(kernelString, "deviceReduceKernel", headers);
+        Program blockReduce = Program.create(kernelString, "deviceReduceKernel");
 
         //Create compiled Kernel
-        //with kerneloption
-        Options options = Options.createOptions("-arch=compute_35");
-        Kernel blockReduceKernel = blockReduce.compile(options);
+        Kernel blockReduceKernel = blockReduce.compile();
 
         //Compile and launch Kernel
         blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, numThreads, numBlocks);
