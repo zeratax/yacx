@@ -15,7 +15,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/matrixMult.cu
 
 
 add_executable(example_saxpy ${SOURCES} example_saxpy.cpp)
+add_executable(example_gauss ${SOURCES} example_gauss.cpp)
 add_executable(example_program ${SOURCES} example_program.cpp)
 add_executable(example_template ${SOURCES} example_template.cpp)
 add_executable(example_matrix_multiply ${SOURCES} example_matrix_multiply.cpp)
-add_executable(example_gauss ${SOURCES} example_gauss.cpp)

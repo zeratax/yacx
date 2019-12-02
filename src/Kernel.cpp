@@ -37,7 +37,7 @@ Kernel &Kernel::launch(std::vector<ProgramArg> args, Device device) {
       cuModuleGetFunction(&_kernel, _module, _demangled_name.c_str()));
 
   logger(loglevel::INFO) << "launching " << _demangled_name;
-  CUDA_SAFE_CALL(cuCtxSynchronize());
+  //CUDA_SAFE_CALL(cuCtxSynchronize());
   CUDA_SAFE_CALL(cuLaunchKernel(_kernel, // function from program
                                 _grid.x, _grid.y, _grid.z,    // grid dim
                                 _block.x, _block.y, _block.z, // block dim

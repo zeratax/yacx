@@ -2,6 +2,9 @@
 #include "cudaexecutor/Exception.hpp"
 #include "cudaexecutor/Logger.hpp"
 
+#include <experimental/iterator>
+#include <vector>
+
 using cudaexecutor::Device, cudaexecutor::CUresultException,
     cudaexecutor::loglevel;
 
@@ -15,6 +18,7 @@ cudaexecutor::Device::Device(std::string name) {
   int number{};
   char cname[50];
   CUdevice device;
+  std::vector<std::string> devices;
 
   CUDA_SAFE_CALL(cuInit(0));
   CUDA_SAFE_CALL(cuDeviceGetCount(&number));
@@ -26,8 +30,14 @@ cudaexecutor::Device::Device(std::string name) {
       this->set_device_properties(device);
       return;
     }
+    devices.push_back(std::string{cname});
   }
-  throw std::invalid_argument("Could not find device with this name!");
+  std::ostringstream buffer;
+  std::copy(devices.begin(), devices.end(),
+            std::experimental::make_ostream_joiner(buffer, ", "));
+  throw std::invalid_argument(
+      "Could not find device with this name! Available devices : " +
+      buffer.str());
 }
 
 void Device::set_device_properties(const CUdevice &device) {
