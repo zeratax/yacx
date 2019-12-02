@@ -5,51 +5,57 @@ wrapper to easily compile and execute cuda kernels
 ## Usage
 
 ```c++
+#include "cudaexecutor/main.hpp"
 #include <array>
-#include "../include/cudaexecutor/main.hpp"
+#include <experimental/iterator>
 
-using cudaexecutor::Program, cudaexecutor::ProgramArg, cudaexecutor::Kernel,
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of, cudaexecutor::to_comma_separated;
+    cudaexecutor::type_of;
 
 int main() {
-  std::array<int, 5> array{5, 3, 3, 2, 7};
-  int data{8};
-  std::string kernel_string = "template<typename type, int size>"\
-    "__global__ void setKernel(type[] c, type val) {"\
-    "   auto idx = threadIdx.x * size;"\
-    "   #pragma unroll(size)"\
-    "   for (auto i = 0; i < size; i++) {"\
-    "       c[idx] = val;"\
-    "       idx++;"\
-    "   }"\
-    "}"
-
+  std::array<int, 32> array;
+  array.fill(0);
+  int data{1};
   try {
     Device device;
     Options options{cudaexecutor::options::GpuArchitecture(device),
                     cudaexecutor::options::FMAD(false)};
-    // Program program{load("./examples/kernel/program.cu")};
-    Program program{kernel_string};
+    options.insert("--std", "c++14");
+    Source source{
+        "template<typename type, int size>\n"
+        "__global__ void my_kernel(type* c, type val) {\n"
+        "    auto idx = blockIdx.x * blockDim.x + threadIdx.x;\n"
+        "\n"
+        "    #pragma unroll(size)\n"
+        "    for (auto i = idx * size; i < idx * size + size; i++) {\n"
+        "        c[i] = idx + val;\n"
+        "    }\n"
+        "}"};
 
-    std::vector<ProgramArg> program_args;
-    program_args.emplace_back(ProgramArg{array.data(), sizeof(int) * 5, true});
-    program_args.emplace_back(ProgramArg{&data});
+    std::vector<KernelArg> args;
+    args.emplace_back(
+        KernelArg{array.data(), sizeof(int) * array.size(), true});
+    args.emplace_back(KernelArg{&data});
 
-    dim3 grid(1);
+    dim3 grid(8);
     dim3 block(1);
-    program
-        .kernel("my_kernel")
-        .instantiate(type_of(data), 5)
+    source.program("my_kernel")
+        .instantiate(type_of(data), 4)
         .compile(options)
         .configure(grid, block)
-        .launch(program_args);
+        .launch(args, device);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
+    exit(1);
   }
 
-  std::vector<int> vec(array.begin(), array.end());
-  std::cout << to_comma_separated(vec) << std::endl;
+  std::cout << '\n';
+  std::copy(array.begin(), array.end(),
+            std::experimental::make_ostream_joiner(std::cout, ", "));
+  std::cout << std::endl;
+   
+  // 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8
 
   return 0;
 }
@@ -80,4 +86,5 @@ For more info run `./bin/tester -?`
   - <https://docs.nvidia.com/cuda/nvrtc/index.html>
 - Similar Projects:
   - <https://github.com/mgopshtein/cudacpp/blob/master/examples/invoke-rtc.cpp>
-  - <https://github.com/NVIDIA/jitify>
+  - [Jitify](https://github.com/NVIDIA/jitify)
+  - [OCAL](https://doi.org/10.1109/PADSW.2018.8644541)

@@ -19,10 +19,10 @@ namespace cudaexecutor {
 class Kernel {
  public:
   //! create a Kernel based on a templated kernel string
-  //! \param _ptx
+  //! \param ptx
   //! \param kernel_name
   //! \param demangled_name
-  Kernel(std::shared_ptr<char[]> _ptx, std::string demangled_name);
+  Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name);
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
