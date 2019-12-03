@@ -60,7 +60,7 @@ class logIt {
   else                                                                              \
     cudaexecutor::logIt(level, cudaexecutor::current_log_level, __FILE__, __LINE__)
 #else
-#define logger(level) logIt(level, loglevel::ERROR, __FILE__, __LINE__)
+#define logger(level) cudaexecutor::logIt(level, cudaexecutor::loglevel::ERROR, __FILE__, __LINE__)
 #endif
 
 } // namespace cudaexecutor

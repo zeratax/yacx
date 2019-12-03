@@ -53,6 +53,6 @@ public class ExampleSaxpy {
         }
 
          if (correct)
-             System.out.println("Everything was calculated correctly!!!");
+             System.out.println("\nEverything was calculated correctly!!!");
     }
 }

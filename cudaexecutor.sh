@@ -42,7 +42,7 @@ if [ "$1" != "" ]; then
         case $1 in
             --buildj                 )   buildj
                                          ;;
-            --execute-java | --exej  )   exej "ExampleSaxpy"
+            --execute-java | --exej  )   exej $2
                                          ;;
             --builds                 )   buildj
                                          ;;
