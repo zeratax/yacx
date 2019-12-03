@@ -4,8 +4,9 @@
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::KernelTime, cudaexecutor::Device, cudaexecutor::load;
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::KernelArgs,
+    cudaexecutor::Kernel, cudaexecutor::KernelTime, cudaexecutor::Device,
+    cudaexecutor::load;
 
 int main() {
   const float DELTA{0.01f};
@@ -38,9 +39,10 @@ int main() {
     args.emplace_back(KernelArg{hOut.data(), bufferSize, true, false});
     args.emplace_back(KernelArg{const_cast<size_t *>(&N)});
 
+    std::cout << "===================================\n";
     std::cout << "Selected " << dev.name() << " with "
-              << (dev.total_memory() / 1024) / 1024 << "mb" << std::endl;
-    std::cout << "Arguments have a combined size of "
+              << (dev.total_memory() / 1024) / 1024 << "mb VRAM\n";
+    std::cout << "Kernel Arguments total size: "
               << ((bufferSize * 3 + 2 * sizeof(int)) / 1024) << "kb"
               << std::endl;
 
@@ -50,6 +52,11 @@ int main() {
                .compile()
                .configure(grid, block)
                .launch(args, dev);
+
+    std::cout << "Theoretical Bandwith:        "
+              << cudaexecutor::theoretical_bandwidth(dev) << " GB/s\n";
+    std::cout << "Effective Bandwith:          "
+              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);

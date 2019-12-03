@@ -1,5 +1,7 @@
 #include "cudaexecutor/KernelArgs.hpp"
 
+#include <algorithm>
+
 using cudaexecutor::KernelArgs, cudaexecutor::KernelArg;
 
 KernelArgs::KernelArgs(std::vector<KernelArg> args) : m_args{args} {}

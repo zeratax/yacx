@@ -1,4 +1,6 @@
 #pragma once
+#include "KernelArgs.hpp"
+#include "Device.hpp"
 
 typedef struct {
   float upload{0};

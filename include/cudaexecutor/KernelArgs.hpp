@@ -1,7 +1,7 @@
 #pragma once
-#include "KernelArg.hpp"
 
 #include <vector>
+#include <cuda.h>
 
 class KernelArgs {
  public:

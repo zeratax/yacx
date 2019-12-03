@@ -1,4 +1,4 @@
-#include "cudaexecutor/KernelArg.hpp"
+#include "cudaexecutor/KernelArgs.hpp"
 #include "cudaexecutor/Exception.hpp"
 #include "cudaexecutor/Logger.hpp"
 

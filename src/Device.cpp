@@ -46,41 +46,37 @@ void Device::set_device_properties(const CUdevice &device) {
   CUDA_SAFE_CALL(cuDeviceGetName(cname, 50, m_device));
   m_name = cname;
 
-  CUDA_SAFE_CALL(cuDeviceGetAttribute(
-      &m_major, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR, m_device));
-  CUDA_SAFE_CALL(cuDeviceGetAttribute(
-      &m_minor, CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR, m_device));
+  m_major = attribute(CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR);
+  m_minor = attribute(CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR);
+  m_max_shared_memory_per_block = attribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK);
+  m_multiprocessor_count = attribute(CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT);
+  m_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_CLOCK_RATE);
+  m_memory_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE);
+  m_bus_width= attribute(CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH);
+
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 }
 
 void Device::max_block_dim(dim3 *block) {
-  int x, y, z;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&x, CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X, m_device));
-  block->x = x;
+  block->x = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X);
   logger(loglevel::DEBUG1) << "block.x = " << block->x;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&y, CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y, m_device));
-  block->y = y;
+  block->y = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y);;
   logger(loglevel::DEBUG1) << "block.y = " << block->y;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&z, CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z, m_device));
-  block->z = z;
+  block->z = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z);;
   logger(loglevel::DEBUG1) << "block.z = " << block->z;
 }
 
 void Device::max_grid_dim(dim3 *grid) {
-  int x, y, z;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&x, CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X, m_device));
-  grid->x = x;
+  grid->x = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X);
   logger(loglevel::DEBUG1) << "grid.x = " << grid->x;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&y, CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y, m_device));
-  grid->y = y;
+  grid->y = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y);;
   logger(loglevel::DEBUG1) << "grid.y = " << grid->y;
-  CUDA_SAFE_CALL(
-      cuDeviceGetAttribute(&z, CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z, m_device));
-  grid->z = z;
+  grid->z = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z);;
   logger(loglevel::DEBUG1) << "grid.z = " << grid->z;
+}
+
+int Device::attribute(CUdevice_attribute attrib) const {
+  int pi{0};
+  CUDA_SAFE_CALL(cuDeviceGetAttribute(&pi, attrib, m_device));
+  return pi;
 }

@@ -1,5 +1,5 @@
 #include "cudaexecutor/Kernel.hpp"
-#include "cudaexecutor/KernelArg.hpp"
+#include "cudaexecutor/KernelArgs.hpp"
 #include "cudaexecutor/Program.hpp"
 #include "cudaexecutor/Source.hpp"
 
