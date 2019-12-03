@@ -35,9 +35,11 @@ class KernelArg {
   //! \return pointer to device data
   CUdeviceptr deviceptr() { return m_ddata; }
   //! uploads data to device
-  void upload();
+  //! \return time to upload to device
+  float upload();
   //! downloads data to host
-  void download();
+  //! \return time to download from device
+  float download();
   const size_t size() { return m_size; }
 
  private:

@@ -1,10 +1,11 @@
+#include "../include/cudaexecutor/main.hpp"
 #include "cudaexecutor/main.hpp"
 
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
 using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Device, cudaexecutor::load, cudaexecutor::type_of;
+    cudaexecutor::KernelTime, cudaexecutor::Device, cudaexecutor::load;
 
 int main() {
   const float DELTA{0.01f};
@@ -16,6 +17,8 @@ int main() {
     hX.at(i) = static_cast<float>(i * 0.01);
     hY.at(i) = static_cast<float>(i * 0.02);
   }
+
+  KernelTime time;
 
   try {
     Device dev;
@@ -43,10 +46,10 @@ int main() {
 
     dim3 grid(NUM_BLOCKS);
     dim3 block(NUM_THREADS);
-    source.program("saxpy")
-        .compile()
-        .configure(grid, block)
-        .launch(args, dev);
+    time = source.program("saxpy")
+               .compile()
+               .configure(grid, block)
+               .launch(args, dev);
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);
@@ -66,5 +69,12 @@ int main() {
   if (correct)
     std::cout << "Everything was calculated correctly!!!";
 
-  return 0;
+  std::cout << "it took " << time.upload "ms to upload all arguments, "
+            << time.launch << "ms to execute the kernel and "
+            << time.download
+               "ms to download the resulting array. Which is a total of"
+            << time.sum
+            << "ms." << std::endl;
+
+      return 0;
 }

@@ -3,6 +3,7 @@
 #include "Device.hpp"
 #include "KernelArg.hpp"
 #include "Logger.hpp"
+#include "KernelTime.hpp"
 
 #include <cuda.h>
 #include <memory>
@@ -31,11 +32,11 @@ class Kernel {
   Kernel &configure(dim3 grid, dim3 block);
   //!
   //! \param program_args
-  //! \return this (for method chaining)
-  Kernel &launch(std::vector<KernelArg> program_args, Device device = Device());
+  //! \return KernelTime
+  KernelTime &launch(std::vector<KernelArg> program_args, Device device = Device());
 
  private:
-  std::shared_ptr<char[]> m_ptx; // shared pointer?
+  std::shared_ptr<char[]> m_ptx;
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
