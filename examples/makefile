@@ -8,7 +8,7 @@ TARGET := ../bin/runner
  
 SRCEXT := cpp
 HEADDEREXT := hpp
-SOURCES := $(shell find $(SRCDIR) -type f -not -path '*tests*' -name '*.$(SRCEXT)')
+SOURCES := $(shell find $(SRCDIR) -maxdepth 1 -type f -not -path '*tests*' -name '*.$(SRCEXT)')
 HEADERS := $(shell find $(LIBDIR) -type f -name *.$(HEADDEREXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1

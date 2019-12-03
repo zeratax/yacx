@@ -14,17 +14,17 @@ EXAMPLEDIR := examples
 TARGET := bin/runner
 TESTTARGET := bin/tester
 DIRS := bin build lib
- 
+
 SRCEXT := cpp
 HEADDEREXT := hpp
-SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
+SOURCES := $(shell find $(SRCDIR) -maxdepth 1 -type f -name '*.$(SRCEXT)')
 TESTS := $(shell find $(TESTDIR) -type f -name '*.$(SRCEXT)')
-EXAMPLES := $(shell find $(EXAMPLEDIR) -type f -name '*.$(SRCEXT)')
+EXAMPLES := $(shell find $(EXAMPLEDIR) -maxdepth 1 -type f -name '*.$(SRCEXT)')
 HEADERS := $(shell find $(LIBDIR) -type f -name '*.$(HEADDEREXT)')
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 TEST_OBJ = $(OBJECTS) $(patsubst $(TESTDIR)/%,$(BUILDDIR)/%,$(TESTS:.$(SRCEXT)=.o))
 CFLAGS := -std=c++17 -Wall -g -DNVRTC_GET_TYPE_NAME=1
-LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 
+LIB := -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64
 INC := -I $(INCDIR) -I $(CUDA_PATH)/include
 
 # Build
@@ -34,6 +34,10 @@ example_template: example
 	echo " $(CC) build/example_template.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_template.o $(OBJECTS) -o $(TARGET) $(LIB)
 example_saxpy: example
 	@echo " $(CC) build/example_saxpy.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_saxpy.o $(OBJECTS) -o $(TARGET) $(LIB)
+example_matrix_multiply: example
+	@echo " $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)
+example_gauss: example
+   	@echo " $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)
 example: directories $(OBJECTS)
 	+$(MAKE) -C examples
 
