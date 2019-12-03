@@ -1,12 +1,11 @@
-#include "../include/cudaexecutor/main.hpp"
 #include "cudaexecutor/main.hpp"
 
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::KernelArgs,
-    cudaexecutor::Kernel, cudaexecutor::KernelTime, cudaexecutor::Device,
-    cudaexecutor::load;
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::KernelTime,
+    cudaexecutor::Kernel, cudaexecutor::Device, cudaexecutor::load,
+    cudaexecutor::type_of;
 
 int main() {
   const float DELTA{0.01f};
@@ -18,7 +17,6 @@ int main() {
     hX.at(i) = static_cast<float>(i * 0.01);
     hY.at(i) = static_cast<float>(i * 0.02);
   }
-
   KernelTime time;
 
   try {
@@ -39,10 +37,9 @@ int main() {
     args.emplace_back(KernelArg{hOut.data(), bufferSize, true, false});
     args.emplace_back(KernelArg{const_cast<size_t *>(&N)});
 
-    std::cout << "===================================\n";
     std::cout << "Selected " << dev.name() << " with "
-              << (dev.total_memory() / 1024) / 1024 << "mb VRAM\n";
-    std::cout << "Kernel Arguments total size: "
+              << (dev.total_memory() / 1024) / 1024 << "mb" << std::endl;
+    std::cout << "Arguments have a combined size of "
               << ((bufferSize * 3 + 2 * sizeof(int)) / 1024) << "kb"
               << std::endl;
 
@@ -74,14 +71,13 @@ int main() {
   }
 
   if (correct)
-    std::cout << "Everything was calculated correctly!!!";
+    std::cout << "\nEverything was correctly calculated!\n" << std::endl;
 
-  std::cout << "it took " << time.upload "ms to upload all arguments, "
-            << time.launch << "ms to execute the kernel and "
-            << time.download
-               "ms to download the resulting array. Which is a total of"
-            << time.sum
-            << "ms." << std::endl;
+  std::cout << "upload time:     " << time.upload
+            << " ms\nexecution time:  " << time.launch
+            << " ms\ndownload time    " << time.download
+            << " ms\ntotal time:      " << time.sum << " ms.\n";
 
-      return 0;
+  std::cout << "===================================" << std::endl;
+  return 0;
 }

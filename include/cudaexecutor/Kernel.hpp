@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Device.hpp"
-#include "KernelArg.hpp"
+#include "KernelArgs.hpp"
 #include "Logger.hpp"
 #include "KernelTime.hpp"
 
@@ -33,7 +33,7 @@ class Kernel {
   //!
   //! \param program_args
   //! \return KernelTime
-  KernelTime &launch(std::vector<KernelArg> program_args, Device device = Device());
+  KernelTime launch(KernelArgs args, Device device = Device());
 
  private:
   std::shared_ptr<char[]> m_ptx;

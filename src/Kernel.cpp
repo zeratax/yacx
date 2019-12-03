@@ -1,11 +1,12 @@
 #include "cudaexecutor/Kernel.hpp"
-#include "../include/cudaexecutor/KernelTime.hpp"
+#include "cudaexecutor/KernelTime.hpp"
 #include "cudaexecutor/Exception.hpp"
 #include "cudaexecutor/KernelArgs.hpp"
 #include "cudaexecutor/KernelTime.hpp"
 #include <utility>
+#include <builtin_types.h>
 
-using cudaexecutor::Kernel, cudaexecutor::loglevel;
+using cudaexecutor::Kernel, cudaexecutor::KernelTime, cudaexecutor::loglevel;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -21,15 +22,16 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-KernelTime &Kernel::launch(KernelArgs args, Device device) {
+KernelTime Kernel::launch(KernelArgs args, Device device) {
   KernelTime time;
   cudaEvent_t start, stop;
-  CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT));
-  CUDA_SAFE_CALL(cuEventCreate(&end, CU_EVENT_DEFAULT));
 
   logger(loglevel::DEBUG) << "creating context and loading module";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+  CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT));
+  CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
+
   logger(loglevel::DEBUG1) << m_ptx.get();
   CUDA_SAFE_CALL(
       cuModuleLoadDataEx(&m_module, m_ptx.get(), 0, nullptr, nullptr));
@@ -45,22 +47,22 @@ KernelTime &Kernel::launch(KernelArgs args, Device device) {
 
   CUDA_SAFE_CALL(cuEventRecord(start, 0));
   CUDA_SAFE_CALL(
-      cuLaunchKernel(m_kernel,                         // function from program
-                     m_grid.x, m_grid.y, m_grid.z,     // grid dim
-                     m_block.x, m_block.y, m_block.z,  // block dim
-                     0, nullptr,                       // shared mem and stream
-                     args.content(), // arguments
+      cuLaunchKernel(m_kernel,                        // function from program
+                     m_grid.x, m_grid.y, m_grid.z,    // grid dim
+                     m_block.x, m_block.y, m_block.z, // block dim
+                     0, nullptr,                      // shared mem and stream
+                     const_cast<void **>(args.content()), // arguments
                      nullptr));
-  CUDA_SAFE_CALL(cuEventRecord(end, 0));
+  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   // CUDA_SAFE_CALL(cuCtxSynchronize());
   logger(loglevel::INFO) << "done!";
 
   // download results to host
   logger(loglevel::DEBUG) << "downloading arguments";
-  time.download = args.download()
+  time.download = args.download();
 
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
-  CUDA_SAFE_CALL(cuEventElapsedTime (time->launch, start, end));
+  CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, start, stop));
 
   logger(loglevel::DEBUG) << "freeing resources";
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
