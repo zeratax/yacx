@@ -4,7 +4,7 @@
 #include "../../include/cudaexecutor/Logger.hpp"
 #include "Handle.h"
 #include "ProgramArgJNI.hpp"
-#include "cudaexecutor/KernelArg.hpp"
+#include "cudaexecutor/KernelArgs.hpp"
 
 using cudaexecutor::loglevel, cudaexecutor::Kernel, cudaexecutor::ProgramArg, jni::ProgramArgJNI, cudaexecutor::CUresultException;
 

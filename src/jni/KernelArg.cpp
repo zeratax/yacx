@@ -3,7 +3,7 @@
 #include "../../include/cudaexecutor/Program.hpp"
 #include "Handle.h"
 #include "ProgramArgJNI.hpp"
-#include "cudaexecutor/KernelArg.hpp"
+#include "cudaexecutor/KernelArgs.hpp"
 
 using cudaexecutor::loglevel, cudaexecutor::Program, cudaexecutor::ProgramArg, jni::ProgramArgJNI;
 
