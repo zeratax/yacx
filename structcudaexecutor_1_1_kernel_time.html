@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CudaExecutor: KernelArgs Class Reference</title>
+<title>CudaExecutor: cudaexecutor::KernelTime Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -58,34 +58,39 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>cudaexecutor</b></li><li class="navelem"><a class="el" href="structcudaexecutor_1_1_kernel_time.html">KernelTime</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_kernel_args-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structcudaexecutor_1_1_kernel_time-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">KernelArgs Class Reference</div>  </div>
+<div class="title">cudaexecutor::KernelTime Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a856a48b3aca3da86e811bc25bdd9b6e5"><td class="memItemLeft" align="right" valign="top"><a id="a856a48b3aca3da86e811bc25bdd9b6e5"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgs</b> (std::vector&lt; <a class="el" href="class_kernel_arg.html">KernelArg</a> &gt; args)</td></tr>
-<tr class="separator:a856a48b3aca3da86e811bc25bdd9b6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1006d125dcd9bca09d983076e05931d"><td class="memItemLeft" align="right" valign="top"><a id="af1006d125dcd9bca09d983076e05931d"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>upload</b> ()</td></tr>
-<tr class="separator:af1006d125dcd9bca09d983076e05931d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4475892a5798a154b134fa6c29142a15"><td class="memItemLeft" align="right" valign="top"><a id="a4475892a5798a154b134fa6c29142a15"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>download</b> ()</td></tr>
-<tr class="separator:a4475892a5798a154b134fa6c29142a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77f7222ee9a5ff39eafab8cdf1830586"><td class="memItemLeft" align="right" valign="top"><a id="a77f7222ee9a5ff39eafab8cdf1830586"></a>
-void **&#160;</td><td class="memItemRight" valign="bottom"><b>content</b> ()</td></tr>
-<tr class="separator:a77f7222ee9a5ff39eafab8cdf1830586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a3e10e03bf49b6f4635a07a3922c66bd5"><td class="memItemLeft" align="right" valign="top"><a id="a3e10e03bf49b6f4635a07a3922c66bd5"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>upload</b> {0}</td></tr>
+<tr class="separator:a3e10e03bf49b6f4635a07a3922c66bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab21b35cb83203343dbb1a9e0acc4439f"><td class="memItemLeft" align="right" valign="top"><a id="ab21b35cb83203343dbb1a9e0acc4439f"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>download</b> {0}</td></tr>
+<tr class="separator:ab21b35cb83203343dbb1a9e0acc4439f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a496478c7d3c45aaa81f24b556a208383"><td class="memItemLeft" align="right" valign="top"><a id="a496478c7d3c45aaa81f24b556a208383"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> {0}</td></tr>
+<tr class="separator:a496478c7d3c45aaa81f24b556a208383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c483cceec891882af79994839f69a4f"><td class="memItemLeft" align="right" valign="top"><a id="a4c483cceec891882af79994839f69a4f"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>sum</b> {0}</td></tr>
+<tr class="separator:a4c483cceec891882af79994839f69a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/cudaexecutor/<a class="el" href="_kernel_args_8hpp_source.html">KernelArgs.hpp</a></li>
-<li>src/KernelArgs.cpp</li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_matrix_multiply_8cpp-example.html#_a5">example_matrix_multiply.cpp</a>, and <a class="el" href="example_saxpy_8cpp-example.html#_a2">example_saxpy.cpp</a>.</dd>
+</dl></div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/cudaexecutor/<a class="el" href="_kernel_time_8hpp_source.html">KernelTime.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
