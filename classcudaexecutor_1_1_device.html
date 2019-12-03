@@ -86,17 +86,34 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae2078e1d90452c7eeac55dc90fa90e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6904908686988102b2d4868130185f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#aca6904908686988102b2d4868130185f">name</a> () const</td></tr>
 <tr class="separator:aca6904908686988102b2d4868130185f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aab5eb690a22b4097b9f44f66ed1e60"><td class="memItemLeft" align="right" valign="top">CUdevice&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#a1aab5eb690a22b4097b9f44f66ed1e60">get</a> ()</td></tr>
-<tr class="separator:a1aab5eb690a22b4097b9f44f66ed1e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b737065c04db3220b4c18c3fbc83adb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#a5b737065c04db3220b4c18c3fbc83adb">total_memory</a> ()</td></tr>
-<tr class="separator:a5b737065c04db3220b4c18c3fbc83adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab46cfe73ae4ab39d68d14a2d112022d2"><td class="memItemLeft" align="right" valign="top">CUdevice&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#ab46cfe73ae4ab39d68d14a2d112022d2">get</a> () const</td></tr>
+<tr class="separator:ab46cfe73ae4ab39d68d14a2d112022d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a172d3503faa5d92734f8a55ab5953994"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#a172d3503faa5d92734f8a55ab5953994">total_memory</a> () const</td></tr>
+<tr class="separator:a172d3503faa5d92734f8a55ab5953994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d7f11438902e714311b41d01ad24e53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#a3d7f11438902e714311b41d01ad24e53">max_block_dim</a> (dim3 *block)</td></tr>
 <tr class="separator:a3d7f11438902e714311b41d01ad24e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad79c81d07b5c49be6d8cc194a5e649e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#ad79c81d07b5c49be6d8cc194a5e649e2">max_grid_dim</a> (dim3 *grid)</td></tr>
 <tr class="separator:ad79c81d07b5c49be6d8cc194a5e649e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2407f33537724394359f935403206e9b"><td class="memItemLeft" align="right" valign="top"><a id="a2407f33537724394359f935403206e9b"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>max_shared_memory_per_block</b> () const</td></tr>
+<tr class="separator:a2407f33537724394359f935403206e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeacead3bc3d4c474947dd8a7a062df37"><td class="memItemLeft" align="right" valign="top"><a id="aeacead3bc3d4c474947dd8a7a062df37"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>multiprocessor_count</b> () const</td></tr>
+<tr class="separator:aeacead3bc3d4c474947dd8a7a062df37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe994ef33397ee168c7432e5056b16ea"><td class="memItemLeft" align="right" valign="top"><a id="abe994ef33397ee168c7432e5056b16ea"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>clock_rate</b> () const</td></tr>
+<tr class="separator:abe994ef33397ee168c7432e5056b16ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1379bad375aeaf3d1962e6a6b37c6119"><td class="memItemLeft" align="right" valign="top"><a id="a1379bad375aeaf3d1962e6a6b37c6119"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>memory_clock_rate</b> () const</td></tr>
+<tr class="separator:a1379bad375aeaf3d1962e6a6b37c6119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387197d5b43105422bf9f3f2bc216d1e"><td class="memItemLeft" align="right" valign="top"><a id="a387197d5b43105422bf9f3f2bc216d1e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>bus_width</b> () const</td></tr>
+<tr class="separator:a387197d5b43105422bf9f3f2bc216d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8748b38646df669d7b29d03dc18077"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_device.html#aff8748b38646df669d7b29d03dc18077">attribute</a> (CUdevice_attribute attrib) const</td></tr>
+<tr class="separator:aff8748b38646df669d7b29d03dc18077"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2kernel_launch_8cpp-example.html#_a3">docs/kernel_launch.cpp</a>, <a class="el" href="example_gauss_8cpp-example.html#_a4">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a4">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a4">example_program.cpp</a>, <a class="el" href="example_saxpy_8cpp-example.html#_a3">example_saxpy.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a4">example_template.cpp</a>.</dd>
+<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2kernel_launch_8cpp-example.html#_a2">docs/kernel_launch.cpp</a>, <a class="el" href="example_gauss_8cpp-example.html#_a3">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a3">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a3">example_program.cpp</a>, <a class="el" href="example_saxpy_8cpp-example.html#_a2">example_saxpy.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a3">example_template.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2f308f1fe5e1e32b37333887eba268a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2f308f1fe5e1e32b37333887eba268a4">&#9670;&nbsp;</a></span>Device()</h2>
@@ -131,8 +148,33 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1aab5eb690a22b4097b9f44f66ed1e60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1aab5eb690a22b4097b9f44f66ed1e60">&#9670;&nbsp;</a></span>get()</h2>
+<a id="aff8748b38646df669d7b29d03dc18077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8748b38646df669d7b29d03dc18077">&#9670;&nbsp;</a></span>attribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Device::attribute </td>
+          <td>(</td>
+          <td class="paramtype">CUdevice_attribute&#160;</td>
+          <td class="paramname"><em>attrib</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns information about the device, see <a href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266">CUdevice_attribute</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attrib</td><td>CUDA device attribute </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ab46cfe73ae4ab39d68d14a2d112022d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab46cfe73ae4ab39d68d14a2d112022d2">&#9670;&nbsp;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +186,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">CUdevice cudaexecutor::Device::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -283,8 +325,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5b737065c04db3220b4c18c3fbc83adb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b737065c04db3220b4c18c3fbc83adb">&#9670;&nbsp;</a></span>total_memory()</h2>
+<a id="a172d3503faa5d92734f8a55ab5953994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a172d3503faa5d92734f8a55ab5953994">&#9670;&nbsp;</a></span>total_memory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,7 +338,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">size_t cudaexecutor::Device::total_memory </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>

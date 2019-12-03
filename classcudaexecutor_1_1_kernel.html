@@ -83,12 +83,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af0bb713a4f07eb8304525731d0d1a9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#a5f993a9d123092e80ec722ecd4a11a6e">configure</a> (dim3 grid, dim3 block)</td></tr>
 <tr class="separator:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9c8bc3dd108df5120cbb687800c4bb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#ac9c8bc3dd108df5120cbb687800c4bb2">launch</a> (std::vector&lt; <a class="el" href="classcudaexecutor_1_1_kernel_arg.html">KernelArg</a> &gt; program_args, <a class="el" href="classcudaexecutor_1_1_device.html">Device</a> device=<a class="el" href="classcudaexecutor_1_1_device.html">Device</a>())</td></tr>
-<tr class="separator:ac9c8bc3dd108df5120cbb687800c4bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95148dc2726cfadbca8c493135616ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_kernel_time.html">KernelTime</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_kernel.html#ad95148dc2726cfadbca8c493135616ca">launch</a> (std::vector&lt; <a class="el" href="class_kernel_arg.html">KernelArg</a> &gt; program_args, <a class="el" href="classcudaexecutor_1_1_device.html">Device</a> device=<a class="el" href="classcudaexecutor_1_1_device.html">Device</a>())</td></tr>
+<tr class="separator:ad95148dc2726cfadbca8c493135616ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to help launch and configure a CUDA kernel. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2kernel_launch_8cpp-example.html#_a2">docs/kernel_launch.cpp</a>, <a class="el" href="example_gauss_8cpp-example.html#_a2">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a2">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a2">example_program.cpp</a>, <a class="el" href="example_saxpy_8cpp-example.html#_a2">example_saxpy.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a2">example_template.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2kernel_launch_8cpp-example.html#_a1">docs/kernel_launch.cpp</a>, <a class="el" href="example_gauss_8cpp-example.html#_a1">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a1">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a1">example_program.cpp</a>, <a class="el" href="example_saxpy_8cpp-example.html#_a1">example_saxpy.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a1">example_template.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af0bb713a4f07eb8304525731d0d1a9f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0bb713a4f07eb8304525731d0d1a9f9">&#9670;&nbsp;</a></span>Kernel()</h2>
@@ -163,16 +163,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac9c8bc3dd108df5120cbb687800c4bb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9c8bc3dd108df5120cbb687800c4bb2">&#9670;&nbsp;</a></span>launch()</h2>
+<a id="ad95148dc2726cfadbca8c493135616ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad95148dc2726cfadbca8c493135616ca">&#9670;&nbsp;</a></span>launch()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classcudaexecutor_1_1_kernel.html">Kernel</a>&amp; cudaexecutor::Kernel::launch </td>
+          <td class="memname"><a class="el" href="struct_kernel_time.html">KernelTime</a>&amp; cudaexecutor::Kernel::launch </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classcudaexecutor_1_1_kernel_arg.html">KernelArg</a> &gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_kernel_arg.html">KernelArg</a> &gt;&#160;</td>
           <td class="paramname"><em>program_args</em>, </td>
         </tr>
         <tr>
@@ -194,7 +194,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>this (for method chaining) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct_kernel_time.html">KernelTime</a> </dd></dl>
 
 </div>
 </div>

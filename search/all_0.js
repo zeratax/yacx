@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['booleanoption',['BooleanOption',['../classcudaexecutor_1_1detail_1_1_boolean_option.html',1,'cudaexecutor::detail']]]
+  ['attribute',['attribute',['../classcudaexecutor_1_1_device.html#aff8748b38646df669d7b29d03dc18077',1,'cudaexecutor::Device']]]
 ];

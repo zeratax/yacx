@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['program',['Program',['../class_program.html',1,'Program'],['../classcudaexecutor_1_1_program.html',1,'cudaexecutor::Program'],['../classcudaexecutor_1_1_source.html#a2d95fc130b3c3d6a2a1f20097d5a278f',1,'cudaexecutor::Source::program()'],['../classcudaexecutor_1_1_program.html#a70cf98f664408ede2787e4505365a82a',1,'cudaexecutor::Program::Program()']]],
-  ['programarg',['ProgramArg',['../class_program_arg.html',1,'']]],
-  ['programargjni',['ProgramArgJNI',['../classjni_1_1_program_arg_j_n_i.html',1,'jni']]]
+  ['options',['Options',['../class_options.html',1,'Options'],['../classcudaexecutor_1_1_options.html',1,'cudaexecutor::Options'],['../classcudaexecutor_1_1_options.html#a76c4d3d2f65099b5fe8d5bfdcb22ea72',1,'cudaexecutor::Options::options() const'],['../classcudaexecutor_1_1_options.html#ab565c100912654825537360ec8d8910a',1,'cudaexecutor::Options::Options()'],['../classcudaexecutor_1_1_options.html#ac15279e144f38da992fad689755a66c7',1,'cudaexecutor::Options::Options(const T &amp;t)'],['../classcudaexecutor_1_1_options.html#aeb2d911d2a18bb79dd51efb19cb0c134',1,'cudaexecutor::Options::Options(const T &amp;t, const TS &amp;... ts)']]]
 ];

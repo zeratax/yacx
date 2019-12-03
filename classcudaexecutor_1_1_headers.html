@@ -78,6 +78,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae04c7a09aac2e2417c7f5cb3410b011f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af379ab4de8a97b9af8eff850987ce1d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_headers.html#af379ab4de8a97b9af8eff850987ce1d5">Headers</a> (const std::string &amp;path)</td></tr>
 <tr class="separator:af379ab4de8a97b9af8eff850987ce1d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4741fcbd110385f037be9091e20fd4a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_headers.html#a4741fcbd110385f037be9091e20fd4a9">Headers</a> (std::vector&lt; <a class="el" href="classcudaexecutor_1_1_header.html">Header</a> &gt; headers)</td></tr>
+<tr class="separator:a4741fcbd110385f037be9091e20fd4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c695f86d62e478719878b37027e6cde"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TS&gt; </td></tr>
 <tr class="memitem:a2c695f86d62e478719878b37027e6cde"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcudaexecutor_1_1_headers.html#a2c695f86d62e478719878b37027e6cde">Headers</a> (const T &amp;arg, const TS &amp;... args)</td></tr>
 <tr class="separator:a2c695f86d62e478719878b37027e6cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -93,10 +95,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abd4cf625f483fb686d7b39d65ba2007b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2headers_8cpp-example.html#_a1">docs/headers.cpp</a>, and <a class="el" href="example_gauss_8cpp-example.html#_a5">example_gauss.cpp</a>.</dd>
+<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="docs_2headers_8cpp-example.html#_a1">docs/headers.cpp</a>, and <a class="el" href="example_gauss_8cpp-example.html#_a4">example_gauss.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae04c7a09aac2e2417c7f5cb3410b011f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae04c7a09aac2e2417c7f5cb3410b011f">&#9670;&nbsp;</a></span>Headers() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae04c7a09aac2e2417c7f5cb3410b011f">&#9670;&nbsp;</a></span>Headers() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,7 +130,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="af379ab4de8a97b9af8eff850987ce1d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af379ab4de8a97b9af8eff850987ce1d5">&#9670;&nbsp;</a></span>Headers() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af379ab4de8a97b9af8eff850987ce1d5">&#9670;&nbsp;</a></span>Headers() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,8 +161,40 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a4741fcbd110385f037be9091e20fd4a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4741fcbd110385f037be9091e20fd4a9">&#9670;&nbsp;</a></span>Headers() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Headers::Headers </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classcudaexecutor_1_1_header.html">Header</a> &gt;&#160;</td>
+          <td class="paramname"><em>headers</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>constructs a header from a header vector </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">headers</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a2c695f86d62e478719878b37027e6cde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c695f86d62e478719878b37027e6cde">&#9670;&nbsp;</a></span>Headers() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c695f86d62e478719878b37027e6cde">&#9670;&nbsp;</a></span>Headers() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
