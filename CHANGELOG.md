@@ -1,5 +1,5 @@
 # Changelog
-## v0.2 
+## cudaexecutor v0.2 (2019-12-03)
 ### Features
 - c++ bindings
   - get devices
@@ -14,7 +14,7 @@
   - Program => Source
   - Kernel => Kernel, Program
   
-## v0.1
+## cudaexecutor v0.1 (2019-11-22)
 ### Features
 - c++ bindings
   - execute abitrary cuda kernels
