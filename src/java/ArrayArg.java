@@ -2,6 +2,10 @@ public class ArrayArg extends KernelArg {
     private byte type;
 
     private final static byte FLOAT = 1, INT = 2, LONG = 3, DOUBLE = 4, BOOLEAN = 5;
+    
+    public static ArrayArg create(float[] array) {
+        return create(array, false);
+    }
 
     public static ArrayArg create(float[] array, boolean output) {
         assert(array != null && array.length > 0);
@@ -10,6 +14,10 @@ public class ArrayArg extends KernelArg {
         arg.type = FLOAT;
 
         return arg;
+    }
+    
+    public static ArrayArg create(int[] array) {
+        return create(array, false);
     }
 
     public static ArrayArg create(int[] array, boolean output) {
@@ -20,6 +28,10 @@ public class ArrayArg extends KernelArg {
 
         return arg;
     }
+    
+    public static ArrayArg create(long[] array) {
+        return create(array, false);
+    }
 
     public static ArrayArg create(long[] array, boolean output) {
         assert(array != null && array.length > 0);
@@ -29,6 +41,10 @@ public class ArrayArg extends KernelArg {
 
         return arg;
     }
+    
+    public static ArrayArg create(double[] array) {
+        return create(array, false);
+    }
 
     public static ArrayArg create(double[] array, boolean output) {
         assert(array != null && array.length > 0);
@@ -37,6 +53,10 @@ public class ArrayArg extends KernelArg {
         arg.type = DOUBLE;
 
         return arg;
+    }
+    
+    public static ArrayArg create(boolean[] array) {
+        return create(array, false);
     }
 
     public static ArrayArg create(boolean[] array, boolean output) {

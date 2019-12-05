@@ -2,9 +2,10 @@ import java.util.Arrays;
 
 public class Options extends JNIHandle {
 
-    public static Options createOptions(String option) {
+    public static Options createOptions(String ...options) {
         Options o = createOptions();
-        o.insert(option);
+        for (String option : options)
+        	o.insert(option);
         return o;
     }
 

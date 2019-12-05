@@ -5,6 +5,7 @@
 #include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/KernelArg.hpp"
 #include "../../include/cudaexecutor/Device.hpp"
+#include "../../include/cudaexecutor/KernelTime.hpp"
 
 #include <string>
 
@@ -38,17 +39,32 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobject jkernel, jobjectArray j
     return args;
 }
 
-void Java_Kernel_launchInternel___3LKernelArg_2(JNIEnv *env, jobject obj, jobjectArray jArgs)
+jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
+    jclass cls = env->FindClass("KernelTime");
+
+    if (!cls)
+        throw new std::runtime_error("KernelTime class not found!");
+
+    auto methodID = env->GetMethodID(cls, "<init>", "(FFFF)V");
+    auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,
+            kernelTimePtr->launch, kernelTimePtr->sum);
+
+    return obj;
+}
+
+jobject Java_Kernel_launchInternel___3LKernelArg_2(JNIEnv *env, jobject obj, jobjectArray jArgs)
 {
     BEGIN_TRY
         auto kernelPtr = getHandle<Kernel>(env, obj);
         auto args = getArguments(env, obj, jArgs);
 
-        kernelPtr->launch(args);
+        auto kernelTimePtr = kernelPtr->launch(args);
+
+        return createJavaKernelTime(env, kernelTimePtr);
     END_TRY("launching Kernel")
 }
 
-void Java_Kernel_launchInternel___3LKernelArg_2LDevice_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jobject jdevice)
+jobject Java_Kernel_launchInternel___3LKernelArg_2LDevice_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jobject jdevice)
 {
     BEGIN_TRY
         auto kernelPtr = getHandle<Kernel>(env, obj);
@@ -56,11 +72,13 @@ void Java_Kernel_launchInternel___3LKernelArg_2LDevice_2(JNIEnv *env, jobject ob
 
         auto args = getArguments(env, obj, jArgs);
 
-        kernelPtr->launch(args, *devicePtr);
+        auto kernelTimePtr = kernelPtr->launch(args, *devicePtr);
+
+        return createJavaKernelTime(env, kernelTimePtr);
     END_TRY("launching Kernel on specific device")
 }
 
-void Java_Kernel_launchInternel___3LKernelArg_2Ljava_lang_String_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jstring jdevicename)
+jobject Java_Kernel_launchInternel___3LKernelArg_2Ljava_lang_String_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jstring jdevicename)
 {
     BEGIN_TRY
         auto kernelPtr = getHandle<Kernel>(env, obj);
@@ -73,6 +91,8 @@ void Java_Kernel_launchInternel___3LKernelArg_2Ljava_lang_String_2(JNIEnv *env, 
 
         auto args = getArguments(env, obj, jArgs);
 
-        kernelPtr->launch(args, device);
+        auto kernelTimePtr = kernelPtr->launch(args, device);
+
+        return createJavaKernelTime(env, kernelTimePtr);
     END_TRY("launching Kernel")
 }

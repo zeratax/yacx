@@ -2,13 +2,7 @@ import java.io.File;
 
 public class Headers extends JNIHandle {
 
-    public static Headers createHeaders(String path) {
-        Headers h = createHeaders();
-        h.insert(path);
-        return h;
-    }
-
-    public static Headers createHeaders(String[] paths) {
+    public static Headers createHeaders(String ...paths) {
         Headers h = createHeaders();
         h.insert(paths);
         return h;
@@ -16,15 +10,8 @@ public class Headers extends JNIHandle {
 
     public static native Headers createHeaders();
 
-    public void insert(String path) {
-        assert(fileExists(path));
-
-        insertInternal(path);
-    }
-
-    private native void insertInternal(String path);
-
-    public void insert(String[] paths) {
+    public void insert(String ...paths) {
+    	assert(paths != null && paths.length > 0);
         assert(fileExists(paths));
 
         insertInternal(paths);
@@ -38,13 +25,9 @@ public class Headers extends JNIHandle {
 
     public native String[] content();
 
-
-    private boolean fileExists(String path) {
-        return new File(path).exists();
-    }
-
     private boolean fileExists(String[] paths) {
         for (String path : paths) {
+        	assert(path != null);
             if (!(new File(path).exists()))
                 return false;
         }
