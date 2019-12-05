@@ -36,6 +36,9 @@
 #include "cudaexecutor/Options.hpp"
 #include "cudaexecutor/Program.hpp"
 #include "cudaexecutor/Source.hpp"
+#include "cudaexecutor/KernelArgs.hpp"
+#include "cudaexecutor/Kernel.hpp"
+#include "cudaexecutor/KernelTime.hpp"
 #include "cudaexecutor/util.hpp"
 
 #include <vector_types.h>

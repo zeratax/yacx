@@ -12,7 +12,7 @@
 
 using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
     cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::Kernel;
+    cudaexecutor::KernelTime;
 
 void compare(float *lhs, float *rhs, int width) {
   int errors = 0;
@@ -23,9 +23,9 @@ void compare(float *lhs, float *rhs, int width) {
     }
   }
   if (errors > 0)
-    printf("%d errors occured, out of %d values.\n", errors, width);
+    printf("\u001b[31m%d errors occured, out of %d values.\u001b[0m\n", errors, width);
   else
-    printf("no errors occured.\n");
+    printf("\u001b[32mno errors occured.\u001b[0m\n");
 }
 
 std::function<bool(const float &, const float &)> comparator =
@@ -76,6 +76,8 @@ int main() {
   float *P_seq = new float[WIDTH * WIDTH];
   float *P_cuda = new float[WIDTH * WIDTH];
 
+  KernelTime time;
+
   // Fill arrays with random values
   // fill(N.begin(), N.end());
   // fill(M.begin(), M.end());
@@ -85,11 +87,14 @@ int main() {
   try {
     // Select Device
     Device dev;
+    std::cout << "===================================\n";
     std::cout << "Selected " << dev.name() << " with "
-              << (dev.total_memory() / 1024) / 1024 << "mb VRAM" << std::endl;
-    std::cout << "Arguments have a combined size of "
-              << ((matrix_size * 3 + sizeof(size_t)) / 1024) << "kb"
-              << std::endl;
+              << (dev.total_memory() / 1024) / 1024 << "mb VRAM\n";
+    std::cout << "Kernel Arguments total size: "
+              << ((matrix_size * 3 + sizeof(size_t)) / 1024) << "kb\n\n";
+    std::cout << "Theoretical Bandwith:        "
+              << cudaexecutor::theoretical_bandwidth(dev) << " GB/s\n";
+
 
     // Set kernel string and compile options
 
@@ -155,48 +160,54 @@ int main() {
     start = std::clock();
     // MatrixMulSeq(M.data(), N.data(), P_seq.data(), WIDTH);
     MatrixMulSeq(M, N, P_seq, WIDTH);
-    std::cout << "Time[CPU single threaded]: "
+    std::cout << "Time\u001b[33m[CPU single threaded]\u001b[0m:   "
               << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
               << " ms" << std::endl;
 
-    start = std::clock();
-    kernelNaive.launch(args, dev);
-    std::cout << "Time[MatrixMultyNaive]: "
-              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-              << " ms" << std::endl;
+    time = kernelNaive.launch(args, dev);
+    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      " << time.sum << " ms\n";
+
+    std::cout << "Effective Bandwith:          "
+              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
 
     equalMultiplyNaive =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
+    if(!equalMultiplyNaive)
+      compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     if (BLOCK_SIZE % 4 == 0) {
-      start = std::clock();
-      kernel1_1.launch(args, dev);
-      std::cout << "Time[MatrixMulty1unfolded]: "
-                << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-                << " ms" << std::endl;
+      time = kernel1_1.launch(args, dev);
+      std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  " << time.sum << " ms\n";
+
+      std::cout << "Effective Bandwith:          "
+                << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
       equalMultiply1unfolded =
           std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
+      if(!equalMultiply1unfolded)
+        compare(P_seq, P_cuda, WIDTH * WIDTH);
     } else {
       equalMultiply1unfolded = true;
     }
 
-    start = std::clock();
-    kernel1.launch(args, dev);
-    std::cout << "Time[MatrixMulty1]: "
-              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-              << " ms" << std::endl;
-    compare(P_seq, P_cuda, WIDTH * WIDTH);
+    time = kernel1.launch(args, dev);
+    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          " << time.sum << " ms\n";
+
+    std::cout << "Effective Bandwith:          "
+              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
     equalMultiply1 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
+    if(!equalMultiply1)
+      compare(P_seq, P_cuda, WIDTH * WIDTH);
 
-    start = std::clock();
-    kernel2.launch(args, dev);
-    std::cout << "Time[MatrixMulty2]: "
-              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-              << " ms" << std::endl;
+    time = kernel2.launch(args, dev);
+    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          " << time.sum << " ms\n";
 
+    std::cout << "Effective Bandwith:          "
+              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n\n";
     equalMultiply2 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
+    if(!equalMultiply2)
+      compare(P_seq, P_cuda, WIDTH * WIDTH);
 
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
@@ -205,20 +216,24 @@ int main() {
 
   if (equalMultiplyNaive && equalMultiply1 && equalMultiply1unfolded &&
       equalMultiply2) {
-    std::cout << "everything was correctly calculated!" << std::endl;
+    std::cout << "\u001b[32meverything was correctly calculated!\u001b[0m\n";
+  } else {
+    std::cout << "\u001b[31m";
   }
   if (!equalMultiplyNaive) {
-    std::cout << "Naive went wrong ;_;" << std::endl;
+    std::cout << "Naive went wrong ;_;\n";
   }
   if (!equalMultiply1) {
-    std::cout << "Multy1 went wrong ;_;" << std::endl;
+    std::cout << "Multy1 went wrong ;_;\n";
   }
   if (!equalMultiply1unfolded) {
-    std::cout << "Multy1unfolded went wrong ;_;" << std::endl;
+    std::cout << "Multy1unfolded went wrong ;_;\n";
   }
   if (!equalMultiply2) {
-    std::cout << "Multy2 went wrong ;_;" << std::endl;
+    std::cout << "Multy2 went wrong ;_;\n";
   }
+
+  std::cout << "\u001b[0m===================================" << std::endl;
 
   // Free resources
 

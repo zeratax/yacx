@@ -3,8 +3,9 @@
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Device, cudaexecutor::load, cudaexecutor::type_of;
+using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::KernelTime,
+    cudaexecutor::Kernel, cudaexecutor::Device, cudaexecutor::load,
+    cudaexecutor::type_of;
 
 int main() {
   const float DELTA{0.01f};
@@ -16,6 +17,7 @@ int main() {
     hX.at(i) = static_cast<float>(i * 0.01);
     hY.at(i) = static_cast<float>(i * 0.02);
   }
+  KernelTime time;
 
   try {
     Device dev;
@@ -43,10 +45,15 @@ int main() {
 
     dim3 grid(NUM_BLOCKS);
     dim3 block(NUM_THREADS);
-    source.program("saxpy")
-        .compile()
-        .configure(grid, block)
-        .launch(args, dev);
+    time = source.program("saxpy")
+               .compile()
+               .configure(grid, block)
+               .launch(args, dev);
+
+    std::cout << "Theoretical Bandwith:        "
+              << cudaexecutor::theoretical_bandwidth(dev) << " GB/s\n";
+    std::cout << "Effective Bandwith:          "
+              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);
@@ -64,7 +71,13 @@ int main() {
   }
 
   if (correct)
-    std::cout << "Everything was calculated correctly!!!";
+    std::cout << "\nEverything was correctly calculated!\n" << std::endl;
 
+  std::cout << "upload time:     " << time.upload
+            << " ms\nexecution time:  " << time.launch
+            << " ms\ndownload time    " << time.download
+            << " ms\ntotal time:      " << time.sum << " ms.\n";
+
+  std::cout << "===================================" << std::endl;
   return 0;
 }

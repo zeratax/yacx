@@ -21,4 +21,6 @@ const char **Headers::names() const {
 
 Headers::Headers(const Header &header) { insert(header); }
 
+Headers::Headers(std::vector<Header> headers) : m_headers{headers} {}
+
 Headers::Headers(const std::string &path) { insert(path); }

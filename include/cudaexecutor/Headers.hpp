@@ -56,6 +56,9 @@ class Headers : JNIHandle {
   //! constructs Headers with path to header file
   //! \param path path to header file
   explicit Headers(const std::string &path);
+  //! constructs a header from a header vector
+  //! \param headers
+  explicit Headers(std::vector<Header> headers);
   //! constructs Headers with a multiple Header or paths to header files
   //! \tparam T Header, std::string or char[]
   //! \tparam TS Header, std::string or char[]

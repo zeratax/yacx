@@ -3,7 +3,7 @@
 #include "Exception.hpp"
 #include "JNIHandle.hpp"
 #include "Kernel.hpp"
-#include "KernelArg.hpp"
+#include "KernelArgs.hpp"
 #include "Logger.hpp"
 #include "Options.hpp"
 #include "util.hpp"
