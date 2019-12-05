@@ -100,3 +100,43 @@ jintArray Java_Device_getMaxGrid (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting maxGridSize from Device");
 }
+
+jint Java_Device_getMultiprocessorCount (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+
+        auto multiprocessors = devicePtr->multiprocessor_count();
+
+        return multiprocessors;
+    END_TRY("getting number of Multiprocessors from Device");
+}
+
+jint Java_Device_getClockRate (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+
+        auto clockRate = devicePtr->clock_rate();
+
+        return clockRate;
+    END_TRY("getting clock rate from Device");
+}
+
+jint Java_Device_getMemoryClockRate (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+
+        auto memoryClockRate = devicePtr->memory_clock_rate();
+
+        return memoryClockRate;
+    END_TRY("getting memory clock rate from Device");
+}
+
+jint Java_Device_getBusWidth (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+
+        auto busWidth = devicePtr->bus_width();
+
+        return busWidth;
+    END_TRY("getting bus width from Device");
+}

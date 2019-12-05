@@ -55,6 +55,38 @@ JNIEXPORT jintArray JNICALL Java_Device_getMaxBlock
 JNIEXPORT jintArray JNICALL Java_Device_getMaxGrid
   (JNIEnv *, jobject);
 
+/*
+ * Class:     Device
+ * Method:    getMultiprocessorCount
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Device_getMultiprocessorCount
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Device
+ * Method:    getClockRate
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Device_getClockRate
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Device
+ * Method:    getMemoryClockRate
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Device_getMemoryClockRate
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Device
+ * Method:    getBusWidth
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_Device_getBusWidth
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

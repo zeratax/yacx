@@ -18,17 +18,9 @@ JNIEXPORT jobject JNICALL Java_Headers_createHeaders
 /*
  * Class:     Headers
  * Method:    insertInternal
- * Signature: (Ljava/lang/String;)V
- */
-JNIEXPORT void JNICALL Java_Headers_insertInternal__Ljava_lang_String_2
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     Headers
- * Method:    insertInternal
  * Signature: ([Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_Headers_insertInternal___3Ljava_lang_String_2
+JNIEXPORT void JNICALL Java_Headers_insertInternal
   (JNIEnv *, jobject, jobjectArray);
 
 /*

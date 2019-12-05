@@ -15,6 +15,10 @@ public class Device extends JNIHandle {
     public native long getMemorySize();
     public native int[] getMaxBlock();
     public native int[] getMaxGrid();
+    public native int getMultiprocessorCount();
+    public native int getClockRate();
+    public native int getMemoryClockRate();
+    public native int getBusWidth();
 
     Device(long handle){
         super(handle);
