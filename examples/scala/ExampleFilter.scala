@@ -1,6 +1,4 @@
 object ExampleFilter {
-    private final var SIZE_INT = 4
-
     def main(args: Array[String]) : Unit = {
         //Load Libary
         Executor.loadLibary()
@@ -17,10 +15,10 @@ object ExampleFilter {
         }
 
         //Initialize Arguments
-        val srcArg = ArrayArg.create(src, false)
-        val outArg = ArrayArg.createOutput(length * SIZE_INT)
-        val counterArg = ArrayArg.create(Array[Int](0), true);
-        val nArg = ValueArg.create(length);
+        val srcArg = IntArg.create(src, false)
+        val outArg = IntArg.createOutput(length)
+        val counterArg = IntArg.createOutput(1);
+        val nArg = IntArg.create(length);
 
         //Create Program
         val kernelString = Utils.loadFile("filter_k.cu")

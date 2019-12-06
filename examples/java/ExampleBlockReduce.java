@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ExampleBlockReduce {
-    private static final int SIZE_LONG = 8;
-
     //TODO False Result
     public static void main(String[] args) throws IOException {
         //Load Libary
@@ -21,9 +19,9 @@ public class ExampleBlockReduce {
         }
 
         //Initialize Arguments
-        ArrayArg inArg = ArrayArg.create(in, false);
-        ArrayArg outArg = ArrayArg.createOutput(arraySize * SIZE_LONG);
-        KernelArg nArg = ValueArg.create(arraySize);
+        LongArg inArg = LongArg.create(in, false);
+        LongArg outArg = LongArg.createOutput(arraySize);
+        IntArg nArg = IntArg.create(arraySize);
 
         //Load kernelString
         String kernelString = Utils.loadFile("block_reduce.cu");

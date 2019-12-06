@@ -16,26 +16,20 @@ jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     END_TRY("creating headers")
 }
 
-void Java_Headers_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jheaderPath){
+void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
     BEGIN_TRY
-        auto headersPtr = getHandle<Headers>(env, obj);
+        CHECK_NULL(jheaderPathArray);
 
-        auto headerPathPtr = env->GetStringUTFChars(jheaderPath, nullptr);
-
-        headersPtr->insert(headerPathPtr);
-
-        env->ReleaseStringUTFChars(jheaderPath, headerPathPtr);
-    END_TRY("inserting header")
-}
-
-void Java_Headers_insertInternal___3Ljava_lang_String_2 (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
-    BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
 
         int length = env->GetArrayLength(jheaderPathArray);
 
+        CHECK_BIGGER(length, 0, "illegal array length")
+
         for (int i = 0; i < length; i++) {
             auto jheaderPath = static_cast<jstring> (env->GetObjectArrayElement(jheaderPathArray, i));
+
+            CHECK_NULL(jheaderPath);
 
             auto headerPathPtr = env->GetStringUTFChars(jheaderPath, nullptr);
 

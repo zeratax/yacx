@@ -21,13 +21,13 @@ public class ExampleSaxpy {
         }
 
         //Initialize Arguments
-        ValueArg aArg, nArg;
-        ArrayArg xArg, yArg, outArg;
-        aArg = ValueArg.create(a);
-        xArg = ArrayArg.create(x, false);
-        yArg = ArrayArg.create(y, false);
-        outArg = ArrayArg.createOutput(n*4);
-        nArg = ValueArg.create(n);
+        KernelArg aArg, nArg, xArg, yArg;
+        FloatArg outArg;
+        aArg = FloatArg.create(a);
+        xArg = FloatArg.create(x);
+        yArg = FloatArg.create(y);
+        outArg = FloatArg.createOutput(n);
+        nArg = IntArg.create(n);
 
         //Create Program
         String kernelString = Utils.loadFile("saxpy.cu");
@@ -46,7 +46,7 @@ public class ExampleSaxpy {
         boolean correct = true;
         for (int j = 0; j <  out.length; ++j) {
             float expected = x[j] * a + y[j];
-            if ((expected - out[j]) > DELTA) {
+            if (Math.abs(expected - out[j]) > DELTA) {
               correct = false;
               System.err.println("Exepected " + expected + " != Result " + out[j]);
              }

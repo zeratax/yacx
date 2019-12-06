@@ -11,6 +11,9 @@ using cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Headers, cudaex
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY
+        CHECK_NULL(jkernelSource)
+        CHECK_NULL(jkernelName)
+
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
 
@@ -29,6 +32,9 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNI
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHeaders_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
     BEGIN_TRY
+        CHECK_NULL(jkernelSource)
+        CHECK_NULL(jkernelName)
+
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
 
@@ -53,7 +59,7 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
 
         Kernel* kernelPtr = new Kernel{programPtr->compile()};
 
-        jclass jKernel = env->FindClass("Kernel");
+        jclass jKernel = getClass(env, "Kernel");
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
@@ -68,13 +74,11 @@ jobject Java_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions)
 
         Kernel* kernelPtr = new Kernel{programPtr->compile(*optionsPtr)};
 
-        jclass jKernel = env->FindClass("Kernel");
+        jclass jKernel = getClass(env, "Kernel");
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
         return kernelObj;
 
     END_TRY("compiling kernel")
-
-
 }

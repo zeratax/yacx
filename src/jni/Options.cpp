@@ -18,6 +18,8 @@ jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
 
 void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
     BEGIN_TRY
+        CHECK_NULL(joption)
+
         auto optionPtr = env->GetStringUTFChars(joption, nullptr);
 
         auto optionsPtr = getHandle<Options>(env, obj);
@@ -29,6 +31,9 @@ void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj,
 
 void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jname, jstring jvalue){
     BEGIN_TRY
+        CHECK_NULL(jname)
+        CHECK_NULL(jvalue)
+
         auto namePtr = env->GetStringUTFChars(jname, nullptr);
         auto valuePtr = env->GetStringUTFChars(jvalue, nullptr);
 

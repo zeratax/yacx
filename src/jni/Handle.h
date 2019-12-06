@@ -1,22 +1,14 @@
 #ifndef HANDLE_H_
 #define HANDLE_H_
 
+#include "Utils.hpp"
+
 jfieldID getHandleField(JNIEnv* env, jobject obj);
 
 template <typename T>
 T* getHandle(JNIEnv* env, jobject obj)
 {
-    if (obj == NULL) {
-        jclass jClass = env->FindClass("NullPointerException");
-
-        if (!jClass) {
-            logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] Cannot find the NullPointerException class";
-            exit(1);
-        }
-
-        env->ThrowNew(jClass);
-    }
-
+    CHECK_NULL(obj)
     auto handle = env->GetLongField(obj, getHandleField(env, obj));
     return reinterpret_cast<T*>(handle);
 }
@@ -28,35 +20,7 @@ void setHandle(JNIEnv* env, jobject obj, T* t)
     env->SetLongField(obj, getHandleField(env, obj), handle);
 }
 
+
 void clearHandle(JNIEnv* env, jobject obj);
 
-jobjectArray createStringArray(JNIEnv* env, const char** stringArray, int size);
-
-#define BEGIN_TRY try {
-#define END_TRY(message)                                                                                         \
-     } catch (const std::exception &err) {                                                                       \
-        jclass jClass = env->FindClass("ExecutorFailureException");                                              \
-                                                                                                                 \
-        logger(cudaexecutor::loglevel::ERROR) (std::string("Executor failure while ") +                          \
-                                                        message + ": " + err.what()).c_str()                     \
-                                                                                                                 \
-        if(!jClass) {                                                                                            \
-            logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";              \
-            exit(1);                                                                                            \
-        }                                                                                                        \
-                                                                                                                 \
-        env->ThrowNew(jClass, (std::string("Executor failure while ") + message + ": " + err.what()).c_str());   \
-    } catch (...) {                                                                                              \
-        jclass jClass = env->FindClass("ExecutorFailureException");                                              \
-                                                                                                                 \
-        logger(cudaexecutor::loglevel::ERROR) (std::string("Executor failure while ") +                          \
-                                                        message + ": " + err.what()).c_str()                     \
-                                                                                                                 \
-        if(!jClass) {                                                                                            \
-            logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";              \
-            exit(1);                                                                                            \
-        }                                                                                                        \
-                                                                                                                 \
-        env->ThrowNew(jClass, (std::string("Executor failure while ") + message).c_str());                       \
-    }
 #endif

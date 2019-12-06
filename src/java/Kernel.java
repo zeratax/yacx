@@ -24,11 +24,11 @@ public class Kernel extends JNIHandle {
     private native void configureInternal(int grid1, int grid2, int grid3, int block1, int block2, int block3);
 
     public KernelTime launch(KernelArg[] args) {
-        assert(args != null);
+        assert(args != null && args.length > 0);
         if (!configured)
             throw new ExecutorFailureException("Kernel not configured");
 
-        return launchInternel(args);
+        return launchInternal(args);
     }
 
     public KernelTime launch(KernelArg[] args, int grid, int block) {
@@ -41,29 +41,29 @@ public class Kernel extends JNIHandle {
         return launch(args);
     }
 
-    public native KernelTime launchInternel(KernelArg[] args);
+    public native KernelTime launchInternal(KernelArg[] args);
 
     public KernelTime launch(KernelArg[] args, Device device) {
-        assert(args != null);
+        assert(args != null && args.length > 0);
         assert(device != null);
         if (!configured)
             throw new ExecutorFailureException("Kernel not configured");
 
-        return launchInternel(args, device);
+        return launchInternal(args, device);
     }
 
-    public native KernelTime launchInternel(KernelArg[] args, Device device);
+    public native KernelTime launchInternal(KernelArg[] args, Device device);
 
     public KernelTime launch(KernelArg[] args, String devicename) {
-        assert(args != null);
+        assert(args != null && args.length > 0);
         assert(devicename != null && devicename.length() > 0);
         if (!configured)
             throw new ExecutorFailureException("Kernel not configured");
 
-        return launchInternel(args, devicename);
+        return launchInternal(args, devicename);
     }
 
-    public native KernelTime launchInternel(KernelArg[] args, String devicename);
+    public native KernelTime launchInternal(KernelArg[] args, String devicename);
 
     Kernel(long handle) {
         super(handle);

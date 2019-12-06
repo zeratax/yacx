@@ -1,3 +1,5 @@
+import scala.math.abs
+
 object ExampleSaxpy {
 
     def main(args: Array[String]) : Unit = {
@@ -18,11 +20,11 @@ object ExampleSaxpy {
         }
 
         //Initialize Arguments
-        val aArg = ValueArg.create(a)
-        val xArg = ArrayArg.create(x, false)
-        val yArg = ArrayArg.create(y, false)
-        val outArg = ArrayArg.createOutput(n*4)
-        val nArg = ValueArg.create(n)
+        val aArg = FloatArg.create(a)
+        val xArg = FloatArg.create(x, false)
+        val yArg = FloatArg.create(y, false)
+        val outArg = FloatArg.createOutput(n)
+        val nArg = IntArg.create(n)
 
         //Create Program
         val kernelString = Utils.loadFile("saxpy.cu")
@@ -41,7 +43,7 @@ object ExampleSaxpy {
         var correct = true
         for (j <- 0 until n) {
             var expected = x(j) * a + y(j)
-            if ((expected - out(j)) > 10e-5) {
+            if (abs(expected - out(j)) > 10e-5) {
               correct = false
               println("Exepected " + expected + " != Result " + out(j))
              }

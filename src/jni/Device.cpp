@@ -19,7 +19,9 @@ jobject Java_Device_createDevice (JNIEnv* env, jclass cls){
 
 jobject Java_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
     BEGIN_TRY
-        auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
+        CHECK_NULL(jdevicename)
+
+        auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
 
         Device* devicePtr = new Device{devicenamePtr};
 
