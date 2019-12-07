@@ -4,6 +4,7 @@
 #include "KernelArgs.hpp"
 #include "Logger.hpp"
 #include "KernelTime.hpp"
+#include "JNIHandle.hpp"
 
 #include <cuda.h>
 #include <memory>
@@ -18,7 +19,7 @@ namespace cudaexecutor {
   \example docs/kernel_launch.cpp
   \example example_saxpy.cpp
 */
-class Kernel {
+class Kernel : JNIHandle {
  public:
   //! create a Kernel based on a templated kernel string
   //! \param ptx
@@ -31,7 +32,7 @@ class Kernel {
   //! \return this (for method chaining)
   Kernel &configure(dim3 grid, dim3 block);
   //!
-  //! \param program_args
+  //! \param kernel_args
   //! \return KernelTime
   KernelTime launch(KernelArgs args, Device device = Device());
 

@@ -1,11 +1,14 @@
 #ifndef HANDLE_H_
 #define HANDLE_H_
 
+#include "Utils.hpp"
+
 jfieldID getHandleField(JNIEnv* env, jobject obj);
 
 template <typename T>
 T* getHandle(JNIEnv* env, jobject obj)
 {
+    CHECK_NULL(obj)
     auto handle = env->GetLongField(obj, getHandleField(env, obj));
     return reinterpret_cast<T*>(handle);
 }
@@ -17,24 +20,7 @@ void setHandle(JNIEnv* env, jobject obj, T* t)
     env->SetLongField(obj, getHandleField(env, obj), handle);
 }
 
-void clearHandle(JNIEnv* env, jobject obj);
 
-#define BEGIN_TRY try {
-#define END_TRY(message)                                                                                        \
-     } catch (const std::exception &err) {                                                                      \
-        jclass jClass = env->FindClass("ExecutorFailureException");                                             \
-                                                                                                                \
-        if(!jClass) {                                                                                           \
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";                           \
-        }                                                                                                       \
-        env->ThrowNew(jClass, (std::string("Executor failure while ") + message + ": " + err.what()).c_str());  \
-    } catch (...) {                                                                                             \
-        jclass jClass = env->FindClass("ExecutorFailureException");                                             \
-                                                                                                                \
-        if(!jClass) {                                                                                           \
-            logger(loglevel::ERROR) << "[JNI ERROR] Cannot find the exception class";                           \
-         }                                                                                                      \
-        env->ThrowNew(jClass, (std::string("Executor failure while ") + message).c_str());                      \
-    }
+void clearHandle(JNIEnv* env, jobject obj);
 
 #endif

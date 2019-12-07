@@ -9,26 +9,34 @@ extern "C" {
 #endif
 /*
  * Class:     Program
- * Method:    create
+ * Method:    createInternal
  * Signature: (Ljava/lang/String;Ljava/lang/String;)LProgram;
  */
-JNIEXPORT jobject JNICALL Java_Program_create
+JNIEXPORT jobject JNICALL Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2
   (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     Program
+ * Method:    createInternal
+ * Signature: (Ljava/lang/String;Ljava/lang/String;LHeaders;)LProgram;
+ */
+JNIEXPORT jobject JNICALL Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHeaders_2
+  (JNIEnv *, jclass, jstring, jstring, jobject);
 
 /*
  * Class:     Program
  * Method:    compile
  * Signature: ()LKernel;
  */
-JNIEXPORT jobject JNICALL Java_Program_compile__
+JNIEXPORT jobject JNICALL Java_Program_compile
   (JNIEnv *, jobject);
 
 /*
  * Class:     Program
- * Method:    compile
+ * Method:    compileInternal
  * Signature: (LOptions;)LKernel;
  */
-JNIEXPORT jobject JNICALL Java_Program_compile__LOptions_2
+JNIEXPORT jobject JNICALL Java_Program_compileInternal
   (JNIEnv *, jobject, jobject);
 
 #ifdef __cplusplus

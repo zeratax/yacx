@@ -15,14 +15,24 @@ link_libraries(cuda nvrtc)
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 SET(JAVA_SOURCE_FILES
+        "src/java/BooleanArg.java"
+        "src/java/Device.java"
+        "src/java/DoubleArg.java"
         "src/java/Executor.java"
         "src/java/ExecutorFailureException.java"
+        "src/java/FloatArg.java"
+        "src/java/Headers.java"
+        "src/java/IntArg.java"
         "src/java/JNIHandle.java"
         "src/java/Kernel.java"
         "src/java/KernelArg.java"
+        "src/java/KernelTime.java"
+        "src/java/LongArg.java"
         "src/java/Options.java"
         "src/java/Program.java"
-        "src/java/Utils.java")
+        "src/java/ShortArg.java"
+        "src/java/Utils.java"
+        )
 
 add_library(cudaexecutor SHARED ${SOURCES})
 

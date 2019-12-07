@@ -54,13 +54,13 @@ class logIt {
 
 //! set log level at compilation
 #ifdef current_log_level
-#define logger(level)                                                          \
-  if (static_cast<int>(level) > static_cast<int>(current_log_level))           \
-    ;                                                                          \
-  else                                                                         \
-    cudaexecutor::logIt(level, current_log_level, __FILE__, __LINE__)
+#define logger(level)                                                               \
+  if (static_cast<int>(level) > static_cast<int>(cudaexecutor::current_log_level))  \
+    ;                                                                               \
+  else                                                                              \
+    cudaexecutor::logIt(level, cudaexecutor::current_log_level, __FILE__, __LINE__)
 #else
-#define logger(level) logIt(level, loglevel::ERROR, __FILE__, __LINE__)
+#define logger(level) cudaexecutor::logIt(level, cudaexecutor::loglevel::ERROR, __FILE__, __LINE__)
 #endif
 
 } // namespace cudaexecutor

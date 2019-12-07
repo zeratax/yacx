@@ -9,19 +9,35 @@ extern "C" {
 #endif
 /*
  * Class:     Kernel
- * Method:    configure
+ * Method:    configureInternal
  * Signature: (IIIIII)V
  */
-JNIEXPORT void JNICALL Java_Kernel_configure
+JNIEXPORT void JNICALL Java_Kernel_configureInternal
   (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     Kernel
- * Method:    launch
- * Signature: ([LKernelArg;)V
+ * Method:    launchInternal
+ * Signature: ([LKernelArg;)LKernelTime;
  */
-JNIEXPORT void JNICALL Java_Kernel_launch
+JNIEXPORT jobject JNICALL Java_Kernel_launchInternal___3LKernelArg_2
   (JNIEnv *, jobject, jobjectArray);
+
+/*
+ * Class:     Kernel
+ * Method:    launchInternal
+ * Signature: ([LKernelArg;LDevice;)LKernelTime;
+ */
+JNIEXPORT jobject JNICALL Java_Kernel_launchInternal___3LKernelArg_2LDevice_2
+  (JNIEnv *, jobject, jobjectArray, jobject);
+
+/*
+ * Class:     Kernel
+ * Method:    launchInternal
+ * Signature: ([LKernelArg;Ljava/lang/String;)LKernelTime;
+ */
+JNIEXPORT jobject JNICALL Java_Kernel_launchInternal___3LKernelArg_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jobjectArray, jstring);
 
 #ifdef __cplusplus
 }

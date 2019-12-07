@@ -2,6 +2,8 @@
 
 #include <cuda.h>
 #include <vector>
+#include "JNIHandle.hpp"
+
 namespace cudaexecutor {
 
 /*!
@@ -12,7 +14,8 @@ namespace cudaexecutor {
     Will execute the Kernel with <code>add(1, 2, 3, 4, result)</code>;
     and the result will be downloaded from device to host
 */
-class KernelArg {
+
+class KernelArg : JNIHandle {
   friend class KernelArgs;
 
  public:

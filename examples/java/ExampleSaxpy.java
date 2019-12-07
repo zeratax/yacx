@@ -1,16 +1,16 @@
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class ExampleSaxpy {
+    private static final double DELTA = 10e-5;
 
-    public static void main(String[] args) throws IOException{
-        Executor.init();
+    public static void main(String[] args) throws IOException {
+        //Load Libary
+        Executor.loadLibary();
 
+        //Testdata
         final int numThreads = 8;
         final int numBlocks = 8;
 
-        //Testdata
         int n = numThreads*numBlocks;
         float a = 5.1f;
         float[] x = new float[n];
@@ -21,18 +21,19 @@ public class ExampleSaxpy {
         }
 
         //Initialize Arguments
-        KernelArg aArg, xArg, yArg, outArg, nArg;
-        aArg = KernelArg.create(a);
-        xArg = KernelArg.create(x, false);
-        yArg = KernelArg.create(y, false);
-        outArg = KernelArg.createOutput(n*4);
-        nArg = KernelArg.create(n);
+        KernelArg aArg, nArg, xArg, yArg;
+        FloatArg outArg;
+        aArg = FloatArg.create(a);
+        xArg = FloatArg.create(x);
+        yArg = FloatArg.create(y);
+        outArg = FloatArg.createOutput(n);
+        nArg = IntArg.create(n);
 
         //Create Program
-        String kernelString = Utils.loadFile("../examples/kernels/saxpy.cu");
+        String kernelString = Utils.loadFile("saxpy.cu");
         Program saxpy = Program.create(kernelString, "saxpy");
 
-        //Create Kernel
+        //Create compiled Kernel
         Kernel saxpyKernel = saxpy.compile();
 
         //Compile and launch Kernel
@@ -41,16 +42,17 @@ public class ExampleSaxpy {
         //Get Result
         float[] out = outArg.asFloatArray();
 
+        //Check Result
         boolean correct = true;
         for (int j = 0; j <  out.length; ++j) {
             float expected = x[j] * a + y[j];
-            if ((expected - out[j]) > 10e-5) {
+            if (Math.abs(expected - out[j]) > DELTA) {
               correct = false;
               System.err.println("Exepected " + expected + " != Result " + out[j]);
              }
         }
 
          if (correct)
-             System.out.println("Everything was calculated correctly!!!");
+             System.out.println("\nEverything was calculated correctly!!!");
     }
 }

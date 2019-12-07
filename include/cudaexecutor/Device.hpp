@@ -4,9 +4,11 @@
 #include <string>
 #include <vector_types.h>
 
+#include "JNIHandle.hpp"
+
 namespace cudaexecutor {
 
-class Device {
+class Device : JNIHandle {
   /*!
     \class Device Device.hpp
     \brief Class to help get a CUDA-capable device

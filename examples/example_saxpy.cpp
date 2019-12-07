@@ -1,4 +1,5 @@
 #include "cudaexecutor/main.hpp"
+#include <stdlib.h>
 
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
@@ -63,7 +64,7 @@ int main() {
 
   for (size_t j = 0; j < hOut.size(); ++j) {
     float expected = hX.at(j) * a + hY.at(j);
-    if ((expected - hOut.at(j)) > DELTA) {
+    if (abs(expected - hOut.at(j)) > DELTA) {
       correct = false;
       std::cout << "Expected: " << expected << " != "
                 << " Result: " << hOut.at(j) << std::endl;
