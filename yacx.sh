@@ -1,27 +1,39 @@
 #!/bin/bash
 
-PWD=`pwd`
-JAVA_BIN="build/java/bin"
+PWD=$(pwd)
+BUILD_DIR="build"
+JAVA_BIN="${BUILD_DIR}/java/bin"
 
-buildj () {
-    rm -rf build
-    mkdir -p $JAVA_BIN
-    cp examples/kernels/* $JAVA_BIN
-    pushd build
-    cmake ../
-    make JExampleSaxpy
+buildj() {
+  mkdir -p $JAVA_BIN
+  cp examples/kernels/* $JAVA_BIN
+  cp examples/java/*.java $JAVA_BIN
 
-    popd
-    echo 'Build finished.'
+  pushd $BUILD_DIR
+  cmake ../
+  #make $1
+  make JavaJNIClasses
+  make cudaexecutor-jni
+  popd
+
+  pushd $JAVA_BIN
+  javac *.java -d $PWD -sourcepath $PWD
+  popd
+  echo 'Build finished.'
 }
 
-exej () {
+exej() {
+  if [ "$1" == "" ]; then
+    echo "!! parameter needed, select one of the following"
+    find examples/java -type f -iname "*.java" -exec basename '{}' \; | sed 's/\.java$//1'
+  else
     pushd $JAVA_BIN
     java -ea -Djava.library.path=../../ $1
     popd
+  fi
 }
 
-builds () {
+builds() {
   buildj
   cp examples/scala/*.scala $JAVA_BIN
   pushd $JAVA_BIN
@@ -30,36 +42,38 @@ builds () {
   echo 'Build finished.'
 }
 
-exes () {
-  pushd $JAVA_BIN
-  scala -J-ea -Djava.library.path=../../ $1
-  popd
+exes() {
+  if [ "$1" == "" ]; then
+    echo "!! parameter needed, select one of the following"
+    find examples/scala -type f -iname "*.scala" -exec basename '{}' \; | sed 's/\.java$//1'
+  else
+    pushd $JAVA_BIN
+    scala -J-ea -Djava.library.path=../../ $1
+    popd
+  fi
 }
 
-
 if [ "$1" != "" ]; then
-    while [ "$1" != "" ]; do
-        case $1 in
-            --buildj                 )   buildj
-                                         ;;
-            --execute-java | --exej  )   exej $2
-                                         ;;
-            --builds                 )   buildj
-                                         ;;
-            --execute-scala | --exes )   exej $2
-        esac
-        shift
-    done
+    case $1 in
+    --buildj)
+      buildj
+      ;;
+    --execute-java | --exej)
+      exej $2
+      ;;
+    --builds)
+      buildj
+      ;;
+    --execute-scala | --exes) exej $2 ;;
+    esac
+    shift
 else
-    echo
-    echo 'yacx'
-    echo 'Options: ./yacx.sh'
-    echo '--buildj             Tries CMake build'
-    echo '--execute-java       Tests library with java'
-    echo '--builds             Tries CMake build'
-    echo '--execute-scala      Tests library with scala'
-    echo
+  echo
+  echo 'yacx'
+  echo 'Options: ./yacx.sh'
+  echo '--buildj             Tries CMake build'
+  echo '--execute-java       Tests library with java'
+  echo '--builds             Tries CMake build'
+  echo '--execute-scala      Tests library with scala'
+  echo
 fi
-
-
-
