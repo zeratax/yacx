@@ -1,4 +1,4 @@
-# CUDA EXECUTOR
+# yacx - Yet Another CudaExecutor
 
 wrapper to easily compile and execute cuda kernels
 
