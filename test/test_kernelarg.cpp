@@ -1,18 +1,18 @@
-#include "cudaexecutor/Headers.hpp"
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/Source.hpp"
+#include "yacx/Headers.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/Source.hpp"
 #include "test_compare.hpp"
 
 #include <catch2/catch.hpp>
 #include <iostream>
 
-using cudaexecutor::KernelArg, cudaexecutor::Source, cudaexecutor::Headers;
+using yacx::KernelArg, yacx::Source, yacx::Headers;
 
 CATCH_REGISTER_ENUM(compare, compare::CORRECT, compare::CHECK_COMPARE_WRONG,
                     compare::A_COMPARE_WRONG, compare::X_COMPARE_WRONG,
                     compare::Y_COMPARE_WRONG, compare::OUT_COMPARE_WRONG);
 
-TEST_CASE("KernelArg can be constructed", "[cudaexecutor::KernelArg]") {
+TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
   int a{5};
   compare check{CORRECT};
   int *hX = new int[5]{1, 2, 3, 4, 5};
@@ -22,9 +22,9 @@ TEST_CASE("KernelArg can be constructed", "[cudaexecutor::KernelArg]") {
 
   std::vector<KernelArg> args;
   args.emplace_back(KernelArg(&a));
-  args.emplace_back(KernelArg{&hX, bufferSize});
-  args.emplace_back(KernelArg{&hY, bufferSize});
-  args.emplace_back(KernelArg{&hOut, bufferSize, true});
+  args.emplace_back(KernelArg{hX, bufferSize});
+  args.emplace_back(KernelArg{hY, bufferSize});
+  args.emplace_back(KernelArg{hOut, bufferSize, true});
   args.emplace_back(KernelArg{&check, sizeof(compare), true});
 
   SECTION("KernelArg can be downloaded") {
@@ -39,7 +39,7 @@ TEST_CASE("KernelArg can be constructed", "[cudaexecutor::KernelArg]") {
                   "  a = 6;\n"
                   "  x[0] = 2;\n"
                   "  y[0] = 7;\n"
-                  //"  out[0] = 12;\n" // => SIGSEGV
+                  "  out[0] = 12;\n"
                   "}",
                   Headers{"test/test_compare.hpp"}};
 
@@ -73,7 +73,7 @@ TEST_CASE("KernelArg can be constructed", "[cudaexecutor::KernelArg]") {
                   "      if(dX[i] != x[i]) {\n"
                   "        *check = X_COMPARE_WRONG;\n"
                   "        break;\n"
-                  "      } else if(dY[i] == y[i]) {\n"
+                  "      } else if(dY[i] != y[i]) {\n"
                   "        *check = Y_COMPARE_WRONG;\n"
                   "        break;\n"
                   "      } else if(dOut[i] != out[i]) {\n"
