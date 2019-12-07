@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['header',['Header',['../classcudaexecutor_1_1_header.html',1,'cudaexecutor']]],
-  ['headers',['Headers',['../class_headers.html',1,'Headers'],['../classcudaexecutor_1_1_headers.html',1,'cudaexecutor::Headers']]]
+  ['header',['Header',['../classyacx_1_1_header.html',1,'yacx']]],
+  ['headers',['Headers',['../class_headers.html',1,'Headers'],['../classyacx_1_1_headers.html',1,'yacx::Headers']]]
 ];

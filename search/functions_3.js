@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get',['get',['../classcudaexecutor_1_1_device.html#ab46cfe73ae4ab39d68d14a2d112022d2',1,'cudaexecutor::Device']]]
+  ['get',['get',['../classyacx_1_1_device.html#a55ffb564b3bfd3800bd0799b5c4a218f',1,'yacx::Device']]]
 ];

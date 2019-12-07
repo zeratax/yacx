@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['what',['what',['../classcudaexecutor_1_1_c_uresult_exception.html#a128239bfdaf4bde00209e59c533b2393',1,'cudaexecutor::CUresultException']]]
+  ['what',['what',['../classyacx_1_1_c_uresult_exception.html#a29a19373b00f96712d1da4f349bc3605',1,'yacx::CUresultException']]]
 ];

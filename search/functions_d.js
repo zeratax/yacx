@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['total_5fmemory',['total_memory',['../classcudaexecutor_1_1_device.html#a172d3503faa5d92734f8a55ab5953994',1,'cudaexecutor::Device']]]
+  ['total_5fmemory',['total_memory',['../classyacx_1_1_device.html#a14acbcda1fdf398b018ee329406b9c7b',1,'yacx::Device']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nvrtcresultexception',['nvrtcResultException',['../classcudaexecutor_1_1nvrtc_result_exception.html',1,'cudaexecutor']]]
+  ['nvrtcresultexception',['nvrtcResultException',['../classyacx_1_1nvrtc_result_exception.html',1,'yacx']]]
 ];

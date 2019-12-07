@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name',['name',['../classcudaexecutor_1_1_device.html#aca6904908686988102b2d4868130185f',1,'cudaexecutor::Device']]],
-  ['names',['names',['../classcudaexecutor_1_1_headers.html#aacf2017f07c4e9374a95facdf88863d7',1,'cudaexecutor::Headers']]],
-  ['numoptions',['numOptions',['../classcudaexecutor_1_1_options.html#a31b01e643025c0938cdc1bbab717190e',1,'cudaexecutor::Options']]]
+  ['name',['name',['../classyacx_1_1_device.html#a49388d8375dc98070973470f6cd997e8',1,'yacx::Device']]],
+  ['names',['names',['../classyacx_1_1_headers.html#aacf2017f07c4e9374a95facdf88863d7',1,'yacx::Headers']]],
+  ['numoptions',['numOptions',['../classyacx_1_1_options.html#af68aa0dd2e790d60e75822d8fb7aa4ee',1,'yacx::Options']]]
 ];

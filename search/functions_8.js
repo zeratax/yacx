@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['major',['major',['../classcudaexecutor_1_1_device.html#ae2078e1d90452c7eeac55dc90fa90e87',1,'cudaexecutor::Device']]],
-  ['max_5fblock_5fdim',['max_block_dim',['../classcudaexecutor_1_1_device.html#a3d7f11438902e714311b41d01ad24e53',1,'cudaexecutor::Device']]],
-  ['max_5fgrid_5fdim',['max_grid_dim',['../classcudaexecutor_1_1_device.html#ad79c81d07b5c49be6d8cc194a5e649e2',1,'cudaexecutor::Device']]],
-  ['minor',['minor',['../classcudaexecutor_1_1_device.html#a19f1b50a0d16ea57d3f64a0c7a6c664a',1,'cudaexecutor::Device']]]
+  ['major',['major',['../classyacx_1_1_device.html#a8377bb720f299ed0af94fcd9b452d650',1,'yacx::Device']]],
+  ['max_5fblock_5fdim',['max_block_dim',['../classyacx_1_1_device.html#a3d7f11438902e714311b41d01ad24e53',1,'yacx::Device']]],
+  ['max_5fgrid_5fdim',['max_grid_dim',['../classyacx_1_1_device.html#ad79c81d07b5c49be6d8cc194a5e649e2',1,'yacx::Device']]],
+  ['minor',['minor',['../classyacx_1_1_device.html#af69c43db1d6ede4f78cb0cc2f6d8cddf',1,'yacx::Device']]]
 ];
