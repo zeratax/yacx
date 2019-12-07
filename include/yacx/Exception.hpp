@@ -10,7 +10,7 @@
 #include <nvrtc.h>
 #include <vector_types.h> // z.B. für dim3
 
-namespace cudaexecutor {
+namespace yacx {
 
 namespace detail {
 
@@ -275,4 +275,4 @@ inline void __checkCUresultError(const CUresult error, const char *file,
   }
 }
 
-} // namespace cudaexecutor
+} // namespace yacx

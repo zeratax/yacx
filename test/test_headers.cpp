@@ -1,12 +1,12 @@
-#include "../include/cudaexecutor/Headers.hpp"
+#include "yacx/Headers.hpp"
 
 #include <catch2/catch.hpp>
 #include <string.h>
 #include <string>
 
-using cudaexecutor::Headers, cudaexecutor::Header;
+using yacx::Headers, yacx::Header;
 
-TEST_CASE("Header can be constructed", "[cudaexecutor::header]") {
+TEST_CASE("Header can be constructed", "[yacx::header]") {
   Header header("test/test_pixel.hpp");
   std::string content{"typedef struct {\n"
                       "  unsigned char r;\n"
@@ -18,7 +18,7 @@ TEST_CASE("Header can be constructed", "[cudaexecutor::header]") {
   REQUIRE(std::string{header.content()} == content);
 }
 
-TEST_CASE("Headers can be constructed", "[cudaexecutor::headers]") {
+TEST_CASE("Headers can be constructed", "[yacx::headers]") {
   Header header0("test/test_pixel.hpp");
   std::string content0{"typedef struct {\n"
                        "  unsigned char r;\n"

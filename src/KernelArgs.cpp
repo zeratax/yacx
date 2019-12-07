@@ -1,8 +1,8 @@
-#include "cudaexecutor/KernelArgs.hpp"
+#include "yacx/KernelArgs.hpp"
 
 #include <algorithm>
 
-using cudaexecutor::KernelArgs, cudaexecutor::KernelArg;
+using yacx::KernelArgs, yacx::KernelArg;
 
 KernelArgs::KernelArgs(std::vector<KernelArg> args) : m_args{args} {}
 

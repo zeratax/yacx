@@ -4,7 +4,7 @@
 #include <map>
 #include <sstream>
 
-namespace cudaexecutor {
+namespace yacx {
 
 /** @enum loglevel
  *  @brief a level at which should be logged
@@ -50,17 +50,17 @@ class logIt {
   loglevel m_level;
   loglevel m_current_level;
   std::ostringstream m_buffer;
-}; // namespace cudaexecutor
+}; // namespace yacx
 
 //! set log level at compilation
 #ifdef current_log_level
 #define logger(level)                                                               \
-  if (static_cast<int>(level) > static_cast<int>(cudaexecutor::current_log_level))  \
+  if (static_cast<int>(level) > static_cast<int>(yacx::current_log_level))  \
     ;                                                                               \
   else                                                                              \
-    cudaexecutor::logIt(level, cudaexecutor::current_log_level, __FILE__, __LINE__)
+    yacx::logIt(level, yacx::current_log_level, __FILE__, __LINE__)
 #else
-#define logger(level) cudaexecutor::logIt(level, cudaexecutor::loglevel::ERROR, __FILE__, __LINE__)
+#define logger(level) yacx::logIt(level, yacx::loglevel::ERROR, __FILE__, __LINE__)
 #endif
 
-} // namespace cudaexecutor
+} // namespace yacx

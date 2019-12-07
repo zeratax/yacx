@@ -1,11 +1,11 @@
-#include "cudaexecutor/Kernel.hpp"
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/Program.hpp"
-#include "cudaexecutor/Source.hpp"
+#include "yacx/Kernel.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/Program.hpp"
+#include "yacx/Source.hpp"
 
 #include <vector_types.h>
 
-using cudaexecutor::KernelArg;
+using yacx::KernelArg;
 
 int a = 1;
 int b = 2;

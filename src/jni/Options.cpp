@@ -1,9 +1,9 @@
 #include "Options.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Options.hpp"
-#include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/yacx/Options.hpp"
+#include "../../include/yacx/Logger.hpp"
 
-using cudaexecutor::Options;
+using yacx::Options;
 
 jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
     BEGIN_TRY

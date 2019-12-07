@@ -1,12 +1,12 @@
-#include "cudaexecutor/Kernel.hpp"
-#include "cudaexecutor/KernelTime.hpp"
-#include "cudaexecutor/Exception.hpp"
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/KernelTime.hpp"
+#include "yacx/Kernel.hpp"
+#include "yacx/KernelTime.hpp"
+#include "yacx/Exception.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/KernelTime.hpp"
 #include <utility>
 #include <builtin_types.h>
 
-using cudaexecutor::Kernel, cudaexecutor::KernelTime, cudaexecutor::loglevel;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {

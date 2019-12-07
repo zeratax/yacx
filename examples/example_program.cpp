@@ -1,9 +1,9 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 #include <experimental/iterator>
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Options, yacx::Device, yacx::load,
+    yacx::type_of;
 
 int main() {
   std::array<int, 32> array;
@@ -11,8 +11,8 @@ int main() {
   int data{1};
   try {
     Device device;
-    Options options{cudaexecutor::options::GpuArchitecture(device),
-                    cudaexecutor::options::FMAD(false)};
+    Options options{yacx::options::GpuArchitecture(device),
+                    yacx::options::FMAD(false)};
     options.insert("--std", "c++14");
     Source source{
         "template<typename type, int size>\n"

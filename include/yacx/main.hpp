@@ -9,7 +9,7 @@
  *   \brief C++ bindings to easily compile and execute CUDA kernels
  *   \author Jona Abdinghoff
  *
- *   \version 0.3.0
+ *   \version 0.4.0
  *
  */
 
@@ -29,17 +29,17 @@
 
 #pragma once
 
-#include "cudaexecutor/Device.hpp"
-#include "cudaexecutor/Headers.hpp"
-#include "cudaexecutor/Exception.hpp"
-#include "cudaexecutor/Logger.hpp"
-#include "cudaexecutor/Options.hpp"
-#include "cudaexecutor/Program.hpp"
-#include "cudaexecutor/Source.hpp"
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/Kernel.hpp"
-#include "cudaexecutor/KernelTime.hpp"
-#include "cudaexecutor/util.hpp"
+#include "yacx/Device.hpp"
+#include "yacx/Headers.hpp"
+#include "yacx/Exception.hpp"
+#include "yacx/Logger.hpp"
+#include "yacx/Options.hpp"
+#include "yacx/Program.hpp"
+#include "yacx/Source.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/Kernel.hpp"
+#include "yacx/KernelTime.hpp"
+#include "yacx/util.hpp"
 
 #include <vector_types.h>
 

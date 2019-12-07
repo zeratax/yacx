@@ -1,8 +1,8 @@
-#include "cudaexecutor/Options.hpp"
+#include "yacx/Options.hpp"
 
 #include <algorithm>
 
-using cudaexecutor::Options;
+using yacx::Options;
 
 void Options::insert(const std::string &op) { m_options.push_back(op); }
 

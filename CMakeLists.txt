@@ -8,7 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)
-include_directories(include/cudaexecutor)
+include_directories(include/yacx)
 
 link_libraries(cuda nvrtc)
 

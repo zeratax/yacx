@@ -1,14 +1,14 @@
-#include "cudaexecutor/Source.hpp"
-#include "cudaexecutor/Logger.hpp"
-#include "cudaexecutor/Program.hpp"
+#include "yacx/Source.hpp"
+#include "yacx/Logger.hpp"
+#include "yacx/Program.hpp"
 
 #include <nvrtc.h>
 
 #include <memory>
 #include <utility>
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Program,
-    cudaexecutor::loglevel;
+using yacx::Source, yacx::KernelArg, yacx::Program,
+    yacx::loglevel;
 
 Source::Source(std::string kernel_string, Headers headers)
     : m_kernel_string{std::move(kernel_string)}, m_headers{std::move(headers)} {
