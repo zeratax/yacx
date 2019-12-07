@@ -37,7 +37,7 @@ example_saxpy: example
 example_matrix_multiply: example
 	@echo " $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)
 example_gauss: example
-   	@echo " $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)
+	@echo " $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)
 example: directories $(OBJECTS)
 	+$(MAKE) -C examples
 
@@ -69,9 +69,9 @@ lint:
 
 # Tests
 init_submodules:
-	@git submodule update --init --recursive
+	-git submodule update --init --recursive
 
-$(TESTTARGET): init_submodules directories $(OBJECTS)
+${TESTTARGET}: init_submodules directories $(OBJECTS)
 	+$(MAKE) -C test
 	@echo " Linking... $(TEST_OBJ)";
 	@echo " $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)"; $(CC) $(TEST_OBJ) -o $(TESTTARGET) $(LIB)

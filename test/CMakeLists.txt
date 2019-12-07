@@ -4,13 +4,13 @@ file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(COPY ${PROJECT_SOURCE_DIR}/examples/kernels/saxpy.cu
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/examples/kernels)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_header1.hpp
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_header2.hpp
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pixel.hpp
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_compare.hpp
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/test)
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 
 
 add_executable(tests ${SOURCES} ${TESTS})
