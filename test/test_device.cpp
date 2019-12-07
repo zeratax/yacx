@@ -1,5 +1,5 @@
-#include "../include/cudaexecutor/Device.hpp"
-#include "../include/cudaexecutor/Exception.hpp"
+#include "yacx/Device.hpp"
+#include "yacx/Exception.hpp"
 
 #include <array>
 #include <catch2/catch.hpp>
@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <string>
 
-using cudaexecutor::Device;
+using yacx::Device;
 
 // https://stackoverflow.com/a/478960
 std::string exec(const char *cmd) {
@@ -25,7 +25,7 @@ std::string exec(const char *cmd) {
   return result;
 }
 
-TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
+TEST_CASE("Device can be constructed", "[yacx::device]") {
   try {
     std::string name =
         exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
@@ -46,7 +46,7 @@ TEST_CASE("Device can be constructed", "[cudaexecutor::device]") {
           std::invalid_argument);
     }
 
-  } catch (cudaexecutor::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
+  } catch (yacx::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
     FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver "
          "couldn't detect it");
   }

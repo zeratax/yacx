@@ -1,13 +1,13 @@
 #include "Program.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Logger.hpp"
-#include "../../include/cudaexecutor/Headers.hpp"
-#include "../../include/cudaexecutor/Source.hpp"
-#include "../../include/cudaexecutor/Program.hpp"
-#include "../../include/cudaexecutor/Options.hpp"
-#include "../../include/cudaexecutor/Kernel.hpp"
+#include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/Headers.hpp"
+#include "../../include/yacx/Source.hpp"
+#include "../../include/yacx/Program.hpp"
+#include "../../include/yacx/Options.hpp"
+#include "../../include/yacx/Kernel.hpp"
 
-using cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Headers, cudaexecutor::Options, cudaexecutor::Kernel;
+using yacx::Source, yacx::Program, yacx::Headers, yacx::Options, yacx::Kernel;
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY

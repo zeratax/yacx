@@ -1,7 +1,7 @@
-#include "cudaexecutor/Exception.hpp"
+#include "yacx/Exception.hpp"
 #include <nvrtc.h>
 
-using cudaexecutor::nvrtcResultException;
+using yacx::nvrtcResultException;
 
 try {
   NVRTC_SAFE_CALL(nvrtcCompileProgram(nullptr, 0, NULL));

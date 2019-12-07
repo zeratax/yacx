@@ -1,9 +1,9 @@
 #include "Headers.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Logger.hpp"
-#include "../../include/cudaexecutor/Headers.hpp"
+#include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/Headers.hpp"
 
-using cudaexecutor::Headers;
+using yacx::Headers;
 
 jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     BEGIN_TRY

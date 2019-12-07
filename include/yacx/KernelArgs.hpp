@@ -4,7 +4,7 @@
 #include <vector>
 #include "JNIHandle.hpp"
 
-namespace cudaexecutor {
+namespace yacx {
 
 /*!
   \class ProgramArg ProgramArg.hpp
@@ -69,4 +69,4 @@ class KernelArgs {
   std::vector<KernelArg> m_args;
   mutable std::vector<const void *> m_chArgs;
 };
-} // namespace cudaexecutor
+} // namespace yacx

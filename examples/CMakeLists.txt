@@ -43,12 +43,12 @@ if (JNI_ENABLED)
 
     ADD_CUSTOM_TARGET(JExampleSaxpy ALL DEPENDS cudaexecutor-jni
             ${CMAKE_BINARY_DIR}/java/bin/ExampleSaxpy.class)
-    ADD_TEST(
-            NAME run-jni-example-saxpy
-            COMMAND
-            "${Java_JAVA_EXECUTABLE}"
-            -ea
-            -Djava.library.path=${CMAKE_BINARY_DIR}
-            ExampleSaxpy
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
+#    ADD_TEST(
+#            NAME run-jni-example-saxpy
+#            COMMAND
+#            "${Java_JAVA_EXECUTABLE}"
+#            -ea
+#            -Djava.library.path=${CMAKE_BINARY_DIR}
+#            ExampleSaxpy
+#            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
 endif ()

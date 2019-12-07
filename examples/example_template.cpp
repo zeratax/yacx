@@ -1,8 +1,8 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Options, yacx::Device, yacx::load,
+    yacx::type_of;
 
 int main() {
   int result{};

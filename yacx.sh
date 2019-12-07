@@ -52,8 +52,8 @@ if [ "$1" != "" ]; then
     done
 else
     echo
-    echo 'cudaexecutor'
-    echo 'Options: ./cudaexecutor.sh'
+    echo 'yacx'
+    echo 'Options: ./yacx.sh'
     echo '--buildj             Tries CMake build'
     echo '--execute-java       Tests library with java'
     echo '--builds             Tries CMake build'

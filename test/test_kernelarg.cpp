@@ -1,18 +1,18 @@
-#include "cudaexecutor/Headers.hpp"
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/Source.hpp"
+#include "yacx/Headers.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/Source.hpp"
 #include "test_compare.hpp"
 
 #include <catch2/catch.hpp>
 #include <iostream>
 
-using cudaexecutor::KernelArg, cudaexecutor::Source, cudaexecutor::Headers;
+using yacx::KernelArg, yacx::Source, yacx::Headers;
 
 CATCH_REGISTER_ENUM(compare, compare::CORRECT, compare::CHECK_COMPARE_WRONG,
                     compare::A_COMPARE_WRONG, compare::X_COMPARE_WRONG,
                     compare::Y_COMPARE_WRONG, compare::OUT_COMPARE_WRONG);
 
-TEST_CASE("KernelArg can be constructed", "[cudaexecutor::KernelArg]") {
+TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
   int a{5};
   compare check{CORRECT};
   int *hX = new int[5]{1, 2, 3, 4, 5};

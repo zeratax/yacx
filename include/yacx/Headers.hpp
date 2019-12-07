@@ -9,7 +9,7 @@
 #include "util.hpp"
 #include "JNIHandle.hpp"
 
-namespace cudaexecutor {
+namespace yacx {
 /*!
   \class Header Headers.hpp
   \brief Class to help import header files for Source
@@ -39,7 +39,7 @@ struct is_header
           std::is_same<char *, typename std::decay<T>::type>,
           std::is_same<const char *, typename std::decay<T>::type>,
           std::is_same<std::string, typename std::decay<T>::type>,
-          std::is_same<cudaexecutor::Header, typename std::decay<T>::type>> {};
+          std::is_same<yacx::Header, typename std::decay<T>::type>> {};
 
 class Headers : JNIHandle {
   /*!
@@ -90,8 +90,8 @@ class Headers : JNIHandle {
 template <typename T, typename... TS>
 Headers::Headers(const T &arg, const TS &... args) : Headers{args...} {
   static_assert(is_header<T>::value,
-                "must be cudaexecutor::header or std::string");
+                "must be yacx::header or std::string");
   insert(arg);
 }
 
-} // namespace cudaexecutor
+} // namespace yacx

@@ -1,10 +1,10 @@
 // Copyright 2019 André Hodapp
-#include "cudaexecutor/Exception.hpp"
+#include "yacx/Exception.hpp"
 
 /*
  * returns the number of columns of the terminal
  */
-unsigned int cudaexecutor::detail::askTerminalSize() {
+unsigned int yacx::detail::askTerminalSize() {
   // use a file fp to save and get output of system command
   FILE *fp;
   char var[40];
@@ -25,7 +25,7 @@ unsigned int cudaexecutor::detail::askTerminalSize() {
  * source: http://www.martinbroadhurst.com/how-to-split-a-string-in-c.html
  */
 template <class Container>
-void cudaexecutor::detail::split(const std::string &str, Container &cont,
+void yacx::detail::split(const std::string &str, Container &cont,
                                  char delim) {
   std::size_t current, previous = 0;
   current = str.find(delim);
@@ -40,7 +40,7 @@ void cudaexecutor::detail::split(const std::string &str, Container &cont,
 /*
  * this function indents the lines of the descripton to make look nicer :)
  */
-std::string cudaexecutor::detail::descriptionFkt(const std::string &desc) {
+std::string yacx::detail::descriptionFkt(const std::string &desc) {
   // size of each line is defined by the terminal size -24
   const unsigned int size_of_line = askTerminalSize() - 24;
 
@@ -83,7 +83,7 @@ std::string cudaexecutor::detail::descriptionFkt(const std::string &desc) {
  * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
  */
 std::string
-cudaexecutor::detail::whichError(const nvrtcResult &error) {
+yacx::detail::whichError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
   ret.append("~");
@@ -140,7 +140,7 @@ cudaexecutor::detail::whichError(const nvrtcResult &error) {
  * the different errors are in :
  * https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__TYPES.html#group__CUDA__TYPES_1gc6c391505e117393cc2558fff6bfc2e9
  */
-std::string cudaexecutor::detail::whichError(const CUresult &error) {
+std::string yacx::detail::whichError(const CUresult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
   ret.append("~");

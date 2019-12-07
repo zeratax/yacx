@@ -10,7 +10,7 @@
 #include <cuda.h>
 #include <nvrtc.h>
 
-namespace cudaexecutor {
+namespace yacx {
 
 /*!
   \class Source Source.hpp
@@ -33,4 +33,4 @@ class Source {
   Headers m_headers;
 };
 
-} // namespace cudaexecutor
+} // namespace yacx

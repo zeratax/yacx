@@ -1,14 +1,14 @@
-#include "../include/cudaexecutor/Options.hpp"
-#include "../include/cudaexecutor/util.hpp"
+#include "yacx/Options.hpp"
+#include "yacx/util.hpp"
 
 #include <catch2/catch.hpp>
 #include <string>
 #include <vector>
 
-using cudaexecutor::type_of, cudaexecutor::load;
+using yacx::type_of, yacx::load;
 
 // TEST_CASE("Vectors can be comma seperated",
-//          "[cudaexecutor::to_comma_seperated]") {
+//          "[yacx::to_comma_seperated]") {
 //  std::vector<std::string> string_vec{"andre", "hasan", "jona", "felix"};
 //  std::vector<int> int_vec{1, 2, 3, 4, 5};
 //  std::vector<int> empty_vec;
@@ -23,17 +23,17 @@ using cudaexecutor::type_of, cudaexecutor::load;
 //  REQUIRE(to_comma_separated(empty_vec.begin(), empty_vec.end()) == "");
 //}
 
-TEST_CASE("Displays the type of a variable", "[cudaexecutor::type_of]") {
+TEST_CASE("Displays the type of a variable", "[yacx::type_of]") {
   std::vector<int> vec;
   unsigned long long llui;
-  cudaexecutor::Options options;
+  yacx::Options options;
 
   REQUIRE(type_of(vec) == "std::vector<int, std::allocator<int> >");
-  REQUIRE(type_of(options) == "cudaexecutor::Options");
+  REQUIRE(type_of(options) == "yacx::Options");
   REQUIRE(type_of(llui) == "unsigned long long");
 }
 
-TEST_CASE("load file to std::string", "[cudaexecutor::load]") {
+TEST_CASE("load file to std::string", "[yacx::load]") {
   std::string kernel{
       "extern \"C\" __global__\n"
       "void saxpy(float a, float *x, float *y, float *out, size_t n) {\n"

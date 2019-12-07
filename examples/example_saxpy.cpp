@@ -1,12 +1,12 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 #include <stdlib.h>
 
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::KernelTime,
-    cudaexecutor::Kernel, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of;
+using yacx::Source, yacx::KernelArg, yacx::KernelTime,
+    yacx::Kernel, yacx::Device, yacx::load,
+    yacx::type_of;
 
 int main() {
   const float DELTA{0.01f};
@@ -52,9 +52,9 @@ int main() {
                .launch(args, dev);
 
     std::cout << "Theoretical Bandwith:        "
-              << cudaexecutor::theoretical_bandwidth(dev) << " GB/s\n";
+              << yacx::theoretical_bandwidth(dev) << " GB/s\n";
     std::cout << "Effective Bandwith:          "
-              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);

@@ -12,7 +12,7 @@
 #include <typeinfo> // operator typeid
 #include <vector>
 
-namespace cudaexecutor {
+namespace yacx {
 
 void debug(const std::string &message);
 
@@ -35,5 +35,5 @@ template <typename T> std::string type_of(const T &variable) {
   return type_name;
 }
 
-} // namespace cudaexecutor
+} // namespace yacx
 

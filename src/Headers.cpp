@@ -1,9 +1,9 @@
-#include "cudaexecutor/Headers.hpp"
+#include "yacx/Headers.hpp"
 
 #include <algorithm>
 #include <cstdio>
 
-using cudaexecutor::Header, cudaexecutor::Headers;
+using yacx::Header, yacx::Headers;
 
 const char **Headers::content() const {
   m_chHeaders.resize(m_headers.size());

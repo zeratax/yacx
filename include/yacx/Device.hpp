@@ -6,7 +6,7 @@
 
 #include "JNIHandle.hpp"
 
-namespace cudaexecutor {
+namespace yacx {
 
 class Device : JNIHandle {
   /*!
@@ -69,4 +69,4 @@ class Device : JNIHandle {
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
 };
 
-} // namespace cudaexecutor
+} // namespace yacx

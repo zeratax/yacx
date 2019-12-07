@@ -16,7 +16,7 @@
 #include <vector>
 #include <vector_types.h>
 
-namespace cudaexecutor {
+namespace yacx {
 
 /*!
   \class Program Program.hpp
@@ -65,7 +65,7 @@ template <typename T> Program &Program::instantiate(T type) {
   std::ostringstream buffer;
   buffer << type << std::flush;
   m_template_parameters.push_back(buffer.str());
-  logger(cudaexecutor::loglevel::DEBUG1) << "adding last parameter " << type;
+  logger(yacx::loglevel::DEBUG1) << "adding last parameter " << type;
   return *this;
 }
 
@@ -75,8 +75,8 @@ Program &Program::instantiate(T type, TS... types) {
   std::ostringstream buffer;
   buffer << type << std::flush;
   m_template_parameters.push_back(buffer.str());
-  logger(cudaexecutor::loglevel::DEBUG1) << "adding parameter " << type;
+  logger(yacx::loglevel::DEBUG1) << "adding parameter " << type;
   return Program::instantiate(types...);
 }
 
-} // namespace cudaexecutor
+} // namespace yacx

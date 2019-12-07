@@ -12,7 +12,7 @@
 #include <vector>
 #include <vector_types.h>
 
-namespace cudaexecutor {
+namespace yacx {
 /*!
   \class Kernel Kernel.hpp
   \brief Class to help launch and configure a CUDA kernel
@@ -46,4 +46,4 @@ class Kernel : JNIHandle {
   CUfunction m_kernel;
 };
 
-} // namespace cudaexecutor
+} // namespace yacx
