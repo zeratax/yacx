@@ -15,11 +15,11 @@ int main() {
 
     dim3 grid(1);
     dim3 block(1);
-    Kernel test = source.program("f3")
-                      .instantiate("int")
-                      .compile()
-                      .configure(grid, block)
-                      .launch(args);
+    source.program("f3")
+     .instantiate("int")
+     .compile()
+     .configure(grid, block)
+     .launch(args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }
