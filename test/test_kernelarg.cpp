@@ -22,9 +22,9 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
 
   std::vector<KernelArg> args;
   args.emplace_back(KernelArg(&a));
-  args.emplace_back(KernelArg{&hX, bufferSize});
-  args.emplace_back(KernelArg{&hY, bufferSize});
-  args.emplace_back(KernelArg{&hOut, bufferSize, true});
+  args.emplace_back(KernelArg{hX, bufferSize});
+  args.emplace_back(KernelArg{hY, bufferSize});
+  args.emplace_back(KernelArg{hOut, bufferSize, true});
   args.emplace_back(KernelArg{&check, sizeof(compare), true});
 
   SECTION("KernelArg can be downloaded") {
@@ -39,7 +39,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
                   "  a = 6;\n"
                   "  x[0] = 2;\n"
                   "  y[0] = 7;\n"
-                  //"  out[0] = 12;\n" // => SIGSEGV
+                  "  out[0] = 12;\n"
                   "}",
                   Headers{"test/test_compare.hpp"}};
 
@@ -73,7 +73,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
                   "      if(dX[i] != x[i]) {\n"
                   "        *check = X_COMPARE_WRONG;\n"
                   "        break;\n"
-                  "      } else if(dY[i] == y[i]) {\n"
+                  "      } else if(dY[i] != y[i]) {\n"
                   "        *check = Y_COMPARE_WRONG;\n"
                   "        break;\n"
                   "      } else if(dOut[i] != out[i]) {\n"
