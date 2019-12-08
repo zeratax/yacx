@@ -1,0 +1,32 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test on remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            mkdir -p $DIRECTORY
+            cd $DIRECTORY
+            git clone https://github.com/$GITHUB_REPOSITORY
+            git reset --hard $GITHUB_SHA
+            cmake -H. -Bbuild
+            make -C build
+            pushd build/test/bin/
+            ./tests
+            popd
+        env: 
+          DIRECTORY: "/tmp/${GITHUB_SHA}"
