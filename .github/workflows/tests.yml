@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: DIRECTORY
+          envs: DIRECTORY,GITHUB_REPOSITORY,GITHUB_SHA
           script: |
             echo "cloning https://github.com/${GITHUB_REPOSITORY} to ${DIRECTORY}"
             mkdir -p /tmp/$GITHUB_SHA
