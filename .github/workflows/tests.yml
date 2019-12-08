@@ -18,9 +18,11 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          envs: DIRECTORY
           script: |
-            mkdir -p $DIRECTORY
-            cd $DIRECTORY
+            echo "cloning https://github.com/${GITHUB_REPOSITORY} to ${DIRECTORY}"
+            mkdir -p /tmp/$GITHUB_SHA
+            cd /tmp/$GITHUB_SHA
             git clone https://github.com/$GITHUB_REPOSITORY
             git reset --hard $GITHUB_SHA
             cmake -H. -Bbuild
@@ -28,5 +30,6 @@ jobs:
             pushd build/test/bin/
             ./tests
             popd
+          script_stop: true
         env: 
-          DIRECTORY: "/tmp/${GITHUB_SHA}"
+          DIRECTORY: /tmp/$GITHUB_SHA
