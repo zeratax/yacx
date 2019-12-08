@@ -1,4 +1,4 @@
-[![c++ tests](https://img.shields.io/github/workflow/status/ZerataX/yacx/c++ tests?label=c%2B%2B%20tests&style=for-the-badge)](https://github.com/ZerataX/yacx/actions?query=workflow%3A%22c%2B%2B+tests%22) [![Matrix](https://img.shields.io/matrix/yacx:matrix.org?label=%23yacx%3Admnd.sh&style=for-the-badge)](https://matrix.to/#/#yacx:dmnd.sh) 
+[![c++ tests](https://img.shields.io/github/workflow/status/ZerataX/yacx/c++%20tests?label=c%2B%2B%20tests&style=for-the-badge)](https://github.com/ZerataX/yacx/actions?query=workflow%3A%22c%2B%2B+tests%22) [![Matrix](https://img.shields.io/matrix/yacx:matrix.org?label=%23yacx%3Admnd.sh&style=for-the-badge)](https://matrix.to/#/#yacx:dmnd.sh) 
 
 # yacx - Yet Another CudaExecutor
 
