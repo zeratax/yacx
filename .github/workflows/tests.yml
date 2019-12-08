@@ -21,9 +21,9 @@ jobs:
           envs: DIRECTORY,GITHUB_REPOSITORY,GITHUB_SHA
           script: |
             echo "cloning https://github.com/${GITHUB_REPOSITORY} to ${DIRECTORY}"
-            mkdir -p /tmp/$GITHUB_SHA
-            cd /tmp/$GITHUB_SHA
-            git clone https://github.com/$GITHUB_REPOSITORY
+            cd /tmp/
+            git clone https://github.com/$GITHUB_REPOSITORY.git $GITHUB_SHA
+            cd $GITHUB_SHA
             git reset --hard $GITHUB_SHA
             cmake -H. -Bbuild
             make -C build
@@ -32,4 +32,4 @@ jobs:
             popd
           script_stop: true
         env: 
-          DIRECTORY: /tmp/$GITHUB_SHA
+          DIRECTORY: "/tmp/${GITHUB_SHA}"
