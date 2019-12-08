@@ -25,7 +25,6 @@ jobs:
             git clone https://github.com/$GITHUB_REPOSITORY.git $GITHUB_SHA
             cd $GITHUB_SHA
             git checkout $GITHUB_REF
-            git reset --hard $GITHUB_SHA
             cmake -H. -Bbuild
             make -C build
             pushd build/test/bin/
