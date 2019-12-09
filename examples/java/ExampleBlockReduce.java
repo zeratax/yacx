@@ -8,7 +8,7 @@ public class ExampleBlockReduce {
         Executor.loadLibary();
 
         //Testdata
-        int arraySize = 16;
+        int arraySize = 26368;
 
         final int numThreads = 512;
         final int numBlocks = Math.min((arraySize + numThreads - 1) / numThreads, 1024);
@@ -32,15 +32,19 @@ public class ExampleBlockReduce {
         Kernel blockReduceKernel = blockReduce.compile();
 
         //Compile and launch Kernel
-        blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, numThreads, numBlocks);
+        blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, numBlocks, numThreads);
+
+        //Next run
+        inArg = LongArg.create(outArg.asLongArray());
+        blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, 1, 1024);
 
         //Get Result
-        long[] out = outArg.asLongArray();
+        long out = outArg.asLongArray()[0];
 
         //Print Result
         System.out.println("\nInput:");
         System.out.println(Arrays.toString(in));
         System.out.println("\nResult:");
-        System.out.println(Arrays.toString(out));
+        System.out.println(Long.toString(out));
     }
 }
