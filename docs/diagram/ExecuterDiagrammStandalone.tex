@@ -1,0 +1,151 @@
+%
+% Compilation of the examples from the TikZ-UML manual, v. 1.0b (2013-03-01)
+% http://www.ensta-paristech.fr/~kielbasi/tikzuml/index.php?lang=en
+%
+\documentclass[a4paper,12pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[french]{babel}
+\usepackage{fullpage}
+
+\usepackage{tikz-uml}
+
+\sloppy
+\hyphenpenalty 10000000
+
+\title{Executer Diagramm vom Lift Compiler}
+\author{André Hodapp}
+
+\begin{document}
+	\begin{tikzpicture}
+	\begin{umlpackage}{Lift Compiler}
+	\begin{umlpackage}[x=0, type=C++]{Cuda-Executer}
+		\begin{umlpackage}[x=2]{Kompilierungsstufen}
+			\umlclass[y=0]{Source}{
+				-kernel\_string : string \\
+			}{
+			+program(const string \&kernel\_name) : Program 
+			}
+			\umlclass[y=-4.5]{Program}{
+				-m\_template\_parameters : vector<string>\\
+				-kernel\_name : string \\
+				-m\_name\_expression : string \\
+				-m\_log : string \\  
+				-m\_prog : shared\_ptr<nvrtcProgram> 
+			}{
+				\hspace*{1cm}\tiny\textit{template <typename T, typename... TS>}\\
+				+instantiate(T type, TS... types) : \&Program 
+			}
+			
+			\umluniassoc[arg=create, mult1=1, mult2=*]{Source}{Program}
+		
+			\umlclass[y=-11.5]{Kernel}{
+			    -m\_ptx : shared\_ptr<char[]>\\
+				-m\_demangled\_name : string \\
+				
+				-m\_grid : dim3\\
+				-m\_block : dim3\\
+				-m\_context : CUcontext \\
+				-m\_module : CUmodule \\
+				-m\_kernel : CUfunction \\ 
+			}{
++configure(dim3 grid, dim3 block) : \&Kernel \\
++launch(vector<KernelArg> program\_args, Device device) : KernelTime
+			}
+			\umluniassoc[arg=create, mult1=1, mult2=*]{Program}{Kernel}
+		\end{umlpackage}
+		\begin{umlpackage}[]{Headers}
+		\umlclass[y=2.15 , x=-10]{Headers}{
+		}{
+			+names() : const char** \\
+			+size() : int  \\ 
+			+insert(string const \&path) : void \\
+			+insert(Header) : void \\
+		}
+
+		\umlclass[y=-2.1 , x=-10]{Header}{
+			  -\_path{} : string \\
+			  -\_content{} : string 
+		}{
+			+name() : const char* \\
+			+length() : size\_t  \\ 
+			+content() : const char *
+		}
+		\umlaggreg[mult1=1...*, arg2=1...*]{Headers}{Header}	
+		\end{umlpackage}
+	
+
+		\umlaggreg[arg1=1...*, arg2=0...1]{Source}{Headers}
+		
+		\umlclass[y=-4.5 , x=15]{Options}{
+			-m\_options : vector<string>\\
+			-m\_chOptions : vector<const char*>
+		}{
+			+insert(const string \&op) : void\\
+			+insert(const string \&name, const string \&value) : void\\
+			\hspace*{1cm}\tiny\textit{template <typename T>}\\
+			+insertOptions(const T \&t) : void\\
+			\hspace*{1cm}\tiny\textit{template <typename T, typename... TS>}\\
+			+insertOptions(const T \&t, const TS \&... ts) : void\\
+			+options() : const char **\\
+			+numOptions() : auto 
+		}		
+		
+		\umluniassoc[arg=use, mult1=0...*, mult2=1]{Program}{Options}
+		
+		
+		\umlclass[y=-11.5 , x=15]{Device}{
+			-m\_minor : int\\
+			-m\_major : int\\
+			-m\_name : string\\
+			-m\_device : CUdevice\\
+			-m\_memory : size\_t\\				
+		}{
+
+			+minor() : int  \\ 
+			+major() : int  \\ 
+			+name() : string \\
+			+get() : CUdevice \\
+			+total\_memory() : size\_t\\
+			-set\_device\_properties : void
+		}
+		\umluniassoc[arg=use, mult1=0...*, mult2=1]{Kernel}{Device}
+		
+		\begin{umlpackage}[]{Args}
+			\umlclass[y=-8 , x=-10]{KernelArgs}{
+				 -m\_chArgs : vector<const void *> 
+			}{
+				+upload() : float \\
+				+download() : float \\
+				+content() : const void ** \\
+				+size() : size\_t \\
+				
+			}
+			\umlclass[y=-14 , x=-10]{KernelArg}{
+				-m\_hdata : const void *\\
+				-m\_size : const size\_t\\
+				-m\_ddata : CUdeviceptr \\
+				-m\_download : const bool \\
+				-m\_copy : const bool \\
+				-m\_upload : const bool \\ 
+			}{
+				+content() : void*\\
+				+deviceptr() : CUdeviceptr\\
+				+upload() : void\\
+				+download() : void\\
+				+size() : const size\_t
+				
+			}
+		\umlaggreg[mult1=1...*, arg2=0...*]{KernelArgs}{KernelArg}
+		\end{umlpackage}
+		
+	\umluniaggreg[arg=use, mult1=0...*, mult2=1]{Kernel}{KernelArgs}
+	\end{umlpackage}
+
+	
+	\end{umlpackage}
+	
+	\end{tikzpicture}
+
+\end{document}
