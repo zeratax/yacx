@@ -141,7 +141,7 @@ For more info read the [contribution guideline](https://github.com/ZerataX/yacx/
 
 ## Contributing
 
-Make sure you agree to the [code of conduit](./CODE_OF_CONDUCT.md) and read the [contribution guideline](https://github.com/ZerataX/yacx/blob/master/CONTRIBUTING.md)
+Make sure you agree to the [code of conduct](./CODE_OF_CONDUCT.md) and read the [contribution guideline](https://github.com/ZerataX/yacx/blob/master/CONTRIBUTING.md)
 
 ## Resources
 
