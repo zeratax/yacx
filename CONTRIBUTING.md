@@ -12,12 +12,12 @@ Filling issues is a great and easy way to help find bugs and get new features im
 
 #### Bugs
 
-If you're reporting a security issue, please email me at security@zera.tax, otherwise
-if you're reporting a bug, please create an [issue](https://github.com/ZerataX/yacx/issues/new?labels=bug).
+If you're reporting a security issue, please email me at security@zera.tax ([gpg key](https://keybase.io/zeratax/pgp_keys.asc)), otherwise
+if you're reporting a bug, please create an [issue](https://github.com/ZerataX/yacx/issues/new?labels=bug&template=bug_report.md).
 
 #### Feature Requests
 
-If you have an idea for a new feature or an enhancement, please create an [issue](https://github.com/ZerataX/yacx/issues/new?labels=enhancement).
+If you have an idea for a new feature or an enhancement, please create an [issue](https://github.com/ZerataX/yacx/issues/new?labels=enhancement&template=feature_request.md).
 
 ### Pull Requests
 
