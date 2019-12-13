@@ -11,7 +11,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/lena.ppm
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/matrixMult.cu
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/kernels)
 
-link_libraries(cudaexecutor)
+link_libraries(yacx)
 
 add_executable(example_saxpy example_saxpy.cpp)
 add_executable(example_gauss example_gauss.cpp)

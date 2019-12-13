@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.09)
-project(cudaexecutor VERSION 0.2.0 LANGUAGES CUDA CXX)
+project(yacx VERSION 0.4.0 LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -34,7 +34,7 @@ SET(JAVA_SOURCE_FILES
         "src/java/Utils.java"
         )
 
-add_library(cudaexecutor SHARED ${SOURCES})
+add_library(yacx SHARED ${SOURCES})
 
 option(JNI_ENABLED "Build JNI" ON)
 if (JNI_ENABLED)
@@ -68,10 +68,10 @@ if (JNI_ENABLED)
     FIND_PACKAGE(JNI REQUIRED)
 
     include_directories(${JNI_INCLUDE_DIRS})
-    add_library(cudaexecutor-jni SHARED ${JNI_SOURCE_FILES})
-    target_link_libraries(cudaexecutor-jni cudaexecutor ${JNI_LIBRARIES})
+    add_library(yacx-jni SHARED ${JNI_SOURCE_FILES})
+    target_link_libraries(yacx-jni yacx ${JNI_LIBRARIES})
     SET_TARGET_PROPERTIES(
-            cudaexecutor-jni PROPERTIES
+            yacx-jni PROPERTIES
             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
             LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}"
             LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}"
