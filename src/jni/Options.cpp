@@ -58,7 +58,7 @@ jobjectArray Java_Options_options (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
         auto size = optionPtr->numOptions();
-        auto options = optionPtr->options();
+        auto options = optionPtr->content();
 
         return createStringArray(env, options, size);
     END_TRY("getting Strings of Options")

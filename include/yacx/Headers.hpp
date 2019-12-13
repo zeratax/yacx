@@ -1,6 +1,5 @@
 #pragma once
 
-#include "util.hpp"
 #include <iostream>
 #include <string>
 #include <type_traits>
@@ -74,7 +73,7 @@ class Headers : JNIHandle {
   const char **names() const;
   //!
   //! \return number of header files
-  int size() const { return m_headers.size(); }
+  size_t numHeaders() const { return m_headers.size(); }
   //! inserts Header
   //! \param path path to header file
   void insert(std::string const &path) { m_headers.push_back(Header(path)); }

@@ -51,7 +51,7 @@ class Options : JNIHandle {
   void insertOptions(const T &t, const TS &... ts);
   //!
   //! \return c-style string array with all options
-  const char **options() const;
+  const char **content() const;
   //!
   //! \return number of Options
   auto numOptions() const { return m_options.size(); }
