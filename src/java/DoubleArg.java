@@ -1,4 +1,6 @@
 public class DoubleArg extends KernelArg {
+	public final static int SIZE_BYTES = 8;
+	
 	public static DoubleArg create(double ...doubles) {
 		return createInternal(doubles, false);
 	}
@@ -18,7 +20,7 @@ public class DoubleArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native DoubleArg createOutputInternal(int size);
+	private static native DoubleArg createOutputInternal(int length);
 	
 	DoubleArg(long handle) {
 		super(handle);

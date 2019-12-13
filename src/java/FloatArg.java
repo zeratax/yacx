@@ -1,4 +1,6 @@
 public class FloatArg extends KernelArg {
+	public final static int SIZE_BYTES = 4;
+	
 	public static FloatArg create(float ...floats) {
 		return createInternal(floats, false);
 	}
@@ -18,7 +20,7 @@ public class FloatArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native FloatArg createOutputInternal(int size);
+	private static native FloatArg createOutputInternal(int length);
 	
 	FloatArg(long handle) {
 		super(handle);

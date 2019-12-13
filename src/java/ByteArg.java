@@ -1,4 +1,6 @@
 public class ByteArg extends KernelArg {
+	public final static int SIZE_BYTES = 1;
+	
 	public static ByteArg create(byte ...bytes) {
 		return createInternal(bytes, false);
 	}
@@ -18,7 +20,7 @@ public class ByteArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native ByteArg createOutputInternal(int size);
+	private static native ByteArg createOutputInternal(int length);
 	
 	ByteArg(long handle) {
 		super(handle);

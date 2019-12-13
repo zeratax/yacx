@@ -1,4 +1,5 @@
 public class IntArg extends KernelArg {
+	public final static int SIZE_BYTES = 4;
 
 	public static IntArg create(int ...ints) {
 		return createInternal(ints, false);
@@ -19,7 +20,7 @@ public class IntArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native IntArg createOutputInternal(int size);
+	private static native IntArg createOutputInternal(int length);
 	
 	IntArg(long handle) {
 		super(handle);

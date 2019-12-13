@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -80,7 +81,7 @@ public class TestExecuteSaxpy extends TestJNI {
 		
 		//Check Result
 		float[] out = outArg.asFloatArray();
-		assertTrue(out.length == n);
+		assertEquals(n, out.length);
 		for (int i = 0; i < n; i++) {
 			assertTrue(Math.abs(a * x[i] + y[i] - out[i]) < DELTA);
 		}
@@ -90,7 +91,7 @@ public class TestExecuteSaxpy extends TestJNI {
 		
 		//Check Result
 		out = outArg.asFloatArray();
-		assertTrue(out.length == n);
+		assertEquals(n, out.length);
 		for (int i = 0; i < n; i++) {
 			assertTrue(Math.abs(a * x[i] + y[i] - out[i]) < DELTA);
 		}
@@ -100,7 +101,7 @@ public class TestExecuteSaxpy extends TestJNI {
 				
 		//Check Result
 		out = outArg2.asFloatArray();
-		assertTrue(out.length == n2);
+		assertEquals(n2, out.length);
 		for (int i = 0; i < n2; i++) {
 			assertTrue(Math.abs(a2 * x2[i] + y2[i] - out[i]) < DELTA);
 		}
@@ -113,7 +114,7 @@ public class TestExecuteSaxpy extends TestJNI {
 		
 		//Check Result
 		float[] out = outArg.asFloatArray();
-		assertTrue(out.length == n);
+		assertEquals(n, out.length);
 		for (int i = 0; i < n; i++) {
 			assertTrue(Math.abs(a * x[i] + y[i] - out[i]) < DELTA);
 		}
@@ -123,14 +124,14 @@ public class TestExecuteSaxpy extends TestJNI {
 	void testLaunchSaxpyValidSmallNumberThreads() throws IOException{
 		float[] array0 = new float[n];
 		
-		outArg = FloatArg.create(array0, true);
+		FloatArg outArg = FloatArg.create(array0, true);
 		
 		//Launch Kernel correctly again with to small number of threads
 		Executor.launch("saxpy", n/2, 1, aArg, xArg, yArg, outArg, nArg);
 		
 		//Check Result
 		float[] out = outArg.asFloatArray();
-		assertTrue(out.length == n);
+		assertEquals(n, out.length);
 		for (int i = 0; i < n/2; i++) {
 			assertTrue(Math.abs(a * x[i] + y[i] - out[i]) < DELTA);
 		}

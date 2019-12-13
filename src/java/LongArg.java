@@ -1,4 +1,6 @@
 public class LongArg extends KernelArg {
+	public final static int SIZE_BYTES = 8;
+	
 	public static LongArg create(long ...longs) {
 		return createInternal(longs, false);
 	}
@@ -18,7 +20,7 @@ public class LongArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native LongArg createOutputInternal(int size);
+	private static native LongArg createOutputInternal(int length);
 
 	public native long[] asLongArray();
 	

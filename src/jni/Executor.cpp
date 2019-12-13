@@ -18,6 +18,8 @@ jobjectArray Java_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, 
 		for (int i = 0; i < jexecutions; i++){
 			auto jkerneltime = Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(env, jkernel, jdevice, jArgs);
 
+			if (jkerneltime == NULL) return NULL;
+
 			env->SetObjectArrayElement(res, i, jkerneltime);
 		}
 

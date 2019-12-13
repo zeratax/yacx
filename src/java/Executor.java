@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class Executor {
@@ -56,43 +55,49 @@ public class Executor {
     }
     
     
-    public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, int numberExecutions, KernelArgCreator creator, int ...dataSizes) {
-    	return benchmark(kernelString, kernelName, options, Device.createDevice().getName(), numberExecutions, creator, dataSizes);
+    public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) {
+    	return benchmark(kernelString, kernelName, options, Device.createDevice(), numberExecutions, creator, dataSizesBytes);
     }
     
-    public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, String deviceName, int numberExecutions, KernelArgCreator creator, int ...dataSizes) {
-    	if (dataSizes == null)
+    public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) {
+    	if (dataSizesBytes == null)
     		throw new NullPointerException();
-    	if (dataSizes.length == 0)
+    	if (dataSizesBytes.length == 0)
     		throw new IllegalArgumentException("not data sizes specificated");
+    	if (numberExecutions <= 0)
+    		throw new IllegalArgumentException("illegal number of executions: " + numberExecutions);
     	
     	Kernel kernel = Program.create(kernelString, kernelName)
     					.compile(options);
-    	Device device = Device.createDevice(deviceName);
     	
-    	KernelTime[][] result = new KernelTime[dataSizes.length][numberExecutions];
+    	KernelTime[][] result = new KernelTime[dataSizesBytes.length][numberExecutions];
     	
-    	for (int i = 0; i < dataSizes.length; i++) {
-    		int dataSize = dataSizes[i];
+    	for (int i = 0; i < dataSizesBytes.length; i++) {
+    		int dataSize = dataSizesBytes[i];
     		
-    		kernel.configure(creator.getGrid0(dataSize), creator.getGrid1(dataSize), creator.getGrid2(dataSize),
-    							creator.getBlock0(dataSize), creator.getBlock1(dataSize), creator.getBlock2(dataSize));
-    		result[i] = benchmark(kernel, device, creator.createArgs(dataSize), numberExecutions);
+    		if (dataSize <= 0)
+    			throw new IllegalArgumentException();
+    		
+    		int dataLength = creator.getDataLength(dataSize);
+    		kernel.configure(creator.getGrid0(dataLength), creator.getGrid1(dataLength), creator.getGrid2(dataLength),
+    							creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength));
+    		result[i] = benchmark(kernel, device, creator.createArgs(dataLength), numberExecutions);
     	}
     	
-    	return new BenchmarkResult(numberExecutions, dataSizes, result, kernelName);
+    	return new BenchmarkResult(numberExecutions, dataSizesBytes, result, kernelName);
     }
     
     private static native KernelTime[] benchmark(Kernel kernel, Device device, KernelArg[] args, int numberExecutions);
     
     public static abstract class KernelArgCreator {
-    	public abstract KernelArg[] createArgs(int dataSize);
-    	public abstract int getGrid0(int dataSize);
-    	public int getGrid1(int dataSize) {return 1;}
-    	public int getGrid2(int dataSize) {return 1;}
-    	public abstract int getBlock0(int dataSize);
-    	public int getBlock1(int dataSize) {return 1;}
-    	public int getBlock2(int dataSize) {return 1;}
+    	public abstract int getDataLength(int dataSizeBytes);
+    	public abstract KernelArg[] createArgs(int dataLength);
+    	public abstract int getGrid0(int dataLength);
+    	public int getGrid1(int dataLength) {return 1;}
+    	public int getGrid2(int dataLength) {return 1;}
+    	public abstract int getBlock0(int dataLength);
+    	public int getBlock1(int dataLength) {return 1;}
+    	public int getBlock2(int dataLength) {return 1;}
     }
     
     public static class BenchmarkResult {

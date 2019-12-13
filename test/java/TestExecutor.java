@@ -1,4 +1,6 @@
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 
@@ -20,6 +22,7 @@ class TestExecutor extends TestJNI {
 	static int n;
 	static FloatArg aArg, xArg, yArg, outArg;
 	static IntArg nArg;
+	static Executor.KernelArgCreator creator;
 	
 
 	@BeforeAll
@@ -54,6 +57,40 @@ class TestExecutor extends TestJNI {
 		xArg = FloatArg.create(x);
 		yArg = FloatArg.create(y);
 		nArg = IntArg.create(n);
+		
+		//KernelArg-Creator for benchmark-test
+		creator = new Executor.KernelArgCreator() {
+			@Override
+			public int getDataLength(int dataSizeBytes) {
+				return dataSizeBytes/FloatArg.SIZE_BYTES;
+			}
+			
+			@Override
+			public int getGrid0(int dataLength) {
+				return dataLength;
+			}
+			
+			@Override
+			public int getBlock0(int dataLength) {
+				return 1;
+			}
+			
+			@Override
+			public KernelArg[] createArgs(int dataLength) {
+				//test data
+				a = 5.2f;
+				x = new float[dataLength];
+				y = new float[dataLength];
+				
+				for (int i = 0; i < dataLength; i++) {
+					x[i] = i-5;
+					y[i] = (dataLength - i);
+				}
+				
+				return new KernelArg[] {FloatArg.create(a), FloatArg.create(x), FloatArg.create(y),
+											FloatArg.createOutput(dataLength), IntArg.create(n)};
+			}
+		};
 	}
 	
 	/**
@@ -121,5 +158,96 @@ class TestExecutor extends TestJNI {
 		outArg = FloatArg.create(new float[n], true);
 		Executor.launch(saxpy, "saxpy", options, devicename, grid0, grid1, grid2, block0, block1, block2, aArg, xArg, yArg, outArg, nArg);
 		checkResult();
+	}
+	
+	@Test
+	void testBenchmarkInvalid() {
+		//Invalid number of executions
+		assertThrows(IllegalArgumentException.class, () -> {
+			Executor.benchmark(saxpy, "saxpy", options, 0, creator, 1024, 2048);
+		});
+		
+		//Invalid dataSize
+		assertThrows(IllegalArgumentException.class, () -> {
+			Executor.benchmark(saxpy, "saxpy", options, 3, creator, 1024, -1, 2048);
+		});
+		
+		//null
+		assertThrows(NullPointerException.class, () -> {
+			Executor.benchmark(saxpy, null, options, 3, creator, 1024, 2048);
+		});
+		
+		//invalid KernelArgCreator
+		assertThrows(IllegalArgumentException.class, () -> {
+			Executor.benchmark(saxpy, "saxpy", options, 3, new Executor.KernelArgCreator() {
+				
+				@Override
+				public int getDataLength(int dataSizeBytes) {
+					return creator.getDataLength(dataSizeBytes);
+				}
+				
+				@Override
+				public int getGrid0(int dataLength) {
+					return creator.getGrid0(dataLength);
+				}
+				
+				@Override
+				public int getBlock0(int dataLength) {
+					return 0; //Invalid Number of Blocks
+				}
+				
+				@Override
+				public KernelArg[] createArgs(int dataLength) {
+					return creator.createArgs(dataLength);
+				}
+			}, 1024, 2048);
+		});
+		
+		//Invalid KernelArgCreator if dataSize > 2048 Bytes
+		Executor.KernelArgCreator creatorInvalid = new Executor.KernelArgCreator() {
+			
+			@Override
+			public int getDataLength(int dataSizeBytes) {
+				return creator.getDataLength(dataSizeBytes);
+			}
+			
+			@Override
+			public int getGrid0(int dataLength) {
+				return creator.getGrid0(dataLength);
+			}
+			
+			@Override
+			public int getBlock0(int dataLength) {
+				return creator.getBlock0(dataLength);
+			}
+			
+			@Override
+			public KernelArg[] createArgs(int dataLength) {
+				if (dataLength <= 512) {
+					return creator.createArgs(dataLength);
+				} else {
+					//Invalid KernelArgs
+					return new KernelArg[] {aArg, null, yArg, nArg};
+				}
+			}
+		};
+		
+		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creatorInvalid, 1024, 2048);
+		assertNotNull(result);
+		
+		//Run with more than 2048 dataSize
+		assertThrows(NullPointerException.class, () -> {
+			Executor.benchmark(saxpy, "saxpy", options, 3, creatorInvalid, 2048, 4096);
+		});
+	}
+	
+	@Test
+	void testBenchmarkValid() {
+		//Run benchmark-tests correctly
+		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creator, 1024, 2048);
+		assertNotNull(result);
+		
+		result = Executor.benchmark(saxpy, "saxpy", options, 7, creator, 512, 768);
+		assertNotNull(result);
 	}
 }
