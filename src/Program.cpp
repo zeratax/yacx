@@ -51,7 +51,7 @@ Kernel Program::compile(const Options &options) {
   }
 
   nvrtcResult compileResult =
-      nvrtcCompileProgram(*m_prog, options.numOptions(), options.options());
+      nvrtcCompileProgram(*m_prog, options.numOptions(), options.content());
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*m_prog, &logSize));
