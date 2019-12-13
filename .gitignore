@@ -46,6 +46,6 @@ examples/kernels/output.ppm
 include/catch2
 
 # documentation
+docs/*
 !docs/diagram/
-docs/
 !examples/docs/
