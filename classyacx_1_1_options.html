@@ -108,14 +108,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2abf98930ddce05563332e82e1964a7e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TS&gt; </td></tr>
 <tr class="memitem:a2abf98930ddce05563332e82e1964a7e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyacx_1_1_options.html#a2abf98930ddce05563332e82e1964a7e">insertOptions</a> (const T &amp;t, const TS &amp;... ts)</td></tr>
 <tr class="separator:a2abf98930ddce05563332e82e1964a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76c4d3d2f65099b5fe8d5bfdcb22ea72"><td class="memItemLeft" align="right" valign="top">const char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_options.html#a76c4d3d2f65099b5fe8d5bfdcb22ea72">options</a> () const</td></tr>
-<tr class="separator:a76c4d3d2f65099b5fe8d5bfdcb22ea72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dcd566764e13c50744d9a801706495b"><td class="memItemLeft" align="right" valign="top">const char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_options.html#a4dcd566764e13c50744d9a801706495b">content</a> () const</td></tr>
+<tr class="separator:a4dcd566764e13c50744d9a801706495b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af68aa0dd2e790d60e75822d8fb7aa4ee"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_options.html#af68aa0dd2e790d60e75822d8fb7aa4ee">numOptions</a> () const</td></tr>
 <tr class="separator:af68aa0dd2e790d60e75822d8fb7aa4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classyacx_1_1_options.html" title="Options for compiling a Program. ">Options</a> for compiling a <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a>. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_gauss_8cpp-example.html#_a3">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a3">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a3">example_program.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a3">example_template.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_gauss_8cpp-example.html#_a3">example_gauss.cpp</a>, <a class="el" href="example_matrix_multiply_8cpp-example.html#_a3">example_matrix_multiply.cpp</a>, <a class="el" href="example_program_8cpp-example.html#_a2">example_program.cpp</a>, and <a class="el" href="example_template_8cpp-example.html#_a3">example_template.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac15279e144f38da992fad689755a66c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac15279e144f38da992fad689755a66c7">&#9670;&nbsp;</a></span>Options() <span class="overload">[1/2]</span></h2>
@@ -194,6 +194,24 @@ template&lt;typename T , typename... TS&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4dcd566764e13c50744d9a801706495b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dcd566764e13c50744d9a801706495b">&#9670;&nbsp;</a></span>content()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char** yacx::Options::content </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>c-style string array with all options </dd></dl>
+
+</div>
+</div>
 <a id="a717bfff574dc2134fae4a0b3ffc9d656"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a717bfff574dc2134fae4a0b3ffc9d656">&#9670;&nbsp;</a></span>insert() <span class="overload">[1/2]</span></h2>
 
@@ -352,24 +370,6 @@ template&lt;typename T , typename... TS&gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>number of <a class="el" href="classyacx_1_1_options.html" title="Options for compiling a Program. ">Options</a> </dd></dl>
-
-</div>
-</div>
-<a id="a76c4d3d2f65099b5fe8d5bfdcb22ea72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76c4d3d2f65099b5fe8d5bfdcb22ea72">&#9670;&nbsp;</a></span>options()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char ** Options::options </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>c-style string array with all options </dd></dl>
 
 </div>
 </div>
