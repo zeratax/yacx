@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@master
       - name: Build project
         uses: docker://nvidia/cuda:latest
-        run: |
+        with: |
           - echo "creating library for ${RELEASE_VERSION}"
           - cmake -H. -Bbuild
           - make -C build yacx
@@ -30,31 +30,30 @@ jobs:
           name: yacx-${RELEASE_VERSION}_unix.tar.xz
           path: build/yacx-${RELEASE_VERSION}_unix.tar.xz
   deploy:
+    runs-on: ubuntu-latest
     needs: build
-    name: Upload Release Asset
-      runs-on: ubuntu-latest
-      steps:
-      - name: Download library
-          uses: actions/download-artifact@v1
-          with:
-            name: yacx-${RELEASE_VERSION}_unix.tar.xz
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: $RELEASE_VERSION
-          draft: true
-          prerelease: true
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/yacx-${RELEASE_VERSION}_unix.tar.xz
-          asset_name: yacx-${RELEASE_VERSION}_unix.tar.xz
-          asset_content_type: application/zip
+    steps:
+    - name: Download library
+      uses: actions/download-artifact@v1
+      with:
+        name: yacx-${RELEASE_VERSION}_unix.tar.xz
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: $RELEASE_VERSION
+        draft: true
+        prerelease: true
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/yacx-${RELEASE_VERSION}_unix.tar.xz
+        asset_name: yacx-${RELEASE_VERSION}_unix.tar.xz
+        asset_content_type: application/zip
