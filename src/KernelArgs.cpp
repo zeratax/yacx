@@ -22,7 +22,7 @@ float KernelArgs::download() {
 
 const void **KernelArgs::content() {
   m_chArgs.resize(m_args.size());
-  std::transform(m_args.begin(), m_args.end(), m_chArgs.begin(),
+  std::transform(m_args.begin(), m_args.end(), m_voArgs.begin(),
                  [](auto &arg) { return arg.content(); });
   return m_chArgs.data();
 };
