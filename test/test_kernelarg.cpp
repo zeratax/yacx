@@ -32,7 +32,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
     REQUIRE(hX[0] == 1);
     REQUIRE(hY[0] == 6);
     REQUIRE(hOut[0] == 11);
-    Source source{"#include \"test/test_compare.hpp\"\n"
+    Source source{"#include \"test_compare.hpp\"\n"
                   "extern \"C\"\n"
                   "__global__ void download(int a, int *x, int *y, int "
                   "*out, compare *check) {\n"
@@ -41,7 +41,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
                   "  y[0] = 7;\n"
                   "  out[0] = 12;\n"
                   "}",
-                  Headers{"test/test_compare.hpp"}};
+                  Headers{"test_compare.hpp"}};
 
     dim3 grid(1);
     dim3 block(1);
@@ -56,7 +56,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
     REQUIRE(hX[0] == 1);
     REQUIRE(hY[0] == 6);
     REQUIRE(hOut[0] == 11);
-    Source source{"#include \"test/test_compare.hpp\"\n"
+    Source source{"#include \"test_compare.hpp\"\n"
                   "extern \"C\"\n"
                   "__global__ void compare(int a, int *x, int *y, int "
                   "*out, compare *check) {\n"
@@ -83,7 +83,7 @@ TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
                   "    }\n"
                   "  }\n"
                   "}",
-                  Headers{"test/test_compare.hpp"}};
+                  Headers{"test_compare.hpp"}};
 
     dim3 grid(1);
     dim3 block(1);
