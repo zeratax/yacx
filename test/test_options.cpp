@@ -13,8 +13,8 @@ TEST_CASE("Options can be constructed", "[yacx::Options]") {
                                         "--use_fast_math=false"};
 
   REQUIRE(options1.numOptions() == 2);
-  REQUIRE(strcmp(options1.options()[1], options_string[1]) == 0);
-  REQUIRE(strcmp(options1.options()[0], options_string[0]) == 0);
+  REQUIRE(strcmp(options1.content()[1], options_string[1]) == 0);
+  REQUIRE(strcmp(options1.content()[0], options_string[0]) == 0);
   REQUIRE(options2.numOptions() == 0);
 }
 
@@ -27,6 +27,6 @@ TEST_CASE("Options can be inserted", "[yacx::Options]") {
   options.insertOptions(yacx::options::GpuArchitecture(40, 0),
                         yacx::options::FMAD(true));
   REQUIRE(options.numOptions() == 2);
-  REQUIRE(strcmp(options.options()[0], options_string[0]) == 0);
-  REQUIRE(strcmp(options.options()[1], options_string[1]) == 0);
+  REQUIRE(strcmp(options.content()[0], options_string[0]) == 0);
+  REQUIRE(strcmp(options.content()[1], options_string[1]) == 0);
 }

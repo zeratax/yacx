@@ -36,7 +36,7 @@ TEST_CASE("Headers can be constructed", "[yacx::headers]") {
 
   SECTION("constructed from header") {
     Headers headers{header0, header1, header2};
-    REQUIRE(headers.size() == 3);
+    REQUIRE(headers.numHeaders() == 3);
     REQUIRE(std::string{headers.names()[2]} ==
             std::string{"test_pixel.hpp"});
     REQUIRE(std::string{headers.names()[1]} ==
@@ -50,7 +50,7 @@ TEST_CASE("Headers can be constructed", "[yacx::headers]") {
   SECTION("constructed from path") {
     Headers headers{"test_pixel.hpp", "test_header1.hpp",
                     "test_header2.hpp"};
-    REQUIRE(headers.size() == 3);
+    REQUIRE(headers.numHeaders() == 3);
     REQUIRE(std::string{headers.names()[2]} ==
             std::string{"test_pixel.hpp"});
     REQUIRE(std::string{headers.names()[1]} ==
@@ -63,11 +63,11 @@ TEST_CASE("Headers can be constructed", "[yacx::headers]") {
   }
   SECTION("empty constructor, but inserted headers") {
     Headers headers{};
-    REQUIRE(headers.size() == 0);
+    REQUIRE(headers.numHeaders() == 0);
     headers.insert("test_pixel.hpp");
-    REQUIRE(headers.size() == 1);
+    REQUIRE(headers.numHeaders() == 1);
     headers.insert(header1);
-    REQUIRE(headers.size() == 2);
+    REQUIRE(headers.numHeaders() == 2);
     REQUIRE(std::string{headers.names()[0]} ==
             std::string{"test_pixel.hpp"});
     REQUIRE(std::string{headers.names()[1]} ==
