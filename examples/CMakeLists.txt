@@ -22,7 +22,7 @@ add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 SET(JAVA_EXAMPLE_FILES
         "java/ExampleSaxpy.java"
         "java/ExampleFilterExecutor.java"
-        "java/ExampleBlockReduce.java")
+        "java/ExampleReduce.java")
 
 if (JNI_ENABLED)
     FOREACH (_java_path ${JAVA_EXAMPLE_FILES})
