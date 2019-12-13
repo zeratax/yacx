@@ -1,14 +1,15 @@
 #include "Kernel.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
-#include "../../include/cudaexecutor/Kernel.hpp"
-#include "../../include/cudaexecutor/KernelArgs.hpp"
-#include "../../include/cudaexecutor/Device.hpp"
-#include "../../include/cudaexecutor/KernelTime.hpp"
+#include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/Kernel.hpp"
+#include "../../include/yacx/KernelArgs.hpp"
+#include "../../include/yacx/Device.hpp"
+#include "../../include/yacx/KernelTime.hpp"
 
 #include <string>
 
-using cudaexecutor::Kernel, cudaexecutor::KernelArg, cudaexecutor::KernelArgs, cudaexecutor::KernelTime, cudaexecutor::Device, jni::KernelArgJNI;
+using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, jni::KernelArgJNI;
 
 void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
 {

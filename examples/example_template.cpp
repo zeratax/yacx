@@ -1,8 +1,8 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Options, yacx::Device, yacx::load,
+    yacx::type_of;
 
 int main() {
   int result{};
@@ -15,11 +15,11 @@ int main() {
 
     dim3 grid(1);
     dim3 block(1);
-    Kernel test = source.program("f3")
-                      .instantiate("int")
-                      .compile()
-                      .configure(grid, block)
-                      .launch(args);
+    source.program("f3")
+     .instantiate("int")
+     .compile()
+     .configure(grid, block)
+     .launch(args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }

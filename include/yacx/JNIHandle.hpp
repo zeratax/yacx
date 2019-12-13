@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cudaexecutor {
+namespace yacx {
 
     class JNIHandle {
     public:

@@ -1,6 +1,6 @@
-#include "cudaexecutor/Exception.hpp"
+#include "yacx/Exception.hpp"
 
-using cudaexecutor::CUresultException;
+using yacx::CUresultException;
 
 int nBytes = 10;
 CUdeviceptr d_A;

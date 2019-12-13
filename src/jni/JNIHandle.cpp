@@ -1,8 +1,8 @@
 #include "JNIHandle.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/JNIHandle.hpp"
+#include "../../include/yacx/JNIHandle.hpp"
 
-using cudaexecutor::JNIHandle;
+using yacx::JNIHandle;
 
 void JNICALL Java_JNIHandle_dispose(JNIEnv *env, jobject obj)
 {

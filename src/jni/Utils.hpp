@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/yacx/Logger.hpp"
 #include "Handle.h"
 
 #define CHECK_NULL(object, returnValue)                                                                          \
     if (object == NULL) {                                                                                        \
-        logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] NullPointerException in file:[" << __FILE__        \
+        logger(yacx::loglevel::ERROR) << "[JNI ERROR] NullPointerException in file:[" << __FILE__        \
             << ":" << __LINE__-2 << "]";                                                                         \
                                                                                                                  \
         jclass cls = getClass(env, "java/lang/NullPointerException");                                            \
@@ -18,7 +18,7 @@
 
 #define CHECK_BIGGER(object, than, message, returnValue)                                                         \
     if (object <= than) {                                                                                        \
-        logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] IllegalArgumentException (" << message             \
+        logger(yacx::loglevel::ERROR) << "[JNI ERROR] IllegalArgumentException (" << message             \
             << ") in file:[" << __FILE__  << ":" << __LINE__-2 << "]";                                           \
                                                                                                                  \
         jclass cls = getClass(env, "java/lang/IllegalArgumentException");                                        \
@@ -33,14 +33,14 @@
 
 #define END_TRY(message)                                                                                         \
      } catch (const std::exception &err) {                                                                       \
-        logger(cudaexecutor::loglevel::ERROR) << "Executor failure while " << message <<  ":"  << err.what();    \
+        logger(yacx::loglevel::ERROR) << "Executor failure while " << message <<  ":"  << err.what();    \
                                                                                                                  \
         jclass cls = getClass(env, "ExecutorFailureException");                                                  \
                                                                                                                  \
         if (cls)                                                                                                 \
             env->ThrowNew(cls, (std::string("Executor failure while ") + message + ": " + err.what()).c_str());  \
     } catch (...) {                                                                                              \
-        logger(cudaexecutor::loglevel::ERROR) << "Executor failure while " << message;                           \
+        logger(yacx::loglevel::ERROR) << "Executor failure while " << message;                           \
                                                                                                                  \
         jclass cls = getClass(env, "ExecutorFailureException");                                                  \
                                                                                                                  \

@@ -3,7 +3,7 @@
 #include <cstring>
 #include <stdio.h>
 
-using jni::KernelArgJNI, cudaexecutor::KernelArg;
+using jni::KernelArgJNI, yacx::KernelArg;
 
 KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload) {
     _hdata = malloc(size);

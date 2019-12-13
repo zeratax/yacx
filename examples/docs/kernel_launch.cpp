@@ -1,7 +1,7 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Device;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Device;
 
 Source source{
     "extern \"C\" __global__\n"

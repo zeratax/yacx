@@ -1,8 +1,8 @@
-#include "cudaexecutor/KernelArgs.hpp"
+#include "yacx/KernelArgs.hpp"
 
 #include <algorithm>
 
-using cudaexecutor::KernelArgs, cudaexecutor::KernelArg;
+using yacx::KernelArgs, yacx::KernelArg;
 
 KernelArgs::KernelArgs(std::vector<KernelArg> args) : m_args{args} {}
 
@@ -21,10 +21,10 @@ float KernelArgs::download() {
 }
 
 const void **KernelArgs::content() {
-  m_chArgs.resize(m_args.size());
-  std::transform(m_args.begin(), m_args.end(), m_chArgs.begin(),
+  m_voArgs.resize(m_args.size());
+  std::transform(m_args.begin(), m_args.end(), m_voArgs.begin(),
                  [](auto &arg) { return arg.content(); });
-  return m_chArgs.data();
+  return m_voArgs.data();
 };
 
 size_t KernelArgs::size() const {

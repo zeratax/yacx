@@ -1,9 +1,9 @@
 #include "LongArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
-#include "../../include/cudaexecutor/KernelArgs.hpp"
+#include "../../include/yacx/KernelArgs.hpp"
 
-using cudaexecutor::KernelArg, jni::KernelArgJNI;
+using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject Java_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray, jboolean jdownload){
     BEGIN_TRY

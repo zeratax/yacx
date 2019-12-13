@@ -1,8 +1,8 @@
-#include "cudaexecutor/Device.hpp"
-#include "cudaexecutor/Options.hpp"
+#include "yacx/Device.hpp"
+#include "yacx/Options.hpp"
 
 Device device;
-Options options{cudaexecutor::options::GpuArchitecture(device),
-                cudaexecutor::options::FMAD(false)};
-options.insertOption(cudaexecutor::options::Fast_Math{true});
+Options options{yacx::options::GpuArchitecture(device),
+                yacx::options::FMAD(false)};
+options.insertOption(yacx::options::Fast_Math{true});
 options.insert("--std", "c++14");

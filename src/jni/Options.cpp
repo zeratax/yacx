@@ -1,9 +1,9 @@
 #include "Options.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Options.hpp"
-#include "../../include/cudaexecutor/Logger.hpp"
+#include "../../include/yacx/Options.hpp"
+#include "../../include/yacx/Logger.hpp"
 
-using cudaexecutor::Options;
+using yacx::Options;
 
 jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
     BEGIN_TRY
@@ -58,7 +58,7 @@ jobjectArray Java_Options_getOptions (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
         auto size = optionPtr->numOptions();
-        auto options = optionPtr->options();
+        auto options = optionPtr->content();
 
         return createStringArray(env, options, size);
     END_TRY("getting Strings of Options")

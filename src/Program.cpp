@@ -1,17 +1,15 @@
-#include "cudaexecutor/Program.hpp"
-#include "cudaexecutor/Exception.hpp"
-#include "cudaexecutor/Headers.hpp"
-#include "cudaexecutor/Logger.hpp"
-#include "cudaexecutor/util.hpp"
+#include "yacx/Program.hpp"
+#include "yacx/Exception.hpp"
+#include "yacx/Logger.hpp"
+#include "yacx/util.hpp"
 
 #include <experimental/iterator>
 #include <iostream>
 #include <memory>
 #include <utility>
 
-using cudaexecutor::Program, cudaexecutor::Kernel, cudaexecutor::Options,
-    cudaexecutor::Headers, cudaexecutor::KernelArg, cudaexecutor::loglevel,
-    cudaexecutor::detail::whichError, cudaexecutor::detail::descriptionFkt;
+using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
+    yacx::loglevel, yacx::detail::whichError, yacx::detail::descriptionFkt;
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
@@ -51,7 +49,7 @@ Kernel Program::compile(const Options &options) {
   }
 
   nvrtcResult compileResult =
-      nvrtcCompileProgram(*m_prog, options.numOptions(), options.options());
+      nvrtcCompileProgram(*m_prog, options.numOptions(), options.content());
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*m_prog, &logSize));

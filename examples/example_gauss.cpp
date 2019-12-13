@@ -1,4 +1,4 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 #include "kernels/gauss.h"
 
 #include <cmath>
@@ -10,9 +10,9 @@
 #define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::type_of, cudaexecutor::Headers, cudaexecutor::Header;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Options, yacx::Device, yacx::load,
+    yacx::type_of, yacx::Headers, yacx::Header;
 
 void writePPM(Pixel *pixels, const char *filename, int width, int height) {
   std::ofstream outputFile(filename, std::ios::binary);

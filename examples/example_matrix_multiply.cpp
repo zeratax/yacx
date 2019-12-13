@@ -1,4 +1,4 @@
-#include "cudaexecutor/main.hpp"
+#include "yacx/main.hpp"
 
 #include <algorithm>
 #include <array>
@@ -10,9 +10,9 @@
 #include <random>
 #include <string>
 
-using cudaexecutor::Source, cudaexecutor::KernelArg, cudaexecutor::Kernel,
-    cudaexecutor::Options, cudaexecutor::Device, cudaexecutor::load,
-    cudaexecutor::KernelTime;
+using yacx::Source, yacx::KernelArg, yacx::Kernel,
+    yacx::Options, yacx::Device, yacx::load,
+    yacx::KernelTime;
 
 void compare(float *lhs, float *rhs, int width) {
   int errors = 0;
@@ -93,7 +93,7 @@ int main() {
     std::cout << "Kernel Arguments total size: "
               << ((matrix_size * 3 + sizeof(size_t)) / 1024) << "kb\n\n";
     std::cout << "Theoretical Bandwith:        "
-              << cudaexecutor::theoretical_bandwidth(dev) << " GB/s\n";
+              << yacx::theoretical_bandwidth(dev) << " GB/s\n";
 
 
     // Set kernel string and compile options
@@ -102,7 +102,7 @@ int main() {
     Options options;
     options.insert("--std", "c++14");
     options.insert("--device-debug");
-    options.insertOptions(cudaexecutor::options::GpuArchitecture{dev});
+    options.insertOptions(yacx::options::GpuArchitecture{dev});
 
     // Set arguments
 
@@ -168,7 +168,7 @@ int main() {
     std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      " << time.sum << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
 
     equalMultiplyNaive =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
@@ -180,7 +180,7 @@ int main() {
       std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  " << time.sum << " ms\n";
 
       std::cout << "Effective Bandwith:          "
-                << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
+                << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
       equalMultiply1unfolded =
           std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
       if(!equalMultiply1unfolded)
@@ -193,7 +193,7 @@ int main() {
     std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          " << time.sum << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
     equalMultiply1 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if(!equalMultiply1)
@@ -203,7 +203,7 @@ int main() {
     std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          " << time.sum << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << cudaexecutor::effective_bandwidth(time.launch, args) << " GB/s\n\n";
+              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n\n";
     equalMultiply2 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if(!equalMultiply2)

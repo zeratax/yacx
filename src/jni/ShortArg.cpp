@@ -1,9 +1,9 @@
 #include "ShortArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
-#include "../../include/cudaexecutor/KernelArgs.hpp"
+#include "../../include/yacx/KernelArgs.hpp"
 
-using cudaexecutor::KernelArg, jni::KernelArgJNI;
+using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
     BEGIN_TRY

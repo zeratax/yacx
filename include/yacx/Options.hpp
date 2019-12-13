@@ -10,7 +10,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-namespace cudaexecutor {
+namespace yacx {
 
 /*!
   \class Options Options.hpp
@@ -51,7 +51,7 @@ class Options : JNIHandle {
   void insertOptions(const T &t, const TS &... ts);
   //!
   //! \return c-style string array with all options
-  const char **options() const;
+  const char **content() const;
   //!
   //! \return number of Options
   auto numOptions() const { return m_options.size(); }
@@ -100,7 +100,7 @@ class GpuArchitecture {
       : m_arc(std::string("compute_") + std::to_string(major) +
               std::to_string(minor)) {}
 
-  explicit GpuArchitecture(const cudaexecutor::Device &device)
+  explicit GpuArchitecture(const yacx::Device &device)
       : GpuArchitecture(device.major(), device.minor()) {}
 
   auto name() const { return "--gpu-architecture"; }
@@ -124,4 +124,4 @@ class Fast_Math : public detail::BooleanOption {
 
 } // namespace options
 
-} // namespace cudaexecutor
+} // namespace yacx

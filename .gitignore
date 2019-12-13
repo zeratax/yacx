@@ -41,10 +41,12 @@ out
 
 # Output
 examples/kernels/output.ppm
+build/
 
 # EXTERNAL
 include/catch2
 
 # documentation
-docs/
+docs/*
+!docs/diagram/
 !examples/docs/

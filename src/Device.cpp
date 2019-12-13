@@ -1,12 +1,12 @@
-#include "cudaexecutor/Device.hpp"
-#include "cudaexecutor/Exception.hpp"
-#include "cudaexecutor/Logger.hpp"
+#include "yacx/Device.hpp"
+#include "yacx/Exception.hpp"
+#include "yacx/Logger.hpp"
 
 #include <experimental/iterator>
 #include <vector>
 
-using cudaexecutor::Device, cudaexecutor::CUresultException,
-    cudaexecutor::loglevel;
+using yacx::Device, yacx::CUresultException,
+    yacx::loglevel;
 
 Device::Device() {
   CUdevice device;

@@ -1,10 +1,12 @@
-name: Build doxygen and Deploy to gh-pages
+name: docs
+
 on:
   push:	
     branches:	
       - master
+
 jobs:
-  build-and-deploy:
+  docs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

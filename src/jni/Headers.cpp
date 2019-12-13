@@ -1,9 +1,9 @@
 #include "Headers.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Logger.hpp"
-#include "../../include/cudaexecutor/Headers.hpp"
+#include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/Headers.hpp"
 
-using cudaexecutor::Headers;
+using yacx::Headers;
 
 jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     BEGIN_TRY
@@ -43,7 +43,7 @@ void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheader
 jint Java_Headers_getSize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
-        auto size = headersPtr->size();
+        auto size = headersPtr->numHeaders();
 
         return size;
     END_TRY("getting size of headers")
@@ -52,7 +52,7 @@ jint Java_Headers_getSize (JNIEnv* env, jobject obj){
 jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
-        auto size = headersPtr->size();
+        auto size = headersPtr->numHeaders();
         auto names = headersPtr->names();
 
         return createStringArray(env, names, size);
@@ -62,7 +62,7 @@ jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
 jobjectArray Java_Headers_content (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
-        auto size = headersPtr->size();
+        auto size = headersPtr->numHeaders();
         auto content = headersPtr->content();
 
         return createStringArray(env, content, size);

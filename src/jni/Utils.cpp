@@ -5,13 +5,13 @@ jclass getClass(JNIEnv* env, const char* name) {
     jclass cls = env->FindClass(name);
 
     if (!cls) {
-        logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] Cannot find the " << name << " class";
+        logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find the " << name << " class";
 
         cls = env->FindClass("java/lang/ClassNotFoundException");
 
         if (!cls) {
-            logger(cudaexecutor::loglevel::ERROR) << "[JNI ERROR] Cannot find java.lang.ClassNotFoundException";
-            return NULL;
+            logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find java.lang.ClassNotFoundException";
+			return NULL;
         }
 
         env->ThrowNew(cls, name);

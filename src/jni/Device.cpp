@@ -1,10 +1,10 @@
 #include "Device.h"
 #include "Handle.h"
-#include "../../include/cudaexecutor/Logger.hpp"
-#include "../../include/cudaexecutor/Device.hpp"
+#include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/Device.hpp"
 #include <cstring>
 
-using cudaexecutor::Device;
+using yacx::Device;
 
 jobject Java_Device_createDevice (JNIEnv* env, jclass cls){
     BEGIN_TRY

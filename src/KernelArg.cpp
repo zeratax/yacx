@@ -1,10 +1,10 @@
-#include "cudaexecutor/KernelArgs.hpp"
-#include "cudaexecutor/Exception.hpp"
-#include "cudaexecutor/Logger.hpp"
+#include "yacx/KernelArgs.hpp"
+#include "yacx/Exception.hpp"
+#include "yacx/Logger.hpp"
 
 #include <builtin_types.h>
 
-using cudaexecutor::KernelArg, cudaexecutor::loglevel;
+using yacx::KernelArg, yacx::loglevel;
 
 KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                      bool upload)
