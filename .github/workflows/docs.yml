@@ -1,8 +1,10 @@
-name: Build docs and Deploy to gh-pages
+name: docs
+
 on:
   push:	
     branches:	
       - master
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

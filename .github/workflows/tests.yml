@@ -1,4 +1,4 @@
-name: c++ tests
+name: tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  test-cpp:
     runs-on: ubuntu-latest
     steps:
       - name: test on remote server
