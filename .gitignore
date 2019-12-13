@@ -41,6 +41,7 @@ out
 
 # Output
 examples/kernels/output.ppm
+build/
 
 # EXTERNAL
 include/catch2
