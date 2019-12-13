@@ -12,7 +12,7 @@ jobs:
   test-cpp:
     runs-on: ubuntu-latest
     env:
-      COMMIT_SHA: ${{ github.event.pull_request.head.sha || $GITHUB_SHA }}
+      COMMIT_SHA: ${{ github.event.pull_request.head.sha || GITHUB_SHA }}
     steps:
       - name: test on remote server
         uses: appleboy/ssh-action@master
