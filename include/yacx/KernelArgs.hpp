@@ -67,6 +67,6 @@ class KernelArgs {
 
  private:
   std::vector<KernelArg> m_args;
-  mutable std::vector<const void *> m_chArgs;
+  mutable std::vector<const void *> m_voArgs;
 };
 } // namespace yacx
