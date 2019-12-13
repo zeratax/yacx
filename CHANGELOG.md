@@ -1,9 +1,9 @@
 # Changelog
 ## yacx v0.4.1 (2019-12-13)
 ### Documentation
-- created a classDiagram [4647713](https://github.com/ZerataX/yacx/commit/464771320d222e5ba19545e122f34216b6987fe3)
-- a Code of Conduct [4b1ffcf](https://github.com/ZerataX/yacx/commit/4b1ffcf6b6dd606c1b7ddddd42670a5504c3cd8f)
-- a Contribution Guideline [4d973a6](https://github.com/ZerataX/yacx/commit/4d973a6780190c777767106e4d5d78738ca5c3f9)
+- created a [classDiagram](docs/diagram/classDiagram.pdf)
+- a [Code of Conduct](./CODE_OF_CONDUCT.md)
+- a [Contribution Guideline](./CONTRIBUTING.md)
 
 ### Changes
 - renamed (see [#78](https://github.com/ZerataX/yacx/issues/78))
