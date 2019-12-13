@@ -35,7 +35,7 @@ int main() {
     std::vector<KernelArg> args;
     args.emplace_back(
         KernelArg{v.data(), sizeof(int) * v.size(), true});
-    args.emplace_back(KernelArg{&data});
+    args.emplace_back(KernelArg{const_cast<void*>(&data)});
 
     dim3 grid(v.size()/times);
     dim3 block(1);
