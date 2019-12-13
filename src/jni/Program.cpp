@@ -11,8 +11,8 @@ using cudaexecutor::Source, cudaexecutor::Program, cudaexecutor::Headers, cudaex
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY
-        CHECK_NULL(jkernelSource)
-        CHECK_NULL(jkernelName)
+        CHECK_NULL(jkernelSource, NULL)
+        CHECK_NULL(jkernelName, NULL)
 
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
@@ -32,8 +32,9 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNI
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHeaders_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
     BEGIN_TRY
-        CHECK_NULL(jkernelSource)
-        CHECK_NULL(jkernelName)
+        CHECK_NULL(jkernelSource, NULL)
+        CHECK_NULL(jkernelName, NULL)
+        CHECK_NULL(jheaders, NULL)
 
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
@@ -69,6 +70,8 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
 
 jobject Java_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions){
     BEGIN_TRY
+        CHECK_NULL(joptions, NULL)
+
         auto programPtr = getHandle<Program>(env, obj);
         const auto optionsPtr = getHandle<Options>(env, joptions);
 

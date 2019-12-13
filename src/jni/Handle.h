@@ -1,6 +1,7 @@
 #ifndef HANDLE_H_
 #define HANDLE_H_
 
+#include <jni.h>
 #include "Utils.hpp"
 
 jfieldID getHandleField(JNIEnv* env, jobject obj);
@@ -8,7 +9,6 @@ jfieldID getHandleField(JNIEnv* env, jobject obj);
 template <typename T>
 T* getHandle(JNIEnv* env, jobject obj)
 {
-    CHECK_NULL(obj)
     auto handle = env->GetLongField(obj, getHandleField(env, obj));
     return reinterpret_cast<T*>(handle);
 }

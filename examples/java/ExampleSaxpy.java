@@ -1,21 +1,20 @@
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ExampleSaxpy {
-    private static final double DELTA = 10e-5;
-
     public static void main(String[] args) throws IOException {
         //Load Libary
         Executor.loadLibary();
 
         //Testdata
-        final int numThreads = 8;
-        final int numBlocks = 8;
+        final int numThreads = 4;
+        final int numBlocks = 4;
 
         int n = numThreads*numBlocks;
         float a = 5.1f;
         float[] x = new float[n];
         float[] y = new float[n];
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; i++) {
             x[i] = i;
             y[i] = 2*i;
         }
@@ -37,22 +36,17 @@ public class ExampleSaxpy {
         Kernel saxpyKernel = saxpy.compile();
 
         //Compile and launch Kernel
-        saxpyKernel.launch(new KernelArg[]{aArg, xArg, yArg, outArg, nArg}, numThreads, numBlocks);
+        KernelTime t = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg);
 
         //Get Result
         float[] out = outArg.asFloatArray();
 
-        //Check Result
-        boolean correct = true;
-        for (int j = 0; j <  out.length; ++j) {
-            float expected = x[j] * a + y[j];
-            if (Math.abs(expected - out[j]) > DELTA) {
-              correct = false;
-              System.err.println("Exepected " + expected + " != Result " + out[j]);
-             }
-        }
-
-         if (correct)
-             System.out.println("\nEverything was calculated correctly!!!");
+        //Print Result
+        System.out.println("\nsaxpy-Kernel (result[i] = y[i] + a * x[i]) sucessfully launched:");
+        System.out.println(t);
+        System.out.println("Input a: " + a);
+        System.out.println("Input x: " + Arrays.toString(x));
+        System.out.println("Input y: " + Arrays.toString(y));
+        System.out.println("Result:  " + Arrays.toString(out));
     }
 }

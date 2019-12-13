@@ -1,4 +1,5 @@
 public class IntArg extends KernelArg {
+
 	public static IntArg create(int ...ints) {
 		return createInternal(ints, false);
 	}

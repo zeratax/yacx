@@ -18,7 +18,7 @@ jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
 
 void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
     BEGIN_TRY
-        CHECK_NULL(joption)
+        CHECK_NULL(joption, )
 
         auto optionPtr = env->GetStringUTFChars(joption, nullptr);
 
@@ -31,8 +31,8 @@ void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj,
 
 void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jname, jstring jvalue){
     BEGIN_TRY
-        CHECK_NULL(jname)
-        CHECK_NULL(jvalue)
+        CHECK_NULL(jname, )
+        CHECK_NULL(jvalue, )
 
         auto namePtr = env->GetStringUTFChars(jname, nullptr);
         auto valuePtr = env->GetStringUTFChars(jvalue, nullptr);
@@ -54,7 +54,7 @@ jint Java_Options_getSize (JNIEnv* env, jobject obj){
     END_TRY("getting size of Options")
 }
 
-jobjectArray Java_Options_options (JNIEnv* env, jobject obj){
+jobjectArray Java_Options_getOptions (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
         auto size = optionPtr->numOptions();

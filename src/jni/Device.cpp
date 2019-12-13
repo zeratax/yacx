@@ -19,7 +19,7 @@ jobject Java_Device_createDevice (JNIEnv* env, jclass cls){
 
 jobject Java_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
     BEGIN_TRY
-        CHECK_NULL(jdevicename)
+        CHECK_NULL(jdevicename, NULL)
 
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
 
@@ -67,7 +67,8 @@ jintArray Java_Device_getMaxBlock (JNIEnv* env, jobject obj){
         devicePtr->max_block_dim(&block);
 
         auto res = env->NewIntArray(3);
-        if (res == nullptr) return nullptr;
+
+        CHECK_NULL(res, NULL)
 
         int data[3];
         data[0] = block.x;

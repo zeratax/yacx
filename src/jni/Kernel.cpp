@@ -1,7 +1,6 @@
 #include "Kernel.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
-#include "../../include/cudaexecutor/Logger.hpp"
 #include "../../include/cudaexecutor/Kernel.hpp"
 #include "../../include/cudaexecutor/KernelArgs.hpp"
 #include "../../include/cudaexecutor/Device.hpp"
@@ -14,12 +13,12 @@ using cudaexecutor::Kernel, cudaexecutor::KernelArg, cudaexecutor::KernelArgs, c
 void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
 {
     BEGIN_TRY
-        CHECK_BIGGER(jgrid0, 0, "illegal size for grid0")
-        CHECK_BIGGER(jgrid1, 0, "illegal size for grid1")
-        CHECK_BIGGER(jgrid2, 0, "illegal size for grid2")
-        CHECK_BIGGER(jblock0, 0, "illegal size for block0")
-        CHECK_BIGGER(jblock1, 0, "illegal size for block1")
-        CHECK_BIGGER(jblock2, 0, "illegal size for block2")
+        CHECK_BIGGER(jgrid0, 0, "illegal size for grid0", )
+        CHECK_BIGGER(jgrid1, 0, "illegal size for grid1", )
+        CHECK_BIGGER(jgrid2, 0, "illegal size for grid2", )
+        CHECK_BIGGER(jblock0, 0, "illegal size for block0", )
+        CHECK_BIGGER(jblock1, 0, "illegal size for block1", )
+        CHECK_BIGGER(jblock2, 0, "illegal size for block2", )
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
 
@@ -32,19 +31,19 @@ void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint j
 
 std::vector<KernelArg> getArguments(JNIEnv* env, jobject jkernel, jobjectArray jArgs)
 {
-    CHECK_NULL(jArgs)
+    CHECK_NULL(jArgs, {})
 
     auto kernelPtr = getHandle<Kernel>(env, jkernel);
     auto argumentsLength = env->GetArrayLength(jArgs);
 
-    CHECK_BIGGER(argumentsLength, 0, "illegal array length")
+    CHECK_BIGGER(argumentsLength, 0, "illegal array length", {})
 
     std::vector<KernelArg> args;
     args.reserve(argumentsLength);
     for(int i = 0; i < argumentsLength; i++){
         auto jkernelArg = env->GetObjectArrayElement(jArgs, i);
 
-        CHECK_NULL(jkernelArg)
+        CHECK_NULL(jkernelArg, {})
 
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, jkernelArg);
         args.push_back(*kernelArgJNIPtr->kernelArgPtr());
@@ -66,8 +65,12 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
 jobject Java_Kernel_launchInternal___3LKernelArg_2(JNIEnv *env, jobject obj, jobjectArray jArgs)
 {
     BEGIN_TRY
+        CHECK_NULL(jArgs, NULL);
+
         auto kernelPtr = getHandle<Kernel>(env, obj);
+
         auto args = getArguments(env, obj, jArgs);
+        if (args.empty()) return NULL;
 
         auto kernelTimePtr = kernelPtr->launch(KernelArgs{args});
 
@@ -75,13 +78,17 @@ jobject Java_Kernel_launchInternal___3LKernelArg_2(JNIEnv *env, jobject obj, job
     END_TRY("launching Kernel")
 }
 
-jobject Java_Kernel_launchInternal___3LKernelArg_2LDevice_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jobject jdevice)
+jobject Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(JNIEnv *env, jobject obj, jobject jdevice, jobjectArray jArgs)
 {
     BEGIN_TRY
+        CHECK_NULL(jArgs, NULL);
+        CHECK_NULL(jdevice, NULL);
+
         auto kernelPtr = getHandle<Kernel>(env, obj);
         auto devicePtr = getHandle<Device>(env, jdevice);
 
         auto args = getArguments(env, obj, jArgs);
+        if (args.empty()) return NULL;
 
         auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, *devicePtr);
 
@@ -89,10 +96,11 @@ jobject Java_Kernel_launchInternal___3LKernelArg_2LDevice_2(JNIEnv *env, jobject
     END_TRY("launching Kernel on specific device")
 }
 
-jobject Java_Kernel_launchInternal___3LKernelArg_2Ljava_lang_String_2(JNIEnv *env, jobject obj, jobjectArray jArgs, jstring jdevicename)
+jobject Java_Kernel_launchInternal__Ljava_lang_String_2_3LKernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
 {
     BEGIN_TRY
-        CHECK_NULL(jdevicename)
+        CHECK_NULL(jdevicename, NULL)
+        CHECK_NULL(jArgs, NULL);
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
@@ -103,6 +111,7 @@ jobject Java_Kernel_launchInternal___3LKernelArg_2Ljava_lang_String_2(JNIEnv *en
         env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
 
         auto args = getArguments(env, obj, jArgs);
+        if (args.empty()) return NULL;
 
         auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, device);
 

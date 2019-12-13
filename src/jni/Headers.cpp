@@ -18,18 +18,18 @@ jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
 
 void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
     BEGIN_TRY
-        CHECK_NULL(jheaderPathArray);
+        CHECK_NULL(jheaderPathArray, );
 
         auto headersPtr = getHandle<Headers>(env, obj);
 
         int length = env->GetArrayLength(jheaderPathArray);
 
-        CHECK_BIGGER(length, 0, "illegal array length")
+        CHECK_BIGGER(length, 0, "illegal array length", )
 
         for (int i = 0; i < length; i++) {
             auto jheaderPath = static_cast<jstring> (env->GetObjectArrayElement(jheaderPathArray, i));
 
-            CHECK_NULL(jheaderPath);
+            CHECK_NULL(jheaderPath, );
 
             auto headerPathPtr = env->GetStringUTFChars(jheaderPath, nullptr);
 

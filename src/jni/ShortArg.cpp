@@ -7,12 +7,12 @@ using cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
     BEGIN_TRY
-        CHECK_NULL(jarray)
+        CHECK_NULL(jarray, NULL)
 
         auto arrayPtr = env->GetShortArrayElements(jarray, NULL);
         auto arrayLength = env->GetArrayLength(jarray);
 
-        CHECK_BIGGER(arrayLength, 0, "illegal array length")
+        CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jshort), jdownload, true, arrayLength > 1};
 
@@ -27,7 +27,7 @@ jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarra
 
 jobject Java_ShortArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length")
+        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jshort), true, false, true};
 
@@ -46,7 +46,7 @@ jshortArray Java_ShortArg_asShortArray (JNIEnv* env, jobject obj){
 
         auto res = env->NewShortArray(dataSize / sizeof(jshort));
 
-        CHECK_NULL(res)
+        CHECK_NULL(res, NULL)
 
         env->SetShortArrayRegion(res, 0, dataSize / sizeof(jshort),
                                    reinterpret_cast<const jshort*>(data));

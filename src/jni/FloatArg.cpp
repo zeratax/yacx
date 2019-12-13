@@ -7,12 +7,12 @@ using cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jboolean jdownload){
     BEGIN_TRY
-        CHECK_NULL(jarray)
+        CHECK_NULL(jarray, NULL)
 
         auto arrayPtr = env->GetFloatArrayElements(jarray, NULL);
         auto arrayLength = env->GetArrayLength(jarray);
 
-        CHECK_BIGGER(arrayLength, 0, "illegal array length")
+        CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jfloat), jdownload, true, arrayLength > 1};
 
@@ -27,7 +27,7 @@ jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarra
 
 jobject Java_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length")
+        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jfloat), true, false, true};
 
@@ -46,7 +46,7 @@ jfloatArray Java_FloatArg_asFloatArray (JNIEnv* env, jobject obj){
 
         auto res = env->NewFloatArray(dataSize / sizeof(jfloat));
 
-        CHECK_NULL(res)
+        CHECK_NULL(res, NULL)
 
         env->SetFloatArrayRegion(res, 0, dataSize / sizeof(jfloat),
                                    reinterpret_cast<const jfloat*>(data));

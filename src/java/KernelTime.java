@@ -1,10 +1,12 @@
+import java.text.DecimalFormat;
+
 public class KernelTime {
     private final float upload;
     private final float download;
     private final float launch;
     private final float sum;
 
-    private KernelTime(float upload, float download, float launch, float sum){
+    protected KernelTime(float upload, float download, float launch, float sum){
         this.upload = upload;
         this.download = download;
         this.launch = launch;
@@ -29,7 +31,36 @@ public class KernelTime {
 
 	@Override
     public String toString(){
-        return "Execution-Time: " + sum + " milliseconds (Upload-Time: " + upload +  ", Download-Time: "
-            + download + ", Launch-Time: " + launch + ")";
+        return "execution-time: " + humanReadableMilliseconds(launch) + " (total time: " +
+        			humanReadableMilliseconds(sum) + ", upload-time: " + humanReadableMilliseconds(upload) + 
+        			", download-time: " + humanReadableMilliseconds(download) + ")";
     }
+	
+	private DecimalFormat df = new DecimalFormat();
+	
+	private String humanReadableMilliseconds(double time) {
+		String unit = "ms";
+		if (time > 1000) {
+			time /= 1000;
+			unit = " s";
+			
+			if (time > 100) {
+				time /= 60;
+				unit = " m";
+			}
+			if (time > 100) {
+				time /= 60;
+				unit = " h";
+			}
+		}
+		
+		for (int i = 10, j = 5; true; i *= 10, j--) {
+			if (time < i) {
+				df.setMinimumFractionDigits(j);
+				df.setMaximumFractionDigits(j);
+				
+				return df.format(time) + " " + unit;
+			}
+		}
+	}
 }

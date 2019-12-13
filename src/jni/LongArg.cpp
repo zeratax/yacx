@@ -7,12 +7,12 @@ using cudaexecutor::KernelArg, jni::KernelArgJNI;
 
 jobject Java_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray, jboolean jdownload){
     BEGIN_TRY
-        CHECK_NULL(jarray)
+        CHECK_NULL(jarray, NULL)
 
         auto arrayPtr = env->GetLongArrayElements(jarray, NULL);
         auto arrayLength = env->GetArrayLength(jarray);
 
-        CHECK_BIGGER(arrayLength, 0, "illegal array length")
+        CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jlong), jdownload, true, arrayLength > 1};
 
@@ -27,7 +27,7 @@ jobject Java_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray,
 
 jobject Java_LongArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length")
+        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jlong), true, false, true};
 
@@ -46,7 +46,7 @@ jlongArray Java_LongArg_asLongArray (JNIEnv* env, jobject obj){
 
         auto res = env->NewLongArray(dataSize / sizeof(jlong));
 
-        CHECK_NULL(res)
+        CHECK_NULL(res, NULL)
 
         env->SetLongArrayRegion(res, 0, dataSize / sizeof(jlong),
                                    reinterpret_cast<const jlong*>(data));
