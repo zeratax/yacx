@@ -42,7 +42,7 @@ if (JNI_ENABLED)
             -d "${CMAKE_BINARY_DIR}/java/bin"
             "${PROJECT_SOURCE_DIR}/examples/java/${_java_file}"
             DEPENDS "${PROJECT_SOURCE_DIR}/examples/java/${_java_file}")
-        ADD_CUSTOM_TARGET(${_java_name} ALL DEPENDS cudaexecutor-jni
+        ADD_CUSTOM_TARGET(${_java_name} ALL DEPENDS yacx-jni
             ${CMAKE_BINARY_DIR}/java/bin/${_class_file})
     ENDFOREACH ()
     #    ADD_TEST(
