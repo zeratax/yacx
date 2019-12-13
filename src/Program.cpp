@@ -1,6 +1,5 @@
 #include "yacx/Program.hpp"
 #include "yacx/Exception.hpp"
-#include "yacx/Headers.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/util.hpp"
 
@@ -9,9 +8,8 @@
 #include <memory>
 #include <utility>
 
-using yacx::Program, yacx::Kernel, yacx::Options,
-    yacx::Headers, yacx::KernelArg, yacx::loglevel,
-    yacx::detail::whichError, yacx::detail::descriptionFkt;
+using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
+    yacx::loglevel, yacx::detail::whichError, yacx::detail::descriptionFkt;
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
