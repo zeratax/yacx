@@ -11,6 +11,8 @@ on:
 jobs:
   test-cpp:
     runs-on: ubuntu-latest
+    env:
+      COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
       - name: test on remote server
         uses: appleboy/ssh-action@master
@@ -18,14 +20,14 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: GITHUB_REPOSITORY,GITHUB_SHA
+          envs: GITHUB_REPOSITORY,COMMIT_SHA
           script: |
-            echo "cloning https://github.com/${GITHUB_REPOSITORY} to /tmp/${GITHUB_SHA}"
+            echo "cloning https://github.com/${GITHUB_REPOSITORY} to /tmp/${COMMIT_SHA}"
             mkdir -p /tmp/ci/$GITHUB_REPOSITORY
             cd /tmp/ci/$GITHUB_REPOSITORY
-            git clone https://github.com/$GITHUB_REPOSITORY.git $GITHUB_SHA
-            cd $GITHUB_SHA
-            git checkout $GITHUB_SHA
+            git clone https://github.com/$GITHUB_REPOSITORY.git $COMMIT_SHA
+            cd $COMMIT_SHA
+            git checkout $COMMIT_SHA
             cmake -H. -Bbuild
             make -C build
             pushd build/test/bin/
