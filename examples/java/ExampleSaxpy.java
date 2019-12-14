@@ -22,11 +22,11 @@ public class ExampleSaxpy {
         //Initialize Arguments
         KernelArg aArg, nArg, xArg, yArg;
         FloatArg outArg;
-        aArg = FloatArg.create(a);
+        aArg = FloatArg.createValue(a);
         xArg = FloatArg.create(x);
         yArg = FloatArg.create(y);
         outArg = FloatArg.createOutput(n);
-        nArg = IntArg.create(n);
+        nArg = IntArg.createValue(n);
 
         //Create Program
         String kernelString = Utils.loadFile("saxpy.cu");

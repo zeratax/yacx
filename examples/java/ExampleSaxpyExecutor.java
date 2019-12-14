@@ -11,8 +11,8 @@ public class ExampleSaxpyExecutor {
         FloatArg out = FloatArg.createOutput(n);
 
         //Compile and launch Kernel
-        System.out.println("\n" + Executor.launch("saxpy", n, 1, FloatArg.create(5.1f), FloatArg.create(0,1,2,3),
-                                FloatArg.create(2,2,4,4), out, IntArg.create(n)));
+        System.out.println("\n" + Executor.launch("saxpy", n, 1, FloatArg.createValue(5.1f), FloatArg.create(0,1,2,3),
+                                FloatArg.create(2,2,4,4), out, IntArg.createValue(n)));
 
         //Print Result
         System.out.println("Result: " + Arrays.toString(out.asFloatArray()));

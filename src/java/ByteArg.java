@@ -1,6 +1,8 @@
 public class ByteArg extends KernelArg {
 	public final static int SIZE_BYTES = 1;
 	
+	public static native KernelArg createValue(byte value);
+	
 	public static ByteArg create(byte ...bytes) {
 		return createInternal(bytes, false);
 	}
@@ -27,4 +29,9 @@ public class ByteArg extends KernelArg {
 	}
 	
 	public native byte[] asByteArray();
+	
+	@Override
+    public String toString(){
+        return "ByteArg " + super.toString();
+    }
 }

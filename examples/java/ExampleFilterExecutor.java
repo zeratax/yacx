@@ -8,8 +8,8 @@ public class ExampleFilterExecutor {
 
         //Create OutputArgument
         int n = 4;
-        IntArg out = IntArg.createOutput(n/2);
-        IntArg counter = IntArg.createOutput(1);
+        IntArg out = IntArg.createOutput(n);
+        IntArg counter = IntArg.create(new int[] {0}, true);
 
         //Compile and launch Kernel
         System.out.println("\n" + Executor.launch("filter_k", n, 1, out, counter,

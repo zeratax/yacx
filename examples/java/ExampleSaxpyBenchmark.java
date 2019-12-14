@@ -39,8 +39,8 @@ public class ExampleSaxpyBenchmark {
 							y[i] = i;
 						}
 
-						return new KernelArg[] {FloatArg.create(a), FloatArg.create(x), FloatArg.create(y),
-								FloatArg.createOutput(dataLength), IntArg.create(dataLength)};
+						return new KernelArg[] {FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
+								FloatArg.createOutput(dataLength), IntArg.createValue(dataLength)};
 					}
 				}, 1*KB, 4*KB, 8*KB, 1024*KB, 4096*KB, 16384*KB));
     }

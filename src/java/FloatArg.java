@@ -1,6 +1,8 @@
 public class FloatArg extends KernelArg {
 	public final static int SIZE_BYTES = 4;
 	
+	public static native KernelArg createValue(float value);
+	
 	public static FloatArg create(float ...floats) {
 		return createInternal(floats, false);
 	}
@@ -30,6 +32,6 @@ public class FloatArg extends KernelArg {
 	
 	@Override
     public String toString(){
-        return "Float " + super.toString();
+        return "FloatArg " + super.toString();
     }
 }

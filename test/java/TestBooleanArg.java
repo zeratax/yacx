@@ -4,19 +4,45 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class TestBooleanArg extends TestJNI {
-	static Kernel cpBoolean;
+	static Kernel cpBooleanArray, cpBooleanSingle;
+	static int n;
+	static boolean[] testArray0, testArray1;
 	BooleanArg inArg, outArg;
 	
 	@BeforeAll
 	static void init() {
-		String copyBooleanString = "extern \"C\" __global__\n" + 
+		//test-data
+		n = 17;
+		testArray0 = new boolean[n];
+		testArray1 = new boolean[n];
+		
+		for (int i = 0; i < n; i++) {
+			testArray0[i] = (i % 2 == 0);
+			testArray1[i] = (i != 13);
+		}
+		
+		//Kernel for copy bool* in to bool* out
+		String copyBooleanArrayString = "extern \"C\" __global__\n" + 
 				"void copyBoolean(bool* in, bool* out) {\n" + 
 				"  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + 
 				"  out[i] = in[i];\n" + 
 				"}\n" + 
 				"";
 		
-		cpBoolean = Program.create(copyBooleanString, "copyBoolean").compile();
+		cpBooleanArray = Program.create(copyBooleanArrayString, "copyBoolean").compile();
+		//Configure with kernel n Threads
+		cpBooleanArray.configure(n, 1);
+		
+		//Kernel for copy a boolean-value
+		String copyBooleanString = "extern \"C\" __global__\n" + 
+				"void copyBoolean(bool in, bool* out) {\n" + 
+				"  *out = in;\n" + 
+				"}\n" + 
+				"";
+		
+		cpBooleanSingle = Program.create(copyBooleanString, "copyBoolean").compile();
+		//Configure Kernel with 1 thread
+		cpBooleanSingle.configure(1, 1);
 	}
 
 	@Test
@@ -50,90 +76,142 @@ class TestBooleanArg extends TestJNI {
 	}
 	
 	@Test
-	void testSingleBoolean() {
-		//TODO
+	void testBooleanSingle() {
+		KernelArg inArg;
+		
+		//Create KernelArgs
+		inArg = BooleanArg.createValue(true);
+		outArg = BooleanArg.createOutput(1);
+		
+		cpBooleanSingle.launch(inArg, outArg);
+		
+		//Check result
+		assertEquals(1, outArg.asBooleanArray().length);
+		assertTrue(outArg.asBooleanArray()[0]);
+		
+		//Create KernelArgs
+		inArg = BooleanArg.createValue(false);
+				
+		cpBooleanSingle.launch(inArg, outArg);
+			
+		//Check result
+		assertEquals(1, outArg.asBooleanArray().length);
+		assertFalse(outArg.asBooleanArray()[0]);
 	}
-
+	
 	@Test
 	void testBooleanArray() {
-		//Test data
-		int n = 17;
-		boolean[] testArray0 = new boolean[n];
-		boolean[] testArray1 = new boolean[n];
+		//Check test-Arrays should be correct
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 		
-		for (int i = 0; i < n; i++) {
-			testArray0[i] = (i % 2 == 0);
-			testArray1[i] = (i != 13);
-		}
-		
-		//Configure with n Threads
-		cpBoolean.configure(n, 1);
-		
-		//Create KernelArgs
+		//Create KernelArgs (download both)
 		inArg = BooleanArg.create(testArray0, true);
 		outArg = BooleanArg.create(testArray1, true);
 		
-		cpBoolean.launch(inArg, outArg);
+		cpBooleanArray.launch(inArg, outArg);
 		
 		//Check Result
-		checkTestArray0(inArg.asBooleanArray(), n);
-		checkTestArray0(outArg.asBooleanArray(), n);
+		checkTestArray0(inArg.asBooleanArray());
+		checkTestArray0(outArg.asBooleanArray());
 		//Other Array should be unchanged
-		checkTestArray0(testArray0, n);
-		checkTestArray1(testArray1, n);
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 		
 		
-		//Create KernelArgs
+		//Create KernelArgs (download only inArg)
 		inArg = BooleanArg.create(testArray0, true);
 		outArg = BooleanArg.create(testArray1, false);
 		
-		cpBoolean.launch(inArg, outArg);
+		cpBooleanArray.launch(inArg, outArg);
 		
 		//Check Result
-		checkTestArray0(inArg.asBooleanArray(), n);
-		checkTestArray1(outArg.asBooleanArray(), n);
+		checkTestArray0(inArg.asBooleanArray());
+		checkTestArray1(outArg.asBooleanArray());
 		//Other Array should be unchanged
-		checkTestArray0(testArray0, n);
-		checkTestArray1(testArray1, n);
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 		
 		
-		//Create KernelArgs
+		//Create KernelArgs (download only outArg)
 		inArg = BooleanArg.create(testArray0, false);
 		outArg = BooleanArg.create(testArray1, true);
 		
-		cpBoolean.launch(inArg, outArg);
+		cpBooleanArray.launch(inArg, outArg);
 		
 		//Check Result
-		checkTestArray0(inArg.asBooleanArray(), n);
-		checkTestArray0(outArg.asBooleanArray(), n);
+		checkTestArray0(inArg.asBooleanArray());
+		checkTestArray0(outArg.asBooleanArray());
 		//Other Array should be unchanged
-		checkTestArray0(testArray0, n);
-		checkTestArray1(testArray1, n);
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 		
 		
-		//Create KernelArgs
+		//Create KernelArgs (download nothing)
 		inArg = BooleanArg.create(testArray0, false);
 		outArg = BooleanArg.create(testArray1, false);
 		
-		cpBoolean.launch(inArg, outArg);
+		cpBooleanArray.launch(inArg, outArg);
 		
 		//Check Result
-		checkTestArray0(inArg.asBooleanArray(), n);
-		checkTestArray1(outArg.asBooleanArray(), n);
+		checkTestArray0(inArg.asBooleanArray());
+		checkTestArray1(outArg.asBooleanArray());
 		//Other Array should be unchanged
-		checkTestArray0(testArray0, n);
-		checkTestArray1(testArray1, n);
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 	}
 	
 	@Test
 	void testBooleanOutput() {
-		//TODO
+		//Check test-Arrays should be correct
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
+		
+		//Create KernelArgs
+		inArg = BooleanArg.create(testArray0);
+		outArg = BooleanArg.createOutput(n);
+		
+		cpBooleanArray.launch(inArg, outArg);
+		
+		//Check Result
+		checkTestArray0(inArg.asBooleanArray());
+		checkTestArray0(outArg.asBooleanArray());
+		//Other Array should be unchanged
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
+		
+		//Create KernelArgs
+		inArg = BooleanArg.create(testArray1);
+		outArg = BooleanArg.createOutput(n);
+		
+		cpBooleanArray.launch(inArg, outArg);
+		
+		//Check Result
+		checkTestArray1(inArg.asBooleanArray());
+		checkTestArray1(outArg.asBooleanArray());
+		//Other Array should be unchanged
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
+		
+		//Use the same KernelArgs again
+		cpBooleanArray.launch(inArg, outArg);
+		
+		//Check Result
+		checkTestArray1(inArg.asBooleanArray());
+		checkTestArray1(outArg.asBooleanArray());
+		//Other Array should be unchanged
+		checkTestArray0(testArray0);
+		checkTestArray1(testArray1);
 	}
 	
-	void checkTestArray0(boolean[] testArray, int length) {
-		assertEquals(length, testArray.length);
+	/**
+	 * Check if testArray is expected testArray0 
+	 * @param testArray the array to be tested
+	 */
+	void checkTestArray0(boolean[] testArray) {
+		assertEquals(n, testArray.length);
 		
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < n; i++) {
 			if (i % 2 == 0)
 				assertTrue(testArray[i]);
 			else
@@ -141,10 +219,14 @@ class TestBooleanArg extends TestJNI {
 		}
 	}
 	
-	void checkTestArray1(boolean[] testArray, int length) {
-		assertEquals(length, testArray.length);
+	/**
+	 * Check if testArray is expected testArray1 
+	 * @param testArray the array to be tested
+	 */
+	void checkTestArray1(boolean[] testArray) {
+		assertEquals(n, testArray.length);
 		
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < n; i++) {
 			if (i != 13)
 				assertTrue(testArray[i]);
 			else

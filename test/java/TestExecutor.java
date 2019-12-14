@@ -20,8 +20,8 @@ class TestExecutor extends TestJNI {
 	static float[] x, y;
 	static float[] result;
 	static int n;
-	static FloatArg aArg, xArg, yArg, outArg;
-	static IntArg nArg;
+	static FloatArg xArg, yArg, outArg;
+	static KernelArg aArg, nArg;
 	static Executor.KernelArgCreator creator;
 	
 
@@ -53,10 +53,10 @@ class TestExecutor extends TestJNI {
 		devicename = device.getName();
 		
 		//init kernel-arguments
-		aArg = FloatArg.create(a);
+		aArg = FloatArg.createValue(a);
 		xArg = FloatArg.create(x);
 		yArg = FloatArg.create(y);
-		nArg = IntArg.create(n);
+		nArg = IntArg.createValue(n);
 		
 		//KernelArg-Creator for benchmark-test
 		creator = new Executor.KernelArgCreator() {
@@ -87,8 +87,8 @@ class TestExecutor extends TestJNI {
 					y[i] = (dataLength - i);
 				}
 				
-				return new KernelArg[] {FloatArg.create(a), FloatArg.create(x), FloatArg.create(y),
-											FloatArg.createOutput(dataLength), IntArg.create(n)};
+				return new KernelArg[] {FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
+											FloatArg.createOutput(dataLength), IntArg.createValue(n)};
 			}
 		};
 	}

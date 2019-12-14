@@ -1,6 +1,8 @@
 public class DoubleArg extends KernelArg {
 	public final static int SIZE_BYTES = 8;
 	
+	public static native KernelArg createValue(double value);
+	
 	public static DoubleArg create(double ...doubles) {
 		return createInternal(doubles, false);
 	}

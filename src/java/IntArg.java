@@ -1,5 +1,7 @@
 public class IntArg extends KernelArg {
 	public final static int SIZE_BYTES = 4;
+	
+	public static native KernelArg createValue(int value);
 
 	public static IntArg create(int ...ints) {
 		return createInternal(ints, false);

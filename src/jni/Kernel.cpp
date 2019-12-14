@@ -22,6 +22,7 @@ void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint j
         CHECK_BIGGER(jblock2, 0, "illegal size for block2", )
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
+    	CHECK_NULL(kernelPtr, )
 
         dim3 grid{static_cast<unsigned int> (jgrid0), static_cast<unsigned int> (jgrid1), static_cast<unsigned int> (jgrid2)};
         dim3 block{static_cast<unsigned int> (jblock0), static_cast<unsigned int> (jblock1), static_cast<unsigned int> (jblock2)};
@@ -35,6 +36,7 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobject jkernel, jobjectArray j
     CHECK_NULL(jArgs, {})
 
     auto kernelPtr = getHandle<Kernel>(env, jkernel);
+    CHECK_NULL(kernelPtr, {})
     auto argumentsLength = env->GetArrayLength(jArgs);
 
     CHECK_BIGGER(argumentsLength, 0, "illegal array length", {})
@@ -47,6 +49,7 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobject jkernel, jobjectArray j
         CHECK_NULL(jkernelArg, {})
 
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, jkernelArg);
+        CHECK_NULL(kernelArgJNIPtr, {})
         args.push_back(*kernelArgJNIPtr->kernelArgPtr());
     }
 
@@ -69,6 +72,7 @@ jobject Java_Kernel_launchInternal___3LKernelArg_2(JNIEnv *env, jobject obj, job
         CHECK_NULL(jArgs, NULL);
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
+        CHECK_NULL(kernelPtr, NULL)
 
         auto args = getArguments(env, obj, jArgs);
         if (args.empty()) return NULL;
@@ -86,7 +90,9 @@ jobject Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(JNIEnv *env, jobject
         CHECK_NULL(jdevice, NULL);
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
+        CHECK_NULL(kernelPtr, NULL);
         auto devicePtr = getHandle<Device>(env, jdevice);
+        CHECK_NULL(devicePtr, NULL);
 
         auto args = getArguments(env, obj, jArgs);
         if (args.empty()) return NULL;
@@ -104,6 +110,7 @@ jobject Java_Kernel_launchInternal__Ljava_lang_String_2_3LKernelArg_2(JNIEnv *en
         CHECK_NULL(jArgs, NULL);
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
+        CHECK_NULL(kernelPtr, NULL);
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
         std::string devicename{devicenamePtr};
 

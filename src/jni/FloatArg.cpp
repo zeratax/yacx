@@ -5,6 +5,17 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
+jobject JNICALL Java_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
+	BEGIN_TRY
+		cls = getClass(env, "KernelArg");
+		if (cls == NULL) return NULL;
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jfloat), false, false, false};
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating FloatValueArg")
+}
+
 jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -14,14 +25,11 @@ jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarra
 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jfloat), jdownload, true, arrayLength > 1};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jfloat), jdownload, true, true};
 
         env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+        return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating FloatArg")
 }
 
@@ -31,16 +39,14 @@ jobject Java_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarray
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jfloat), true, false, true};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating FloatArg")
 }
 
 jfloatArray Java_FloatArg_asFloatArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
+    	CHECK_NULL(kernelArgJNIPtr, NULL)
         auto data = kernelArgJNIPtr->getHostData();
         auto dataSize = kernelArgJNIPtr->kernelArgPtr()->size();
 

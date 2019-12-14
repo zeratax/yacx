@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class TestUtils {
-	String saxpy = "extern \"C\" __global__\n" + 
+	final String saxpy = "extern \"C\" __global__\n" + 
 			"void saxpy(float a, float *x, float *y, float *out, size_t n) {\n" + 
 			"  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;\n" + 
 			"  if (tid < n) {\n" + 

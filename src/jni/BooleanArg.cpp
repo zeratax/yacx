@@ -5,6 +5,17 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
+jobject JNICALL Java_BooleanArg_createValue(JNIEnv* env, jclass cls, jboolean jvalue){
+	BEGIN_TRY
+		cls = getClass(env, "KernelArg");
+		if (cls == NULL) return NULL;
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jboolean), false, false, false};
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating BooleanValueArg")
+}
+
 jobject Java_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -14,14 +25,11 @@ jobject Java_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray j
 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jboolean), jdownload, true, arrayLength > 1};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jboolean), jdownload, true, true};
 
         env->ReleaseBooleanArrayElements(jarray, arrayPtr, JNI_ABORT);
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+        return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating BooleanArg")
 }
 
@@ -31,16 +39,14 @@ jobject Java_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarr
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jboolean), true, false, true};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating BooleanArg")
 }
 
 jbooleanArray Java_BooleanArg_asBooleanArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
+    	CHECK_NULL(kernelArgJNIPtr, NULL)
         auto data = kernelArgJNIPtr->getHostData();
         auto dataSize = kernelArgJNIPtr->kernelArgPtr()->size();
 

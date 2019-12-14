@@ -1,8 +1,10 @@
 public class BooleanArg extends KernelArg {
 	public final static int SIZE_BYTES = 1;
 	
+	public static native KernelArg createValue(boolean value);
+	
 	public static BooleanArg create(boolean ...booleans) {
-		return createInternal(booleans, false);
+		return create(booleans, false);
 	}
 	
 	public static BooleanArg create(boolean[] booleans, boolean download) {

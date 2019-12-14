@@ -5,6 +5,17 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
+jobject JNICALL Java_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalue){
+	BEGIN_TRY
+		cls = getClass(env, "KernelArg");
+		if (cls == NULL) return NULL;
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jint), false, false, false};
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating IntValueArg")
+}
+
 jobject Java_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -14,14 +25,11 @@ jobject Java_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, j
 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jint), jdownload, true, arrayLength > 1};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jint), jdownload, true, true};
 
         env->ReleaseIntArrayElements(jarray, arrayPtr, JNI_ABORT);
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+        return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating IntArg")
 }
 
@@ -31,16 +39,14 @@ jobject Java_IntArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLe
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jint), true, false, true};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, kernelArgPtr);
-
-        return obj;
+    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating IntArg")
 }
 
 jintArray Java_IntArg_asIntArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
+    	CHECK_NULL(kernelArgJNIPtr, NULL)
         auto data = kernelArgJNIPtr->getHostData();
         auto dataSize = kernelArgJNIPtr->kernelArgPtr()->size();
 

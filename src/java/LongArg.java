@@ -1,6 +1,8 @@
 public class LongArg extends KernelArg {
 	public final static int SIZE_BYTES = 8;
 	
+	public static native KernelArg createValue(long value);
+	
 	public static LongArg create(long ...longs) {
 		return createInternal(longs, false);
 	}

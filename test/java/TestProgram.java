@@ -26,6 +26,8 @@ class TestProgram extends TestJNI {
 		optionsInvalid.insert(debug);
 		optionsInvalid.insert(archOption, archValueInvalid);
 		
+		
+		//Invalid kernel (very simalar to saxpy-kernel)
 		kernelInvalid = "extern \"C\" __global__\n" + 
 				"void saxpy(float a, float *x, float *y, float *out, size_t n) {\n" + 
 				"  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;\n" + 
@@ -34,6 +36,7 @@ class TestProgram extends TestJNI {
 				"  }\n" + 
 				"}\n" + 
 				"";
+		
 		kernelInvalidName = "saxpy";
 	}
 	
@@ -68,7 +71,7 @@ class TestProgram extends TestJNI {
 	
 	@Test
 	void testCompile() {
-		Program saxpy = Program.create(this.saxpy, "saxpy");
+		Program saxpy = Program.create(TestProgram.saxpy, "saxpy");
 		Program filter = Program.create(filterk, "filter_k");
 		
 		//Compile saxpy
@@ -95,7 +98,7 @@ class TestProgram extends TestJNI {
 	
 	@Test
 	void testCompileOptions() {
-		Program saxpy = Program.create(this.saxpy, "saxpy");
+		Program saxpy = Program.create(TestProgram.saxpy, "saxpy");
 		Program filter = Program.create(filterk, "filter_k");
 		
 		//Compile saxpy with Null-Option

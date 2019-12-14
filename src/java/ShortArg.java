@@ -1,6 +1,8 @@
 public class ShortArg extends KernelArg {
 	public final static int SIZE_BYTES = 2;
 	
+	public static native KernelArg createValue(short value);
+	
 	public static ShortArg create(short ...shorts) {
 		return createInternal(shorts, false);
 	}

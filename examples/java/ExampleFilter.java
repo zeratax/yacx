@@ -19,7 +19,7 @@ public class ExampleFilter {
         //Initialize Arguments
         IntArg outArg, counterArg, inArg, nArg;
         outArg = IntArg.createOutput(n/2);
-        counterArg = IntArg.createOutput(1);
+        counterArg = IntArg.create(new int[] {0}, true);
         inArg = IntArg.create(in);
         nArg = IntArg.create(n);
 

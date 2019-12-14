@@ -13,8 +13,8 @@ public class TestExecuteSaxpy extends TestJNI {
 	static float a, a2;
 	static float[] x, x2, y, y2;
 	static int n, n2;
-	static FloatArg aArg, aArg2, xArg, xArg2, yArg, yArg2, outArg, outArg2;
-	static IntArg nArg, nArg2;
+	static FloatArg xArg, xArg2, yArg, yArg2, outArg, outArg2;
+	static KernelArg aArg, aArg2, nArg, nArg2;
 	
 	@BeforeAll
 	static void init() {
@@ -39,16 +39,16 @@ public class TestExecuteSaxpy extends TestJNI {
 		}
 		
 		//init kernel-arguments
-		aArg = FloatArg.create(a);
-		aArg2 = FloatArg.create(a2);
+		aArg = FloatArg.createValue(a);
+		aArg2 = FloatArg.createValue(a2);
 		xArg = FloatArg.create(x);
 		xArg2 = FloatArg.create(x2);
 		yArg = FloatArg.create(y);
 		yArg2 = FloatArg.create(y2);
 		outArg = FloatArg.createOutput(n);
 		outArg2 = FloatArg.createOutput(n2);
-		nArg = IntArg.create(n);
-		nArg2 = IntArg.create(n2);
+		nArg = IntArg.createValue(n);
+		nArg2 = IntArg.createValue(n2);
 	}
 	
 	@Test
@@ -58,6 +58,7 @@ public class TestExecuteSaxpy extends TestJNI {
 			Executor.launch("saxpy", n, 1);
 		});
 		
+		//TODO The errors are SIGSEVS :(
 //		//Launch with to small number of arguments
 //		assertThrows(ExecutorFailureException.class, () -> {
 //			Executor.launch("saxpy", n, 1, aArg, xArg, yArg, outArg);

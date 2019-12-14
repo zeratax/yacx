@@ -34,7 +34,7 @@ object ExampleSaxpy {
         val saxpyKernel = saxpy.compile()
 
         //Launch Kernel
-        saxpyKernel.launch(Array[KernelArg](aArg, xArg, yArg, outArg, nArg), numThreads, numBlocks)
+        saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg)
 
         //Get Result
         var out = outArg.asFloatArray()

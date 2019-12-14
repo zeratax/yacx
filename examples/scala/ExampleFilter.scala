@@ -15,7 +15,7 @@ object ExampleFilter {
         }
 
         //Initialize Arguments
-        val srcArg = IntArg.create(src, false)
+        val srcArg = IntArg.create(src: _*)
         val outArg = IntArg.createOutput(length)
         val counterArg = IntArg.createOutput(1);
         val nArg = IntArg.create(length);
@@ -28,7 +28,7 @@ object ExampleFilter {
         val filterKernel = filter.compile()
 
         //Launch Kernel
-        filterKernel.launch(Array[KernelArg](outArg, counterArg, srcArg, nArg), numThreads, numBlocks)
+        filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
 
         //Get Result
         var out = outArg.asIntArray()

@@ -53,7 +53,7 @@ class TestJNIHandle extends TestJNI {
 		Program p0 = Program.create(Utils.loadFile("saxpy.cu"), "saxpy");
 		//Create a new Program-Object pointing to the same C-Object :)
 		long handleP = getHandle(p0);
-		Program p = new Program(handleP);
+		Program p = new Program(handleP); //Thats a really bad idea. You should never do this
 		//Create a thrid Program-Object with same strings
 		Program p2 = Program.create(Utils.loadFile("saxpy.cu"), "saxpy");
 		
@@ -68,9 +68,11 @@ class TestJNIHandle extends TestJNI {
 		checkAndDispose(p);
 		
 		//C-Object from Program p should be destroyed
-//		assertThrows(IllegalArgumentException.class, () -> {
-//			p.compile(); //TODO Segfault
-//		});
+		assertThrows(NullPointerException.class, () -> {
+			p.compile();
+		});
+		
+		assertEquals(handleP, getHandle(p0));
 		
 		//P2 should be valid stayed
 		saxpyKernel = p2.compile();

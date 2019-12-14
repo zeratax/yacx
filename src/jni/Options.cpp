@@ -9,10 +9,7 @@ jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
     BEGIN_TRY
         auto optionPtr = new Options{};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, optionPtr);
-
-        return obj;
+        return createJNIObject(env, cls, optionPtr);
     END_TRY("creating Options")
 }
 
@@ -23,6 +20,7 @@ void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj,
         auto optionPtr = env->GetStringUTFChars(joption, nullptr);
 
         auto optionsPtr = getHandle<Options>(env, obj);
+        CHECK_NULL(optionsPtr, );
         optionsPtr->insert(optionPtr);
 
         env->ReleaseStringUTFChars(joption, optionPtr);
@@ -38,6 +36,7 @@ void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv
         auto valuePtr = env->GetStringUTFChars(jvalue, nullptr);
 
         auto optionsPtr = getHandle<Options>(env, obj);
+        CHECK_NULL(optionsPtr, );
         optionsPtr->insert(namePtr, valuePtr);
 
         env->ReleaseStringUTFChars(jname, namePtr);
@@ -48,6 +47,7 @@ void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv
 jint Java_Options_getSize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
+    	CHECK_NULL(optionPtr, 0);
         auto size = optionPtr->numOptions();
 
         return size;
@@ -57,6 +57,7 @@ jint Java_Options_getSize (JNIEnv* env, jobject obj){
 jobjectArray Java_Options_getOptions (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
+    	CHECK_NULL(optionPtr, NULL);
         auto size = optionPtr->numOptions();
         auto options = optionPtr->content();
 

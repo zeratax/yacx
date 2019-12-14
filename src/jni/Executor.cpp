@@ -1,7 +1,7 @@
 #include "Executor.h"
 #include "Handle.h"
 #include "Kernel.h"
-#include "../../include/cudaexecutor/KernelTime.hpp"
+#include "../../include/yacx/KernelTime.hpp"
 
 jobjectArray Java_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, jobject jdevice,
 		jobjectArray jArgs, jint jexecutions){

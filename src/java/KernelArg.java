@@ -1,4 +1,4 @@
-public abstract class KernelArg extends JNIHandle {
+public class KernelArg extends JNIHandle {
 
     KernelArg(long handle) {
        super(handle);

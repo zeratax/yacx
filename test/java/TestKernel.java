@@ -17,6 +17,7 @@ class TestKernel extends TestJNI {
 	
 	@BeforeAll
 	static void init() {
+		//Kernel for get blockDims and gridDims from running kernel
 		String kernelDimsString = "extern \"C\" __global__\n" + 
 				"void kernelDims(int* gridx, int* gridy, int* gridz, int* blockx, int* blocky, int* blockz) {\n" + 
 				"  *blockx = blockDim.x;\n" + 
@@ -28,8 +29,10 @@ class TestKernel extends TestJNI {
 				"}\n" + 
 				"";
 		
+		//Create a Option (not necessary)
 		Options options = Options.createOptions();
 		options.insert(archOption, archValue);
+		
 		kernelDims = Program.create(kernelDimsString, "kernelDims").compile(options);
 		
 		grid0 = IntArg.createOutput(1);
@@ -44,14 +47,15 @@ class TestKernel extends TestJNI {
 	 * Checks if the kernel runs with the expected number of grids and blocks
 	 */
 	void checkDims(int grid0, int grid1, int grid2, int block0, int block1, int block2) {
-		kernelDims.launch(this.grid0, this.grid1, this.grid2, this.block0, this.block1, this.block2);
+		kernelDims.launch(TestKernel.grid0, TestKernel.grid1, TestKernel.grid2,
+							TestKernel.block0, TestKernel.block1, TestKernel.block2);
 		
-		assertEquals(grid0, this.grid0.asIntArray()[0]);
-		assertEquals(grid1, this.grid1.asIntArray()[0]);
-		assertEquals(grid2, this.grid2.asIntArray()[0]);
-		assertEquals(block0, this.block0.asIntArray()[0]);
-		assertEquals(block1, this.block1.asIntArray()[0]);
-		assertEquals(block2, this.block2.asIntArray()[0]);
+		assertEquals(grid0, TestKernel.grid0.asIntArray()[0]);
+		assertEquals(grid1, TestKernel.grid1.asIntArray()[0]);
+		assertEquals(grid2, TestKernel.grid2.asIntArray()[0]);
+		assertEquals(block0, TestKernel.block0.asIntArray()[0]);
+		assertEquals(block1, TestKernel.block1.asIntArray()[0]);
+		assertEquals(block2, TestKernel.block2.asIntArray()[0]);
 	}
 	
 	@Test
@@ -140,6 +144,7 @@ class TestKernel extends TestJNI {
 			kernelDims.launch(grid0, grid1, grid2, block0, null, block2);
 		});
 		
+		//TODO The errors are SIGSEVS :(
 		//Check launch with to small number of parameters
 //		assertThrows(ExecutorFailureException.class, () -> {
 //			kernelDims.launch(grid0, grid1, grid2, block0, block2);

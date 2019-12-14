@@ -20,7 +20,8 @@ void setHandle(JNIEnv* env, jobject obj, T* t)
     env->SetLongField(obj, getHandleField(env, obj), handle);
 }
 
-
 void clearHandle(JNIEnv* env, jobject obj);
+
+jobject createJNIObject(JNIEnv* env, jclass cls, void* objectPtr);
 
 #endif
