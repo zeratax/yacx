@@ -14,6 +14,16 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_compare.hpp
 
 
 add_executable(tests ${SOURCES} ${TESTS})
+include(CodeCoverage)
+if(GCOVR_PATH)
+  APPEND_COVERAGE_COMPILER_FLAGS()
+  setup_target_for_coverage_gcovr_html(
+    NAME ${PROJECT_NAME}_coverage
+    EXECUTABLE tests
+    DEPENDENCIES tests
+  )
+endif()
+
 SET(catch2_dir ${PROJECT_SOURCE_DIR}/extern/catch2)
 
 find_package(Git QUIET)
