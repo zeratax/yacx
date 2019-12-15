@@ -7,18 +7,18 @@ object ExampleFilter {
         var numThreads = 16
         var numBlocks = 1
 
-        var length = 16;
-        var src = new Array[Int](length);
+        var n = 16
+        var in = new Array[Int](n)
 
-        for (i <- 0 until length){
-            src(i) = i;
+        for (i <- 0 until n){
+            in(i) = i
         }
 
         //Initialize Arguments
-        val srcArg = IntArg.create(src: _*)
-        val outArg = IntArg.createOutput(length)
-        val counterArg = IntArg.createOutput(1);
-        val nArg = IntArg.create(length);
+        val srcArg = IntArg.create(in: _*)
+        val outArg = IntArg.createOutput(n/2)
+        val counterArg = IntArg.create(Array[Int](0), true)
+        val nArg = IntArg.createValue(n)
 
         //Create Program
         val kernelString = Utils.loadFile("filter_k.cu")
@@ -28,16 +28,17 @@ object ExampleFilter {
         val filterKernel = filter.compile()
 
         //Launch Kernel
-        filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
+        var executionTime = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
 
         //Get Result
         var out = outArg.asIntArray()
         var counter = counterArg.asIntArray()(0)
 
         //Print Result
-        println("\nInput:\n[" + src.mkString(", ") + "]")
-        println("\nResult:")
-        println("Counter: " + counter);
-        println("Result:\n[" + out.take(counter).mkString(", ") + "]")
+        println("\nfilter-Kernel sucessfully launched:");
+        println(executionTime);
+        println("\nInput:          [" + in.mkString(", ") + "]");
+        println("Result counter: " + counter);
+        println("Result:         [" + out.mkString(", ") + "]");
     }
 }

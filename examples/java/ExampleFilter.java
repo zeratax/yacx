@@ -31,16 +31,16 @@ public class ExampleFilter {
         Kernel filterKernel = filter.compile();
 
         //Compile and launch Kernel
-        KernelTime t = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, inArg, nArg);
+        KernelTime executionTime = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, inArg, nArg);
 
         //Get Result
         int[] out = outArg.asIntArray();
         int counter = counterArg.asIntArray()[0];
 
         //Print Result
-        System.out.println("\nfilter-Kernel (result = {x | x % 2 == 1}) sucessfully launched:");
-        System.out.println(t);
-        System.out.println("Input:          " + Arrays.toString(in));
+        System.out.println("\nfilter-Kernel sucessfully launched:");
+        System.out.println(executionTime);
+        System.out.println("\nInput:          " + Arrays.toString(in));
         System.out.println("Result counter: " + counter);
         System.out.println("Result:         " + Arrays.toString(out));
     }

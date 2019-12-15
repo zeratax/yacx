@@ -36,15 +36,15 @@ public class ExampleSaxpy {
         Kernel saxpyKernel = saxpy.compile();
 
         //Compile and launch Kernel
-        KernelTime t = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg);
+        KernelTime executionTime = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg);
 
         //Get Result
         float[] out = outArg.asFloatArray();
 
         //Print Result
-        System.out.println("\nsaxpy-Kernel (result[i] = y[i] + a * x[i]) sucessfully launched:");
-        System.out.println(t);
-        System.out.println("Input a: " + a);
+        System.out.println("\nsaxpy-Kernel sucessfully launched:");
+        System.out.println(executionTime);
+        System.out.println("\nInput a: " + a);
         System.out.println("Input x: " + Arrays.toString(x));
         System.out.println("Input y: " + Arrays.toString(y));
         System.out.println("Result:  " + Arrays.toString(out));
