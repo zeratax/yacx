@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.09)
+cmake_minimum_required(VERSION 3.12)
 project(yacx VERSION 0.4.1 LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 
 add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
