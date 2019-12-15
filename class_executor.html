@@ -61,6 +61,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_executor-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -68,6 +69,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>BenchmarkResult</b></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgCreator</b></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a332dce1b9973d594a566b71c1146f2cb"><td class="memItemLeft" align="right" valign="top"><a id="a332dce1b9973d594a566b71c1146f2cb"></a>
@@ -109,6 +117,12 @@ static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td 
 <tr class="memitem:a5324cdc306367d457096327575cc395f"><td class="memItemLeft" align="right" valign="top"><a id="a5324cdc306367d457096327575cc395f"></a>
 static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)</td></tr>
 <tr class="separator:a5324cdc306367d457096327575cc395f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adce4e21df9e822bc0a4132e5342ef8a7"><td class="memItemLeft" align="right" valign="top"><a id="adce4e21df9e822bc0a4132e5342ef8a7"></a>
+static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)</td></tr>
+<tr class="separator:adce4e21df9e822bc0a4132e5342ef8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0821d0a3fc71945bf1250037ded413f3"><td class="memItemLeft" align="right" valign="top"><a id="a0821d0a3fc71945bf1250037ded413f3"></a>
+static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, <a class="el" href="class_device.html">Device</a> device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)</td></tr>
+<tr class="separator:a0821d0a3fc71945bf1250037ded413f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/java/Executor.java</li>

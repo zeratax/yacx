@@ -4,5 +4,5 @@ var searchData=
   ['kernelarg',['KernelArg',['../class_kernel_arg.html',1,'KernelArg'],['../classyacx_1_1_kernel_arg.html',1,'yacx::KernelArg'],['../classyacx_1_1_kernel_arg.html#aebad149ca9250191719bcb4f33c7b142',1,'yacx::KernelArg::KernelArg(void *data, size_t size, bool download=false, bool copy=true, bool upload=true)'],['../classyacx_1_1_kernel_arg.html#a52d84ba8210a080a8cb6e38d4b09981b',1,'yacx::KernelArg::KernelArg(void *data)']]],
   ['kernelargjni',['KernelArgJNI',['../classjni_1_1_kernel_arg_j_n_i.html',1,'jni']]],
   ['kernelargs',['KernelArgs',['../classyacx_1_1_kernel_args.html',1,'yacx']]],
-  ['kerneltime',['KernelTime',['../class_kernel_time.html',1,'KernelTime'],['../structyacx_1_1_kernel_time.html',1,'yacx::KernelTime']]]
+  ['kerneltime',['KernelTime',['../structyacx_1_1_kernel_time.html',1,'yacx::KernelTime'],['../class_kernel_time.html',1,'KernelTime']]]
 ];
