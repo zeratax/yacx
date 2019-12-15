@@ -9,7 +9,7 @@ public class Options extends JNIHandle {
         return o;
     }
 
-    public static native Options createOptions();
+    private static native Options createOptions();
 
     public void insert(String option) {
         assert(option != null && option.length() > 0);
@@ -30,7 +30,7 @@ public class Options extends JNIHandle {
 
     public native int getSize();
 
-    public native String[] options();
+    public native String[] getOptions();
 
     Options(long handle) {
         super(handle);
@@ -38,6 +38,6 @@ public class Options extends JNIHandle {
 
     @Override
     public String toString(){
-        return "Options " + Arrays.toString(options());
+        return "Options " + Arrays.toString(getOptions());
     }
 }

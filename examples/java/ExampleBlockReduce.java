@@ -32,7 +32,7 @@ public class ExampleBlockReduce {
         Kernel blockReduceKernel = blockReduce.compile();
 
         //Compile and launch Kernel
-        blockReduceKernel.launch(new KernelArg[]{inArg, outArg, nArg}, numThreads, numBlocks);
+        blockReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
 
         //Get Result
         long[] out = outArg.asLongArray();

@@ -9,27 +9,25 @@ jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     BEGIN_TRY
         auto headersPtr = new Headers{};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, headersPtr);
-
-        return obj;
+        return createJNIObject(env, cls, headersPtr);
     END_TRY("creating headers")
 }
 
 void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
     BEGIN_TRY
-        CHECK_NULL(jheaderPathArray);
+        CHECK_NULL(jheaderPathArray, );
 
         auto headersPtr = getHandle<Headers>(env, obj);
+    	CHECK_NULL(headersPtr, )
 
         int length = env->GetArrayLength(jheaderPathArray);
 
-        CHECK_BIGGER(length, 0, "illegal array length")
+        CHECK_BIGGER(length, 0, "illegal array length", )
 
         for (int i = 0; i < length; i++) {
             auto jheaderPath = static_cast<jstring> (env->GetObjectArrayElement(jheaderPathArray, i));
 
-            CHECK_NULL(jheaderPath);
+            CHECK_NULL(jheaderPath, );
 
             auto headerPathPtr = env->GetStringUTFChars(jheaderPath, nullptr);
 
@@ -43,6 +41,7 @@ void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheader
 jint Java_Headers_getSize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
+    	CHECK_NULL(headersPtr, 0)
         auto size = headersPtr->numHeaders();
 
         return size;
@@ -52,6 +51,7 @@ jint Java_Headers_getSize (JNIEnv* env, jobject obj){
 jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
+    	CHECK_NULL(headersPtr, NULL)
         auto size = headersPtr->numHeaders();
         auto names = headersPtr->names();
 
@@ -62,6 +62,7 @@ jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
 jobjectArray Java_Headers_content (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
+    	CHECK_NULL(headersPtr, NULL)
         auto size = headersPtr->numHeaders();
         auto content = headersPtr->content();
 

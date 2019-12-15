@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef DoubleArg_SIZE_BYTES
+#define DoubleArg_SIZE_BYTES 8L
+/*
+ * Class:     DoubleArg
+ * Method:    createValue
+ * Signature: (D)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_DoubleArg_createValue
+  (JNIEnv *, jclass, jdouble);
+
 /*
  * Class:     DoubleArg
  * Method:    createInternal

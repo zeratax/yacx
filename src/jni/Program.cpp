@@ -11,8 +11,8 @@ using yacx::Source, yacx::Program, yacx::Headers, yacx::Options, yacx::Kernel;
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY
-        CHECK_NULL(jkernelSource)
-        CHECK_NULL(jkernelName)
+        CHECK_NULL(jkernelSource, NULL)
+        CHECK_NULL(jkernelName, NULL)
 
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
@@ -23,22 +23,21 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNI
         env->ReleaseStringUTFChars(jkernelSource, kernelSourcePtr);
         env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, programPtr);
-
-        return obj;
+        return createJNIObject(env, cls, programPtr);
     END_TRY("creating program")
 }
 
 jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHeaders_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
     BEGIN_TRY
-        CHECK_NULL(jkernelSource)
-        CHECK_NULL(jkernelName)
+        CHECK_NULL(jkernelSource, NULL)
+        CHECK_NULL(jkernelName, NULL)
+        CHECK_NULL(jheaders, NULL)
 
         auto kernelSourcePtr = env->GetStringUTFChars(jkernelSource, nullptr);
         auto kernelNamePtr = env->GetStringUTFChars(jkernelName, nullptr);
 
         auto headersPtr = getHandle<Headers>(env, jheaders);
+        CHECK_NULL(headersPtr, NULL);
 
         Source source{kernelSourcePtr, *headersPtr};
         Program* programPtr = new Program{source.program(kernelNamePtr)};
@@ -46,16 +45,14 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHead
         env->ReleaseStringUTFChars(jkernelSource, kernelSourcePtr);
         env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, programPtr);
-
-        return obj;
+        return createJNIObject(env, cls, programPtr);
     END_TRY("creating program")
 }
 
 jobject Java_Program_compile (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programPtr = getHandle<Program>(env, obj);
+    	CHECK_NULL(programPtr, NULL);
 
         Kernel* kernelPtr = new Kernel{programPtr->compile()};
 
@@ -69,8 +66,12 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
 
 jobject Java_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions){
     BEGIN_TRY
+        CHECK_NULL(joptions, NULL)
+
         auto programPtr = getHandle<Program>(env, obj);
+    	CHECK_NULL(programPtr, NULL);
         const auto optionsPtr = getHandle<Options>(env, joptions);
+        CHECK_NULL(optionsPtr, NULL);
 
         Kernel* kernelPtr = new Kernel{programPtr->compile(*optionsPtr)};
 

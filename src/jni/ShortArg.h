@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef ShortArg_SIZE_BYTES
+#define ShortArg_SIZE_BYTES 2L
+/*
+ * Class:     ShortArg
+ * Method:    createValue
+ * Signature: (S)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_ShortArg_createValue
+  (JNIEnv *, jclass, jshort);
+
 /*
  * Class:     ShortArg
  * Method:    createInternal
