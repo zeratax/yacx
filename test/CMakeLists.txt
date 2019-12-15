@@ -43,3 +43,46 @@ target_link_libraries(tests Catch2::Catch2)
 include(CTest)
 include(Catch)
 catch_discover_tests(tests)
+
+SET(JAVA_TEST_FILES
+        "test/java/TestBooleanArg.java"
+        "test/java/TestDecice.java"
+        "test/java/TestDoubleArg.java"
+        "test/java/TestExecuteFilter.java"
+        "test/java/TestExecuteSaxpy.java"
+        "test/java/TestExecutor.java"
+        "test/java/TestFloatArg.java"
+        "test/java/TestHeaders.java"
+        "test/java/TestIntArg.java"
+        "test/java/TestJNIHandle.java"
+        "test/java/TestKernel.java"
+        "test/java/TestKernelArg.java"
+        "test/java/TestKernelTime.java"
+        "test/java/TestLongArg.java"
+        "test/java/TestOptions.java"
+        "test/java/TestProgram.java"
+        "test/java/TestShortArg.java"
+        "test/java/TestUtils.java"
+        )
+
+if (JNI_ENABLED)
+    FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/java/bin")
+    SET(class_files)
+    FOREACH (_java_path ${JAVA_TEST_FILES})
+        get_filename_component(_java_file ${_java_path} NAME)
+        STRING(REGEX REPLACE "\\.java$"
+                ".class" _class_file
+                "${_java_file}")
+        ADD_CUSTOM_COMMAND(
+                OUTPUT "${CMAKE_BINARY_DIR}/java/bin/${_class_file}"
+                COMMAND
+                ${Java_JAVAC_EXECUTABLE}
+                ${CMAKE_JAVA_COMPILE_FLAGS}
+                -sourcepath "${PROJECT_SOURCE_DIR}/src/java"
+                -d "${CMAKE_BINARY_DIR}/java/bin"
+                "${PROJECT_SOURCE_DIR}/test/java/${_java_file}"
+                DEPENDS "${PROJECT_SOURCE_DIR}/test/java/${_java_file}")
+        LIST(APPEND class_files "java/bin/${_class_file}")
+    ENDFOREACH ()
+    ADD_CUSTOM_TARGET(JavaJNITestClasses ALL DEPENDS ${class_files})
+endif ()
