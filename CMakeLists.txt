@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.09)
-project(yacx VERSION 0.4.0 LANGUAGES CUDA CXX)
+project(yacx VERSION 0.4.1 LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
