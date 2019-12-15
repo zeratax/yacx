@@ -9,7 +9,6 @@ public class ExampleFilterBenchmark {
     	
         String saxpy = Utils.loadFile("filter_k.cu");
         
-        long t0 = System.currentTimeMillis();
         //Benchmark filter-Kernel
         System.out.println(Executor.benchmark(saxpy, "filter_k", Options.createOptions(), 10,
         		new Executor.KernelArgCreator() {
@@ -41,6 +40,5 @@ public class ExampleFilterBenchmark {
 													IntArg.create(in), IntArg.create(dataLength)};
 					}
 				}, 1*KB, 4*KB, 8*KB, 1024*KB, 4096*KB, 131072*KB));
-        System.out.println((System.currentTimeMillis()-t0) + " milliseconds");
     }
 }

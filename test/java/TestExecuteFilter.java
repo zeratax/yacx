@@ -49,22 +49,6 @@ public class TestExecuteFilter extends TestJNI {
 		assertThrows(IllegalArgumentException.class, () -> {
 			Executor.launch("filter_k", n, 1);
 		});
-		
-		//TODO The errors are SIGSEVS :(
-		//Launch with to small number of arguments
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("filter_k", n, 1, outArg, counterArg, srcArg);
-//		});
-//		
-//		//Launch with to much arguments
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("filter_k", n, 1, outArg, counterArg, srcArg, nArg, outArg);
-//		});
-//		
-//		//Launch with arguments in false order
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("filter_k", n, 1, counterArg, outArg, srcArg, nArg);
-//		});
 	}
 	
 	@Test

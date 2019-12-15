@@ -22,7 +22,7 @@ class TestExecutor extends TestJNI {
 	static int n;
 	static FloatArg xArg, yArg, outArg;
 	static KernelArg aArg, nArg;
-	static Executor.KernelArgCreator creator;
+	static Executor.KernelArgCreator creatorSaxpy, creatorFilter;
 	
 
 	@BeforeAll
@@ -58,8 +58,8 @@ class TestExecutor extends TestJNI {
 		yArg = FloatArg.create(y);
 		nArg = IntArg.createValue(n);
 		
-		//KernelArg-Creator for benchmark-test
-		creator = new Executor.KernelArgCreator() {
+		//KernelArg-Creator for saxpy-benchmark-test
+		creatorSaxpy = new Executor.KernelArgCreator() {
 			@Override
 			public int getDataLength(int dataSizeBytes) {
 				return dataSizeBytes/FloatArg.SIZE_BYTES;
@@ -89,6 +89,37 @@ class TestExecutor extends TestJNI {
 				
 				return new KernelArg[] {FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
 											FloatArg.createOutput(dataLength), IntArg.createValue(n)};
+			}
+		};
+		
+		//KernelArg-Creator for filter-benchmark-test
+		creatorFilter = new Executor.KernelArgCreator() {
+        	
+        	@Override
+			public int getDataLength(int dataSizeBytes) {
+				return dataSizeBytes/IntArg.SIZE_BYTES;
+			}
+
+			@Override
+			public int getGrid0(int dataLength) {
+				return dataLength;
+			}
+			
+			@Override
+			public int getBlock0(int dataLength) {
+				return 1;
+			}
+			
+			@Override
+			public KernelArg[] createArgs(int dataLength) {
+				int[] in = new int[dataLength];
+				
+				for (int i = 0; i < dataLength; i++) {
+					in[i] = i;
+				}
+				
+				return new KernelArg[] {IntArg.createOutput(dataLength/2), IntArg.create(new int[] {0}, true),
+											IntArg.create(in), IntArg.create(dataLength)};
 			}
 		};
 	}
@@ -164,17 +195,17 @@ class TestExecutor extends TestJNI {
 	void testBenchmarkInvalid() {
 		//Invalid number of executions
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 0, creator, 1024, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, 0, creatorSaxpy, 1024, 2048);
 		});
 		
 		//Invalid dataSize
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 3, creator, 1024, -1, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, 3, creatorSaxpy, 1024, -1, 2048);
 		});
 		
 		//null
 		assertThrows(NullPointerException.class, () -> {
-			Executor.benchmark(saxpy, null, options, 3, creator, 1024, 2048);
+			Executor.benchmark(saxpy, null, options, 3, creatorSaxpy, 1024, 2048);
 		});
 		
 		//invalid KernelArgCreator
@@ -183,12 +214,12 @@ class TestExecutor extends TestJNI {
 				
 				@Override
 				public int getDataLength(int dataSizeBytes) {
-					return creator.getDataLength(dataSizeBytes);
+					return creatorSaxpy.getDataLength(dataSizeBytes);
 				}
 				
 				@Override
 				public int getGrid0(int dataLength) {
-					return creator.getGrid0(dataLength);
+					return creatorSaxpy.getGrid0(dataLength);
 				}
 				
 				@Override
@@ -198,7 +229,7 @@ class TestExecutor extends TestJNI {
 				
 				@Override
 				public KernelArg[] createArgs(int dataLength) {
-					return creator.createArgs(dataLength);
+					return creatorSaxpy.createArgs(dataLength);
 				}
 			}, 1024, 2048);
 		});
@@ -208,23 +239,23 @@ class TestExecutor extends TestJNI {
 			
 			@Override
 			public int getDataLength(int dataSizeBytes) {
-				return creator.getDataLength(dataSizeBytes);
+				return creatorSaxpy.getDataLength(dataSizeBytes);
 			}
 			
 			@Override
 			public int getGrid0(int dataLength) {
-				return creator.getGrid0(dataLength);
+				return creatorSaxpy.getGrid0(dataLength);
 			}
 			
 			@Override
 			public int getBlock0(int dataLength) {
-				return creator.getBlock0(dataLength);
+				return creatorSaxpy.getBlock0(dataLength);
 			}
 			
 			@Override
 			public KernelArg[] createArgs(int dataLength) {
 				if (dataLength <= 512) {
-					return creator.createArgs(dataLength);
+					return creatorSaxpy.createArgs(dataLength);
 				} else {
 					//Invalid KernelArgs
 					return new KernelArg[] {aArg, null, yArg, nArg};
@@ -243,11 +274,16 @@ class TestExecutor extends TestJNI {
 	
 	@Test
 	void testBenchmarkValid() {
-		//Run benchmark-tests correctly
-		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creator, 1024, 2048);
+		//Run saxpy-benchmark-tests correctly
+		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creatorSaxpy, 1024, 2048);
 		assertNotNull(result);
 		
-		result = Executor.benchmark(saxpy, "saxpy", options, 7, creator, 512, 768);
+		//Other saxpy-benchmark-test
+		result = Executor.benchmark(saxpy, "saxpy", options, 7, creatorSaxpy, 512, 768);
+		assertNotNull(result);
+		
+		//Run filter-benchmark-tests correctly
+		result = Executor.benchmark(filterk, "filter_k", options, 4, creatorFilter, 1024, 2048, 4096);
 		assertNotNull(result);
 	}
 }

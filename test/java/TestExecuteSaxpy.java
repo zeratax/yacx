@@ -57,22 +57,6 @@ public class TestExecuteSaxpy extends TestJNI {
 		assertThrows(IllegalArgumentException.class, () -> {
 			Executor.launch("saxpy", n, 1);
 		});
-		
-		//TODO The errors are SIGSEVS :(
-//		//Launch with to small number of arguments
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("saxpy", n, 1, aArg, xArg, yArg, outArg);
-//		});
-//		
-//		//Launch with to much arguments
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("saxpy", n, 1, aArg, xArg, yArg, outArg, nArg, aArg);
-//		});
-//		
-//		//Launch with arguments in false order
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			Executor.launch("saxpy", n, 1, aArg, xArg, yArg, nArg, outArg);
-//		});
 	}
 	
 	@Test

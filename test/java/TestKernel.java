@@ -144,20 +144,10 @@ class TestKernel extends TestJNI {
 			kernelDims.launch(grid0, grid1, grid2, block0, null, block2);
 		});
 		
-		//TODO The errors are SIGSEVS :(
-		//Check launch with to small number of parameters
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			kernelDims.launch(grid0, grid1, grid2, block0, block2);
-//		});
-		
+		//Check launch without parameters
 		assertThrows(IllegalArgumentException.class, () -> {
 			kernelDims.launch();
 		});
-		
-		//Check launch with to much parameters
-//		assertThrows(ExecutorFailureException.class, () -> {
-//			kernelDims.launch(grid0, grid1, grid2, block0, block1, block2, block1);
-//		});
 	}
 	
 	@Test

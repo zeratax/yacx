@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class Executor {
@@ -67,24 +68,36 @@ public class Executor {
     	if (numberExecutions <= 0)
     		throw new IllegalArgumentException("illegal number of executions: " + numberExecutions);
     	
+    	//Absolute time Measurement
+    	long t0 = System.currentTimeMillis();
+    	
+    	//Create and compile Kernel
     	Kernel kernel = Program.create(kernelString, kernelName)
     					.compile(options);
     	
+    	//Array for result
     	KernelTime[][] result = new KernelTime[dataSizesBytes.length][numberExecutions];
     	
+    	//Start run for every dataSize
     	for (int i = 0; i < dataSizesBytes.length; i++) {
     		int dataSize = dataSizesBytes[i];
     		
     		if (dataSize <= 0)
     			throw new IllegalArgumentException();
     		
+    		//Configure Kernel
     		int dataLength = creator.getDataLength(dataSize);
     		kernel.configure(creator.getGrid0(dataLength), creator.getGrid1(dataLength), creator.getGrid2(dataLength),
     							creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength));
+    		
+    		//Execute Kernel numberExecutions times
     		result[i] = benchmark(kernel, device, creator.createArgs(dataLength), numberExecutions);
     	}
     	
-    	return new BenchmarkResult(numberExecutions, dataSizesBytes, result, kernelName);
+    	//Absolute time Measurement
+    	long dt = System.currentTimeMillis()-t0;
+    	
+    	return new BenchmarkResult(numberExecutions, dataSizesBytes, result, kernelName, dt);
     }
     
     private static native KernelTime[] benchmark(Kernel kernel, Device device, KernelArg[] args, int numberExecutions);
@@ -106,13 +119,15 @@ public class Executor {
     	private final KernelTime[][] result;
     	private final KernelTime[] average;
     	private final String kernelName;
+    	private final long testDuration;
     	
-    	protected BenchmarkResult(int executions, int[] dataSizes, KernelTime[][] result, String kernelName) {
+    	protected BenchmarkResult(int executions, int[] dataSizes, KernelTime[][] result, String kernelName, long testDuration) {
     		this.executions = executions;
     		this.dataSizes = dataSizes;
     		Arrays.parallelSort(dataSizes);
     		this.result = result;
     		this.kernelName = kernelName;
+    		this.testDuration = testDuration;
     		
     		//Compute Average
     		average = new KernelTime[result.length];
@@ -157,7 +172,7 @@ public class Executor {
 		@Override
 		public String toString() {
 			StringBuffer buffer = new StringBuffer(200);
-			buffer.append("Benchmark " + kernelName + "-Kernel\n");
+			buffer.append("\nBenchmark " + kernelName + "-Kernel\n");
 				
 			buffer.append("  Datasize  Result (Average)\n");
 			
@@ -174,10 +189,17 @@ public class Executor {
 				buffer.append("\n");
 			}
 			
+			DecimalFormat df = new DecimalFormat();
+			String time = KernelTime.humanReadableMilliseconds(df, testDuration);
+			df.setMaximumFractionDigits(1);
+			String[] s = time.split(" ");
+			
+			buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[2] + "\n");
+			
 			return buffer.toString();
 		}
-			
-		private String humanReadableByteCountBin(long bytes) {
+		
+		static String humanReadableByteCountBin(long bytes) {
 		    return bytes < 1024L ? bytes + " B"
 		            : bytes <= 0xfffccccccccccccL >> 40 ? String.format("%.1f KiB", bytes / 0x1p10)
 		            : bytes <= 0xfffccccccccccccL >> 30 ? String.format("%.1f MiB", bytes / 0x1p20)

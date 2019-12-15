@@ -31,14 +31,14 @@ public class KernelTime {
 
 	@Override
     public String toString(){
-        return "execution-time: " + humanReadableMilliseconds(launch) + " (total time: " +
-        			humanReadableMilliseconds(sum) + ", upload-time: " + humanReadableMilliseconds(upload) + 
-        			", download-time: " + humanReadableMilliseconds(download) + ")";
+		DecimalFormat df = new DecimalFormat();
+		
+        return "execution-time: " + humanReadableMilliseconds(df, launch) + " (total time: " +
+        			humanReadableMilliseconds(df, sum) + ", upload-time: " + humanReadableMilliseconds(df, upload) + 
+        			", download-time: " + humanReadableMilliseconds(df, download) + ")";
     }
 	
-	private DecimalFormat df = new DecimalFormat();
-	
-	private String humanReadableMilliseconds(double time) {
+	static String humanReadableMilliseconds(DecimalFormat df, double time) {
 		String unit = "ms";
 		if (time > 1000) {
 			time /= 1000;
