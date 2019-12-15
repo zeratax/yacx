@@ -53,8 +53,8 @@ jobs:
             cp test/java/*.java $JAVA_DIR
             pushd $JAVA_DIR
             wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.5.2/junit-platform-console-standalone-1.5.2.jar
-            javac -cp junit-platform-console-standalone-1.5.2.jar *.java
+            javac -cp junit-platform-console-standalone-1.5.2.jar *.java -d $(pwd) -sourcepath $(pwd)
             rm *.java
-            java -Djava.library.path=../../ -jar junit-platform-console-standalone-1.5.2.jar --scan-class-path
+            java -Djava.library.path=../../ -jar junit-platform-console-standalone-1.5.2.jar --class-path $(pwd) --scan-class-path
             popd
           script_stop: true
