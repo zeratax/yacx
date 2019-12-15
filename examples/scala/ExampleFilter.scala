@@ -4,11 +4,11 @@ object ExampleFilter {
         Executor.loadLibary()
 
         //Testdata
-        var numThreads = 16
-        var numBlocks = 1
+        val numThreads = 16
+        val numBlocks = 1
 
-        var n = 16
-        var in = new Array[Int](n)
+        val n = 16
+        val in = new Array[Int](n)
 
         for (i <- 0 until n){
             in(i) = i
@@ -28,11 +28,11 @@ object ExampleFilter {
         val filterKernel = filter.compile()
 
         //Launch Kernel
-        var executionTime = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
+        val executionTime = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
 
         //Get Result
-        var out = outArg.asIntArray()
-        var counter = counterArg.asIntArray()(0)
+        val out = outArg.asIntArray()
+        val counter = counterArg.asIntArray()(0)
 
         //Print Result
         println("\nfilter-Kernel sucessfully launched:");

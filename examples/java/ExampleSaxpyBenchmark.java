@@ -11,37 +11,37 @@ public class ExampleSaxpyBenchmark {
         
         //Benchmark saxpy-Kernel
         System.out.println(Executor.benchmark(saxpy, "saxpy", Options.createOptions(), 10,
-        		new Executor.KernelArgCreator() {
-        			float a = 5.1f;
-        			
-        			@Override
-					public int getDataLength(int dataSizeBytes) {
-						return dataSizeBytes/FloatArg.SIZE_BYTES;
-					}
-
-					@Override
-					public int getGrid0(int dataLength) {
-						return dataLength;
-					}
-
-					@Override
-					public int getBlock0(int dataLength) {
-						return 1;
-					}
-
-					@Override
-					public KernelArg[] createArgs(int dataLength) {
-						float[] x = new float[dataLength];
-						float[] y = new float[dataLength];
-
-						for (int i = 0; i < dataLength; i++) {
-							x[i] = 1;
-							y[i] = i;
+	            new Executor.KernelArgCreator() {
+	                    final float a = 5.1f;
+	        			
+	        			@Override
+						public int getDataLength(int dataSizeBytes) {
+							return dataSizeBytes/FloatArg.SIZE_BYTES;
 						}
-
-						return new KernelArg[] {FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
-								FloatArg.createOutput(dataLength), IntArg.createValue(dataLength)};
-					}
+	
+						@Override
+						public int getGrid0(int dataLength) {
+							return dataLength;
+						}
+	
+						@Override
+						public int getBlock0(int dataLength) {
+							return 1;
+						}
+	
+						@Override
+						public KernelArg[] createArgs(int dataLength) {
+							float[] x = new float[dataLength];
+							float[] y = new float[dataLength];
+	
+							for (int i = 0; i < dataLength; i++) {
+								x[i] = 1;
+								y[i] = i;
+							}
+	
+							return new KernelArg[] {FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
+									FloatArg.createOutput(dataLength), IntArg.createValue(dataLength)};
+						}
 				}, 1*KB, 4*KB, 8*KB, 1024*KB, 4096*KB, 16384*KB));
     }
 }
