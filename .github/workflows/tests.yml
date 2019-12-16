@@ -29,7 +29,7 @@ jobs:
             cd $COMMIT_SHA
             git checkout $COMMIT_SHA
             cmake -H. -Bbuild
-            make -C build
+            make -C build tests
             pushd build/test/bin/
             ./tests
             popd
@@ -49,12 +49,9 @@ jobs:
           envs: GITHUB_REPOSITORY,COMMIT_SHA,JAVA_DIR
           script: |
             cd /tmp/ci/$GITHUB_REPOSITORY/$COMMIT_SHA
+            make -C build JavaJNITestClasses
             cp examples/kernels/* $JAVA_DIR
-            cp test/java/*.java $JAVA_DIR
-            pushd $JAVA_DIR
-            wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.5.2/junit-platform-console-standalone-1.5.2.jar
-            javac -cp junit-platform-console-standalone-1.5.2.jar *.java -d $(pwd) -sourcepath $(pwd)
-            rm *.java
-            java -Djava.library.path=../../ -jar junit-platform-console-standalone-1.5.2.jar --class-path $(pwd) --scan-class-path
+            pushd build
+            java -Djava.library.path=../../ -jar src/junit-platform-console-standalone-1.5.2.jar --class-path . --scan-class-path
             popd
           script_stop: true
