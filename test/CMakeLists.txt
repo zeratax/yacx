@@ -52,7 +52,7 @@ catch_discover_tests(tests)
 
 set(JAVA_TEST_FILES
     "test/java/TestBooleanArg.java"
-    "test/java/TestDecice.java"
+    "test/java/TestDevice.java"
     "test/java/TestDoubleArg.java"
     "test/java/TestExecuteFilter.java"
     "test/java/TestExecuteSaxpy.java"
