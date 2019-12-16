@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class TestDecice extends TestJNI {
+class TestDevice extends TestJNI {
 
 	@Test
 	void test() {

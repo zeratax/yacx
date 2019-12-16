@@ -1,19 +1,16 @@
-import scala.math.abs
-
 object ExampleSaxpy {
-
     def main(args: Array[String]) : Unit = {
         //Load Libary
         Executor.loadLibary()
 
         //Testdata
-        var numThreads = 4
-        var numBlocks = 4
+        val numThreads = 4
+        val numBlocks = 4
 
-        var n = numThreads*numBlocks
-        var a = 5.1f
-        var x = new Array[Float](n)
-        var y = new Array[Float](n)
+        val n = numThreads*numBlocks
+        val a = 5.1f
+        val x = new Array[Float](n)
+        val y = new Array[Float](n)
         for (i <- 0 until n) {
             x(i) = i
             y(i) = 2*i
@@ -34,10 +31,10 @@ object ExampleSaxpy {
         val saxpyKernel = saxpy.compile()
 
         //Launch Kernel
-        var executionTime = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg)
+        val executionTime = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg)
 
         //Get Result
-        var out = outArg.asFloatArray()
+        val out = outArg.asFloatArray()
 
         //Print Result
         println("\nsaxpy-Kernel sucessfully launched:");
