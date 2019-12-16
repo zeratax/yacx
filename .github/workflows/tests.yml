@@ -51,7 +51,7 @@ jobs:
             cd /tmp/ci/$GITHUB_REPOSITORY/$COMMIT_SHA
             make -C build JNITestClasses
             cp examples/kernels/* $JAVA_DIR
-            pushd build
+            pushd $JAVA_DIR
             java -Djava.library.path=../../ -jar src/junit-platform-console-standalone-1.5.2.jar --class-path . --scan-class-path
             popd
           script_stop: true
