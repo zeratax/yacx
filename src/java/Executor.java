@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Executor {
     public static void loadLibary() {
-        System.loadLibrary("cudaexecutor-jni");
+        System.loadLibrary("yacx-jni");
     }
     
     public static KernelTime launch(String kernelName, int grid, int block, KernelArg ...args) throws IOException {
