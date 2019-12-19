@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_IntArg_createValue
 
 /*
  * Class:     IntArg
+ * Method:    create
+ * Signature: (LIntArg;Z)LIntArg;
+ */
+JNIEXPORT jobject JNICALL Java_IntArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     IntArg
  * Method:    createInternal
  * Signature: ([IZ)LIntArg;
  */
