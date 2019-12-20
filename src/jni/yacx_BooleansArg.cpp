@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_BooleanArg_createValue(JNIEnv* env, jclass cls, jboolean jvalue){
+jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboolean jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -17,10 +17,10 @@ jobject JNICALL Java_BooleanArg_createValue(JNIEnv* env, jclass cls, jboolean jv
 }
 
 
-jobject Java_BooleanArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+jobject Java_yacx_BooleanArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_BooleanArg_asBooleanArray(env, obj);
+		auto jarray = Java_yacx_BooleanArg_asBooleansArray(env, obj);
 		auto arrayPtr = env->GetBooleanArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -34,7 +34,7 @@ jobject Java_BooleanArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jd
 	END_TRY("creating BooleanArg")
 }
 
-jobject Java_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean jdownload){
+jobject Java_yacx_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -51,7 +51,7 @@ jobject Java_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray j
     END_TRY("creating BooleanArg")
 }
 
-jobject Java_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -61,7 +61,7 @@ jobject Java_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarr
     END_TRY("creating BooleanArg")
 }
 
-jbooleanArray Java_BooleanArg_asBooleanArray (JNIEnv* env, jobject obj){
+jbooleanArray Java_yacx_BooleanArg_asBooleansArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

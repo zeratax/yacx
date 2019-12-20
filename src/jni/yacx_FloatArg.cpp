@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
+jobject JNICALL Java_yacx_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -16,7 +16,7 @@ jobject JNICALL Java_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue
 	END_TRY("creating FloatValueArg")
 }
 
-jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jboolean jdownload){
+jobject Java_yacx_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -33,7 +33,7 @@ jobject Java_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarra
     END_TRY("creating FloatArg")
 }
 
-jobject Java_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -43,7 +43,7 @@ jobject Java_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarray
     END_TRY("creating FloatArg")
 }
 
-jfloatArray Java_FloatArg_asFloatArray (JNIEnv* env, jobject obj){
+jfloatArray Java_yacx_FloatArg_asFloatArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)
@@ -59,4 +59,3 @@ jfloatArray Java_FloatArg_asFloatArray (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting FloatArg-content")
 }
-

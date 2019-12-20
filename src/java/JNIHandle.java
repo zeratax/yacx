@@ -1,3 +1,5 @@
+package yacx;
+
 abstract public class JNIHandle {
     JNIHandle(long handle) {
         nativeHandle = handle;
@@ -6,7 +8,7 @@ abstract public class JNIHandle {
     public native void dispose();
 
     private final long nativeHandle;
-    
+
     @Override
     public boolean equals(Object o) {
     	return o != null && o instanceof JNIHandle && nativeHandle == ((JNIHandle) o).nativeHandle;

@@ -11,7 +11,7 @@
 
 using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, jni::KernelArgJNI;
 
-void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
+void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
 {
     BEGIN_TRY
         CHECK_BIGGER(jgrid0, 0, "illegal size for grid0", )
@@ -31,7 +31,7 @@ void Java_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint j
     END_TRY("configuring Kernel")
 }
 
-jobject Java_Kernel_launchInternal___3LKernelArg_2(JNIEnv *env, jobject obj, jobjectArray jArgs)
+jobject Java_yacx_Kernel_launchInternal___3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jobjectArray jArgs)
 {
     BEGIN_TRY
         CHECK_NULL(jArgs, NULL);
@@ -48,7 +48,7 @@ jobject Java_Kernel_launchInternal___3LKernelArg_2(JNIEnv *env, jobject obj, job
     END_TRY("launching Kernel")
 }
 
-jobject Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(JNIEnv *env, jobject obj, jobject jdevice, jobjectArray jArgs)
+jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jobject jdevice, jobjectArray jArgs)
 {
     BEGIN_TRY
         CHECK_NULL(jArgs, NULL);
@@ -66,7 +66,7 @@ jobject Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(JNIEnv *env, jobject
     END_TRY("launching Kernel on specific device")
 }
 
-jobject Java_Kernel_launchInternal__Ljava_lang_String_2_3LKernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
+jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
 {
     BEGIN_TRY
         CHECK_NULL(jdevicename, NULL)

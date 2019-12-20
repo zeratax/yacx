@@ -1,3 +1,5 @@
+package yacx;
+
 import java.text.DecimalFormat;
 
 public class KernelTime {
@@ -32,18 +34,18 @@ public class KernelTime {
 	@Override
     public String toString(){
 		DecimalFormat df = new DecimalFormat();
-		
+
         return "execution-time: " + humanReadableMilliseconds(df, launch) + " (total time: " +
-        			humanReadableMilliseconds(df, sum) + ", upload-time: " + humanReadableMilliseconds(df, upload) + 
+        			humanReadableMilliseconds(df, sum) + ", upload-time: " + humanReadableMilliseconds(df, upload) +
         			", download-time: " + humanReadableMilliseconds(df, download) + ")";
     }
-	
+
 	static String humanReadableMilliseconds(DecimalFormat df, double time) {
 		String unit = "ms";
 		if (time > 1000) {
 			time /= 1000;
 			unit = " s";
-			
+
 			if (time > 100) {
 				time /= 60;
 				unit = " m";
@@ -53,12 +55,12 @@ public class KernelTime {
 				unit = " h";
 			}
 		}
-		
+
 		for (int i = 10, j = 5; true; i *= 10, j--) {
 			if (time < i) {
 				df.setMinimumFractionDigits(j);
 				df.setMaximumFractionDigits(j);
-				
+
 				return df.format(time) + " " + unit;
 			}
 		}

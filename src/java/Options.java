@@ -1,3 +1,5 @@
+package yacx;
+
 import java.util.Arrays;
 
 public class Options extends JNIHandle {

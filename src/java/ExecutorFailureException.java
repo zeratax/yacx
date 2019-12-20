@@ -1,3 +1,5 @@
+package yacx;
+
 public class ExecutorFailureException extends RuntimeException {
     public ExecutorFailureException(String message){
         super(message);

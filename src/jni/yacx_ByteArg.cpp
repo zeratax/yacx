@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jvalue){
+jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -16,10 +16,10 @@ jobject JNICALL Java_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jvalue){
 	END_TRY("creating ByteValueArg")
 }
 
-jobject Java_IntArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+jobject Java_yacx_ByteArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_ByteArg_asByteArray(env, obj);
+		auto jarray = Java_yacx_ByteArg_asByteArray(env, obj);
 		auto arrayPtr = env->GetByteArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -34,7 +34,7 @@ jobject Java_IntArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownl
 }
 
 
-jobject Java_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray, jboolean jdownload){
+jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -51,7 +51,7 @@ jobject Java_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray,
     END_TRY("creating ByteArg")
 }
 
-jobject Java_ByteArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_ByteArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -61,7 +61,7 @@ jobject Java_ByteArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayL
     END_TRY("creating ByteArg")
 }
 
-jbyteArray Java_ByteArg_asByteArray (JNIEnv* env, jobject obj){
+jbyteArray Java_yacx_ByteArg_asByteArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

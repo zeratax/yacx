@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalue){
+jobject JNICALL Java_yacx_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -17,10 +17,10 @@ jobject JNICALL Java_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalue){
 }
 
 
-JNIEXPORT jobject JNICALL Java_IntArg_create (JNIEnv * env, jclass cls, jobject obj, jboolean jdownload) {
+JNIEXPORT jobject JNICALL Java_yacx_IntArg_create (JNIEnv * env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_IntArg_asIntArray(env, obj);
+		auto jarray = Java_yacx_IntArg_asIntArray(env, obj);
 		auto arrayPtr = env->GetIntArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -34,7 +34,7 @@ JNIEXPORT jobject JNICALL Java_IntArg_create (JNIEnv * env, jclass cls, jobject 
 	END_TRY("creating IntArg")
 }
 
-jobject Java_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, jboolean jdownload){
+jobject Java_yacx_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -51,7 +51,7 @@ jobject Java_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, j
     END_TRY("creating IntArg")
 }
 
-jobject Java_IntArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_IntArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -61,7 +61,7 @@ jobject Java_IntArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLe
     END_TRY("creating IntArg")
 }
 
-jintArray Java_IntArg_asIntArray (JNIEnv* env, jobject obj){
+jintArray Java_yacx_IntArg_asIntArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

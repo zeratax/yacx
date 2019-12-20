@@ -9,7 +9,7 @@
 
 using yacx::Source, yacx::Program, yacx::Headers, yacx::Options, yacx::Kernel;
 
-jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
+jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName){
     BEGIN_TRY
         CHECK_NULL(jkernelSource, NULL)
         CHECK_NULL(jkernelName, NULL)
@@ -27,7 +27,7 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNI
     END_TRY("creating program")
 }
 
-jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHeaders_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
+jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2Lyacx_Headers_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
     BEGIN_TRY
         CHECK_NULL(jkernelSource, NULL)
         CHECK_NULL(jkernelName, NULL)
@@ -49,7 +49,7 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHead
     END_TRY("creating program")
 }
 
-jobject Java_Program_compile (JNIEnv* env, jobject obj){
+jobject Java_yacx_Program_compile (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programPtr = getHandle<Program>(env, obj);
     	CHECK_NULL(programPtr, NULL);
@@ -64,7 +64,7 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
     END_TRY("compiling kernel")
 }
 
-jobject Java_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions){
+jobject Java_yacx_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions){
     BEGIN_TRY
         CHECK_NULL(joptions, NULL)
 

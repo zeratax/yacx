@@ -4,7 +4,7 @@
 
 using yacx::JNIHandle;
 
-void JNICALL Java_JNIHandle_dispose(JNIEnv *env, jobject obj)
+void JNICALL Java_yacx_JNIHandle_dispose(JNIEnv *env, jobject obj)
 {
     auto ptr = getHandle<JNIHandle>(env, obj);
     clearHandle(env, obj);

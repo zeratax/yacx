@@ -1,3 +1,5 @@
+package yacx;
+
 public class IntArg extends KernelArg {
 	public final static int SIZE_BYTES = 4;
 

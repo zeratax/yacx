@@ -1,3 +1,5 @@
+package yacx;
+
 public class Program extends JNIHandle {
 
     public static Program create(String kernelString, String kernelName) {

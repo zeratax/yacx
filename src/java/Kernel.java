@@ -1,3 +1,4 @@
+package yacx;
 
 public class Kernel extends JNIHandle {
     private boolean configured;
@@ -7,9 +8,9 @@ public class Kernel extends JNIHandle {
         assert(block0 > 0 && block1 > 0 && block2 > 0);
 
         configureInternal(grid0, grid1, grid2, block0, block1, block2);
-        
+
         configured = true;
-        
+
         return this;
     }
 
@@ -17,9 +18,9 @@ public class Kernel extends JNIHandle {
         assert(grid > 0 && block > 0);
 
         configureInternal(grid, 1, 1, block, 1, 1);
-        
+
         configured = true;
-        
+
         return this;
     }
 

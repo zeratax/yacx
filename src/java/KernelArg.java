@@ -1,3 +1,5 @@
+package yacx;
+
 public class KernelArg extends JNIHandle {
 
     KernelArg(long handle) {

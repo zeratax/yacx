@@ -5,7 +5,7 @@
 
 using yacx::Headers;
 
-jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
+jobject Java_yacx_Headers_createHeaders (JNIEnv* env, jclass cls){
     BEGIN_TRY
         auto headersPtr = new Headers{};
 
@@ -13,7 +13,7 @@ jobject Java_Headers_createHeaders (JNIEnv* env, jclass cls){
     END_TRY("creating headers")
 }
 
-void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
+void Java_yacx_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheaderPathArray){
     BEGIN_TRY
         CHECK_NULL(jheaderPathArray, );
 
@@ -38,7 +38,7 @@ void Java_Headers_insertInternal (JNIEnv* env, jobject obj, jobjectArray jheader
     END_TRY("inserting headers")
 }
 
-jint Java_Headers_getSize (JNIEnv* env, jobject obj){
+jint Java_yacx_Headers_getSize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
     	CHECK_NULL(headersPtr, 0)
@@ -48,7 +48,7 @@ jint Java_Headers_getSize (JNIEnv* env, jobject obj){
     END_TRY("getting size of headers")
 }
 
-jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
+jobjectArray Java_yacx_Headers_names (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
     	CHECK_NULL(headersPtr, NULL)
@@ -59,7 +59,7 @@ jobjectArray Java_Headers_names (JNIEnv* env, jobject obj){
     END_TRY("getting names of headers")
 }
 
-jobjectArray Java_Headers_content (JNIEnv* env, jobject obj){
+jobjectArray Java_yacx_Headers_content (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto headersPtr = getHandle<Headers>(env, obj);
     	CHECK_NULL(headersPtr, NULL)

@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_ShortArg_createValue(JNIEnv* env, jclass cls, jshort jvalue){
+jobject JNICALL Java_yacx_ShortArg_createValue(JNIEnv* env, jclass cls, jshort jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -17,10 +17,10 @@ jobject JNICALL Java_ShortArg_createValue(JNIEnv* env, jclass cls, jshort jvalue
 }
 
 
-jobject Java_ShortArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+jobject Java_yacx_ShortArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_LongArg_asLongArray(env, obj);
+		auto jarray = Java_yacx_ShortArg_asShortArray(env, obj);
 		auto arrayPtr = env->GetShortArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -34,7 +34,7 @@ jobject Java_ShortArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdow
 	END_TRY("creating ShortArg")
 }
 
-jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
+jobject Java_yacx_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -51,7 +51,7 @@ jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarra
     END_TRY("creating ShortArg")
 }
 
-jobject Java_ShortArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_ShortArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -61,7 +61,7 @@ jobject Java_ShortArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarray
     END_TRY("creating ShortArg")
 }
 
-jshortArray Java_ShortArg_asShortArray (JNIEnv* env, jobject obj){
+jshortArray Java_yacx_ShortArg_asShortArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

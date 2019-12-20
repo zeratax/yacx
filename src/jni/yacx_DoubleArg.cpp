@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI;
 
-jobject JNICALL Java_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble jvalue){
+jobject JNICALL Java_yacx_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble jvalue){
 	BEGIN_TRY
 		cls = getClass(env, "KernelArg");
 		if (cls == NULL) return NULL;
@@ -16,10 +16,10 @@ jobject JNICALL Java_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble jval
 	END_TRY("creating DoubleValueArg")
 }
 
-jobject Java_DoubleArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+jobject Java_yacx_DoubleArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_DoubleArg_asDoubleArray(env, obj);
+		auto jarray = Java_yacx_DoubleArg_asDoubleArray(env, obj);
 		auto arrayPtr = env->GetDoubleArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -34,7 +34,7 @@ jobject Java_DoubleArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdo
 }
 
 
-jobject Java_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean jdownload){
+jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
@@ -51,7 +51,7 @@ jobject Java_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jar
     END_TRY("creating DoubleArg")
 }
 
-jobject Java_DoubleArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_DoubleArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
     BEGIN_TRY
         CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
 
@@ -61,7 +61,7 @@ jobject Java_DoubleArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarra
     END_TRY("creating DoubleArg")
 }
 
-jdoubleArray Java_DoubleArg_asDoubleArray (JNIEnv* env, jobject obj){
+jdoubleArray Java_yacx_DoubleArg_asDoubleArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

@@ -12,7 +12,7 @@
 
 using yacx::Kernel, yacx::Device;
 
-jobjectArray Java_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, jobject jdevice,
+jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, jobject jdevice,
 		jobjectArray jArgs, jint jexecutions){
 	BEGIN_TRY
 		CHECK_BIGGER(jexecutions, 0, "illegal number of executions", NULL)
@@ -52,7 +52,7 @@ jobjectArray Java_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, 
 
 		//Run first n-1 executions
 		for (int i = 0; i < jexecutions-1; i++) {
-			auto jkerneltime = Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(env, jkernel, jdevice, jArgs);
+			auto jkerneltime = Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(env, jkernel, jdevice, jArgs);
 
 			if (jkerneltime == NULL) return NULL;
 
@@ -70,7 +70,7 @@ jobjectArray Java_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, 
 		}
 
 		//Last run without restore Hostdata
-		auto jkerneltime = Java_Kernel_launchInternal__LDevice_2_3LKernelArg_2(env, jkernel, jdevice, jArgs);
+		auto jkerneltime = Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(env, jkernel, jdevice, jArgs);
 
 		if (jkerneltime == NULL) return NULL;
 

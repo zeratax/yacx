@@ -5,7 +5,7 @@
 
 using yacx::Options;
 
-jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
+jobject Java_yacx_Options_createOptions (JNIEnv* env, jclass cls){
     BEGIN_TRY
         auto optionPtr = new Options{};
 
@@ -13,7 +13,7 @@ jobject Java_Options_createOptions (JNIEnv* env, jclass cls){
     END_TRY("creating Options")
 }
 
-void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
+void Java_yacx_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
     BEGIN_TRY
         CHECK_NULL(joption, )
 
@@ -27,7 +27,7 @@ void Java_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj,
     END_TRY("inserting Option")
 }
 
-void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jname, jstring jvalue){
+void Java_yacx_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring jname, jstring jvalue){
     BEGIN_TRY
         CHECK_NULL(jname, )
         CHECK_NULL(jvalue, )
@@ -44,7 +44,7 @@ void Java_Options_insertInternal__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv
     END_TRY("inserting Option")
 }
 
-jint Java_Options_getSize (JNIEnv* env, jobject obj){
+jint Java_yacx_Options_getSize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
     	CHECK_NULL(optionPtr, 0);
@@ -54,7 +54,7 @@ jint Java_Options_getSize (JNIEnv* env, jobject obj){
     END_TRY("getting size of Options")
 }
 
-jobjectArray Java_Options_getOptions (JNIEnv* env, jobject obj){
+jobjectArray Java_yacx_Options_getOptions (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto optionPtr = getHandle<Options>(env, obj);
     	CHECK_NULL(optionPtr, NULL);
