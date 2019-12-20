@@ -5,7 +5,7 @@ object ExampleFilterBenchmark {
     	//Load Libary
     	Executor.loadLibary()
     	
-      val saxpy = Utils.loadFile("filter_k.cu")
+      val saxpy = Utils.loadFile("kernels/filter_k.cu")
         
       //Benchmark filter-Kernel
       println(Executor.benchmark(saxpy, "filter_k", Options.createOptions(), 10,

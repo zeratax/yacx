@@ -3,15 +3,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class ExampleGauss {
 	static void writePPM(PixelArray pixels, String filename) throws IOException {
 		try (FileOutputStream os = new FileOutputStream(new File(filename));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os))){
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os))) {
 			
 			//Writer Header
 			writer.write("P6\n");
@@ -30,8 +30,10 @@ public class ExampleGauss {
 	}
 	
     static PixelArray readPPM(String filename) throws IOException {
-    	try (InputStream is = new FileInputStream(new File(filename));
-          	  BufferedReader reader = new BufferedReader(new InputStreamReader(is));) {
+    	File file = new File(filename);
+    	
+    	try (InputStream is = new FileInputStream(file);
+          	  BufferedReader reader = new BufferedReader(new FileReader(file))) {
     		
             //Skip first 3 Bytes (Header)
             reader.skip(3);
@@ -48,10 +50,12 @@ public class ExampleGauss {
             while ((line = reader.readLine()).startsWith("#"));
             
             //Last header line
-            assert(line.equals("255\n"));
+            assert(line.equals("255"));
             
             //Read pixels
             PixelArray pixels = new PixelArray(width, height);
+            
+            is.skip(file.length()-pixels.getPixel().length);
             
             is.read(pixels.getPixel());
             
@@ -60,7 +64,7 @@ public class ExampleGauss {
     }
 
 	static float[] calculateWeights(int size) {
-		float[] weights = new float[size];
+		float[] weights = new float[size*size];
 		
         float sigma = 1.0f;
         float r, s = 2.0f * sigma * sigma;
@@ -92,7 +96,7 @@ public class ExampleGauss {
 		Executor.loadLibary();
 
 		// Testdata
-		final String inputFile = "lenna.ppm";
+		final String inputFile = "kernels/lena.ppm";
 		final String outputFile = "output.ppm";
 		
 		float[] weigths = calculateWeights(5);

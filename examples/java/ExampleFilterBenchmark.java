@@ -7,7 +7,7 @@ public class ExampleFilterBenchmark {
     	//Load Libary
     	Executor.loadLibary();
     	
-        String saxpy = Utils.loadFile("filter_k.cu");
+        String saxpy = Utils.loadFile("kernels/filter_k.cu");
         
         //Benchmark filter-Kernel
         System.out.println(Executor.benchmark(saxpy, "filter_k", Options.createOptions(), 10,

@@ -14,8 +14,8 @@ public class TestJNI {
 	@BeforeAll
 	static void loadKernelStrings() throws IOException {
 		//Load Saxpy and Filter-Kernel as String
-		saxpy = Utils.loadFile("saxpy.cu");
-		filterk = Utils.loadFile("filter_k.cu");
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+		filterk = Utils.loadFile("kernels/filter_k.cu");
 	}
 	
 	@BeforeAll
