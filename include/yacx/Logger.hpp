@@ -54,13 +54,14 @@ class logIt {
 
 //! set log level at compilation
 #ifdef current_log_level
-#define logger(level)                                                               \
-  if (static_cast<int>(level) > static_cast<int>(yacx::current_log_level))  \
-    ;                                                                               \
-  else                                                                              \
+#define logger(level)                                                          \
+  if (static_cast<int>(level) > static_cast<int>(yacx::current_log_level))     \
+    ;                                                                          \
+  else                                                                         \
     yacx::logIt(level, yacx::current_log_level, __FILE__, __LINE__)
 #else
-#define logger(level) yacx::logIt(level, yacx::loglevel::ERROR, __FILE__, __LINE__)
+#define logger(level)                                                          \
+  yacx::logIt(level, yacx::loglevel::ERROR, __FILE__, __LINE__)
 #endif
 
 } // namespace yacx

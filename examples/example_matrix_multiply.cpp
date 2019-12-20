@@ -10,9 +10,8 @@
 #include <random>
 #include <string>
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel,
-    yacx::Options, yacx::Device, yacx::load,
-    yacx::KernelTime;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
+    yacx::load, yacx::KernelTime;
 
 void compare(float *lhs, float *rhs, int width) {
   int errors = 0;
@@ -23,7 +22,8 @@ void compare(float *lhs, float *rhs, int width) {
     }
   }
   if (errors > 0)
-    printf("\u001b[31m%d errors occured, out of %d values.\u001b[0m\n", errors, width);
+    printf("\u001b[31m%d errors occured, out of %d values.\u001b[0m\n", errors,
+           width);
   else
     printf("\u001b[32mno errors occured.\u001b[0m\n");
 }
@@ -95,7 +95,6 @@ int main() {
     std::cout << "Theoretical Bandwith:        "
               << yacx::theoretical_bandwidth(dev) << " GB/s\n";
 
-
     // Set kernel string and compile options
 
     Source source{load("kernels/matrixMult.cu")};
@@ -165,48 +164,52 @@ int main() {
               << " ms" << std::endl;
 
     time = kernelNaive.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      " << time.sum << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      " << time.sum
+              << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
 
     equalMultiplyNaive =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
-    if(!equalMultiplyNaive)
+    if (!equalMultiplyNaive)
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     if (BLOCK_SIZE % 4 == 0) {
       time = kernel1_1.launch(args, dev);
-      std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  " << time.sum << " ms\n";
+      std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  "
+                << time.sum << " ms\n";
 
       std::cout << "Effective Bandwith:          "
                 << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
       equalMultiply1unfolded =
           std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
-      if(!equalMultiply1unfolded)
+      if (!equalMultiply1unfolded)
         compare(P_seq, P_cuda, WIDTH * WIDTH);
     } else {
       equalMultiply1unfolded = true;
     }
 
     time = kernel1.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          " << time.sum << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          " << time.sum
+              << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
     equalMultiply1 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
-    if(!equalMultiply1)
+    if (!equalMultiply1)
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     time = kernel2.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          " << time.sum << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          " << time.sum
+              << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n\n";
     equalMultiply2 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
-    if(!equalMultiply2)
+    if (!equalMultiply2)
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
   } catch (const std::exception &e) {

@@ -1,5 +1,5 @@
-#include "yacx/KernelArgs.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/KernelArgs.hpp"
 #include "yacx/Logger.hpp"
 
 #include <builtin_types.h>

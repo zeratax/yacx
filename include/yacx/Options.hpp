@@ -101,7 +101,7 @@ class GpuArchitecture {
               std::to_string(minor)) {}
 
   explicit GpuArchitecture(const yacx::Device &device)
-      : GpuArchitecture(device.major(), device.minor()) {}
+      : GpuArchitecture(device.major_version(), device.minor_version()) {}
 
   auto name() const { return "--gpu-architecture"; }
   auto &value() const { return m_arc; }

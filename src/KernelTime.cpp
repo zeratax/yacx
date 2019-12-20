@@ -7,6 +7,7 @@ float effective_bandwidth(float miliseconds, KernelArgs args) {
 }
 
 float theoretical_bandwidth(Device device) {
-  return (device.memory_clock_rate() * 1e3 * (device.bus_width() / 8) * 2) / 1e9;
+  return (device.memory_clock_rate() * 1e3 * (device.bus_width() / 8) * 2) /
+         1e9;
 }
 } // namespace yacx
