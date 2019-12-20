@@ -1,51 +1,66 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.nio.file.Files;
-import java.util.Arrays;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class ExampleGauss {
-//    void writePPM(Pixel *pixels, String filename, int width, int height) {
-//        std::ofstream outputFile(filename, std::ios::binary);
-//      
-//        // write header:
-//        outputFile << "P6\n" << width << " " << height << "\n255\n";
-//      
-//        outputFile.write(reinterpret_cast<const char *>(pixels),
-//                         sizeof(Pixel) * width * height);
-//    }
-//      
-      // Pointer returned must be explicitly freed!
-      PixelArray readPPM(String filename, int width, int height) {
-        
-      
-        // parse harder
-        // first line: P6\n
-        inputFile.ignore(2, '\n'); // ignore P6
-        // possible comments:
-        while (inputFile.peek() == '#') {
-          inputFile.ignore(1024, '\n');
-        } // skip comment
-        // next line: width_height\n
-        inputFile >> (*width);
-        inputFile.ignore(1, ' '); // ignore space
-        inputFile >> (*height);
-        inputFile.ignore(1, '\n'); // ignore newline
-        // possible comments:
-        while (inputFile.peek() == '#') {
-          inputFile.ignore(1024, '\n');
-        } // skip comment
-        // last header line: 255\n:
-        inputFile.ignore(3, '\n'); // ignore 255 and newline
-      
-        Pixel *data = new Pixel[(*width) * (*height)];
-        
-        inputFile.read(reinterpret_cast<char *>(data),
-                       sizeof(Pixel) * (*width) * (*height));
-      
-        return data;
-      }
+	static void writePPM(PixelArray pixels, String filename) throws IOException {
+		try (FileOutputStream os = new FileOutputStream(new File(filename));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os))){
+			
+			//Writer Header
+			writer.write("P6\n");
+			
+			//Write width and height
+			writer.write("" + pixels.getWidth() + " " + pixels.getHeight() + "\n");
+			
+			//Write header-end
+			writer.write("255\n");
+			
+			writer.flush();
+			
+			//Writer Pixels
+			os.write(pixels.getPixel());
+		}
+	}
+	
+    static PixelArray readPPM(String filename) throws IOException {
+    	try (InputStream is = new FileInputStream(new File(filename));
+          	  BufferedReader reader = new BufferedReader(new InputStreamReader(is));) {
+    		
+            //Skip first 3 Bytes (Header)
+            reader.skip(3);
+            
+            //Ignore comments
+            String line;
+            while ((line = reader.readLine()).startsWith("#"));
+            
+            //Read width and height
+            int width = Integer.parseInt(line.substring(0, line.indexOf(" ")));
+            int height = Integer.parseInt(line.substring(line.indexOf(" ")+1));
+            
+            //Ignore comments
+            while ((line = reader.readLine()).startsWith("#"));
+            
+            //Last header line
+            assert(line.equals("255\n"));
+            
+            //Read pixels
+            PixelArray pixels = new PixelArray(width, height);
+            
+            is.read(pixels.getPixel());
+            
+            return pixels;
+    	}
+    }
 
-	static float[][] calculateWeights(int size) {
-		float[][] weights = new float[size][size];
+	static float[] calculateWeights(int size) {
+		float[] weights = new float[size];
 		
         float sigma = 1.0f;
         float r, s = 2.0f * sigma * sigma;
@@ -54,25 +69,25 @@ public class ExampleGauss {
         float sum = 0.0f;
       
         // generate weights for 5x5 kernel
-        for (int x = -2; x <= 2; x++) {
-          for (int y = -2; y <= 2; y++) {
+        for (int x = -size/2; x <= size/2; x++) {
+          for (int y = -size/2; y <= size/2; y++) {
             r = x * x + y * y;
-            weights[x + 2][y + 2] = (float) (Math.exp(-(r / s)) / (Math.PI * s));
-            sum += weights[x + 2][y + 2];
+            weights[(x + 2)*size + y + 2] = (float) (Math.exp(-(r / s)) / (Math.PI * s));
+            sum += weights[(x + 2)*size + y + 2];
           }
         }
       
         // normalize the weights
-        for (int i = 0; i < 5; ++i) {
-          for (int j = 0; j < 5; ++j) {
-            weights[i][j] /= sum;
+        for (int i = 0; i < size; ++i) {
+          for (int j = 0; j < size; ++j) {
+            weights[i*size + j] /= sum;
           }
         }
         
         return weights;
     }
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibary();
 
@@ -80,64 +95,69 @@ public class ExampleGauss {
 		final String inputFile = "lenna.ppm";
 		final String outputFile = "output.ppm";
 		
-		float[][] weigths = calculateWeights(5);
-		int width;
-		int height;
+		float[] weigths = calculateWeights(5);
 		
-		PixelArray image = 
+		PixelArray image = readPPM(inputFile);
+		int width = image.getWidth();
+		int height = image.getHeight();
 
 		// Initialize Arguments
-		KernelArg aArg, nArg, xArg, yArg;
-		FloatArg outArg;
-		aArg = FloatArg.createValue(a);
-		xArg = FloatArg.create(x);
-		yArg = FloatArg.create(y);
-		outArg = FloatArg.createOutput(n);
-		nArg = IntArg.createValue(n);
+		KernelArg weightsArg, widthArg, heightArg;
+		ByteArg imageArg;
+		weightsArg = FloatArg.create(weigths);
+		widthArg = IntArg.createValue(width);
+		heightArg = IntArg.createValue(height);
+		imageArg = ByteArg.create(image.getPixel(), true);
 
-		// Create Program
-		String kernelString = Utils.loadFile("saxpy.cu");
-		Program saxpy = Program.create(kernelString, "saxpy");
+		//Create Program
+		String kernelString = Utils.loadFile("gauss.cu");
 
-		// Create compiled Kernel
-		Kernel saxpyKernel = saxpy.compile();
+		//Compile and launch Kernel
+		KernelTime executionTime = Executor.launch(kernelString, "gaussFilterKernel", width, height, 1,
+				1, 1, 1, imageArg, weightsArg, widthArg, heightArg);
 
-		// Compile and launch Kernel
-		KernelTime executionTime = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg);
+		//Get Result
+		PixelArray imageFiltered = new PixelArray(width, height, imageArg.asByteArray());
+		
+		System.out.println("\ngauss-Kernel sucessfully launched:");
+        System.out.println(executionTime);
+        System.out.println("\nInputfile: " + inputFile);
+        System.out.println("Outputfile: " + outputFile);
 
-		// Get Result
-		float[] out = outArg.asFloatArray();
-
-		// Print Result
-		System.out.println("\nsaxpy-Kernel sucessfully launched:");
-		System.out.println(executionTime);
-		System.out.println("\nInput a: " + a);
-		System.out.println("Input x: " + Arrays.toString(x));
-		System.out.println("Input y: " + Arrays.toString(y));
-		System.out.println("Result:  " + Arrays.toString(out));
+		//Write Result
+		writePPM(imageFiltered, outputFile);
 	}
 	
 	static class PixelArray {
-		private byte[] pixel;
+		private final byte[] pixel;
+		private final int width;
+		private final int height;
 		
-		public PixelArray(int length) {
-			pixel = new byte[length*3];
+		public PixelArray(int width, int height) {
+			this.width = width;
+			this.height = height;
+			
+			pixel = new byte[width*height*3];
 		}
 		
-		public void setPixel(int i, byte r, byte b, byte g) {
-			int j = i*3;
-			pixel[j] = r;
-			pixel[j+1] = b;
-			pixel[j+2] = g;
+		public PixelArray(int width, int height, byte[] pixel) {
+			assert(pixel.length == width*height*3);
+			
+			this.width = width;
+			this.height = height;
+			this.pixel = pixel;
 		}
 		
-		public byte[] asByteArray() {
+		public byte[] getPixel() {
 			return pixel;
 		}
-	}
-	
-	
-	
-	
-}
 
+		public int getWidth() {
+			return width;
+		}
+
+		public int getHeight() {
+			return height;
+		}
+	}
+}
