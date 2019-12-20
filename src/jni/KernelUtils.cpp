@@ -24,7 +24,8 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 }
 
 jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
-    jclass cls = getClass(env, "KernelTime");
+    jclass cls = getClass(env, "yacx/KernelTime");
+    if (cls == NULL) return NULL;
 
     auto methodID = env->GetMethodID(cls, "<init>", "(FFFF)V");
     auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,

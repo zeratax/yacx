@@ -1,4 +1,4 @@
-#include "Program.h"
+#include "yacx_Program.h"
 #include "Handle.h"
 #include "../../include/yacx/Logger.hpp"
 #include "../../include/yacx/Headers.hpp"
@@ -56,7 +56,9 @@ jobject Java_yacx_Program_compile (JNIEnv* env, jobject obj){
 
         Kernel* kernelPtr = new Kernel{programPtr->compile()};
 
-        jclass jKernel = getClass(env, "Kernel");
+        jclass jKernel = getClass(env, "yacx/Kernel");
+        if (jKernel == NULL) return NULL;
+
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
@@ -75,7 +77,9 @@ jobject Java_yacx_Program_compileInternal(JNIEnv* env, jobject obj, jobject jopt
 
         Kernel* kernelPtr = new Kernel{programPtr->compile(*optionsPtr)};
 
-        jclass jKernel = getClass(env, "Kernel");
+        jclass jKernel = getClass(env, "yacx/Kernel");
+        if (jKernel == NULL) return NULL;
+
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 

@@ -1,6 +1,5 @@
-#include "Executor.h"
+#include "yacx_Executor.h"
 #include "Handle.h"
-#include "Kernel.h"
 #include "KernelUtils.h"
 #include "KernelArgJNI.hpp"
 #include "../../include/yacx/KernelTime.hpp"
@@ -52,7 +51,7 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 
 		//Run first n-1 executions
 		for (int i = 0; i < jexecutions-1; i++) {
-			auto jkerneltime = Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(env, jkernel, jdevice, jArgs);
+			auto jkerneltime = launchInternal(env, kernelPtr, devicePtr, args);
 
 			if (jkerneltime == NULL) return NULL;
 
@@ -70,7 +69,7 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		}
 
 		//Last run without restore Hostdata
-		auto jkerneltime = Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(env, jkernel, jdevice, jArgs);
+		auto jkerneltime = launchInternal(env, kernelPtr, devicePtr, args);
 
 		if (jkerneltime == NULL) return NULL;
 

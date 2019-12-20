@@ -1,4 +1,4 @@
-#include "Kernel.h"
+#include "yacx_Kernel.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
 #include "KernelUtils.h"

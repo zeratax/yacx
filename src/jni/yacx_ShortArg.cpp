@@ -1,4 +1,4 @@
-#include "ShortArg.h"
+#include "yacx_ShortArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
@@ -7,7 +7,7 @@ using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject JNICALL Java_yacx_ShortArg_createValue(JNIEnv* env, jclass cls, jshort jvalue){
 	BEGIN_TRY
-		cls = getClass(env, "KernelArg");
+		cls = getClass(env, "yacx/KernelArg");
 		if (cls == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jshort), false, false, false};

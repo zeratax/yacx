@@ -1,4 +1,4 @@
-#include "IntArg.h"
+#include "yacx_IntArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
@@ -7,7 +7,7 @@ using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject JNICALL Java_yacx_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalue){
 	BEGIN_TRY
-		cls = getClass(env, "KernelArg");
+		cls = getClass(env, "yacx/KernelArg");
 		if (cls == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jint), false, false, false};

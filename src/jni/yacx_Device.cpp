@@ -1,4 +1,4 @@
-#include "Device.h"
+#include "yacx_Device.h"
 #include "Handle.h"
 #include "../../include/yacx/Logger.hpp"
 #include "../../include/yacx/Device.hpp"
@@ -6,7 +6,7 @@
 
 using yacx::Device;
 
-jobject Java_yacx_Device_create (JNIEnv* env, jclass cls){
+jobject Java_yacx_Device_createDevice (JNIEnv* env, jclass cls){
     BEGIN_TRY
         Device* devicePtr = new Device{};
 
@@ -14,7 +14,7 @@ jobject Java_yacx_Device_create (JNIEnv* env, jclass cls){
     END_TRY("creating Device");
 }
 
-jobject Java_yacx_Device_createInternal (JNIEnv* env, jclass cls, jstring jdevicename){
+jobject Java_yacx_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
     BEGIN_TRY
         CHECK_NULL(jdevicename, NULL)
 

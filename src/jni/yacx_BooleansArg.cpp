@@ -1,4 +1,4 @@
-#include "BooleanArg.h"
+#include "yacx_BooleanArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
@@ -7,7 +7,7 @@ using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboolean jvalue){
 	BEGIN_TRY
-		cls = getClass(env, "KernelArg");
+		cls = getClass(env, "yacx/KernelArg");
 		if (cls == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jboolean), false, false, false};
@@ -20,7 +20,7 @@ jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboole
 jobject Java_yacx_BooleanArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
 	BEGIN_TRY
 
-		auto jarray = Java_yacx_BooleanArg_asBooleansArray(env, obj);
+		auto jarray = Java_yacx_BooleanArg_asBooleanArray(env, obj);
 		auto arrayPtr = env->GetBooleanArrayElements(jarray, NULL);
 		auto arrayLength = env->GetArrayLength(jarray);
 
@@ -61,7 +61,7 @@ jobject Java_yacx_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint
     END_TRY("creating BooleanArg")
 }
 
-jbooleanArray Java_yacx_BooleanArg_asBooleansArray (JNIEnv* env, jobject obj){
+jbooleanArray Java_yacx_BooleanArg_asBooleanArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
     	CHECK_NULL(kernelArgJNIPtr, NULL)

@@ -1,4 +1,4 @@
-#include "JNIHandle.h"
+#include "yacx_JNIHandle.h"
 #include "Handle.h"
 #include "../../include/yacx/JNIHandle.hpp"
 
