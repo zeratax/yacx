@@ -1,8 +1,7 @@
 #include "yacx/main.hpp"
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel,
-    yacx::Options, yacx::Device, yacx::load,
-    yacx::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
+    yacx::load, yacx::type_of;
 
 int main() {
   int result{};
@@ -16,10 +15,10 @@ int main() {
     dim3 grid(1);
     dim3 block(1);
     source.program("f3")
-     .instantiate("int")
-     .compile()
-     .configure(grid, block)
-     .launch(args);
+        .instantiate("int")
+        .compile()
+        .configure(grid, block)
+        .launch(args);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
   }

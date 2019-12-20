@@ -1,10 +1,9 @@
 #include "yacx/Kernel.hpp"
-#include "yacx/KernelTime.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
-#include <utility>
 #include <builtin_types.h>
+#include <utility>
 
 using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
 

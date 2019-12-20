@@ -1,5 +1,5 @@
-#include "yacx/main.hpp"
 #include "kernels/gauss.h"
+#include "yacx/main.hpp"
 
 #include <cmath>
 #include <cstdio>
@@ -10,9 +10,8 @@
 #define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel,
-    yacx::Options, yacx::Device, yacx::load,
-    yacx::type_of, yacx::Headers, yacx::Header;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
+    yacx::load, yacx::type_of, yacx::Headers, yacx::Header;
 
 void writePPM(Pixel *pixels, const char *filename, int width, int height) {
   std::ofstream outputFile(filename, std::ios::binary);
@@ -48,7 +47,7 @@ Pixel *readPPM(const char *filename, int *width, int *height) {
   inputFile.ignore(3, '\n'); // ignore 255 and newline
 
   Pixel *data = new Pixel[(*width) * (*height)];
-  
+
   inputFile.read(reinterpret_cast<char *>(data),
                  sizeof(Pixel) * (*width) * (*height));
 

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Device.hpp"
-#include "KernelArgs.hpp"
-#include "Logger.hpp"
-#include "KernelTime.hpp"
 #include "JNIHandle.hpp"
+#include "KernelArgs.hpp"
+#include "KernelTime.hpp"
+#include "Logger.hpp"
 
 #include <cuda.h>
 #include <memory>
