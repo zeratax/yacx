@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.util.Arrays;
 
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+
 public class ExampleSaxpyExecutor {
     public static void main(String[] args) throws IOException {
         //Load Libary

@@ -1,3 +1,10 @@
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.Options;
+import yacx.Utils;
+
 object ExampleSaxpyBenchmark {
 	private val KB = 1024
 	

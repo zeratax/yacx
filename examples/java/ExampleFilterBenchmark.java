@@ -1,5 +1,11 @@
 import java.io.IOException;
 
+import yacx.Executor;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.Options;
+import yacx.Utils;
+
 public class ExampleFilterBenchmark {
 	private final static int KB = 1024;
 	

@@ -1,4 +1,7 @@
-import static org.junit.jupiter.api.Assertions.*;
+package yacx;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 

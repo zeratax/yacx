@@ -1,5 +1,12 @@
 import java.io.IOException;
 
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.Options;
+import yacx.Utils;
+
 public class ExampleSaxpyBenchmark {
 	private final static int KB = 1024;
 	

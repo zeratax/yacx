@@ -1,3 +1,5 @@
+package yacx;
+
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeAll;

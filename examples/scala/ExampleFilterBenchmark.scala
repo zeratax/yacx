@@ -1,3 +1,9 @@
+import yacx.Executor;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.Options;
+import yacx.Utils;
+
 object ExampleFilterBenchmark {
 	private val KB = 1024
 	
