@@ -24,7 +24,7 @@ public class ExampleBlockReduce {
         IntArg nArg = IntArg.create(arraySize);
 
         //Load kernelString
-        String kernelString = Utils.loadFile("block_reduce.cu");
+        String kernelString = Utils.loadFile("kernels/block_reduce.cu");
         //Create Program
         Program blockReduce = Program.create(kernelString, "deviceReduceKernel");
 

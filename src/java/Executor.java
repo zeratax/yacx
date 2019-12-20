@@ -8,15 +8,15 @@ public class Executor {
     }
     
     public static KernelTime launch(String kernelName, int grid, int block, KernelArg ...args) throws IOException {
-    	return launch(Utils.loadFile(kernelName + ".cu"), kernelName, grid, block, args);
+    	return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, grid, block, args);
     }
     
     public static KernelTime launch(String kernelName, Options options, int grid, int block, KernelArg ...args) throws IOException {
-    	return launch(Utils.loadFile(kernelName + ".cu"), kernelName, options, grid, block, args);
+    	return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, grid, block, args);
     }
 
     public static KernelTime launch(String kernelName, Options options, String deviceName, int grid, int block, KernelArg ...args) throws IOException {
-        return launch(Utils.loadFile(kernelName + ".cu"), kernelName, options, deviceName, grid, block, args);
+        return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, deviceName, grid, block, args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, int grid, int block, KernelArg ...args) {
@@ -48,15 +48,15 @@ public class Executor {
     }
     
     public static KernelTime launch(String kernelName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) throws IOException {
-    	return launch(Utils.loadFile(kernelName + ".cu"), kernelName, grid0, grid1, grid2, block0, block1, block2, args);
+    	return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, grid0, grid1, grid2, block0, block1, block2, args);
     }
     
     public static KernelTime launch(String kernelName, Options options, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) throws IOException {
-    	return launch(Utils.loadFile(kernelName + ".cu"), kernelName, options, grid0, grid1, grid2, block0, block1, block2, args);
+    	return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, grid0, grid1, grid2, block0, block1, block2, args);
     }
 
     public static KernelTime launch(String kernelName, Options options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) throws IOException {
-      	return launch(Utils.loadFile(kernelName + ".cu"), kernelName, options, deviceName, grid0, grid1, grid2, block0, block1, block2, args);
+      	return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, deviceName, grid0, grid1, grid2, block0, block1, block2, args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) {

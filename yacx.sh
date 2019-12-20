@@ -6,7 +6,7 @@ JAVA_BIN="${BUILD_DIR}/java/bin"
 
 buildj() {
   mkdir -p $JAVA_BIN
-  cp examples/kernels/* $JAVA_BIN
+  cp -R examples/kernels $JAVA_BIN
   cp examples/java/*.java $JAVA_BIN
 
   pushd $BUILD_DIR
