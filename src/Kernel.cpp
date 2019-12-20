@@ -68,15 +68,14 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
   logger(loglevel::DEBUG) << "downloading arguments";
   time.download = args.download();
 
+  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
-
-  logger(loglevel::DEBUG) << "freeing resources";
-  CUDA_SAFE_CALL(cuModuleUnload(m_module));
-
-  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
+  logger(loglevel::DEBUG) << "freeing resources";
+
+  CUDA_SAFE_CALL(cuModuleUnload(m_module));
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
   return time;
