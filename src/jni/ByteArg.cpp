@@ -16,6 +16,24 @@ jobject JNICALL Java_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jvalue){
 	END_TRY("creating ByteValueArg")
 }
 
+jobject Java_IntArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+	BEGIN_TRY
+
+		auto jarray = Java_ByteArg_asByteArray(env, obj);
+		auto arrayPtr = env->GetByteArrayElements(jarray, NULL);
+		auto arrayLength = env->GetArrayLength(jarray);
+
+		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
+
+		KernelArgJNI *kernelArgPtr = new KernelArgJNI(arrayPtr, arrayLength * sizeof(jbyte), jdownload, true, true);
+
+		env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating ByteArg")
+}
+
+
 jobject Java_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -59,4 +77,3 @@ jbyteArray Java_ByteArg_asByteArray (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting ByteArg-content")
 }
-

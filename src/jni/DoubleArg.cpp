@@ -16,6 +16,24 @@ jobject JNICALL Java_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble jval
 	END_TRY("creating DoubleValueArg")
 }
 
+jobject Java_DoubleArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+	BEGIN_TRY
+
+		auto jarray = Java_DoubleArg_asDoubleArray(env, obj);
+		auto arrayPtr = env->GetDoubleArrayElements(jarray, NULL);
+		auto arrayLength = env->GetArrayLength(jarray);
+
+		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jdouble), jdownload, true, true};
+
+		env->ReleaseDoubleArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating DoubleArg")
+}
+
+
 jobject Java_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -59,4 +77,3 @@ jdoubleArray Java_DoubleArg_asDoubleArray (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting DoubleArg-content")
 }
-

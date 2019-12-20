@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_ShortArg_createValue
 
 /*
  * Class:     ShortArg
+ * Method:    create
+ * Signature: (LShortArg;Z)LShortArg;
+ */
+JNIEXPORT jobject JNICALL Java_ShortArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     ShortArg
  * Method:    createInternal
  * Signature: ([SZ)LShortArg;
  */

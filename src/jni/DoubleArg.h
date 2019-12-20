@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_DoubleArg_createValue
 
 /*
  * Class:     DoubleArg
+ * Method:    create
+ * Signature: (LDoubleArg;Z)LDoubleArg;
+ */
+JNIEXPORT jobject JNICALL Java_DoubleArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     DoubleArg
  * Method:    createInternal
  * Signature: ([DZ)LDoubleArg;
  */

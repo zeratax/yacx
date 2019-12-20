@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_BooleanArg_createValue
 
 /*
  * Class:     BooleanArg
+ * Method:    create
+ * Signature: (LBooleanArg;Z)LBooleanArg;
+ */
+JNIEXPORT jobject JNICALL Java_BooleanArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     BooleanArg
  * Method:    createInternal
  * Signature: ([ZZ)LBooleanArg;
  */

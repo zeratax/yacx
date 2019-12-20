@@ -16,6 +16,24 @@ jobject JNICALL Java_ShortArg_createValue(JNIEnv* env, jclass cls, jshort jvalue
 	END_TRY("creating ShortValueArg")
 }
 
+
+jobject Java_ShortArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+	BEGIN_TRY
+
+		auto jarray = Java_LongArg_asLongArray(env, obj);
+		auto arrayPtr = env->GetShortArrayElements(jarray, NULL);
+		auto arrayLength = env->GetArrayLength(jarray);
+
+		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jshort), jdownload, true, true};
+
+		env->ReleaseShortArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating ShortArg")
+}
+
 jobject Java_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -59,4 +77,3 @@ jshortArray Java_ShortArg_asShortArray (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting ShortArg-content")
 }
-

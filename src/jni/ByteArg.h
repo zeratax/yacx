@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_ByteArg_createValue
 
 /*
  * Class:     ByteArg
+ * Method:    create
+ * Signature: (LByteArg;Z)LByteArg;
+ */
+JNIEXPORT jobject JNICALL Java_ByteArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     ByteArg
  * Method:    createInternal
  * Signature: ([BZ)LByteArg;
  */

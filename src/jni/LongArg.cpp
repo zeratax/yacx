@@ -16,6 +16,24 @@ jobject JNICALL Java_LongArg_createValue(JNIEnv* env, jclass cls, jlong jvalue){
 	END_TRY("creating LongValueArg")
 }
 
+jobject Java_LongArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
+	BEGIN_TRY
+
+		auto jarray = Java_LongArg_asLongArray(env, obj);
+		auto arrayPtr = env->GetLongArrayElements(jarray, NULL);
+		auto arrayLength = env->GetArrayLength(jarray);
+
+		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
+
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr. arrayLength * sizeof(jlong), jdownload, true, true};
+
+		env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+		return createJNIObject(env, cls, kernelArgPtr);
+	END_TRY("creating LongArg")
+}
+
+
 jobject Java_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -59,4 +77,3 @@ jlongArray Java_LongArg_asLongArray (JNIEnv* env, jobject obj){
         return res;
     END_TRY("getting LongArg-content")
 }
-

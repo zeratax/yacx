@@ -19,6 +19,14 @@ JNIEXPORT jobject JNICALL Java_LongArg_createValue
 
 /*
  * Class:     LongArg
+ * Method:    create
+ * Signature: (LLongArg;Z)LLongArg;
+ */
+JNIEXPORT jobject JNICALL Java_LongArg_create
+  (JNIEnv *, jclass, jobject, jboolean);
+
+/*
+ * Class:     LongArg
  * Method:    createInternal
  * Signature: ([JZ)LLongArg;
  */
