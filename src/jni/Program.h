@@ -25,6 +25,14 @@ JNIEXPORT jobject JNICALL Java_Program_createInternal__Ljava_lang_String_2Ljava_
 
 /*
  * Class:     Program
+ * Method:    instantiateInternal
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_Program_instantiateInternal
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     Program
  * Method:    compile
  * Signature: ()LKernel;
  */
