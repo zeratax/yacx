@@ -5,8 +5,8 @@
 #include <type_traits>
 #include <vector>
 
-#include "util.hpp"
 #include "JNIHandle.hpp"
+#include "util.hpp"
 
 namespace yacx {
 /*!
@@ -88,8 +88,7 @@ class Headers : JNIHandle {
 
 template <typename T, typename... TS>
 Headers::Headers(const T &arg, const TS &... args) : Headers{args...} {
-  static_assert(is_header<T>::value,
-                "must be yacx::header or std::string");
+  static_assert(is_header<T>::value, "must be yacx::header or std::string");
   insert(arg);
 }
 

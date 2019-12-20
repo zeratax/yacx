@@ -1,8 +1,8 @@
 #pragma once
 
+#include "JNIHandle.hpp"
 #include <cuda.h>
 #include <vector>
-#include "JNIHandle.hpp"
 
 namespace yacx {
 

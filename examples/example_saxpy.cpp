@@ -4,9 +4,8 @@
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
 
-using yacx::Source, yacx::KernelArg, yacx::KernelTime,
-    yacx::Kernel, yacx::Device, yacx::load,
-    yacx::type_of;
+using yacx::Source, yacx::KernelArg, yacx::KernelTime, yacx::Kernel,
+    yacx::Device, yacx::load, yacx::type_of;
 
 int main() {
   const float DELTA{0.01f};
