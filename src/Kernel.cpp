@@ -1,10 +1,9 @@
 #include "yacx/Kernel.hpp"
-#include "yacx/KernelTime.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
-#include <utility>
 #include <builtin_types.h>
+#include <utility>
 
 using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
 
@@ -24,15 +23,19 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 
 KernelTime Kernel::launch(KernelArgs args, Device device) {
   KernelTime time;
-  cudaEvent_t start, launch, finish,  stop;
+  cudaEvent_t start, launch, finish, stop;
 
   logger(loglevel::DEBUG) << "creating context and loading module";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
-  CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
-  CUDA_SAFE_CALL(cuEventCreate(&launch, CU_EVENT_DEFAULT)); // start of Kernel execution
-  CUDA_SAFE_CALL(cuEventCreate(&finish, CU_EVENT_DEFAULT)); // end of Kernel execution
-  CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT)); // end of Kernel launch
+  CUDA_SAFE_CALL(
+      cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
+  CUDA_SAFE_CALL(
+      cuEventCreate(&launch, CU_EVENT_DEFAULT)); // start of Kernel execution
+  CUDA_SAFE_CALL(
+      cuEventCreate(&finish, CU_EVENT_DEFAULT)); // end of Kernel execution
+  CUDA_SAFE_CALL(
+      cuEventCreate(&stop, CU_EVENT_DEFAULT)); // end of Kernel launch
 
   CUDA_SAFE_CALL(cuEventRecord(start, 0));
 

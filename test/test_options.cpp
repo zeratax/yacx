@@ -6,8 +6,8 @@
 using yacx::Options;
 
 TEST_CASE("Options can be constructed", "[yacx::Options]") {
-  Options options1({yacx::options::GpuArchitecture(30, 5),
-                    yacx::options::Fast_Math(false)});
+  Options options1(
+      {yacx::options::GpuArchitecture(30, 5), yacx::options::Fast_Math(false)});
   Options options2;
   const char *const options_string[] = {"--gpu-architecture=compute_305",
                                         "--use_fast_math=false"};

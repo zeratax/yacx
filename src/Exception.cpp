@@ -25,8 +25,7 @@ unsigned int yacx::detail::askTerminalSize() {
  * source: http://www.martinbroadhurst.com/how-to-split-a-string-in-c.html
  */
 template <class Container>
-void yacx::detail::split(const std::string &str, Container &cont,
-                                 char delim) {
+void yacx::detail::split(const std::string &str, Container &cont, char delim) {
   std::size_t current, previous = 0;
   current = str.find(delim);
   while (current != std::string::npos) {
@@ -82,8 +81,7 @@ std::string yacx::detail::descriptionFkt(const std::string &desc) {
  * and the program itself is in
  * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
  */
-std::string
-yacx::detail::whichError(const nvrtcResult &error) {
+std::string yacx::detail::whichError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
   ret.append("~");

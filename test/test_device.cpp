@@ -40,9 +40,7 @@ TEST_CASE("Device can be constructed", "[yacx::device]") {
       Device dev{name};
       REQUIRE(dev.name() == name);
       REQUIRE_THROWS_AS(
-          [&]() {
-            Device dev{std::string{"Radeon RX Vega 64"}};
-          }(),
+          [&]() { Device dev{std::string{"Radeon RX Vega 64"}}; }(),
           std::invalid_argument);
     }
 
