@@ -1,7 +1,7 @@
+#include "test_compare.hpp"
 #include "yacx/Headers.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/Source.hpp"
-#include "test_compare.hpp"
 
 #include <catch2/catch.hpp>
 #include <iostream>

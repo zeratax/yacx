@@ -2,9 +2,9 @@
 
 namespace yacx {
 
-    class JNIHandle {
-    public:
-        virtual ~JNIHandle(){}
-    };
+class JNIHandle {
+ public:
+  virtual ~JNIHandle() {}
+};
 
-}
+} // namespace yacx

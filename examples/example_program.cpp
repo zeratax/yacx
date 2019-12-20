@@ -21,23 +21,21 @@ int main() {
     Options options{yacx::options::GpuArchitecture(device),
                     yacx::options::FMAD(false)};
     options.insert("--std", "c++14");
-    Source source{
-        "template<typename type, int size>\n"
-        "__global__ void my_kernel(type* c, type val) {\n"
-        "    auto idx{blockIdx.x * blockDim.x + threadIdx.x};\n"
-        "\n"
-        "    #pragma unroll(size)\n"
-        "    for (auto i{0}; i < size; ++i) {\n"
-        "        c[i] = idx + val;\n"
-        "    }\n"
-        "}"};
+    Source source{"template<typename type, int size>\n"
+                  "__global__ void my_kernel(type* c, type val) {\n"
+                  "    auto idx{blockIdx.x * blockDim.x + threadIdx.x};\n"
+                  "\n"
+                  "    #pragma unroll(size)\n"
+                  "    for (auto i{0}; i < size; ++i) {\n"
+                  "        c[i] = idx + val;\n"
+                  "    }\n"
+                  "}"};
 
     std::vector<KernelArg> args;
-    args.emplace_back(
-        KernelArg{v.data(), sizeof(int) * v.size(), true});
-    args.emplace_back(KernelArg{const_cast<int*>(&data)});
+    args.emplace_back(KernelArg{v.data(), sizeof(int) * v.size(), true});
+    args.emplace_back(KernelArg{const_cast<int *>(&data)});
 
-    dim3 grid(v.size()/times);
+    dim3 grid(v.size() / times);
     dim3 block(1);
     source.program("my_kernel")
         .instantiate(type_of(data), times)
@@ -54,7 +52,8 @@ int main() {
             std::experimental::make_ostream_joiner(std::cout, ", "));
   std::cout << std::endl;
 
-  // 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8
+  // 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7,
+  // 7, 7, 7, 8, 8, 8, 8
 
   return 0;
 }

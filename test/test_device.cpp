@@ -40,14 +40,20 @@ TEST_CASE("Device can be constructed", "[yacx::device]") {
       Device dev{name};
       REQUIRE(dev.name() == name);
       REQUIRE_THROWS_AS(
-          [&]() {
-            Device dev{std::string{"Radeon RX Vega 64"}};
-          }(),
+          [&]() { Device dev{std::string{"Radeon RX Vega 64"}}; }(),
           std::invalid_argument);
     }
 
-  } catch (yacx::CUresultException<CUDA_ERROR_NO_DEVICE> &e) {
-    FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver "
-         "couldn't detect it");
+  } catch (yacx::CUresultException &e) {
+    switch (e.type) {
+    case CUDA_ERROR_NO_DEVICE:
+      // e.what();
+      FAIL("you probably don't have a CUDA-capable device, or the CUDA-driver "
+           "couldn't detect it");
+      break;
+    default:
+      e.what();
+      break;
+    }
   }
 }

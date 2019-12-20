@@ -25,10 +25,10 @@ class Device : JNIHandle {
   explicit Device(std::string name);
   //! Minor compute capability version number
   //! \return version number
-  [[nodiscard]] int minor() const { return m_minor; }
+  [[nodiscard]] int minor_version() const { return m_minor; }
   //! Major compute capability version number
   //! \return version number
-  [[nodiscard]] int major() const { return m_major; }
+  [[nodiscard]] int major_version() const { return m_major; }
   //! identifer string for the device
   //! \return identifer string
   std::string name() const { return m_name; }
