@@ -5,7 +5,6 @@ FORMATER := clang-format
 MKDIR_P = mkdir -p
 
 SRCDIR := src
-LIBDIR := lib
 INCDIR := include
 VENDOR := exclude
 TESTDIR := test
@@ -13,7 +12,7 @@ BUILDDIR := build
 EXAMPLEDIR := examples
 TARGET := bin/runner
 TESTTARGET := bin/tester
-DIRS := bin build lib
+DIRS := bin build
 
 SRCEXT := cpp
 HEADDEREXT := hpp
