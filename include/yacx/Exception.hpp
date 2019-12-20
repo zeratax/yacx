@@ -45,8 +45,11 @@ std::string whichError(const nvrtcResult &error);
 } // namespace detail
 
 
-/*
-* this is the superclass nvrtcResultException and cudaResultException
+/*!
+  \class nvidiaException Exception.hpp
+  \brief superclass of nvrtcResultException and cudaResultException
+  \tparam error descripton of error
+  \example docs/cudaexeption.cpp
 */
 class nvidiaException : public std::exception {
 protected:
