@@ -18,23 +18,23 @@ link_libraries(cuda nvrtc)
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES
-    "src/java/BooleanArg.java"
-    "src/java/Device.java"
-    "src/java/DoubleArg.java"
-    "src/java/Executor.java"
-    "src/java/ExecutorFailureException.java"
-    "src/java/FloatArg.java"
-    "src/java/Headers.java"
-    "src/java/IntArg.java"
-    "src/java/JNIHandle.java"
-    "src/java/Kernel.java"
-    "src/java/KernelArg.java"
-    "src/java/KernelTime.java"
-    "src/java/LongArg.java"
-    "src/java/Options.java"
-    "src/java/Program.java"
-    "src/java/ShortArg.java"
-    "src/java/Utils.java")
+    "src/java/yacx/BooleanArg.java"
+    "src/java/yacx/Device.java"
+    "src/java/yacx/DoubleArg.java"
+    "src/java/yacx/Executor.java"
+    "src/java/yacx/ExecutorFailureException.java"
+    "src/java/yacx/FloatArg.java"
+    "src/java/yacx/Headers.java"
+    "src/java/yacx/IntArg.java"
+    "src/java/yacx/JNIHandle.java"
+    "src/java/yacx/Kernel.java"
+    "src/java/yacx/KernelArg.java"
+    "src/java/yacx/KernelTime.java"
+    "src/java/yacx/LongArg.java"
+    "src/java/yacx/Options.java"
+    "src/java/yacx/Program.java"
+    "src/java/yacx/ShortArg.java"
+    "src/java/yacx/Utils.java")
 
 add_library(yacx SHARED ${SOURCES})
 
@@ -45,21 +45,21 @@ if(JNI_ENABLED)
   include(UseJava)
 
   # Build Java classes
-  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/java/bin")
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/java/bin/yacx")
   set(class_files)
   foreach(_java_path ${JAVA_SOURCE_FILES})
     get_filename_component(_java_file ${_java_path} NAME)
     # _java_file: relative file name _class_file: relative class name
     string(REGEX REPLACE "\\.java$" ".class" _class_file "${_java_file}")
     add_custom_command(
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/${_class_file}"
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/yacx/${_class_file}"
       COMMAND
         ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
-        "${PROJECT_SOURCE_DIR}/src/java" -d
+        "${PROJECT_SOURCE_DIR}/src/java/" -d
         "${CMAKE_CURRENT_BINARY_DIR}/java/bin"
-        "${PROJECT_SOURCE_DIR}/src/java/${_java_file}"
-      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/${_java_file}")
-    list(APPEND class_files "java/bin/${_class_file}")
+        "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}"
+      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}")
+    list(APPEND class_files "java/bin/yacx/${_class_file}")
   endforeach()
   add_custom_target(JNIClasses ALL DEPENDS ${class_files})
 

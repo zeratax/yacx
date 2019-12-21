@@ -12,8 +12,8 @@ buildj() {
   pushd $BUILD_DIR
   cmake ../
   #make $1
-  make JavaJNIClasses
-  make cudaexecutor-jni
+  #make JNIClasses
+  make yacx-jni
   popd
 
   pushd $JAVA_BIN
@@ -71,9 +71,9 @@ else
   echo
   echo 'yacx'
   echo 'Options: ./yacx.sh'
-  echo '--buildj                Builds JNI and Java Classes
-  echo '--execute-java <class>  execute Java Class
-  echo '--builds                Builds JNI and Scala Classes
-  echo '--execute-scala <class> execute Scala Class
+  echo '--buildj                Builds JNI and Java Classes'
+  echo '--execute-java <class>  execute Java Class'
+  echo '--builds                Builds JNI and Scala Classes'
+  echo '--execute-scala <class> execute Scala Class'
   echo
 fi
