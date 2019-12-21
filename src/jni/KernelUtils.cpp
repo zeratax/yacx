@@ -28,7 +28,7 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
 
     auto methodID = env->GetMethodID(cls, "<init>", "(FFFF)V");
     auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,
-            kernelTimePtr->launch, kernelTimePtr->sum);
+            kernelTimePtr->launch, kernelTimePtr->total);
 
     return obj;
 }
