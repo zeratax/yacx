@@ -50,12 +50,12 @@ class TestJNIHandle extends TestJNI {
 		
 		//Check Program and Kernel
 		
-		Program p0 = Program.create(Utils.loadFile("saxpy.cu"), "saxpy");
+		Program p0 = Program.create(saxpy, "saxpy");
 		//Create a new Program-Object pointing to the same C-Object :)
 		long handleP = getHandle(p0);
 		Program p = new Program(handleP); //Thats a really bad idea. You should never do this
 		//Create a thrid Program-Object with same strings
-		Program p2 = Program.create(Utils.loadFile("saxpy.cu"), "saxpy");
+		Program p2 = Program.create(saxpy, "saxpy");
 		
 		//p0 and p should be equal
 		assertEquals(p0, p);
