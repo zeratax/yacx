@@ -25,7 +25,7 @@ public class KernelTime {
 		return launch;
 	}
 
-	public float gettotal() {
+	public float getTotal() {
 		return total;
 	}
 
