@@ -18,6 +18,20 @@ public class Program extends JNIHandle {
     }
 
     private static native Program createInternal(String kernelString, String kernelName, Headers headers);
+    
+    public Program instantiate(String ...templateParameter) {
+    	assert(templateParameter != null && templateParameter.length > 0);
+    	
+    	for (int i = 0; i < templateParameter.length; i++) {
+    		assert(templateParameter[i] != null);
+    		
+    		instantiateInternal(templateParameter[i]);
+    	}
+    	
+    	return this;
+    }
+    
+    private native void instantiateInternal(String templateParameter);
 
     public native Kernel compile();
 

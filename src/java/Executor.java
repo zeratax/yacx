@@ -20,15 +20,31 @@ public class Executor {
     }
     
     public static KernelTime launch(String kernelString, String kernelName, int grid, int block, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile().configure(grid, block).launch(args);
+    	return Program.create(kernelString, kernelName)
+    			.compile()
+    			.configure(grid, block)
+    			.launch(args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, Options options, int grid, int block, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile(options).configure(grid, block).launch(args);
+    	return Program.create(kernelString, kernelName)
+    			.compile(options)
+    			.configure(grid, block)
+    			.launch(args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, Options options, String deviceName, int grid, int block, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile(options).configure(grid, block).launch(Device.createDevice(deviceName), args);
+    	return Program.create(kernelString, kernelName)
+    			.compile(options)
+    			.configure(grid, block)
+    			.launch(Device.createDevice(deviceName), args);
+    }
+    
+    public static KernelTime launch(String kernelString, String kernelName, String[] templateParameter, Options options, String deviceName, int grid, int block, KernelArg ...args) {
+    	return Program.create(kernelString, kernelName).instantiate(templateParameter)
+    			.compile(options)
+    			.configure(grid, block)
+    			.launch(Device.createDevice(deviceName), args);
     }
     
     public static KernelTime launch(String kernelName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) throws IOException {
@@ -44,23 +60,47 @@ public class Executor {
     }
     
     public static KernelTime launch(String kernelString, String kernelName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile().configure(grid0, grid1, grid2, block0, block1, block2).launch(args);
+    	return Program.create(kernelString, kernelName)
+    			.compile()
+    			.configure(grid0, grid1, grid2, block0, block1, block2)
+    			.launch(args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, Options options, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile(options).configure(grid0, grid1, grid2, block0, block1, block2).launch(args);
+    	return Program.create(kernelString, kernelName)
+    			.compile(options)
+    			.configure(grid0, grid1, grid2, block0, block1, block2)
+    			.launch(args);
     }
     
     public static KernelTime launch(String kernelString, String kernelName, Options options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) {
-    	return Program.create(kernelString, kernelName).compile(options).configure(grid0, grid1, grid2, block0, block1, block2).launch(Device.createDevice(deviceName), args);
+    	return Program.create(kernelString, kernelName)
+    			.compile(options)
+    			.configure(grid0, grid1, grid2, block0, block1, block2)
+    			.launch(Device.createDevice(deviceName), args);
     }
     
+    public static KernelTime launch(String kernelString, String kernelName, String[] templateParameter, Options options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg ...args) {
+    	return Program.create(kernelString, kernelName).instantiate(templateParameter)
+    			.compile(options)
+    			.configure(grid0, grid1, grid2, block0, block1, block2)
+    			.launch(Device.createDevice(deviceName), args);
+    }
+    
+    
+    public static BenchmarkResult benchmark(String kernelName, Options options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) throws IOException {
+    	return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, numberExecutions, creator, dataSizesBytes);
+    }
     
     public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) {
     	return benchmark(kernelString, kernelName, options, Device.createDevice(), numberExecutions, creator, dataSizesBytes);
     }
     
     public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) {
+    	return benchmark(kernelString, kernelName, new String[0], options, device, numberExecutions, creator, dataSizesBytes);
+    }
+    
+    public static BenchmarkResult benchmark(String kernelString, String kernelName, String[] templateParameter, Options options, Device device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) {
     	if (dataSizesBytes == null)
     		throw new NullPointerException();
     	if (dataSizesBytes.length == 0)
@@ -72,8 +112,10 @@ public class Executor {
     	long t0 = System.currentTimeMillis();
     	
     	//Create and compile Kernel
-    	Kernel kernel = Program.create(kernelString, kernelName)
-    					.compile(options);
+    	Program program = Program.create(kernelString, kernelName);
+    	if (templateParameter.length > 0)
+    		program.instantiate(templateParameter);
+    	Kernel kernel = program.compile(options);
     	
     	//Array for result
     	KernelTime[][] result = new KernelTime[dataSizesBytes.length][numberExecutions];
