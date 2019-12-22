@@ -7,7 +7,7 @@ public class ExampleSaxpyBenchmark {
     	//Load Libary
     	Executor.loadLibary();
     	
-        String saxpy = Utils.loadFile("saxpy.cu");
+        String saxpy = Utils.loadFile("kernels/saxpy.cu");
         
         //Benchmark saxpy-Kernel
         System.out.println(Executor.benchmark(saxpy, "saxpy", Options.createOptions(), 10,

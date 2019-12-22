@@ -21,7 +21,7 @@ object ExampleFilter {
         val nArg = IntArg.createValue(n)
 
         //Create Program
-        val kernelString = Utils.loadFile("filter_k.cu")
+        val kernelString = Utils.loadFile("kernels/filter_k.cu")
         val filter = Program.create(kernelString, "filter_k")
 
         //Create compiled Kernel

@@ -5,7 +5,7 @@ object ExampleSaxpyBenchmark {
     	//Load Libary
     	Executor.loadLibary()
     	
-      val saxpy = Utils.loadFile("saxpy.cu")
+      val saxpy = Utils.loadFile("kernels/saxpy.cu")
         
       //Benchmark saxpy-Kernel
       println(Executor.benchmark(saxpy, "saxpy", Options.createOptions(), 10,
