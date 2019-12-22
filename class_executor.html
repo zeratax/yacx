@@ -99,6 +99,9 @@ static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td 
 <tr class="memitem:aeeed668d0bd94e7e52a444c5cc841a57"><td class="memItemLeft" align="right" valign="top"><a id="aeeed668d0bd94e7e52a444c5cc841a57"></a>
 static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, String deviceName, int grid, int block, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)</td></tr>
 <tr class="separator:aeeed668d0bd94e7e52a444c5cc841a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a990b666bf33ee4a19e5fb2cf1ecdccc4"><td class="memItemLeft" align="right" valign="top"><a id="a990b666bf33ee4a19e5fb2cf1ecdccc4"></a>
+static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelString, String kernelName, String[] templateParameter, <a class="el" href="class_options.html">Options</a> options, String deviceName, int grid, int block, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)</td></tr>
+<tr class="separator:a990b666bf33ee4a19e5fb2cf1ecdccc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf22ddf740baf1dd7942a11b1397e948"><td class="memItemLeft" align="right" valign="top"><a id="acf22ddf740baf1dd7942a11b1397e948"></a>
 static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelName, int grid0, int grid1, int grid2, int block0, int block1, int block2, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)  throws IOException </td></tr>
 <tr class="separator:acf22ddf740baf1dd7942a11b1397e948"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,12 +120,21 @@ static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td 
 <tr class="memitem:a5324cdc306367d457096327575cc395f"><td class="memItemLeft" align="right" valign="top"><a id="a5324cdc306367d457096327575cc395f"></a>
 static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)</td></tr>
 <tr class="separator:a5324cdc306367d457096327575cc395f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ce3c498aa91dfd75daa4aace0ddebc"><td class="memItemLeft" align="right" valign="top"><a id="a33ce3c498aa91dfd75daa4aace0ddebc"></a>
+static <a class="el" href="class_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (String kernelString, String kernelName, String[] templateParameter, <a class="el" href="class_options.html">Options</a> options, String deviceName, int grid0, int grid1, int grid2, int block0, int block1, int block2, <a class="el" href="class_kernel_arg.html">KernelArg</a> ...args)</td></tr>
+<tr class="separator:a33ce3c498aa91dfd75daa4aace0ddebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf854074a7bc801318c00ddfdce5ad8b"><td class="memItemLeft" align="right" valign="top"><a id="aaf854074a7bc801318c00ddfdce5ad8b"></a>
+static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelName, <a class="el" href="class_options.html">Options</a> options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)  throws IOException </td></tr>
+<tr class="separator:aaf854074a7bc801318c00ddfdce5ad8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adce4e21df9e822bc0a4132e5342ef8a7"><td class="memItemLeft" align="right" valign="top"><a id="adce4e21df9e822bc0a4132e5342ef8a7"></a>
 static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)</td></tr>
 <tr class="separator:adce4e21df9e822bc0a4132e5342ef8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0821d0a3fc71945bf1250037ded413f3"><td class="memItemLeft" align="right" valign="top"><a id="a0821d0a3fc71945bf1250037ded413f3"></a>
 static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelString, String kernelName, <a class="el" href="class_options.html">Options</a> options, <a class="el" href="class_device.html">Device</a> device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)</td></tr>
 <tr class="separator:a0821d0a3fc71945bf1250037ded413f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae337a31b427bbec9e4ae43885ac0905f"><td class="memItemLeft" align="right" valign="top"><a id="ae337a31b427bbec9e4ae43885ac0905f"></a>
+static BenchmarkResult&#160;</td><td class="memItemRight" valign="bottom"><b>benchmark</b> (String kernelString, String kernelName, String[] templateParameter, <a class="el" href="class_options.html">Options</a> options, <a class="el" href="class_device.html">Device</a> device, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes)</td></tr>
+<tr class="separator:ae337a31b427bbec9e4ae43885ac0905f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/java/Executor.java</li>
