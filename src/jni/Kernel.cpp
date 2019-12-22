@@ -84,8 +84,6 @@ jobject Java_Kernel_launchInternal__Ljava_lang_String_2_3LKernelArg_2(JNIEnv *en
         auto args = getArguments(env, jArgs);
         if (args.empty()) return NULL;
 
-        auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, device);
-
-        return createJavaKernelTime(env, &kernelTimePtr);
+        return launchInternal(env, kernelPtr, &device, args);
     END_TRY("launching Kernel")
 }

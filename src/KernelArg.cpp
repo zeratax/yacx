@@ -44,7 +44,7 @@ float KernelArg::upload() {
   return time;
 }
 
-float KernelArg::download() {
+float KernelArg::download(void* hdata) {
   float time{0};
 
   if (m_download) {
@@ -55,7 +55,7 @@ float KernelArg::download() {
     CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
 
     CUDA_SAFE_CALL(cuEventRecord(start, 0));
-    CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(m_hdata), m_ddata, m_size));
+    CUDA_SAFE_CALL(cuMemcpyDtoH(hdata, m_ddata, m_size));
     CUDA_SAFE_CALL(cuEventRecord(stop, 0));
 
     CUDA_SAFE_CALL(cuEventSynchronize(stop));

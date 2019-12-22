@@ -45,8 +45,13 @@ class KernelArg : JNIHandle {
   float upload();
   //! downloads data to host
   //! \return time to download from device
-  float download();
+  float download() { return download(const_cast<void *>(m_hdata)); }
+  //! downloads data to host
+  //! \param pointer to host memory
+  //! \return time to download from device
+  float download(void* hdata);
   const size_t size() const { return m_size; }
+  const bool download() const { return m_download; }
 
  private:
   const void *m_hdata;
@@ -62,8 +67,10 @@ class KernelArgs {
   KernelArgs(std::vector<KernelArg> args);
   float upload();
   float download();
+  float download(void* hdata);
   const void **content();
   size_t size() const;
+  size_t maxOutputSize() const;
 
  private:
   std::vector<KernelArg> m_args;
