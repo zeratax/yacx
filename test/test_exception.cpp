@@ -1,4 +1,3 @@
-#include "test_exception.hpp"
 #include "yacx/Exception.hpp"
 #include <catch2/catch.hpp>
 

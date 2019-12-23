@@ -11,8 +11,6 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pixel.hpp
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_compare.hpp
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
-     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_exception.hpp
-          DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
 
 add_executable(tests ${SOURCES} ${TESTS})
 set(catch2_dir ${PROJECT_SOURCE_DIR}/extern/catch2)
