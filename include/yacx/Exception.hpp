@@ -114,6 +114,21 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
   }
 }
 
+//! throws a nvrtcResultException if something went wrong
+#define NVRTC_SAFE_CALL_LOG(error, m_log)                                                 \
+  __checkNvrtcResultError_LOG(error, m_log, __FILE__, __LINE__);
+inline void __checkNvrtcResultError_LOG(const nvrtcResult error, std::__cxx11::basic_string<char> m_log,
+                                      const char *file, const int line) {
+  if (NVRTC_SUCCESS != error) {
+    // create string for exception
+    std::string exception =
+        nvrtcGetErrorString(error); // method to get the error name from NVIDIA
+    exception = exception + "\n->occoured in file <" + file + " in line " +
+                std::to_string(line) + "\n m_log: "+ m_log + "\n\n";
+    throw nvrtcResultException(error, exception);
+  }
+}
+
 //! throws a CUresultException if something went wrong
 #define CUDA_SAFE_CALL(error) __checkCUresultError(error, __FILE__, __LINE__);
 inline void __checkCUresultError(const CUresult error, const char *file,
