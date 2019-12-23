@@ -184,7 +184,7 @@ public class Executor {
     				upload += result[i][j].getUpload();
     				download += result[i][j].getDownload();
     				launch += result[i][j].getLaunch();
-    				total += result[i][j].gettotal();
+    				total += result[i][j].getTotal();
     			}
 
     			average[i] = new KernelTime((float) (upload/executions), (float) (download/executions),
