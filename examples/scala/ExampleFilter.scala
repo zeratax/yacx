@@ -4,40 +4,41 @@ object ExampleFilter {
         Executor.loadLibary()
 
         //Testdata
-        var numThreads = 16
-        var numBlocks = 1
+        val numThreads = 16
+        val numBlocks = 1
 
-        var length = 16;
-        var src = new Array[Int](length);
+        val n = 16
+        val in = new Array[Int](n)
 
-        for (i <- 0 until length){
-            src(i) = i;
+        for (i <- 0 until n){
+            in(i) = i
         }
 
         //Initialize Arguments
-        val srcArg = IntArg.create(src, false)
-        val outArg = IntArg.createOutput(length)
-        val counterArg = IntArg.createOutput(1);
-        val nArg = IntArg.create(length);
+        val srcArg = IntArg.create(in: _*)
+        val outArg = IntArg.createOutput(n/2)
+        val counterArg = IntArg.create(Array[Int](0), true)
+        val nArg = IntArg.createValue(n)
 
         //Create Program
-        val kernelString = Utils.loadFile("filter_k.cu")
+        val kernelString = Utils.loadFile("kernels/filter_k.cu")
         val filter = Program.create(kernelString, "filter_k")
 
         //Create compiled Kernel
         val filterKernel = filter.compile()
 
         //Launch Kernel
-        filterKernel.launch(Array[KernelArg](outArg, counterArg, srcArg, nArg), numThreads, numBlocks)
+        val executionTime = filterKernel.launch(numThreads, numBlocks, outArg, counterArg, srcArg, nArg)
 
         //Get Result
-        var out = outArg.asIntArray()
-        var counter = counterArg.asIntArray()(0)
+        val out = outArg.asIntArray()
+        val counter = counterArg.asIntArray()(0)
 
         //Print Result
-        println("\nInput:\n[" + src.mkString(", ") + "]")
-        println("\nResult:")
-        println("Counter: " + counter);
-        println("Result:\n[" + out.take(counter).mkString(", ") + "]")
+        println("\nfilter-Kernel sucessfully launched:");
+        println(executionTime);
+        println("\nInput:          [" + in.mkString(", ") + "]");
+        println("Result counter: " + counter);
+        println("Result:         [" + out.mkString(", ") + "]");
     }
 }

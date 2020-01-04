@@ -5,8 +5,12 @@ abstract public class JNIHandle {
 
     public native void dispose();
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final long nativeHandle;
+    
+    @Override
+    public boolean equals(Object o) {
+    	return o != null && o instanceof JNIHandle && nativeHandle == ((JNIHandle) o).nativeHandle;
+    }
 
     @Override
     public String toString() {

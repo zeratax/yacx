@@ -1,4 +1,4 @@
-name: c++ tests
+name: tests
 
 on:
   push:
@@ -8,8 +8,11 @@ on:
     branches:
       - master
 
+env:
+  COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
 jobs:
-  build:
+  test-cpp:
     runs-on: ubuntu-latest
     steps:
       - name: test on remote server
@@ -18,17 +21,37 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: GITHUB_REPOSITORY,GITHUB_SHA
+          envs: GITHUB_REPOSITORY,COMMIT_SHA
           script: |
-            echo "cloning https://github.com/${GITHUB_REPOSITORY} to /tmp/${GITHUB_SHA}"
             mkdir -p /tmp/ci/$GITHUB_REPOSITORY
             cd /tmp/ci/$GITHUB_REPOSITORY
-            git clone https://github.com/$GITHUB_REPOSITORY.git $GITHUB_SHA
-            cd $GITHUB_SHA
-            git checkout $GITHUB_SHA
+            git clone https://github.com/$GITHUB_REPOSITORY.git $COMMIT_SHA
+            cd $COMMIT_SHA
+            git checkout $COMMIT_SHA
             cmake -H. -Bbuild
-            make -C build
+            make -C build tests
             pushd build/test/bin/
             ./tests
+            popd
+          script_stop: true
+  test-java:
+    needs: [test-cpp]
+    runs-on: ubuntu-latest
+    env:
+      JAVA_DIR: build/java/bin
+    steps:
+      - name: test on remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          envs: GITHUB_REPOSITORY,COMMIT_SHA,JAVA_DIR
+          script: |
+            cd /tmp/ci/$GITHUB_REPOSITORY/$COMMIT_SHA
+            make -C build JNITestClasses
+            cp -R examples/kernels $JAVA_DIR
+            pushd $JAVA_DIR
+            java -Djava.library.path=../../ -jar src/junit-platform-console-standalone-1.5.2.jar --class-path . --scan-class-path
             popd
           script_stop: true

@@ -11,11 +11,10 @@ jclass getClass(JNIEnv* env, const char* name) {
 
         if (!cls) {
             logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find java.lang.ClassNotFoundException";
-            exit(1);
+			return NULL;
         }
 
         env->ThrowNew(cls, name);
-        exit(1);
     }
 
     return cls;
@@ -24,8 +23,10 @@ jclass getClass(JNIEnv* env, const char* name) {
 jobjectArray createStringArray(JNIEnv* env, const char** stringArray, int size) {
     jclass stringCls = getClass(env, "java/lang/String");
 
+    if (!stringCls) return NULL;
+
     auto res = (jobjectArray) env->NewObjectArray(size, stringCls, env->NewStringUTF(""));
-    CHECK_NULL(res)
+    CHECK_NULL(res, NULL)
 
     for(int i = 0; i < size; i++){
         auto jstring = env->NewStringUTF(stringArray[i]);

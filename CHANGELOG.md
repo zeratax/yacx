@@ -1,4 +1,20 @@
 # Changelog
+## yacx v0.4.1 (2019-12-13)
+### Documentation
+- created a [classDiagram](docs/diagram/classDiagram.pdf)
+- a [Code of Conduct](./CODE_OF_CONDUCT.md)
+- a [Contribution Guideline](./CONTRIBUTING.md)
+
+### Changes
+- renamed (see [#78](https://github.com/ZerataX/yacx/issues/78))
+  - Headers.{length=>numHeaders}
+  - Options.{options=>content}
+  - KernelArgs.m_{chArgs=>voArgs}
+- cleaned up repo
+  - fixed workflows for pull requests
+  - issue templates
+  - updated README.md 
+  
 ## yacx v0.4 (2019-12-07)
 ### Changes
 - rename project from **cudaexecutor**/**cudacompiler** to **yacx** - *yet another cudaexecutor*

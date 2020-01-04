@@ -1,4 +1,8 @@
 public class ShortArg extends KernelArg {
+	public final static int SIZE_BYTES = 2;
+	
+	public static native KernelArg createValue(short value);
+	
 	public static ShortArg create(short ...shorts) {
 		return createInternal(shorts, false);
 	}
@@ -18,7 +22,7 @@ public class ShortArg extends KernelArg {
 		return createOutputInternal(size);
 	}
 	
-	private static native ShortArg createOutputInternal(int size);
+	private static native ShortArg createOutputInternal(int length);
 	
 	ShortArg(long handle) {
 		super(handle);

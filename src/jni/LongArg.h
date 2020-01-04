@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef LongArg_SIZE_BYTES
+#define LongArg_SIZE_BYTES 8L
+/*
+ * Class:     LongArg
+ * Method:    createValue
+ * Signature: (J)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_LongArg_createValue
+  (JNIEnv *, jclass, jlong);
+
 /*
  * Class:     LongArg
  * Method:    createInternal

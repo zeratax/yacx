@@ -1,6 +1,5 @@
 #include "yacx/Program.hpp"
 #include "yacx/Exception.hpp"
-#include "yacx/Headers.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/util.hpp"
 
@@ -9,9 +8,8 @@
 #include <memory>
 #include <utility>
 
-using yacx::Program, yacx::Kernel, yacx::Options,
-    yacx::Headers, yacx::KernelArg, yacx::loglevel,
-    yacx::detail::whichError, yacx::detail::descriptionFkt;
+using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
+    yacx::loglevel, yacx::detail::whichError, yacx::detail::descriptionFkt;
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
@@ -51,7 +49,7 @@ Kernel Program::compile(const Options &options) {
   }
 
   nvrtcResult compileResult =
-      nvrtcCompileProgram(*m_prog, options.numOptions(), options.options());
+      nvrtcCompileProgram(*m_prog, options.numOptions(), options.content());
 
   size_t logSize;
   NVRTC_SAFE_CALL(nvrtcGetProgramLogSize(*m_prog, &logSize));
@@ -60,8 +58,8 @@ Kernel Program::compile(const Options &options) {
   m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    logger(loglevel::ERROR) << m_log;
-    NVRTC_SAFE_CALL(compileResult);
+    //logger(loglevel::ERROR) << m_log;
+    NVRTC_SAFE_CALL_LOG(compileResult, m_log);
   }
 
   size_t ptxSize;

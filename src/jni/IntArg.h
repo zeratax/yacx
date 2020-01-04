@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef IntArg_SIZE_BYTES
+#define IntArg_SIZE_BYTES 4L
+/*
+ * Class:     IntArg
+ * Method:    createValue
+ * Signature: (I)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_IntArg_createValue
+  (JNIEnv *, jclass, jint);
+
 /*
  * Class:     IntArg
  * Method:    createInternal

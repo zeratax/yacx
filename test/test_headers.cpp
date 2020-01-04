@@ -36,42 +36,33 @@ TEST_CASE("Headers can be constructed", "[yacx::headers]") {
 
   SECTION("constructed from header") {
     Headers headers{header0, header1, header2};
-    REQUIRE(headers.size() == 3);
-    REQUIRE(std::string{headers.names()[2]} ==
-            std::string{"test_pixel.hpp"});
-    REQUIRE(std::string{headers.names()[1]} ==
-            std::string{"test_header1.hpp"});
-    REQUIRE(std::string{headers.names()[0]} ==
-            std::string{"test_header2.hpp"});
+    REQUIRE(headers.numHeaders() == 3);
+    REQUIRE(std::string{headers.names()[2]} == std::string{"test_pixel.hpp"});
+    REQUIRE(std::string{headers.names()[1]} == std::string{"test_header1.hpp"});
+    REQUIRE(std::string{headers.names()[0]} == std::string{"test_header2.hpp"});
     REQUIRE(std::string{headers.content()[2]} == content0);
     REQUIRE(std::string{headers.content()[1]} == content1);
     REQUIRE(std::string{headers.content()[0]} == content2);
   }
   SECTION("constructed from path") {
-    Headers headers{"test_pixel.hpp", "test_header1.hpp",
-                    "test_header2.hpp"};
-    REQUIRE(headers.size() == 3);
-    REQUIRE(std::string{headers.names()[2]} ==
-            std::string{"test_pixel.hpp"});
-    REQUIRE(std::string{headers.names()[1]} ==
-            std::string{"test_header1.hpp"});
-    REQUIRE(std::string{headers.names()[0]} ==
-            std::string{"test_header2.hpp"});
+    Headers headers{"test_pixel.hpp", "test_header1.hpp", "test_header2.hpp"};
+    REQUIRE(headers.numHeaders() == 3);
+    REQUIRE(std::string{headers.names()[2]} == std::string{"test_pixel.hpp"});
+    REQUIRE(std::string{headers.names()[1]} == std::string{"test_header1.hpp"});
+    REQUIRE(std::string{headers.names()[0]} == std::string{"test_header2.hpp"});
     REQUIRE(std::string{headers.content()[2]} == std::string{content0});
     REQUIRE(std::string{headers.content()[1]} == std::string{content1});
     REQUIRE(std::string{headers.content()[0]} == std::string{content2});
   }
   SECTION("empty constructor, but inserted headers") {
     Headers headers{};
-    REQUIRE(headers.size() == 0);
+    REQUIRE(headers.numHeaders() == 0);
     headers.insert("test_pixel.hpp");
-    REQUIRE(headers.size() == 1);
+    REQUIRE(headers.numHeaders() == 1);
     headers.insert(header1);
-    REQUIRE(headers.size() == 2);
-    REQUIRE(std::string{headers.names()[0]} ==
-            std::string{"test_pixel.hpp"});
-    REQUIRE(std::string{headers.names()[1]} ==
-            std::string{"test_header1.hpp"});
+    REQUIRE(headers.numHeaders() == 2);
+    REQUIRE(std::string{headers.names()[0]} == std::string{"test_pixel.hpp"});
+    REQUIRE(std::string{headers.names()[1]} == std::string{"test_header1.hpp"});
     REQUIRE(std::string{headers.content()[0]} == std::string{content0});
     REQUIRE(std::string{headers.content()[1]} == std::string{content1});
   }

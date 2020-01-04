@@ -6,7 +6,7 @@ JAVA_BIN="${BUILD_DIR}/java/bin"
 
 buildj() {
   mkdir -p $JAVA_BIN
-  cp examples/kernels/* $JAVA_BIN
+  cp -R examples/kernels $JAVA_BIN
   cp examples/java/*.java $JAVA_BIN
 
   pushd $BUILD_DIR
@@ -62,18 +62,18 @@ if [ "$1" != "" ]; then
       exej $2
       ;;
     --builds)
-      buildj
+      builds
       ;;
-    --execute-scala | --exes) exej $2 ;;
+    --execute-scala | --exes) exes $2 ;;
     esac
     shift
 else
   echo
   echo 'yacx'
   echo 'Options: ./yacx.sh'
-  echo '--buildj             Tries CMake build'
-  echo '--execute-java       Tests library with java'
-  echo '--builds             Tries CMake build'
-  echo '--execute-scala      Tests library with scala'
+  echo '--buildj                Builds JNI and Java Classes
+  echo '--execute-java <class>  execute Java Class
+  echo '--builds                Builds JNI and Scala Classes
+  echo '--execute-scala <class> execute Scala Class
   echo
 fi

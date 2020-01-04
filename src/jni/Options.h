@@ -41,10 +41,10 @@ JNIEXPORT jint JNICALL Java_Options_getSize
 
 /*
  * Class:     Options
- * Method:    options
+ * Method:    getOptions
  * Signature: ()[Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_Options_options
+JNIEXPORT jobjectArray JNICALL Java_Options_getOptions
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

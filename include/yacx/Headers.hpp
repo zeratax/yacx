@@ -1,13 +1,12 @@
 #pragma once
 
-#include "util.hpp"
 #include <iostream>
 #include <string>
 #include <type_traits>
 #include <vector>
 
-#include "util.hpp"
 #include "JNIHandle.hpp"
+#include "util.hpp"
 
 namespace yacx {
 /*!
@@ -74,7 +73,7 @@ class Headers : JNIHandle {
   const char **names() const;
   //!
   //! \return number of header files
-  int size() const { return m_headers.size(); }
+  size_t numHeaders() const { return m_headers.size(); }
   //! inserts Header
   //! \param path path to header file
   void insert(std::string const &path) { m_headers.push_back(Header(path)); }
@@ -89,8 +88,7 @@ class Headers : JNIHandle {
 
 template <typename T, typename... TS>
 Headers::Headers(const T &arg, const TS &... args) : Headers{args...} {
-  static_assert(is_header<T>::value,
-                "must be yacx::header or std::string");
+  static_assert(is_header<T>::value, "must be yacx::header or std::string");
   insert(arg);
 }
 

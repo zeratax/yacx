@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef FloatArg_SIZE_BYTES
+#define FloatArg_SIZE_BYTES 4L
+/*
+ * Class:     FloatArg
+ * Method:    createValue
+ * Signature: (F)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_FloatArg_createValue
+  (JNIEnv *, jclass, jfloat);
+
 /*
  * Class:     FloatArg
  * Method:    createInternal

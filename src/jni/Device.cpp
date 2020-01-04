@@ -10,23 +10,19 @@ jobject Java_Device_createDevice (JNIEnv* env, jclass cls){
     BEGIN_TRY
         Device* devicePtr = new Device{};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, devicePtr);
-
-        return obj;
+    	return createJNIObject(env, cls, devicePtr);
     END_TRY("creating Device");
 }
 
 jobject Java_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
     BEGIN_TRY
-        CHECK_NULL(jdevicename)
+        CHECK_NULL(jdevicename, NULL)
 
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
 
         Device* devicePtr = new Device{devicenamePtr};
 
-        auto methodID = env->GetMethodID(cls, "<init>", "(J)V");
-        auto obj = env->NewObject(cls, methodID, devicePtr);
+        auto obj = createJNIObject(env, cls, devicePtr);
 
         env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
 
@@ -37,6 +33,7 @@ jobject Java_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevi
 jstring Java_Device_getName (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+    	CHECK_NULL(devicePtr, NULL)
 
         auto devicenameString = devicePtr->name();
 
@@ -52,6 +49,7 @@ jstring Java_Device_getName (JNIEnv* env, jobject obj){
 jlong Java_Device_getMemorySize (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
 
         auto memory = devicePtr->total_memory();
 
@@ -62,12 +60,14 @@ jlong Java_Device_getMemorySize (JNIEnv* env, jobject obj){
 jintArray Java_Device_getMaxBlock (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, NULL)
 
         dim3 block;
         devicePtr->max_block_dim(&block);
 
         auto res = env->NewIntArray(3);
-        if (res == nullptr) return nullptr;
+
+        CHECK_NULL(res, NULL)
 
         int data[3];
         data[0] = block.x;
@@ -84,6 +84,7 @@ jintArray Java_Device_getMaxBlock (JNIEnv* env, jobject obj){
 jintArray Java_Device_getMaxGrid (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, NULL)
 
         dim3 grid;
         devicePtr->max_grid_dim(&grid);
@@ -106,6 +107,7 @@ jintArray Java_Device_getMaxGrid (JNIEnv* env, jobject obj){
 jint Java_Device_getMultiprocessorCount (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
 
         auto multiprocessors = devicePtr->multiprocessor_count();
 
@@ -116,6 +118,7 @@ jint Java_Device_getMultiprocessorCount (JNIEnv* env, jobject obj){
 jint Java_Device_getClockRate (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
 
         auto clockRate = devicePtr->clock_rate();
 
@@ -126,6 +129,7 @@ jint Java_Device_getClockRate (JNIEnv* env, jobject obj){
 jint Java_Device_getMemoryClockRate (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
 
         auto memoryClockRate = devicePtr->memory_clock_rate();
 
@@ -136,6 +140,7 @@ jint Java_Device_getMemoryClockRate (JNIEnv* env, jobject obj){
 jint Java_Device_getBusWidth (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
 
         auto busWidth = devicePtr->bus_width();
 

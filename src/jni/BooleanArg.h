@@ -7,6 +7,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#undef BooleanArg_SIZE_BYTES
+#define BooleanArg_SIZE_BYTES 1L
+/*
+ * Class:     BooleanArg
+ * Method:    createValue
+ * Signature: (Z)LKernelArg;
+ */
+JNIEXPORT jobject JNICALL Java_BooleanArg_createValue
+  (JNIEnv *, jclass, jboolean);
+
 /*
  * Class:     BooleanArg
  * Method:    createInternal

@@ -51,7 +51,7 @@ class Options : JNIHandle {
   void insertOptions(const T &t, const TS &... ts);
   //!
   //! \return c-style string array with all options
-  const char **options() const;
+  const char **content() const;
   //!
   //! \return number of Options
   auto numOptions() const { return m_options.size(); }
@@ -101,7 +101,7 @@ class GpuArchitecture {
               std::to_string(minor)) {}
 
   explicit GpuArchitecture(const yacx::Device &device)
-      : GpuArchitecture(device.major(), device.minor()) {}
+      : GpuArchitecture(device.major_version(), device.minor_version()) {}
 
   auto name() const { return "--gpu-architecture"; }
   auto &value() const { return m_arc; }
