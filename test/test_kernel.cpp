@@ -1,6 +1,5 @@
 //Here, the sources of kernels are tested.
 #include "yacx/Headers.hpp"
-#include "test_compare.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/Kernel.hpp"
 #include "yacx/Source.hpp"
@@ -14,7 +13,6 @@ yacx::Header, yacx::Headers;
 TEST_CASE("The kernel - source code will be tested under the following conditions."){
     //A. Preparing the input for the kernel-compilation using source
     int datasize{10};
-    compare check{CORRECT};
     int *hX = new int[10]{1,2,3,4,5,6,7,8,9,10};
     int *hY = new int[10]{6,7,8,9,10,11,12,13,14,15};
     int *hOut = new int[10]{7,9,11,13,15,1,2,3,4,5};
@@ -25,10 +23,8 @@ TEST_CASE("The kernel - source code will be tested under the following condition
     args.emplace_back(KernelArg{hY, bufferSize});
     args.emplace_back(KernelArg{hOut, bufferSize, true});
     args.emplace_back(KernelArg(&datasize));
-    args.emplace_back(KernelArg{&check, sizeof(compare), true});
 
     Headers headers;
-    headers.insert(Header{"test_compare.hpp"});
     headers.insert(Header{"cuda_runtime.h"});
 
     //A2. Preparing the output for kernel-compilation
@@ -36,11 +32,10 @@ TEST_CASE("The kernel - source code will be tested under the following condition
     
     //B1. Configure a kernel using the following block and grid dimensions
     SECTION("1. The created kernel is configured."){     
-        Source source{"#include \"test_compare.hpp\"\n"
-        "#include \"cuda_runtime.h\"\n"
+        Source source{"#include \"cuda_runtime.h\"\n"
         "extern \"C\"\n"
         "__global__ void cuda_add(int *x, int *y, int *out, int "
-        "datasize, compare *check) {\n"
+        "datasize) {\n"
         " int i = threadIdx.x;\n"
         " out[i] = x[i] + y[i];\n"
         "}", headers};
@@ -64,11 +59,10 @@ TEST_CASE("The kernel - source code will be tested under the following condition
     
     //B2. Lauching a kernel using the following block and grid dimensions
     SECTION("2. The created kernel is launched."){     
-        Source source{"#include \"test_compare.hpp\"\n"
-        "#include \"cuda_runtime.h\"\n"
+        Source source{"#include \"cuda_runtime.h\"\n"
         "extern \"C\"\n"
         "__global__ void cuda_add_launching(int *x, int *y, int *out, int "
-        "datasize, compare *check) {\n"
+        "datasize) {\n"
         " int i = threadIdx.x;\n"
         " out[i] = x[i] + y[i];\n"
         "}", headers};
@@ -90,8 +84,3 @@ TEST_CASE("The kernel - source code will be tested under the following condition
         REQUIRE(kernel_lauching.launch>0);
     }
 }
-
-
-
-
-
