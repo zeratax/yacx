@@ -124,7 +124,7 @@ std::string yacx::detail::whichError(const nvrtcResult &error) {
     ret = "11~NVRTC_ERROR_INTERNAL_ERROR";
     return ret;
   default:
-    ret.append("~error_unknown");
+    ret.append("error_unknown");
     description = "''It's a trap! Abort! We never left the CPU o(╥﹏╥)o'' But "
                   "seriously: I don't know what happened, because it isn't "
                   "even documented by NVIDIA.";
