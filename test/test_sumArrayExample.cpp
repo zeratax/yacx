@@ -28,6 +28,8 @@ TEST_CASE("sumArray", "[example_program]") {
         float *h_A, *h_B, *hostRef, *gpuRef;
         h_A = (float*) malloc(nBytes);
         h_B = (float*) malloc(nBytes);
+        hostRef = (float*) malloc(nBytes);
+        gpuRef = (float*) malloc(nBytes);
         //initialize data at host side
         //initialData(h_A, nElem);
             // generate different seed for random number
@@ -45,16 +47,12 @@ TEST_CASE("sumArray", "[example_program]") {
         args.emplace_back(KernelArg{h_B, nBytes, false});
         args.emplace_back(KernelArg{gpuRef, nBytes, true});
 
-        dim3 block (32, 8 , 2);
-        int blockSize = block.x*block.y*block.z;
-        dim3 grid ((nElem+blockSize-1)/blockSize);
-    printf("Bis hierhin kommt der Code\n"); 
+        dim3 block (1, 1 , 1);
+        dim3 grid (1);
         Kernel k = source.program("sumArrayOnGPU")
             .compile(options)
             .configure(grid, block);
-     printf("Bis hierhin kommt auch der Code\n");
             k.launch(args, device);
-     printf("Bis hierhin kommt der Code\n");
     
 
         //add vector at host side for result checks
@@ -73,6 +71,10 @@ TEST_CASE("sumArray", "[example_program]") {
             break;
             }
         }
+        free(h_A);
+        free(h_B);
+        free(hostRef);
+        free(gpuRef);
   }
 
 
@@ -98,6 +100,8 @@ TEST_CASE("sumArray", "[example_program]") {
         float *h_A, *h_B, *hostRef, *gpuRef;
         h_A = (float*) malloc(nBytes);
         h_B = (float*) malloc(nBytes);
+        hostRef = (float*) malloc(nBytes);
+        gpuRef = (float*) malloc(nBytes);
         //initialize data at host side
         //initialData(h_A, nElem);
             // generate different seed for random number
@@ -118,13 +122,10 @@ TEST_CASE("sumArray", "[example_program]") {
         dim3 block (32, 8 , 2);
         int blockSize = block.x*block.y*block.z;
         dim3 grid ((nElem+blockSize-1)/blockSize);
-    printf("Bis hierhin kommt der Code\n"); 
         Kernel k = source.program("sumArrayOnGPU")
             .compile(options)
             .configure(grid, block);
-     printf("Bis hierhin kommt auch der Code\n");
             k.launch(args, device);
-     printf("Bis hierhin kommt der Code\n");
     
 
         //add vector at host side for result checks
@@ -143,6 +144,10 @@ TEST_CASE("sumArray", "[example_program]") {
             break;
             }
         }
+        free(h_A);
+        free(h_B);
+        free(hostRef);
+        free(gpuRef);
   }
 
 
@@ -173,6 +178,8 @@ TEST_CASE("sumArray", "[example_program]") {
         float *h_A, *h_B, *hostRef, *gpuRef;
         h_A = (float*) malloc(nBytes);
         h_B = (float*) malloc(nBytes);
+        hostRef = (float*) malloc(nBytes);
+        gpuRef = (float*) malloc(nBytes);
         //initialize data at host side
         //initialData(h_A, nElem);
             // generate different seed for random number
@@ -195,14 +202,11 @@ TEST_CASE("sumArray", "[example_program]") {
 
         dim3 block (32, 8 , 2);
         int blockSize = block.x*block.y*block.z;
-        dim3 grid ((nElem+blockSize-1)/blockSize);
-    printf("Bis hierhin kommt der Code\n"); 
+        dim3 grid ((nElem+blockSize-1)/blockSize); 
         Kernel k = source.program("sumArrayOnGPU")
             .compile(options)
             .configure(grid, block);
-     printf("Bis hierhin kommt auch der Code\n");
             k.launch(args, device);
-     printf("Bis hierhin kommt der Code\n");
     
 
         //add vector at host side for result checks
@@ -221,5 +225,9 @@ TEST_CASE("sumArray", "[example_program]") {
             break;
             }
         }
+        free(h_A);
+        free(h_B);
+        free(hostRef);
+        free(gpuRef);
   }
 }
