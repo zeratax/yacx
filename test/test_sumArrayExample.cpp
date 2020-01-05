@@ -1,6 +1,7 @@
 #include "yacx/main.hpp"
 #include <catch2/catch.hpp>
 #include "yacx/Logger.hpp"
+#include "yacx/Exception.hpp"
 
 using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
     yacx::type_of, yacx::loglevel;
@@ -210,7 +211,7 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
       "}\n"};
 
   // set up data size of vectors
-  int nElem = GENERATE(1, 32, 48, 128, 1024, 2028, 10240);
+  int nElem = GENERATE(1, 32, 48, 128, 1024, 2028, 10240, 42000, 100000);
   // malloc host memory
   size_t nBytes = nElem * sizeof(float);
   float *h_A, *h_B, *hostRef, *gpuRef;
@@ -241,8 +242,10 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     args.emplace_back(KernelArg{gpuRef, nBytes, true});
     args.emplace_back(KernelArg{&nElem, sizeof(int), false});
 
-    constexpr int warpsize = 32;
-    const int grid_x = (nElem + 1024 -1) / 1024;
+    constexpr int warpsize = 32;  
+    int max_block_DIM = 0;
+    yacx::CUDA_SAFE_CALL( cuDeviceGetAttribute((int*)&max_block_DIM,CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,device.cuDevice()));
+    const int grid_x = (nElem + max_block_DIM -1) / max_block_DIM;
     const int block_y = (nElem/grid_x + warpsize - 1) / warpsize;
 
     dim3 block(warpsize, block_y, 1);
