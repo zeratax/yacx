@@ -6,10 +6,7 @@ using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, 
 
 TEST_CASE("sumArray", "[example_program]") {
 
-  SECTION("SUM_ARRAY WITH 1 and fixed values") {
-
-
-        Device device;
+    Device device;
         Options options{yacx::options::GpuArchitecture(device),
                         yacx::options::FMAD(false)};
         options.insert("--std", "c++14");
@@ -20,7 +17,8 @@ TEST_CASE("sumArray", "[example_program]") {
                         "C[i]=A[i]+B[i];\n"
                         "}\n"
         };
-        
+
+  SECTION("SUM_ARRAY WITH 1 and fixed values") {
         // set up data size of vectors
         int nElem = 1; 
         //malloc host memory
@@ -79,20 +77,6 @@ TEST_CASE("sumArray", "[example_program]") {
 
 
     SECTION("SUM_ARRAY WITH 1024 and fixed values") {
-
-
-        Device device;
-        Options options{yacx::options::GpuArchitecture(device),
-                        yacx::options::FMAD(false)};
-        options.insert("--std", "c++14");
-        Source source{"extern \"C\" __global__ void sumArrayOnGPU(float *A, float *B, float* C){\n"
-                        "int i_inBlock=threadIdx.x+threadIdx.y*blockDim.x+threadIdx.z*blockDim.y*blockDim.x;\n"
-                        "int blockID= blockIdx.x;\n"
-                        "int i = i_inBlock + blockID*(blockDim.x*blockDim.y*blockDim.z);\n"
-                        "C[i]=A[i]+B[i];\n"
-                        "}\n"
-        };
-        
         // set up data size of vectors
         int nElem = 1024; 
         //malloc host memory
@@ -157,19 +141,6 @@ TEST_CASE("sumArray", "[example_program]") {
 
 
   SECTION("SUM_ARRAY WITH 1024 and random values") {
-
-
-        Device device;
-        Options options{yacx::options::GpuArchitecture(device),
-                        yacx::options::FMAD(false)};
-        options.insert("--std", "c++14");
-        Source source{"extern \"C\" __global__ void sumArrayOnGPU(float *A, float *B, float* C){\n"
-                        "int i_inBlock=threadIdx.x+threadIdx.y*blockDim.x+threadIdx.z*blockDim.y*blockDim.x;\n"
-                        "int blockID= blockIdx.x;\n"
-                        "int i = i_inBlock + blockID*(blockDim.x*blockDim.y*blockDim.z);\n"
-                        "C[i]=A[i]+B[i];\n"
-                        "}\n"
-        };
         
         // set up data size of vectors
         int nElem = 1024; 
