@@ -76,8 +76,7 @@ TEST_CASE("sumArray", "[example_program]") {
   }
 
 
-    SECTION("SUM_ARRAY WITH 1024 and fixed values") {
-        // set up data size of vectors
+    // set up data size of vectors
         int nElem = 1024; 
         //malloc host memory
         size_t nBytes = nElem * sizeof(float);
@@ -86,6 +85,8 @@ TEST_CASE("sumArray", "[example_program]") {
         h_B = (float*) malloc(nBytes);
         hostRef = (float*) malloc(nBytes);
         gpuRef = (float*) malloc(nBytes);
+
+    SECTION("SUM_ARRAY WITH 1024 and fixed values") {
         //initialize data at host side
         //initialData(h_A, nElem);
             // generate different seed for random number
@@ -128,10 +129,6 @@ TEST_CASE("sumArray", "[example_program]") {
             break;
             }
         }
-        free(h_A);
-        free(h_B);
-        free(hostRef);
-        free(gpuRef);
   }
 
 
@@ -141,16 +138,6 @@ TEST_CASE("sumArray", "[example_program]") {
 
 
   SECTION("SUM_ARRAY WITH 1024 and random values") {
-        
-        // set up data size of vectors
-        int nElem = 1024; 
-        //malloc host memory
-        size_t nBytes = nElem * sizeof(float);
-        float *h_A, *h_B, *hostRef, *gpuRef;
-        h_A = (float*) malloc(nBytes);
-        h_B = (float*) malloc(nBytes);
-        hostRef = (float*) malloc(nBytes);
-        gpuRef = (float*) malloc(nBytes);
         //initialize data at host side
         //initialData(h_A, nElem);
             // generate different seed for random number
@@ -196,9 +183,11 @@ TEST_CASE("sumArray", "[example_program]") {
             break;
             }
         }
+  }
+
         free(h_A);
         free(h_B);
         free(hostRef);
         free(gpuRef);
-  }
+
 }
