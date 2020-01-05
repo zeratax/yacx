@@ -10,6 +10,8 @@
 #include <nvrtc.h>
 #include <vector_types.h> // z.B. für dim3
 
+#include "yacx/Logger.hpp" //um den logger benutzen zu können
+
 namespace yacx {
 
 namespace detail {
@@ -76,8 +78,8 @@ class nvrtcResultException : public nvidiaException {
   nvrtcResultException(nvrtcResult type, std::string error) {
     this->type = type;
     this->error = error;
-    printf("nvrtcResultException %i with description: '%s' created\n",
-           (int)type, this->error.c_str());
+    logger(loglevel::WARNING) << "nvrtcResultException " << (int)type
+     << " with description: " << this->error.c_str() << " created.";
   }
 };
 
@@ -94,8 +96,8 @@ class CUresultException : public nvidiaException {
   CUresultException(CUresult type, std::string error) {
     this->type = type;
     this->error = error;
-    printf("CUresultException %i with description: '%s' created\n", (int)type,
-           this->error.c_str());
+     logger(loglevel::WARNING) << "CUresultException " << (int)type
+      << " with description: " << this->error.c_str() << " created.";
   }
 };
 
