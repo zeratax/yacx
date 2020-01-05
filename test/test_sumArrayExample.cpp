@@ -210,7 +210,7 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
       "}\n"};
 
   // set up data size of vectors
-  int nElem = GENERATE(1, 32, 48, 128, 1024);
+  int nElem = GENERATE(1, 32, 48, 128, 1024, 2028, 10240);
   // malloc host memory
   size_t nBytes = nElem * sizeof(float);
   float *h_A, *h_B, *hostRef, *gpuRef;
@@ -241,8 +241,12 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     args.emplace_back(KernelArg{gpuRef, nBytes, true});
     args.emplace_back(KernelArg{&nElem, sizeof(int), false});
 
-    dim3 block(32, (nElem + 32 - 1) / 32, 1);
-    dim3 grid(1);
+    constexpr int warpsize = 32;
+    const int grid_x = (nElem + 1024 -1) / 1024;
+    const int block_y = (nElem/grid_x + warpsize - 1) / warpsize;
+
+    dim3 block(warpsize, block_y, 1);
+    dim3 grid(grid_x);
 
     std::cout << "Program sumArray compiles with " << nElem << " Threads" << "\n";
     Kernel k =
