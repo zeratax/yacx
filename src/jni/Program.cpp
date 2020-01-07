@@ -49,6 +49,20 @@ jobject Java_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2LHead
     END_TRY("creating program")
 }
 
+void JNICALL Java_Program_instantiateInternal(JNIEnv* env, jobject obj, jstring jtemplateString){
+	BEGIN_TRY
+		auto programPtr = getHandle<Program>(env, obj);
+	    CHECK_NULL(programPtr, );
+
+	    auto templateStringPtr = env->GetStringUTFChars(jtemplateString, nullptr);
+	    CHECK_NULL(templateStringPtr, );
+
+	    programPtr->instantiate(templateStringPtr);
+
+	    env->ReleaseStringUTFChars(jtemplateString, templateStringPtr);
+	END_TRY("instantiating template parameters")
+}
+
 jobject Java_Program_compile (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programPtr = getHandle<Program>(env, obj);
@@ -57,6 +71,8 @@ jobject Java_Program_compile (JNIEnv* env, jobject obj){
         Kernel* kernelPtr = new Kernel{programPtr->compile()};
 
         jclass jKernel = getClass(env, "Kernel");
+        if (jKernel == NULL) return NULL;
+
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
@@ -76,6 +92,8 @@ jobject Java_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions)
         Kernel* kernelPtr = new Kernel{programPtr->compile(*optionsPtr)};
 
         jclass jKernel = getClass(env, "Kernel");
+        if (jKernel == NULL) return NULL;
+
         auto methodID = env->GetMethodID(jKernel, "<init>", "(J)V");
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 

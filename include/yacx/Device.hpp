@@ -25,10 +25,10 @@ class Device : JNIHandle {
   explicit Device(std::string name);
   //! Minor compute capability version number
   //! \return version number
-  [[nodiscard]] int minor() const { return m_minor; }
+  [[nodiscard]] int minor_version() const { return m_minor; }
   //! Major compute capability version number
   //! \return version number
-  [[nodiscard]] int major() const { return m_major; }
+  [[nodiscard]] int major_version() const { return m_major; }
   //! identifer string for the device
   //! \return identifer string
   std::string name() const { return m_name; }
@@ -52,6 +52,7 @@ class Device : JNIHandle {
   int clock_rate() const { return m_clock_rate; }
   int memory_clock_rate() const { return m_memory_clock_rate; }
   int bus_width() const { return m_bus_width; }
+  CUdevice cuDevice() const { return m_device; }
   //! Returns information about the device, see
   //! <a
   //! href=https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266>CUdevice_attribute</a>
