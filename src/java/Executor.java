@@ -87,8 +87,6 @@ public class Executor {
     			.launch(Device.createDevice(deviceName), args);
     }
 
-
-    
     public static BenchmarkResult benchmark(String kernelName, Options options, int numberExecutions, KernelArgCreator creator, int ...dataSizesBytes) throws IOException {
     	return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, numberExecutions, creator, dataSizesBytes);
     }

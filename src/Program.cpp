@@ -58,7 +58,7 @@ Kernel Program::compile(const Options &options) {
   m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    //logger(loglevel::ERROR) << m_log;
+    // logger(loglevel::ERROR) << m_log;
     NVRTC_SAFE_CALL_LOG(compileResult, m_log);
   }
 

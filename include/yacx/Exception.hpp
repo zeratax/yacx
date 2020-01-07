@@ -10,6 +10,8 @@
 #include <nvrtc.h>
 #include <vector_types.h> // z.B. für dim3
 
+#include "yacx/Logger.hpp" //um den logger benutzen zu können
+
 namespace yacx {
 
 namespace detail {
@@ -76,8 +78,8 @@ class nvrtcResultException : public nvidiaException {
   nvrtcResultException(nvrtcResult type, std::string error) {
     this->type = type;
     this->error = error;
-    printf("nvrtcResultException %i with description: '%s' created\n",
-           (int)type, this->error.c_str());
+    logger(loglevel::WARNING) << "nvrtcResultException " << (int)type
+     << " with description: " << this->error.c_str() << " created.";
   }
 };
 
@@ -94,8 +96,8 @@ class CUresultException : public nvidiaException {
   CUresultException(CUresult type, std::string error) {
     this->type = type;
     this->error = error;
-    printf("CUresultException %i with description: '%s' created\n", (int)type,
-           this->error.c_str());
+     logger(loglevel::WARNING) << "CUresultException " << (int)type
+      << " with description: " << this->error.c_str() << " created.";
   }
 };
 
@@ -115,16 +117,17 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
 }
 
 //! throws a nvrtcResultException if something went wrong
-#define NVRTC_SAFE_CALL_LOG(error, m_log)                                                 \
+#define NVRTC_SAFE_CALL_LOG(error, m_log)                                      \
   __checkNvrtcResultError_LOG(error, m_log, __FILE__, __LINE__);
-inline void __checkNvrtcResultError_LOG(const nvrtcResult error, std::__cxx11::basic_string<char> m_log,
-                                      const char *file, const int line) {
+inline void __checkNvrtcResultError_LOG(const nvrtcResult error,
+                                        std::__cxx11::basic_string<char> m_log,
+                                        const char *file, const int line) {
   if (NVRTC_SUCCESS != error) {
     // create string for exception
     std::string exception =
         nvrtcGetErrorString(error); // method to get the error name from NVIDIA
     exception = exception + "\n->occoured in file <" + file + " in line " +
-                std::to_string(line) + "\n m_log: "+ m_log + "\n\n";
+                std::to_string(line) + "\n m_log: " + m_log + "\n\n";
     throw nvrtcResultException(error, exception);
   }
 }
