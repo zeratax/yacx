@@ -48,7 +48,9 @@ TEST_CASE("A program is created, compiled, configured and then launched."){
     for (int i=0;i<10;i++){
         REQUIRE(hOut[i] == hostCompareOutput[i]);
     }
+
+    delete[] hX;
+    delete[] hY;
+    delete[] hOut;
+    delete[] hostCompareOutput;
 }
-
-
-
