@@ -164,8 +164,8 @@ int main() {
               << " ms" << std::endl;
 
     time = kernelNaive.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      " << time.sum
-              << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      "
+              << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
@@ -178,7 +178,7 @@ int main() {
     if (BLOCK_SIZE % 4 == 0) {
       time = kernel1_1.launch(args, dev);
       std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  "
-                << time.sum << " ms\n";
+                << time.total << " ms\n";
 
       std::cout << "Effective Bandwith:          "
                 << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
@@ -191,8 +191,8 @@ int main() {
     }
 
     time = kernel1.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          " << time.sum
-              << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          "
+              << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
@@ -202,8 +202,8 @@ int main() {
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     time = kernel2.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          " << time.sum
-              << " ms\n";
+    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          "
+              << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << yacx::effective_bandwidth(time.launch, args) << " GB/s\n\n";

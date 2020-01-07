@@ -76,7 +76,7 @@ int main() {
   std::cout << "upload time:     " << time.upload
             << " ms\nexecution time:  " << time.launch
             << " ms\ndownload time    " << time.download
-            << " ms\ntotal time:      " << time.sum << " ms.\n";
+            << " ms\ntotal time:      " << time.total << " ms.\n";
 
   std::cout << "===================================" << std::endl;
   return 0;
