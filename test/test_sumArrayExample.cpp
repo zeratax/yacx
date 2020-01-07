@@ -251,10 +251,10 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     dim3 block(warpsize, block_y, 1);
     dim3 grid(grid_x);
 
-    std::cout << "Program sumArray compiles with " << nElem << " Threads" << "\n";
+    logger(yacx::loglevel::DEBUG1) << "Program sumArray compiles with " << nElem << " Threads" << "\n";
     Kernel k =
         source.program("sumArrayOnGPU").compile(options).configure(grid, block);
-    std::cout << "Program sumArray started with " << nElem << " Threads" << "\n";
+    logger(yacx::loglevel::DEBUG1) << "Program sumArray started with " << nElem << " Threads" << "\n";
     k.launch(args, device);
 
     // add vector at host side for result checks
