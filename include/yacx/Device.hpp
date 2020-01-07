@@ -52,6 +52,7 @@ class Device : JNIHandle {
   int clock_rate() const { return m_clock_rate; }
   int memory_clock_rate() const { return m_memory_clock_rate; }
   int bus_width() const { return m_bus_width; }
+  CUdevice cuDevice() const { return m_device; }
   //! Returns information about the device, see
   //! <a
   //! href=https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266>CUdevice_attribute</a>
