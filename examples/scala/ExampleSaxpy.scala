@@ -33,7 +33,7 @@ object ExampleSaxpy {
         val nArg = IntArg.createValue(n)
 
         //Create Program
-        val kernelString = Utils.loadFile("saxpy.cu")
+        val kernelString = Utils.loadFile("kernels/saxpy.cu")
         val saxpy = Program.create(kernelString, "saxpy")
 
         //Create compiled Kernel

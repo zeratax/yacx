@@ -4,7 +4,6 @@ import yacx.Executor;
 import yacx.IntArg;
 import yacx.KernelArg;
 import yacx.Options;
-import yacx.Utils;
 
 public class ExampleFilterBenchmark {
 	private final static int KB = 1024;
@@ -13,15 +12,13 @@ public class ExampleFilterBenchmark {
     	//Load Libary
     	Executor.loadLibary();
     	
-        String saxpy = Utils.loadFile("filter_k.cu");
-        
         //Benchmark filter-Kernel
-        System.out.println(Executor.benchmark(saxpy, "filter_k", Options.createOptions(), 10,
+        System.out.println(Executor.benchmark("filter_k", Options.createOptions(), 10,
         		new Executor.KernelArgCreator() {
         	
 		        	@Override
 					public int getDataLength(int dataSizeBytes) {
-						return dataSizeBytes/IntArg.SIZE_BYTES;
+						return (int) (dataSizeBytes/IntArg.SIZE_BYTES);
 					}
 
 					@Override

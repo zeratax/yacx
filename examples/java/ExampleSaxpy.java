@@ -38,7 +38,7 @@ public class ExampleSaxpy {
         nArg = IntArg.createValue(n);
 
         //Create Program
-        String kernelString = Utils.loadFile("saxpy.cu");
+        String kernelString = Utils.loadFile("kernels/saxpy.cu");
         Program saxpy = Program.create(kernelString, "saxpy");
 
         //Create compiled Kernel

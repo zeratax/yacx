@@ -5,7 +5,6 @@ import yacx.FloatArg;
 import yacx.IntArg;
 import yacx.KernelArg;
 import yacx.Options;
-import yacx.Utils;
 
 public class ExampleSaxpyBenchmark {
 	private final static int KB = 1024;
@@ -14,16 +13,14 @@ public class ExampleSaxpyBenchmark {
     	//Load Libary
     	Executor.loadLibary();
     	
-        String saxpy = Utils.loadFile("saxpy.cu");
-        
         //Benchmark saxpy-Kernel
-        System.out.println(Executor.benchmark(saxpy, "saxpy", Options.createOptions(), 10,
+        System.out.println(Executor.benchmark("saxpy", Options.createOptions(), 10,
 	            new Executor.KernelArgCreator() {
 	                    final float a = 5.1f;
 	        			
 	        			@Override
 						public int getDataLength(int dataSizeBytes) {
-							return dataSizeBytes/FloatArg.SIZE_BYTES;
+							return (int) (dataSizeBytes/FloatArg.SIZE_BYTES);
 						}
 	
 						@Override

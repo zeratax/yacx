@@ -49,7 +49,21 @@ jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2
     END_TRY("creating program")
 }
 
-jobject Java_yacx_Program_compile (JNIEnv* env, jobject obj){
+void JNICALL Java_Program_instantiateInternal(JNIEnv* env, jobject obj, jstring jtemplateString){
+	BEGIN_TRY
+		auto programPtr = getHandle<Program>(env, obj);
+	    CHECK_NULL(programPtr, );
+
+	    auto templateStringPtr = env->GetStringUTFChars(jtemplateString, nullptr);
+	    CHECK_NULL(templateStringPtr, );
+
+	    programPtr->instantiate(templateStringPtr);
+
+	    env->ReleaseStringUTFChars(jtemplateString, templateStringPtr);
+	END_TRY("instantiating template parameters")
+}
+
+jobject Java_Program_compile (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto programPtr = getHandle<Program>(env, obj);
     	CHECK_NULL(programPtr, NULL);

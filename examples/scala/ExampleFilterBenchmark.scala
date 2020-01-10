@@ -11,10 +11,8 @@ object ExampleFilterBenchmark {
     	//Load Libary
     	Executor.loadLibary()
     	
-      val saxpy = Utils.loadFile("filter_k.cu")
-        
       //Benchmark filter-Kernel
-      println(Executor.benchmark(saxpy, "filter_k", Options.createOptions(), 10,
+      println(Executor.benchmark("filter_k", Options.createOptions(), 10,
               new Executor.KernelArgCreator() {
         
   					          override def getDataLength(dataSizeBytes: Int) : Int = {

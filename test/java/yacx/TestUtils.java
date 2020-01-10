@@ -18,6 +18,6 @@ public class TestUtils {
 
 	@Test
 	void loadFile() throws IOException {
-		assertEquals(saxpy, Utils.loadFile("saxpy.cu"));
+		assertEquals(saxpy, Utils.loadFile("kernels/saxpy.cu"));
 	}
 }

@@ -12,10 +12,8 @@ object ExampleSaxpyBenchmark {
     	//Load Libary
     	Executor.loadLibary()
     	
-      val saxpy = Utils.loadFile("saxpy.cu")
-        
       //Benchmark saxpy-Kernel
-      println(Executor.benchmark(saxpy, "saxpy", Options.createOptions(), 10,
+      println(Executor.benchmark("saxpy", Options.createOptions(), 10,
               new Executor.KernelArgCreator() {
                       val a = 5.1f
                 			

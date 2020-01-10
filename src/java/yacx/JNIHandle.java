@@ -1,13 +1,23 @@
 package yacx;
 
-abstract public class JNIHandle {
+/**
+ * Class for handle C-Objects.
+ */
+public abstract class JNIHandle {
+	/**
+	 * Create a new JNIHandle.
+	 * @param handle Pointer to C-Object
+	 */
     JNIHandle(long handle) {
         nativeHandle = handle;
     }
 
+    /**
+     * Delete corresponding C-Object.
+     */
     public native void dispose();
 
-    private final long nativeHandle;
+    private final long nativeHandle; // Pointer to C-Object
 
     @Override
     public boolean equals(Object o) {

@@ -31,7 +31,7 @@ public class ExampleFilter {
         nArg = IntArg.create(n);
 
         //Create Program
-        String kernelString = Utils.loadFile("filter_k.cu");
+        String kernelString = Utils.loadFile("kernels/filter_k.cu");
         Program filter = Program.create(kernelString, "filter_k");
 
         //Create compiled Kernel
