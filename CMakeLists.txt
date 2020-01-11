@@ -58,10 +58,10 @@ if(JNI_ENABLED)
       OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/${_class_file}"
       COMMAND
         ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
-        "${PROJECT_SOURCE_DIR}/src/java/" -d
+        "${PROJECT_SOURCE_DIR}/src/java/yacx/" -d
         "${CMAKE_CURRENT_BINARY_DIR}/java/bin"
-        "${PROJECT_SOURCE_DIR}/src/java/${_java_file}"
-      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/${_java_file}")
+        "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}"
+      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}")
     list(APPEND class_files "java/bin/${_class_file}")
   endforeach()
   add_custom_target(JNIClasses ALL DEPENDS ${class_files})
