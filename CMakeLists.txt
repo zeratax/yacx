@@ -18,12 +18,15 @@ link_libraries(cuda nvrtc)
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES
+	"src/java/yacx/ArrayArg.java"
     "src/java/yacx/BooleanArg.java"
+    "src/java/yacx/ByteArg.java"
     "src/java/yacx/Device.java"
     "src/java/yacx/DoubleArg.java"
     "src/java/yacx/Executor.java"
     "src/java/yacx/ExecutorFailureException.java"
     "src/java/yacx/FloatArg.java"
+    "src/java/yacx/HalfArg.java"
     "src/java/yacx/Headers.java"
     "src/java/yacx/IntArg.java"
     "src/java/yacx/JNIHandle.java"
