@@ -76,8 +76,8 @@ public abstract class ArrayArg extends KernelArg {
 	
 	/**
 	 * Create a Slice of this ArrayArg.
-	 * @param start index of the first element for the new array
-	 * @param end index of the last element for new array
+	 * @param start index of the first byte for the new array
+	 * @param end index of the last byte for new array
 	 * @return a pointer to a new C-KernelArg-Object using the same memory for the array
 	 */
 	protected long slice(long start, long end) {
@@ -96,4 +96,7 @@ public abstract class ArrayArg extends KernelArg {
 	ArrayArg(long handle) {
 		super(handle);
 	}
+	
+	//TODO
+	//clone
 }

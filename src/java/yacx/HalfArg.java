@@ -8,14 +8,8 @@ public class HalfArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = sizeofHalf();
+	public final static long SIZE_BYTES = 2;
 	
-	/**
-	 * Returns the size of a half in bytes using <code>sizeof(half)</code> in C-implmentation.
-	 * @return size of a half in bytes
-	 */
-	private static native long sizeofHalf();
-
 	/**
 	 * Convert the float to a half and create a half-value-argument.
 	 * @param value value of the argument, which will be convert to half
@@ -82,7 +76,7 @@ public class HalfArg extends ArrayArg {
 	
 	@Override
 	public HalfArg slice(int start, int end) {
-		return new HalfArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new HalfArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

@@ -11,7 +11,7 @@ public class LongArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = 1;
+	public final static long SIZE_BYTES = 8;
 
 	/**
 	 * Create a long-value-argument.
@@ -73,7 +73,7 @@ public class LongArg extends ArrayArg {
 	
 	@Override
 	public LongArg slice(int start, int end) {
-		return new LongArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new LongArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
     @Override

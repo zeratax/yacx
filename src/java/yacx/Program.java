@@ -43,7 +43,10 @@ public class Program extends JNIHandle {
      * @return <code>this</code>
      */
     public Program instantiate(String ...templateParameter) {
-    	assert(templateParameter != null && templateParameter.length > 0);
+    	assert(templateParameter != null);
+    	
+    	if (templateParameter.length == 0)
+    		throw new IllegalArgumentException("instantiate template parameters with empty array");
     	
     	for (int i = 0; i < templateParameter.length; i++) {
     		assert(templateParameter[i] != null);

@@ -16,24 +16,6 @@ jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboole
 	END_TRY("creating BooleanValueArg")
 }
 
-
-jobject Java_yacx_BooleanArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
-	BEGIN_TRY
-
-		auto jarray = Java_yacx_BooleanArg_asBooleanArray(env, obj);
-		auto arrayPtr = env->GetBooleanArrayElements(jarray, NULL);
-		auto arrayLength = env->GetArrayLength(jarray);
-
-	CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
-
-	KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jboolean), true, true};
-
-	env->ReleaseBooleanArrayElements(jarray, arrayPtr, JNI_ABORT);
-
-	return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating BooleanArg")
-}
-
 jobject Java_yacx_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -48,16 +30,6 @@ jobject Java_yacx_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanAr
         env->ReleaseBooleanArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating BooleanArg")
-}
-
-jobject Java_yacx_BooleanArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
-    BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
-
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jboolean), true, false, true};
-
-    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating BooleanArg")
 }
 

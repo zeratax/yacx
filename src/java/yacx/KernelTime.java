@@ -70,15 +70,15 @@ public class KernelTime {
 		String unit = "ms";
 		if (time > 1000) {
 			time /= 1000;
-			unit = " s";
+			unit = "s";
 
 			if (time > 100) {
 				time /= 60;
-				unit = " m";
+				unit = "m";
 			}
 			if (time > 100) {
 				time /= 60;
-				unit = " h";
+				unit = "h";
 			}
 		}
 

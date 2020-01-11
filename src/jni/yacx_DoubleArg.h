@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_DoubleArg_SIZE_BYTES
-#define yacx_DoubleArg_SIZE_BYTES 8L
+#define yacx_DoubleArg_SIZE_BYTES 1LL
 /*
  * Class:     yacx_DoubleArg
  * Method:    createValue
@@ -19,27 +19,11 @@ JNIEXPORT jobject JNICALL Java_yacx_DoubleArg_createValue
 
 /*
  * Class:     yacx_DoubleArg
- * Method:    create
- * Signature: (Lyacx/DoubleArg;Z)Lyacx/DoubleArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_DoubleArg_create
-  (JNIEnv *, jclass, jobject, jboolean);
-
-/*
- * Class:     yacx_DoubleArg
  * Method:    createInternal
  * Signature: ([DZ)Lyacx/DoubleArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_DoubleArg_createInternal
   (JNIEnv *, jclass, jdoubleArray, jboolean);
-
-/*
- * Class:     yacx_DoubleArg
- * Method:    createOutputInternal
- * Signature: (I)Lyacx/DoubleArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_DoubleArg_createOutputInternal
-  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     yacx_DoubleArg

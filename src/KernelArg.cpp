@@ -4,7 +4,7 @@
 
 #include <builtin_types.h>
 
-using yacx::KernelArg, yacx::loglevel;
+using yacx::KernelArg, yacx::KernelArgMatrixPadding, yacx::loglevel;
 
 KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                      bool upload)
@@ -30,8 +30,7 @@ float KernelArg::upload() {
       CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
 
       CUDA_SAFE_CALL(cuEventRecord(start, 0));
-      CUDA_SAFE_CALL(
-          cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
+      copyDataHtoD();
       CUDA_SAFE_CALL(cuEventRecord(stop, 0));
 
       CUDA_SAFE_CALL(cuEventSynchronize(stop));
@@ -44,7 +43,7 @@ float KernelArg::upload() {
   return time;
 }
 
-float KernelArg::download() {
+float KernelArg::download(void* hdata) {
   float time{0};
 
   if (m_download) {
@@ -55,7 +54,7 @@ float KernelArg::download() {
     CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
 
     CUDA_SAFE_CALL(cuEventRecord(start, 0));
-    CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(m_hdata), m_ddata, m_size));
+    CUDA_SAFE_CALL(cuMemcpyDtoH(hdata, m_ddata, m_size));
     CUDA_SAFE_CALL(cuEventRecord(stop, 0));
 
     CUDA_SAFE_CALL(cuEventSynchronize(stop));
@@ -81,4 +80,33 @@ const void *KernelArg::content() const {
   }
   logger(loglevel::DEBUG1) << "returning host pointer";
   return m_hdata;
+}
+
+void KernelArg::copyDataHtoD() {
+  CUDA_SAFE_CALL(
+          cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
+}
+
+void KernelArgMatrixPadding::copyDataHtoD() {
+  CUdeviceptr dst = m_ddata;
+  char* src = static_cast<char*> (const_cast<void *>(m_hdata));
+  size_t memsetSize = m_shortElements ? (m_dst_columns-m_src_columns)/2 : (m_dst_columns-m_src_columns)/4;
+
+  for (int i = 0; i < m_src_rows; i++) {
+    CUDA_SAFE_CALL(cuMemcpyHtoD(dst, src, m_src_columns));
+    if (m_shortElements) {
+      CUDA_SAFE_CALL(cuMemsetD16(dst + m_src_columns, m_paddingValue, memsetSize));
+    } else {
+      CUDA_SAFE_CALL(cuMemsetD32(dst + m_src_columns, m_paddingValue, memsetSize));
+    }
+
+    dst += m_dst_columns;
+    src += m_src_columns;
+	}
+
+  if (m_shortElements) {
+      CUDA_SAFE_CALL(cuMemsetD16(dst, m_paddingValue, (m_dst_rows - m_src_rows) * m_dst_columns));
+  } else {
+      CUDA_SAFE_CALL(cuMemsetD32(dst, m_paddingValue, (m_dst_rows - m_src_rows) * m_dst_columns));
+  }
 }

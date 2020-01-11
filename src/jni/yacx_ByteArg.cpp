@@ -16,24 +16,6 @@ jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jva
 	END_TRY("creating ByteValueArg")
 }
 
-jobject Java_yacx_ByteArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
-	BEGIN_TRY
-
-		auto jarray = Java_yacx_ByteArg_asByteArray(env, obj);
-		auto arrayPtr = env->GetByteArrayElements(jarray, NULL);
-		auto arrayLength = env->GetArrayLength(jarray);
-
-		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
-
-		KernelArgJNI *kernelArgPtr = new KernelArgJNI(arrayPtr, arrayLength * sizeof(jbyte), jdownload, true, true);
-
-		env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
-
-		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating ByteArg")
-}
-
-
 jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -48,16 +30,6 @@ jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray ja
         env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating ByteArg")
-}
-
-jobject Java_yacx_ByteArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
-    BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
-
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jbyte), true, false, true};
-
-    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating ByteArg")
 }
 

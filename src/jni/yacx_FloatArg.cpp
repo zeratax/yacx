@@ -1,6 +1,7 @@
 #include "yacx_FloatArg.h"
 #include "Handle.h"
 #include "KernelArgJNI.hpp"
+#include "Half.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
 
 using yacx::KernelArg, jni::KernelArgJNI;
@@ -33,14 +34,24 @@ jobject Java_yacx_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray 
     END_TRY("creating FloatArg")
 }
 
-jobject Java_yacx_FloatArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
+jobject Java_yacx_FloatArg_asHalfArg(JNIEnv* env, jobject obj){
     BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
+        auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);
+    	CHECK_NULL(kernelArgJNIPtr, NULL)
+        auto kernelArgPtr = kernelArgJNIPtr->kernelArgPtr();
+        auto data = kernelArgJNIPtr->getHostData();
+        auto dataSize = kernelArgPtr->size();
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jfloat), true, false, true};
+        jclass cls = getClass(env, "yacx/HalfArg");
+		if (cls == NULL) return NULL;
 
-    	return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating FloatArg")
+        KernelArgJNI* newkernelArgJNIPtr = new KernelArgJNI{NULL, dataSize/2,
+            kernelArgPtr->isDownload(), kernelArgPtr->isCopy(), true};
+
+        convertFtoH(data, kernelArgJNIPtr->getHostData(), dataSize);
+
+		return createJNIObject(env, cls, newkernelArgJNIPtr);
+    END_TRY("converting FloatArg to HalfArg")
 }
 
 jfloatArray Java_yacx_FloatArg_asFloatArray (JNIEnv* env, jobject obj){

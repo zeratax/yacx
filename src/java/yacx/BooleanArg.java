@@ -73,7 +73,7 @@ public class BooleanArg extends ArrayArg {
 	
 	@Override
 	public BooleanArg slice(int start, int end) {
-		return new BooleanArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new BooleanArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

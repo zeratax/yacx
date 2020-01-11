@@ -11,7 +11,7 @@ public class FloatArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = 1;
+	public final static long SIZE_BYTES = 4;
 
 	/**
 	 * Create a float-value-argument.
@@ -79,7 +79,7 @@ public class FloatArg extends ArrayArg {
 	
 	@Override
 	public FloatArg slice(int start, int end) {
-		return new FloatArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new FloatArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

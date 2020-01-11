@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_BooleanArg_SIZE_BYTES
-#define yacx_BooleanArg_SIZE_BYTES 1L
+#define yacx_BooleanArg_SIZE_BYTES 1LL
 /*
  * Class:     yacx_BooleanArg
  * Method:    createValue
@@ -19,27 +19,11 @@ JNIEXPORT jobject JNICALL Java_yacx_BooleanArg_createValue
 
 /*
  * Class:     yacx_BooleanArg
- * Method:    create
- * Signature: (Lyacx/BooleanArg;Z)Lyacx/BooleanArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_BooleanArg_create
-  (JNIEnv *, jclass, jobject, jboolean);
-
-/*
- * Class:     yacx_BooleanArg
  * Method:    createInternal
  * Signature: ([ZZ)Lyacx/BooleanArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_BooleanArg_createInternal
   (JNIEnv *, jclass, jbooleanArray, jboolean);
-
-/*
- * Class:     yacx_BooleanArg
- * Method:    createOutputInternal
- * Signature: (I)Lyacx/BooleanArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_BooleanArg_createOutputInternal
-  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     yacx_BooleanArg

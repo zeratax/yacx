@@ -10,6 +10,7 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 
     std::vector<KernelArg> args;
     args.reserve(argumentsLength);
+
     for(int i = 0; i < argumentsLength; i++){
         auto jkernelArg = env->GetObjectArrayElement(jArgs, i);
 
@@ -36,7 +37,7 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
 
 jobject launchInternal(JNIEnv *env, Kernel* kernelPtr, Device* devicePtr, std::vector<KernelArg> args)
 {
-        auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, *devicePtr);
+    auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, *devicePtr);
 
-        return createJavaKernelTime(env, &kernelTimePtr);
+    return createJavaKernelTime(env, &kernelTimePtr);
 }

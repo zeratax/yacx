@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_LongArg_SIZE_BYTES
-#define yacx_LongArg_SIZE_BYTES 8L
+#define yacx_LongArg_SIZE_BYTES 1LL
 /*
  * Class:     yacx_LongArg
  * Method:    createValue
@@ -19,27 +19,11 @@ JNIEXPORT jobject JNICALL Java_yacx_LongArg_createValue
 
 /*
  * Class:     yacx_LongArg
- * Method:    create
- * Signature: (Lyacx/LongArg;Z)Lyacx/LongArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_LongArg_create
-  (JNIEnv *, jclass, jobject, jboolean);
-
-/*
- * Class:     yacx_LongArg
  * Method:    createInternal
  * Signature: ([JZ)Lyacx/LongArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_LongArg_createInternal
   (JNIEnv *, jclass, jlongArray, jboolean);
-
-/*
- * Class:     yacx_LongArg
- * Method:    createOutputInternal
- * Signature: (I)Lyacx/LongArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_LongArg_createOutputInternal
-  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     yacx_LongArg

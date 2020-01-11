@@ -11,7 +11,7 @@ public class DoubleArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = 1;
+	public final static long SIZE_BYTES = 8;
 
 	/**
 	 * Create a double-value-argument.
@@ -73,7 +73,7 @@ public class DoubleArg extends ArrayArg {
 	
 	@Override
 	public DoubleArg slice(int start, int end) {
-		return new DoubleArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new DoubleArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

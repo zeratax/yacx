@@ -87,6 +87,22 @@ JNIEXPORT jint JNICALL Java_yacx_Device_getMemoryClockRate
 JNIEXPORT jint JNICALL Java_yacx_Device_getBusWidth
   (JNIEnv *, jobject);
 
+/*
+ * Class:     yacx_Device
+ * Method:    getMinorVersion
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_yacx_Device_getMinorVersion
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     yacx_Device
+ * Method:    getMajorVersion
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_yacx_Device_getMajorVersion
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

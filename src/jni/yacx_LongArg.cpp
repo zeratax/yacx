@@ -16,24 +16,6 @@ jobject JNICALL Java_yacx_LongArg_createValue(JNIEnv* env, jclass cls, jlong jva
 	END_TRY("creating LongValueArg")
 }
 
-jobject Java_yacx_LongArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
-	BEGIN_TRY
-
-		auto jarray = Java_yacx_LongArg_asLongArray(env, obj);
-		auto arrayPtr = env->GetLongArrayElements(jarray, NULL);
-		auto arrayLength = env->GetArrayLength(jarray);
-
-		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
-
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jlong), jdownload, true, true};
-
-		env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
-
-		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating LongArg")
-}
-
-
 jobject Java_yacx_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -48,16 +30,6 @@ jobject Java_yacx_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray ja
         env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating LongArg")
-}
-
-jobject Java_yacx_LongArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
-    BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
-
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jlong), true, false, true};
-
-    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating LongArg")
 }
 

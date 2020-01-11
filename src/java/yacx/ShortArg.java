@@ -11,7 +11,7 @@ public class ShortArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = 1;
+	public final static long SIZE_BYTES = 2;
 
 	/**
 	 * Create a short-value-argument.
@@ -73,7 +73,7 @@ public class ShortArg extends ArrayArg {
 	
 	@Override
 	public ShortArg slice(int start, int end) {
-		return new ShortArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new ShortArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

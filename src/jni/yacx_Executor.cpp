@@ -27,53 +27,20 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		auto args = getArguments(env, jArgs);
 		if (args.empty()) return NULL;
 
-		jclass kernelTimeCls = getClass(env, "KernelTime");
+		jclass kernelTimeCls = getClass(env, "yacx/KernelTime");
 		if (!kernelTimeCls) return NULL;
+
+		//Run benchmark-test
+		auto kernelTimes = kernelPtr->benchmark(args, jexecutions, *devicePtr);
 
 		//Create Output-Array
 		auto res = (jobjectArray) env->NewObjectArray(jexecutions, kernelTimeCls, NULL);
 		CHECK_NULL(res, NULL)
 
-		//Backup host-data
-		void* hostData[args.size()];
-		void* hostDataBackup[args.size()];
-		for(size_t i = 0; i != args.size(); i++) {
-			auto jkernelArg = env->GetObjectArrayElement(jArgs, i);
-			auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, jkernelArg);
-
-			size_t size = kernelArgJNIPtr->kernelArgPtr()->size();
-			void* data = kernelArgJNIPtr->getHostData();
-
-			hostData[i] = data;
-			hostDataBackup[i] = malloc(size);
-			std::memcpy(hostDataBackup[i], data, size);
+		for (unsigned int i = 0; i < jexecutions; ++i){
+			auto jkernelTime = createJavaKernelTime(env, &kernelTimes.at(i));
+			env->SetObjectArrayElement(res, i, jkernelTime);
 		}
-
-		//Run first n-1 executions
-		for (int i = 0; i < jexecutions-1; i++) {
-			auto jkerneltime = launchInternal(env, kernelPtr, devicePtr, args);
-
-			if (jkerneltime == NULL) return NULL;
-
-			env->SetObjectArrayElement(res, i, jkerneltime);
-
-			//Restore host-data
-			for(size_t i = 0; i != args.size(); i++) {
-				std::memcpy(hostData[i], hostDataBackup[i], args[i].size());
-			}
-		}
-
-		//Free backuped host-data
-		for(size_t i = 0; i != args.size(); i++) {
-			free(hostDataBackup[i]);
-		}
-
-		//Last run without restore Hostdata
-		auto jkerneltime = launchInternal(env, kernelPtr, devicePtr, args);
-
-		if (jkerneltime == NULL) return NULL;
-
-		env->SetObjectArrayElement(res, jexecutions-1, jkerneltime);
 
 		return res;
 	END_TRY("benchmarking Kernel")

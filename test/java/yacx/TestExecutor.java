@@ -2,6 +2,7 @@ package yacx;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ class TestExecutor extends TestJNI {
 		creatorSaxpy = new Executor.KernelArgCreator() {
 			@Override
 			public int getDataLength(int dataSizeBytes) {
-				return dataSizeBytes/FloatArg.SIZE_BYTES;
+				return (int) (dataSizeBytes/FloatArg.SIZE_BYTES);
 			}
 			
 			@Override
@@ -99,7 +100,7 @@ class TestExecutor extends TestJNI {
         	
         	@Override
 			public int getDataLength(int dataSizeBytes) {
-				return dataSizeBytes/IntArg.SIZE_BYTES;
+				return (int) (dataSizeBytes/IntArg.SIZE_BYTES);
 			}
 
 			@Override
@@ -159,6 +160,7 @@ class TestExecutor extends TestJNI {
 		Executor.launch("saxpy", options, devicename, grid, block, aArg, xArg, yArg, outArg, nArg);
 		checkResult();
 		
+		
 		outArg = FloatArg.create(new float[n], true);
 		Executor.launch(saxpy, "saxpy", grid, block, aArg, xArg, yArg, outArg, nArg);
 		checkResult();
@@ -171,15 +173,8 @@ class TestExecutor extends TestJNI {
 		Executor.launch(saxpy, "saxpy", options, devicename, grid, block, aArg, xArg, yArg, outArg, nArg);
 		checkResult();
 		
+		
 		//Methods with more grid and block parameters
-		outArg = FloatArg.create(new float[n], true);
-		Executor.launch("saxpy", options, grid0, grid1, grid2, block0, block1, block2, aArg, xArg, yArg, outArg, nArg);
-		checkResult();
-		
-		outArg = FloatArg.create(new float[n], true);
-		Executor.launch("saxpy", options, devicename, grid0, grid1, grid2, block0, block1, block2, aArg, xArg, yArg, outArg, nArg);
-		checkResult();
-		
 		outArg = FloatArg.create(new float[n], true);
 		Executor.launch(saxpy, "saxpy", grid0, grid1, grid2, block0, block1, block2, aArg, xArg, yArg, outArg, nArg);
 		checkResult();
@@ -194,25 +189,67 @@ class TestExecutor extends TestJNI {
 	}
 	
 	@Test
+	void testLaunchTemplate() throws IOException {
+		//Kernel with one template argument
+		String kernelString = Utils.loadFile("kernels/template.cu");
+        String kernelName = "f3";
+        
+        //Argument for result
+        IntArg resultArg = IntArg.createOutput(1);
+        
+        //Try to run kernel without passing template parameter
+        assertThrows(IllegalArgumentException.class, () -> {
+        	Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+            		new String[0], 1, 1, resultArg);
+        });
+        
+        String templateParameter;
+        
+        //Run with different template parameters
+        templateParameter = "int";
+        
+        Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+        		new String[] {templateParameter}, 1, 1, resultArg);
+        
+        assertEquals(IntArg.SIZE_BYTES, resultArg.asIntArray()[0], "an int in CUDA is not " + IntArg.SIZE_BYTES + " bytes long");
+        
+        
+        templateParameter = "long";
+        
+        Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+        		new String[] {templateParameter}, 1, 1, resultArg);
+        
+        assertEquals(LongArg.SIZE_BYTES, resultArg.asIntArray()[0], "an long in CUDA is not " + LongArg.SIZE_BYTES + " bytes long");
+        
+        //Use the other template-launch-method
+        templateParameter = "double";
+        
+        Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+        		new String[] {templateParameter}, 1, 1, 1, 1, 1, 1, resultArg);
+        
+        assertEquals(DoubleArg.SIZE_BYTES, resultArg.asIntArray()[0], "an double in CUDA is not " + DoubleArg.SIZE_BYTES + " bytes long");
+	}
+	
+	@Test
 	void testBenchmarkInvalid() {
 		//Invalid number of executions
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 0, creatorSaxpy, 1024, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 0, creatorSaxpy, 1024, 2048);
 		});
 		
 		//Invalid dataSize
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 3, creatorSaxpy, 1024, -1, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, creatorSaxpy, 1024, -1, 2048);
 		});
 		
 		//null
 		assertThrows(NullPointerException.class, () -> {
-			Executor.benchmark(saxpy, null, options, 3, creatorSaxpy, 1024, 2048);
+			Executor.benchmark(saxpy, null, options, Device.createDevice(), 3, creatorSaxpy, 1024, 2048);
 		});
 		
 		//invalid KernelArgCreator
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 3, new Executor.KernelArgCreator() {
+			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, new Executor.KernelArgCreator() {
 				
 				@Override
 				public int getDataLength(int dataSizeBytes) {
@@ -265,27 +302,27 @@ class TestExecutor extends TestJNI {
 			}
 		};
 		
-		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creatorInvalid, 1024, 2048);
+		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, creatorInvalid, 1024, 2048);
 		assertNotNull(result);
 		
 		//Run with more than 2048 dataSize
 		assertThrows(NullPointerException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, 3, creatorInvalid, 2048, 4096);
+			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, creatorInvalid, 2048, 4096);
 		});
 	}
 	
 	@Test
-	void testBenchmarkValid() {
+	void testBenchmarkValid() throws IOException {
 		//Run saxpy-benchmark-tests correctly
-		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, 3, creatorSaxpy, 1024, 2048);
+		Executor.BenchmarkResult result = Executor.benchmark("saxpy", options, 3, creatorSaxpy, 1024, 2048);
 		assertNotNull(result);
 		
 		//Other saxpy-benchmark-test
-		result = Executor.benchmark(saxpy, "saxpy", options, 7, creatorSaxpy, 512, 768);
+		result = Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 7, creatorSaxpy, 512, 768);
 		assertNotNull(result);
 		
 		//Run filter-benchmark-tests correctly
-		result = Executor.benchmark(filterk, "filter_k", options, 4, creatorFilter, 1024, 2048, 4096);
+		result = Executor.benchmark(filterk, "filter_k", options, Device.createDevice(), 4, creatorFilter, 1024, 2048, 4096);
 		assertNotNull(result);
 	}
 }

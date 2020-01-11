@@ -39,7 +39,7 @@
     logger(yacx::loglevel::ERROR)                                              \
         << "Executor failure while " << message << ":" << err.what();          \
                                                                                \
-    jclass cls = getClass(env, "ExecutorFailureException");                    \
+    jclass cls = getClass(env, "yacx/ExecutorFailureException");                    \
                                                                                \
     if (cls)                                                                   \
       env->ThrowNew(cls, (std::string("Executor failure while ") + message +   \
@@ -49,7 +49,7 @@
   catch (...) {                                                                \
     logger(yacx::loglevel::ERROR) << "Executor failure while " << message;     \
                                                                                \
-    jclass cls = getClass(env, "ExecutorFailureException");                    \
+    jclass cls = getClass(env, "yacx/ExecutorFailureException");                    \
                                                                                \
     if (cls)                                                                   \
       env->ThrowNew(                                                           \

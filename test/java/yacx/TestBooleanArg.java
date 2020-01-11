@@ -46,6 +46,36 @@ class TestBooleanArg extends TestJNI {
 		//Configure Kernel with 1 thread
 		cpBooleanSingle.configure(1, 1);
 	}
+	
+	/**
+	 * Check if testArray is expected testArray0 
+	 * @param testArray the array to be tested
+	 */
+	void checkTestArray0(boolean[] testArray) {
+		assertEquals(n, testArray.length);
+		
+		for (int i = 0; i < n; i++) {
+			if (i % 2 == 0)
+				assertTrue(testArray[i]);
+			else
+				assertFalse(testArray[i]);
+		}
+	}
+	
+	/**
+	 * Check if testArray is expected testArray1 
+	 * @param testArray the array to be tested
+	 */
+	void checkTestArray1(boolean[] testArray) {
+		assertEquals(n, testArray.length);
+		
+		for (int i = 0; i < n; i++) {
+			if (i != 13)
+				assertTrue(testArray[i]);
+			else
+				assertFalse(testArray[i]);
+		}
+	}
 
 	@Test
 	void testInvalidParameter() {
@@ -204,35 +234,5 @@ class TestBooleanArg extends TestJNI {
 		//Other Array should be unchanged
 		checkTestArray0(testArray0);
 		checkTestArray1(testArray1);
-	}
-	
-	/**
-	 * Check if testArray is expected testArray0 
-	 * @param testArray the array to be tested
-	 */
-	void checkTestArray0(boolean[] testArray) {
-		assertEquals(n, testArray.length);
-		
-		for (int i = 0; i < n; i++) {
-			if (i % 2 == 0)
-				assertTrue(testArray[i]);
-			else
-				assertFalse(testArray[i]);
-		}
-	}
-	
-	/**
-	 * Check if testArray is expected testArray1 
-	 * @param testArray the array to be tested
-	 */
-	void checkTestArray1(boolean[] testArray) {
-		assertEquals(n, testArray.length);
-		
-		for (int i = 0; i < n; i++) {
-			if (i != 13)
-				assertTrue(testArray[i]);
-			else
-				assertFalse(testArray[i]);
-		}
 	}
 }

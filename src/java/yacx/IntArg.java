@@ -11,7 +11,7 @@ public class IntArg extends ArrayArg {
 	/**
 	 * Size in bytes for one element.
 	 */
-	public final static long SIZE_BYTES = 1;
+	public final static long SIZE_BYTES = 4;
 
 	/**
 	 * Create a int-value-argument.
@@ -73,7 +73,7 @@ public class IntArg extends ArrayArg {
 	
 	@Override
 	public IntArg slice(int start, int end) {
-		return new IntArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new IntArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

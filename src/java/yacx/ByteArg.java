@@ -73,7 +73,7 @@ public class ByteArg extends ArrayArg {
 	
 	@Override
 	public ByteArg slice(int start, int end) {
-		return new ByteArg(slice(start * SIZE_BYTES, end * SIZE_BYTES));
+		return new ByteArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override

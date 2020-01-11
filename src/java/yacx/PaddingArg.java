@@ -10,7 +10,9 @@ public class PaddingArg extends KernelArg {
 	 * When uploaded, the PaddingArg create a new array (interpreting as matrix) on the
 	 * device with passed values for dimensions using the values from ArrayArg and
 	 * <code>paddingValue</code> to fill up remaining values. </br>
-	 * After kernellaunch the result will be downloaded to the passed ArrayArg (without the padding).
+	 * if <code>isDownload</code> is true: after kernellaunch the result will be downloaded to the passed ArrayArg
+	 * (without the padding). <br>
+	 * Only supports arrays with elementsize 2 or 4 bytes.
 	 * @param arg ArrayArg
 	 * @param columnsArg number of columns in the matrix <code>arg</code>
 	 * @param rowsArg number of rows in the matrix <code>arg</code>
@@ -25,11 +27,15 @@ public class PaddingArg extends KernelArg {
 		assert(columnsNew > 0 && rowsNew > 0);
 		assert(columnsNew >= columnsArg && rowsNew >= rowsArg);
 		
-		return createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew, paddingValue);
+		if (arg.getSizeBytes() != 2 && arg.getSizeBytes() != 4) {
+			throw new UnsupportedOperationException("only ararys with elementsize 2 or 4 bytes are supported");
+		}
+		
+		return createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew, paddingValue, arg.getSizeBytes() == 2);
 	}
 	
 	public static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
-			int rowsNew, int paddingValue);
+			int rowsNew, int paddingValue, boolean shortElements);
 
 	/**
 	 * Create a new PaddingArg.

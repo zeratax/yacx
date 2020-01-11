@@ -212,7 +212,7 @@ public class Executor {
     }
 
     /**
-     * Benchmark a CUDA kernel.
+     * Benchmark a CUDA kernel loading the kernel string from a file in directory "kernels" with kernelname.cu as filename.
      * @param kernelName name of the kernel
      * @param options options for the nvtrc compiler
      * @param numberExecutions number of executions for the kernel

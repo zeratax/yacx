@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_ByteArg_SIZE_BYTES
-#define yacx_ByteArg_SIZE_BYTES 1L
+#define yacx_ByteArg_SIZE_BYTES 1LL
 /*
  * Class:     yacx_ByteArg
  * Method:    createValue
@@ -19,27 +19,11 @@ JNIEXPORT jobject JNICALL Java_yacx_ByteArg_createValue
 
 /*
  * Class:     yacx_ByteArg
- * Method:    create
- * Signature: (Lyacx/ByteArg;Z)Lyacx/ByteArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_ByteArg_create
-  (JNIEnv *, jclass, jobject, jboolean);
-
-/*
- * Class:     yacx_ByteArg
  * Method:    createInternal
  * Signature: ([BZ)Lyacx/ByteArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_ByteArg_createInternal
   (JNIEnv *, jclass, jbyteArray, jboolean);
-
-/*
- * Class:     yacx_ByteArg
- * Method:    createOutputInternal
- * Signature: (I)Lyacx/ByteArg;
- */
-JNIEXPORT jobject JNICALL Java_yacx_ByteArg_createOutputInternal
-  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     yacx_ByteArg

@@ -16,24 +16,6 @@ jobject JNICALL Java_yacx_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble
 	END_TRY("creating DoubleValueArg")
 }
 
-jobject Java_yacx_DoubleArg_create(JNIEnv *env, jclass cls, jobject obj, jboolean jdownload) {
-	BEGIN_TRY
-
-		auto jarray = Java_yacx_DoubleArg_asDoubleArray(env, obj);
-		auto arrayPtr = env->GetDoubleArrayElements(jarray, NULL);
-		auto arrayLength = env->GetArrayLength(jarray);
-
-		CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL);
-
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jdouble), jdownload, true, true};
-
-		env->ReleaseDoubleArrayElements(jarray, arrayPtr, JNI_ABORT);
-
-		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating DoubleArg")
-}
-
-
 jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean jdownload){
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
@@ -48,16 +30,6 @@ jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArra
         env->ReleaseDoubleArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating DoubleArg")
-}
-
-jobject Java_yacx_DoubleArg_createOutputInternal (JNIEnv* env, jclass cls, jint jarrayLength){
-    BEGIN_TRY
-        CHECK_BIGGER(jarrayLength, 0, "illegal array length", NULL)
-
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, static_cast<size_t> (jarrayLength) * sizeof(jdouble), true, false, true};
-
-    	return createJNIObject(env, cls, kernelArgPtr);
     END_TRY("creating DoubleArg")
 }
 

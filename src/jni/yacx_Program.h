@@ -25,6 +25,14 @@ JNIEXPORT jobject JNICALL Java_yacx_Program_createInternal__Ljava_lang_String_2L
 
 /*
  * Class:     yacx_Program
+ * Method:    instantiateInternal
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_yacx_Program_instantiateInternal
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     yacx_Program
  * Method:    compile
  * Signature: ()Lyacx/Kernel;
  */

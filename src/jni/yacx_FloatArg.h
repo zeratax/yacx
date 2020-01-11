@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_FloatArg_SIZE_BYTES
-#define yacx_FloatArg_SIZE_BYTES 4L
+#define yacx_FloatArg_SIZE_BYTES 1LL
 /*
  * Class:     yacx_FloatArg
  * Method:    createValue
@@ -27,11 +27,11 @@ JNIEXPORT jobject JNICALL Java_yacx_FloatArg_createInternal
 
 /*
  * Class:     yacx_FloatArg
- * Method:    createOutputInternal
- * Signature: (I)Lyacx/FloatArg;
+ * Method:    asHalfArg
+ * Signature: ()Lyacx/HalfArg;
  */
-JNIEXPORT jobject JNICALL Java_yacx_FloatArg_createOutputInternal
-  (JNIEnv *, jclass, jint);
+JNIEXPORT jobject JNICALL Java_yacx_FloatArg_asHalfArg
+  (JNIEnv *, jobject);
 
 /*
  * Class:     yacx_FloatArg
