@@ -18,7 +18,7 @@ link_libraries(cuda nvrtc)
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES
-	"src/java/yacx/ArrayArg.java"
+    "src/java/yacx/ArrayArg.java"
     "src/java/yacx/BooleanArg.java"
     "src/java/yacx/ByteArg.java"
     "src/java/yacx/Device.java"
