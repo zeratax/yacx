@@ -48,21 +48,21 @@ if(JNI_ENABLED)
   include(UseJava)
 
   # Build Java classes
-  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/java/bin/yacx")
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/java/bin")
   set(class_files)
   foreach(_java_path ${JAVA_SOURCE_FILES})
     get_filename_component(_java_file ${_java_path} NAME)
     # _java_file: relative file name _class_file: relative class name
     string(REGEX REPLACE "\\.java$" ".class" _class_file "${_java_file}")
     add_custom_command(
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/yacx/${_class_file}"
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/${_class_file}"
       COMMAND
         ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
         "${PROJECT_SOURCE_DIR}/src/java/" -d
         "${CMAKE_CURRENT_BINARY_DIR}/java/bin"
-        "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}"
-      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/yacx/${_java_file}")
-    list(APPEND class_files "java/bin/yacx/${_class_file}")
+        "${PROJECT_SOURCE_DIR}/src/java/${_java_file}"
+      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/${_java_file}")
+    list(APPEND class_files "java/bin/${_class_file}")
   endforeach()
   add_custom_target(JNIClasses ALL DEPENDS ${class_files})
 
