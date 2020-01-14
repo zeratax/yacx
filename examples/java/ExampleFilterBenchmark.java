@@ -18,7 +18,7 @@ public class ExampleFilterBenchmark {
         	
 		        	@Override
 					public int getDataLength(int dataSizeBytes) {
-						return (int) (dataSizeBytes/IntArg.SIZE_BYTES);
+						return dataSizeBytes/(int) IntArg.SIZE_BYTES;
 					}
 
 					@Override
