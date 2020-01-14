@@ -21,13 +21,13 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-KernelTime Kernel::launch(KernelArgs args, Device device) {
+KernelTime Kernel::launch(KernelArgs args, Context context) {
   KernelTime time;
   cudaEvent_t start, launch, finish, stop;
 
-  logger(loglevel::DEBUG) << "creating context and loading module";
+  logger(loglevel::DEBUG) << "set context";
+  CUDA_SAFEL_CALL(cuCtxSetCurrent(context.get()));
 
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
   CUDA_SAFE_CALL(
       cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
   CUDA_SAFE_CALL(
@@ -37,6 +37,7 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
   CUDA_SAFE_CALL(
       cuEventCreate(&stop, CU_EVENT_DEFAULT)); // end of Kernel launch
 
+  logger(loglevel::DEBUG) << "loading module";
   CUDA_SAFE_CALL(cuEventRecord(start, 0));
 
   logger(loglevel::DEBUG1) << m_ptx.get();
@@ -74,9 +75,7 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
   logger(loglevel::DEBUG) << "freeing resources";
-
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
   return time;
 }

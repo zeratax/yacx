@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Device.hpp"
+#include "Context.hpp"
 #include "JNIHandle.hpp"
 #include "KernelArgs.hpp"
 #include "KernelTime.hpp"
@@ -33,15 +33,15 @@ class Kernel : JNIHandle {
   Kernel &configure(dim3 grid, dim3 block);
   //!
   //! \param kernel_args
+  //! \param context
   //! \return KernelTime
-  KernelTime launch(KernelArgs args, Device device = Device());
+  KernelTime launch(KernelArgs args, Context context = Context());
 
  private:
   std::shared_ptr<char[]> m_ptx;
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
-  CUcontext m_context;
   CUmodule m_module;
   CUfunction m_kernel;
 };

@@ -21,6 +21,7 @@ int main() {
 
   try {
     Device dev;
+    Context ctx{dev};
     Source source{
         "extern \"C\" __global__\n"
         "void saxpy(float a, float *x, float *y, float *out, size_t n) {\n"
@@ -48,7 +49,7 @@ int main() {
     time = source.program("saxpy")
                .compile()
                .configure(grid, block)
-               .launch(args, dev);
+               .launch(args, ctx);
 
     std::cout << "Theoretical Bandwith:        "
               << yacx::theoretical_bandwidth(dev) << " GB/s\n";
