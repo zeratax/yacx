@@ -29,6 +29,7 @@
 
 #pragma once
 
+#include "yacx/Context.hpp"
 #include "yacx/Device.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/Headers.hpp"

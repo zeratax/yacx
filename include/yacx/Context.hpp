@@ -12,10 +12,11 @@ class Context : JNIHandle {
   */
  public:
   Context(Device device = Device());
-  [[nodiscard]] CUcontext get() { return m_context }
+  ~Context();
+  [[nodiscard]] CUcontext get() { return m_context; }
 
  private:
   CUcontext m_context;
-}
+};
 
 } // namespace yacx

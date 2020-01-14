@@ -9,6 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
 add_definitions(-DNVRTC_GET_TYPE_NAME=1)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_definitions(-Wall -Dcurrent_log_level=loglevel::DEBUG)
+endif()
+
 
 include_directories(include)
 include_directories(include/yacx)

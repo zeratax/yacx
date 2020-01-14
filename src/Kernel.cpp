@@ -26,7 +26,7 @@ KernelTime Kernel::launch(KernelArgs args, Context context) {
   cudaEvent_t start, launch, finish, stop;
 
   logger(loglevel::DEBUG) << "set context";
-  CUDA_SAFEL_CALL(cuCtxSetCurrent(context.get()));
+  CUDA_SAFE_CALL(cuCtxSetCurrent(context.get()));
 
   CUDA_SAFE_CALL(
       cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
