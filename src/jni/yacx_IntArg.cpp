@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalu
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jint), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating IntValueArg")
+	END_TRY_R("creating IntValueArg", NULL)
 }
 
 jobject Java_yacx_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarr
         env->ReleaseIntArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating IntArg")
+    END_TRY_R("creating IntArg", NULL)
 }
 
 jintArray Java_yacx_IntArg_asIntArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jintArray Java_yacx_IntArg_asIntArray (JNIEnv* env, jobject obj){
         env->SetIntArrayRegion(res, 0, dataSize / sizeof(jint),
                                    reinterpret_cast<const jint*>(data));
         return res;
-    END_TRY("getting IntArg-content")
+    END_TRY_R("getting IntArg-content", NULL)
 }

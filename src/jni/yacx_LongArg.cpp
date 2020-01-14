@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_LongArg_createValue(JNIEnv* env, jclass cls, jlong jva
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jlong), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating LongValueArg")
+	END_TRY_R("creating LongValueArg", NULL)
 }
 
 jobject Java_yacx_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray ja
         env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating LongArg")
+    END_TRY_R("creating LongArg", NULL)
 }
 
 jlongArray Java_yacx_LongArg_asLongArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jlongArray Java_yacx_LongArg_asLongArray (JNIEnv* env, jobject obj){
         env->SetLongArrayRegion(res, 0, dataSize / sizeof(jlong),
                                    reinterpret_cast<const jlong*>(data));
         return res;
-    END_TRY("getting LongArg-content")
+    END_TRY_R("getting LongArg-content", NULL)
 }
