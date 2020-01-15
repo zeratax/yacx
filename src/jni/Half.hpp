@@ -4,4 +4,4 @@
 
 void convertFtoH(void* floats, void* halfs, unsigned int sizeFloats);
 
-void convertHtoF(void* floats, void* halfs, unsigned int sizeHalfs);
+void convertHtoF(void* halfs, void* floats, unsigned int sizeHalfs);
