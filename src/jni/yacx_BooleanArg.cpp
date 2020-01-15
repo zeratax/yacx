@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboole
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jboolean), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating BooleanValueArg")
+	END_TRY_R("creating BooleanValueArg", NULL)
 }
 
 jobject Java_yacx_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_BooleanArg_createInternal (JNIEnv* env, jclass cls, jbooleanAr
         env->ReleaseBooleanArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating BooleanArg")
+    END_TRY_R("creating BooleanArg", NULL)
 }
 
 jbooleanArray Java_yacx_BooleanArg_asBooleanArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jbooleanArray Java_yacx_BooleanArg_asBooleanArray (JNIEnv* env, jobject obj){
         env->SetBooleanArrayRegion(res, 0, dataSize / sizeof(jboolean),
                                    reinterpret_cast<const jboolean*>(data));
         return res;
-    END_TRY("getting BooleanArg-content")
+    END_TRY_R("getting BooleanArg-content", NULL)
 }

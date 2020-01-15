@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jva
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jbyte), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating ByteValueArg")
+	END_TRY_R("creating ByteValueArg", NULL)
 }
 
 jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray ja
         env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating ByteArg")
+    END_TRY_R("creating ByteArg", NULL)
 }
 
 jbyteArray Java_yacx_ByteArg_asByteArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jbyteArray Java_yacx_ByteArg_asByteArray (JNIEnv* env, jobject obj){
         env->SetByteArrayRegion(res, 0, dataSize / sizeof(jbyte),
                                    reinterpret_cast<const jbyte*>(data));
         return res;
-    END_TRY("getting ByteArg-content")
+    END_TRY_R("getting ByteArg-content", NULL)
 }

@@ -14,7 +14,7 @@ jobject JNICALL Java_yacx_HalfArg_createValue(JNIEnv* env, jclass cls, jfloat jv
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jfloat), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating HalfValueArg")
+	END_TRY_R("creating HalfValueArg", NULL)
 }
 
 jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jboolean jdownload){
@@ -31,7 +31,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
         env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating HalfArg")
+    END_TRY_R("creating HalfArg", NULL)
 }
 
 jfloatArray Java_yacx_HalfArg_asFloatArray (JNIEnv* env, jobject obj){
@@ -54,7 +54,7 @@ jfloatArray Java_yacx_HalfArg_asFloatArray (JNIEnv* env, jobject obj){
         free(dataFloat);
 
         return res;
-    END_TRY("getting FloatArg-content")
+    END_TRY_R("getting FloatArg-content", NULL)
 }
 
 jobject Java_yacx_HalfArg_asFloatArg(JNIEnv* env, jobject obj){
@@ -74,6 +74,6 @@ jobject Java_yacx_HalfArg_asFloatArg(JNIEnv* env, jobject obj){
         convertHtoF(data, kernelArgJNIPtr->getHostData(), dataSize);
 
 		return createJNIObject(env, cls, newkernelArgJNIPtr);
-    END_TRY("converting HalfArg to FloatArg")
+    END_TRY_R("converting HalfArg to FloatArg", NULL)
 }
 

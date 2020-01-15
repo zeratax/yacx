@@ -12,7 +12,7 @@ jlong Java_yacx_ArrayArg_createOutputInternal(JNIEnv* env, jclass cls, jlong jNu
         KernelArgJNI* kernelArgJNIPtr = new KernelArgJNI{NULL, static_cast<size_t> (jNumberBytes), true, false, true};
 
     	return reinterpret_cast<jlong> (kernelArgJNIPtr);
-    END_TRY("creating output argument")
+    END_TRY_R("creating output argument", 0)
 }
 
 jlong Java_yacx_ArrayArg_getSize(JNIEnv* env, jobject obj){
@@ -22,7 +22,7 @@ jlong Java_yacx_ArrayArg_getSize(JNIEnv* env, jobject obj){
         auto dataSize = kernelArgJNIPtr->kernelArgPtr()->size();
 
         return dataSize;
-    END_TRY("getting size of an argument")
+    END_TRY_R("getting size of an argument", 0)
 }
 
 jboolean Java_yacx_ArrayArg_isDownload(JNIEnv* env, jobject obj){
@@ -32,7 +32,7 @@ jboolean Java_yacx_ArrayArg_isDownload(JNIEnv* env, jobject obj){
         auto download = kernelArgJNIPtr->kernelArgPtr()->isDownload();
 
         return download;
-    END_TRY("getting download status")
+    END_TRY_R("getting download status", false)
 }
 
 void Java_yacx_ArrayArg_setDownload(JNIEnv* env, jobject obj, jboolean jdownload){
@@ -52,7 +52,7 @@ jboolean Java_yacx_ArrayArg_isUpload(JNIEnv* env, jobject obj){
         auto upload = kernelArgJNIPtr->kernelArgPtr()->isCopy();
 
         return upload;
-    END_TRY("getting upload status")
+    END_TRY_R("getting upload status", false)
 }
 
 void Java_yacx_ArrayArg_setUpload(JNIEnv* env, jobject obj, jboolean jupload){
@@ -78,5 +78,5 @@ jlong Java_yacx_ArrayArg_sliceInternal(JNIEnv* env, jobject obj, jlong jstart, j
             static_cast<size_t> (jend), kernelArgJNIPtr};
 
         return reinterpret_cast<jlong> (newkernelArgJNIPtr);
-    END_TRY("slicing an array argument")
+    END_TRY_R("slicing an array argument", 0)
 }

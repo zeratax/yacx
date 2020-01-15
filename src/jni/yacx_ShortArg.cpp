@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_ShortArg_createValue(JNIEnv* env, jclass cls, jshort j
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jshort), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating ShortValueArg")
+	END_TRY_R("creating ShortValueArg", NULL)
 }
 
 jobject Java_yacx_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_ShortArg_createInternal (JNIEnv* env, jclass cls, jshortArray 
         env->ReleaseShortArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating ShortArg")
+    END_TRY_R("creating ShortArg", NULL)
 }
 
 jshortArray Java_yacx_ShortArg_asShortArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jshortArray Java_yacx_ShortArg_asShortArray (JNIEnv* env, jobject obj){
         env->SetShortArrayRegion(res, 0, dataSize / sizeof(jshort),
                                    reinterpret_cast<const jshort*>(data));
         return res;
-    END_TRY("getting ShortArg-content")
+    END_TRY_R("getting ShortArg-content", NULL)
 }

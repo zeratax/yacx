@@ -43,5 +43,5 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		}
 
 		return res;
-	END_TRY("benchmarking Kernel")
+	END_TRY_R("benchmarking Kernel", NULL)
 }

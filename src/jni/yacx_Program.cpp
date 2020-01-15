@@ -24,7 +24,7 @@ jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2
         env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
 
         return createJNIObject(env, cls, programPtr);
-    END_TRY("creating program")
+    END_TRY_R("creating program", NULL)
 }
 
 jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2Lyacx_Headers_2 (JNIEnv* env, jclass cls, jstring jkernelSource, jstring jkernelName, jobject jheaders){
@@ -46,7 +46,7 @@ jobject Java_yacx_Program_createInternal__Ljava_lang_String_2Ljava_lang_String_2
         env->ReleaseStringUTFChars(jkernelName, kernelNamePtr);
 
         return createJNIObject(env, cls, programPtr);
-    END_TRY("creating program")
+    END_TRY_R("creating program", NULL)
 }
 
 void JNICALL Java_yacx_Program_instantiateInternal(JNIEnv* env, jobject obj, jstring jtemplateString){
@@ -77,7 +77,7 @@ jobject Java_yacx_Program_compile (JNIEnv* env, jobject obj){
         auto kernelObj = env->NewObject(jKernel, methodID, kernelPtr);
 
         return kernelObj;
-    END_TRY("compiling kernel")
+    END_TRY_R("compiling kernel", NULL)
 }
 
 jobject Java_yacx_Program_compileInternal(JNIEnv* env, jobject obj, jobject joptions){
@@ -99,5 +99,5 @@ jobject Java_yacx_Program_compileInternal(JNIEnv* env, jobject obj, jobject jopt
 
         return kernelObj;
 
-    END_TRY("compiling kernel")
+    END_TRY_R("compiling kernel", NULL)
 }

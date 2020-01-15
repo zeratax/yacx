@@ -10,7 +10,7 @@ jobject Java_yacx_Options_createOptions (JNIEnv* env, jclass cls){
         auto optionPtr = new Options{};
 
         return createJNIObject(env, cls, optionPtr);
-    END_TRY("creating Options")
+    END_TRY_R("creating Options", NULL)
 }
 
 void Java_yacx_Options_insertInternal__Ljava_lang_String_2 (JNIEnv* env, jobject obj, jstring joption){
@@ -51,7 +51,7 @@ jint Java_yacx_Options_getSize (JNIEnv* env, jobject obj){
         auto size = optionPtr->numOptions();
 
         return size;
-    END_TRY("getting size of Options")
+    END_TRY_R("getting size of Options", 0)
 }
 
 jobjectArray Java_yacx_Options_getOptions (JNIEnv* env, jobject obj){
@@ -62,5 +62,5 @@ jobjectArray Java_yacx_Options_getOptions (JNIEnv* env, jobject obj){
         auto options = optionPtr->content();
 
         return createStringArray(env, options, size);
-    END_TRY("getting Strings of Options")
+    END_TRY_R("getting Strings of Options", NULL)
 }

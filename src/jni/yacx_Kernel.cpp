@@ -45,7 +45,7 @@ jobject Java_yacx_Kernel_launchInternal___3Lyacx_KernelArg_2(JNIEnv *env, jobjec
         auto kernelTimePtr = kernelPtr->launch(KernelArgs{args});
 
         return createJavaKernelTime(env, &kernelTimePtr);
-    END_TRY("launching Kernel")
+    END_TRY_R("launching Kernel", NULL)
 }
 
 jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jobject jdevice, jobjectArray jArgs)
@@ -63,7 +63,7 @@ jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEn
         if (args.empty()) return NULL;
 
         return launchInternal(env, kernelPtr, devicePtr, args);
-    END_TRY("launching Kernel on specific device")
+    END_TRY_R("launching Kernel on specific device", NULL)
 }
 
 jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
@@ -85,5 +85,5 @@ jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(
         if (args.empty()) return NULL;
 
         return launchInternal(env, kernelPtr, &device, args);
-    END_TRY("launching Kernel")
+    END_TRY_R("launching Kernel", NULL)
 }

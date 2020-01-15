@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jdouble), false, false, false};
 
 		return createJNIObject(env, cls, kernelArgPtr);
-	END_TRY("creating DoubleValueArg")
+	END_TRY_R("creating DoubleValueArg", NULL)
 }
 
 jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArray jarray, jboolean jdownload){
@@ -30,7 +30,7 @@ jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArra
         env->ReleaseDoubleArrayElements(jarray, arrayPtr, JNI_ABORT);
 
         return createJNIObject(env, cls, kernelArgPtr);
-    END_TRY("creating DoubleArg")
+    END_TRY_R("creating DoubleArg", NULL)
 }
 
 jdoubleArray Java_yacx_DoubleArg_asDoubleArray (JNIEnv* env, jobject obj){
@@ -47,5 +47,5 @@ jdoubleArray Java_yacx_DoubleArg_asDoubleArray (JNIEnv* env, jobject obj){
         env->SetDoubleArrayRegion(res, 0, dataSize / sizeof(jdouble),
                                    reinterpret_cast<const jdouble*>(data));
         return res;
-    END_TRY("getting DoubleArg-content")
+    END_TRY_R("getting DoubleArg-content", NULL)
 }
