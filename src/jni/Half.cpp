@@ -4,11 +4,11 @@ void convertFtoH(void* floats, void* halfs, unsigned int sizeFloats){
     int *data = static_cast<int*> (floats);
     short *dataHalf = static_cast<short*> (halfs);
 
-    for (unsigned int i = 0, j = 0; i < sizeFloats/4; i++, j++) {
+    for (unsigned int i = 0; i < sizeFloats/4; i++) {
         int float32 = data[i];
         short float16 = ((float32 & 0x7fffffff) >> 13) - (0x38000000 >> 13);
         float16 |= ((float32 & 0x80000000) >> 16);
-        dataHalf[j] = float16;
+        dataHalf[i] = float16;
     }
 }
 
@@ -19,7 +19,7 @@ void convertHtoF(void* halfs, void* floats, unsigned int sizeHalfs){
 
   short float16 = 0;
   int float32 = 0x00000000;
-  for (unsigned int i = 0, j = 0; i < sizeHalfs/2 ; i++, j++) {
+  for (unsigned int i = 0; i < sizeHalfs/2 ; i++) {
 
     float16 = dataHalf[i];
     float32 = 0x00000000;
@@ -34,7 +34,6 @@ void convertHtoF(void* halfs, void* floats, unsigned int sizeHalfs){
 
     float32 |= (float16 & 0x3ff) << 13;
 
-    data[j] = float32;
-
+    data[i] = float32;
   }
 }

@@ -229,4 +229,17 @@ class TestFloatArg extends TestJNI {
 		checkTestArray0(testArray0);
 		checkTestArray1(testArray1);
 	}
+	
+	@Test
+	void testToHalf() {
+		HalfArg arg = FloatArg.create(testArray0).asHalfArg();
+		
+		TestHalfArg.checkHalfs(testArray0, arg);
+		checkTestArray0(testArray0);
+		
+		arg = FloatArg.create(testArray1).asHalfArg();
+		
+		TestHalfArg.checkHalfs(testArray1, arg);
+		checkTestArray1(testArray1);
+	}
 }

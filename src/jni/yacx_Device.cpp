@@ -147,3 +147,26 @@ jint Java_yacx_Device_getBusWidth (JNIEnv* env, jobject obj){
         return busWidth;
     END_TRY_R("getting bus width from Device", 0);
 }
+
+jint Java_yacx_Device_getMinorVersion (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
+
+        auto minorVersion = devicePtr->minor_version();
+
+        return minorVersion;
+    END_TRY_R("getting minor version from Device", 0);
+}
+
+
+jint Java_yacx_Device_getMajorVersion (JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
+
+        auto majorVersion = devicePtr->major_version();
+
+        return majorVersion;
+    END_TRY_R("getting major version from Device", 0);
+}

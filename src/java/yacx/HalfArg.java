@@ -2,7 +2,12 @@ package yacx;
 
 /**
  * Class representing an half-array-argument for the kernel. <br>
- * The size in bytes of an half-element may depend on your system.
+ * The passed float-arguments will be converted to halfs. Note the possibility
+ * of accuracy loss while conversion to half. <br>
+ * Note: The size in bytes for one half-element is fixed and may differ from
+ * the size of the corresponding data-type in CUDA, which is depending on your system.
+ * So make sure the size of the corresponding data-type is matching {@link #SIZE_BYTES} to avoid
+ * unexpected segmentation faults.
  */
 public class HalfArg extends ArrayArg {
 	/**

@@ -59,6 +59,8 @@ class KernelArg : JNIHandle {
  protected:
   //! copy data from host to device
   virtual void copyDataHtoD();
+  //! copy data from device to host
+  virtual void copyDataDtoH();
   const void *m_hdata;
   CUdeviceptr m_ddata;
 
@@ -97,6 +99,7 @@ class KernelArgMatrixPadding : public KernelArg {
 
   protected:
     void copyDataHtoD() override;
+    void copyDataDtoH() override;
 
   private:
     const bool m_shortElements;

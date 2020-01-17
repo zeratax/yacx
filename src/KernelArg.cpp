@@ -54,7 +54,7 @@ float KernelArg::download(void* hdata) {
     CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
 
     CUDA_SAFE_CALL(cuEventRecord(start, 0));
-    CUDA_SAFE_CALL(cuMemcpyDtoH(hdata, m_ddata, m_size));
+    copyDataDtoH();
     CUDA_SAFE_CALL(cuEventRecord(stop, 0));
 
     CUDA_SAFE_CALL(cuEventSynchronize(stop));
@@ -87,6 +87,10 @@ void KernelArg::copyDataHtoD() {
           cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
 }
 
+void KernelArg::copyDataDtoH() {
+  CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(m_hdata), m_ddata, m_size));
+}
+
 void KernelArgMatrixPadding::copyDataHtoD() {
   CUdeviceptr dst = m_ddata;
   char* src = static_cast<char*> (const_cast<void *>(m_hdata));
@@ -109,4 +113,15 @@ void KernelArgMatrixPadding::copyDataHtoD() {
   } else {
       CUDA_SAFE_CALL(cuMemsetD32(dst, m_paddingValue, (m_dst_rows - m_src_rows) * m_dst_columns));
   }
+}
+
+void KernelArgMatrixPadding::copyDataDtoH() {
+  CUdeviceptr dst = m_ddata;
+  char* src = static_cast<char*> (const_cast<void *>(m_hdata));
+
+	for (int i = 0; i < m_dst_rows; i++) {
+		CUDA_SAFE_CALL(cuMemcpyDtoH(src, dst, m_dst_columns));
+    dst += m_dst_columns;
+    src += m_src_columns;
+	}
 }

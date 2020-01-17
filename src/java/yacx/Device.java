@@ -97,7 +97,8 @@ public class Device extends JNIHandle {
 
     @Override
     public String toString(){
-        return "Device: " + getName() + " (Memory: " + getMemorySize()/1024/1024 + " MebiBytes, Blocks: " + Arrays.toString(getMaxBlock())
-            + ", Grids: " + Arrays.toString(getMaxGrid()) + ")";
+        return "Device: " + getName() + " (Memory: " + getMemorySize()/1024/1024 + " MB, Blocks: "
+        		+ Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid()) +
+        		" Version: " + getMinorVersion() + "-" + getMajorVersion() + ")";
     }
 }

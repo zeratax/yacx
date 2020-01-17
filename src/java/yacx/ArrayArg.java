@@ -15,8 +15,7 @@ public abstract class ArrayArg extends KernelArg {
 	 * This creates a new ArrayArg corresponding to a new C-KernelArg-Object, but using the same memory
 	 * for the array. <br>
 	 * If the content of this ArrayArg changed, the content of the created ArrayArg will be changed too.
-	 * In the other direction as well. <br>
-	 * Use <code>clone()</code> to avoid this.
+	 * In the other direction as well.
 	 * @param start index of the first element for the new array
 	 * @param end index of the last element for new array
 	 * @return a new ArrayArg using the same memory for the array
