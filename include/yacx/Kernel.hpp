@@ -40,10 +40,11 @@ class Kernel : JNIHandle {
   //! \param number of executions
   //! \param device
   //! \return vector of KernelTimes for every execution
-  std::vector<KernelTime> benchmark(KernelArgs args, unsigned int executions, Device device = Device());
+  std::vector<KernelTime> benchmark(KernelArgs args, unsigned int executions,
+                                    Device device = Device());
 
  private:
-  KernelTime launch(KernelArgs args, void* downloadDest);
+  KernelTime launch(KernelArgs args, void *downloadDest);
 
   std::shared_ptr<char[]> m_ptx;
   std::string m_demangled_name;

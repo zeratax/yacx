@@ -20,7 +20,7 @@ float KernelArgs::download() {
   return result;
 }
 
-float KernelArgs::download(void* hdata) {
+float KernelArgs::download(void *hdata) {
   float result{0};
   for (auto &arg : m_args)
     result += arg.download(hdata);

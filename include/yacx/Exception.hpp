@@ -78,8 +78,9 @@ class nvrtcResultException : public nvidiaException {
   nvrtcResultException(nvrtcResult type, std::string error) {
     this->type = type;
     this->error = error;
-    logger(loglevel::WARNING) << "nvrtcResultException " << (int)type
-     << " with description: " << this->error.c_str() << " created.";
+    logger(loglevel::WARNING)
+        << "nvrtcResultException " << (int)type
+        << " with description: " << this->error.c_str() << " created.";
   }
 };
 
@@ -96,8 +97,9 @@ class CUresultException : public nvidiaException {
   CUresultException(CUresult type, std::string error) {
     this->type = type;
     this->error = error;
-     logger(loglevel::WARNING) << "CUresultException " << (int)type
-      << " with description: " << this->error.c_str() << " created.";
+    logger(loglevel::WARNING)
+        << "CUresultException " << (int)type
+        << " with description: " << this->error.c_str() << " created.";
   }
 };
 

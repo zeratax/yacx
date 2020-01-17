@@ -43,7 +43,7 @@ float KernelArg::upload() {
   return time;
 }
 
-float KernelArg::download(void* hdata) {
+float KernelArg::download(void *hdata) {
   float time{0};
 
   if (m_download) {
@@ -83,8 +83,7 @@ const void *KernelArg::content() const {
 }
 
 void KernelArg::copyDataHtoD() {
-  CUDA_SAFE_CALL(
-          cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
+  CUDA_SAFE_CALL(cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
 }
 
 void KernelArg::copyDataDtoH() {
@@ -93,35 +92,40 @@ void KernelArg::copyDataDtoH() {
 
 void KernelArgMatrixPadding::copyDataHtoD() {
   CUdeviceptr dst = m_ddata;
-  char* src = static_cast<char*> (const_cast<void *>(m_hdata));
-  size_t memsetSize = m_shortElements ? (m_dst_columns-m_src_columns)/2 : (m_dst_columns-m_src_columns)/4;
+  char *src = static_cast<char *>(const_cast<void *>(m_hdata));
+  size_t memsetSize = m_shortElements ? (m_dst_columns - m_src_columns) / 2
+                                      : (m_dst_columns - m_src_columns) / 4;
 
   for (int i = 0; i < m_src_rows; i++) {
     CUDA_SAFE_CALL(cuMemcpyHtoD(dst, src, m_src_columns));
     if (m_shortElements) {
-      CUDA_SAFE_CALL(cuMemsetD16(dst + m_src_columns, m_paddingValue, memsetSize));
+      CUDA_SAFE_CALL(
+          cuMemsetD16(dst + m_src_columns, m_paddingValue, memsetSize));
     } else {
-      CUDA_SAFE_CALL(cuMemsetD32(dst + m_src_columns, m_paddingValue, memsetSize));
+      CUDA_SAFE_CALL(
+          cuMemsetD32(dst + m_src_columns, m_paddingValue, memsetSize));
     }
 
     dst += m_dst_columns;
     src += m_src_columns;
-	}
+  }
 
   if (m_shortElements) {
-      CUDA_SAFE_CALL(cuMemsetD16(dst, m_paddingValue, (m_dst_rows - m_src_rows) * m_dst_columns));
+    CUDA_SAFE_CALL(cuMemsetD16(dst, m_paddingValue,
+                               (m_dst_rows - m_src_rows) * m_dst_columns));
   } else {
-      CUDA_SAFE_CALL(cuMemsetD32(dst, m_paddingValue, (m_dst_rows - m_src_rows) * m_dst_columns));
+    CUDA_SAFE_CALL(cuMemsetD32(dst, m_paddingValue,
+                               (m_dst_rows - m_src_rows) * m_dst_columns));
   }
 }
 
 void KernelArgMatrixPadding::copyDataDtoH() {
   CUdeviceptr dst = m_ddata;
-  char* src = static_cast<char*> (const_cast<void *>(m_hdata));
+  char *src = static_cast<char *>(const_cast<void *>(m_hdata));
 
-	for (int i = 0; i < m_dst_rows; i++) {
-		CUDA_SAFE_CALL(cuMemcpyDtoH(src, dst, m_dst_columns));
+  for (int i = 0; i < m_dst_rows; i++) {
+    CUDA_SAFE_CALL(cuMemcpyDtoH(src, dst, m_dst_columns));
     dst += m_dst_columns;
     src += m_src_columns;
-	}
+  }
 }

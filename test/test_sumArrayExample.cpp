@@ -1,7 +1,7 @@
+#include "yacx/Exception.hpp"
+#include "yacx/Logger.hpp"
 #include "yacx/main.hpp"
 #include <catch2/catch.hpp>
-#include "yacx/Logger.hpp"
-#include "yacx/Exception.hpp"
 
 using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
     yacx::type_of, yacx::loglevel;
@@ -242,19 +242,25 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     args.emplace_back(KernelArg{gpuRef, nBytes, true});
     args.emplace_back(KernelArg{&nElem, sizeof(int), false});
 
-    constexpr int warpsize = 32;  
+    constexpr int warpsize = 32;
     int max_block_DIM = 0;
-    yacx::CUDA_SAFE_CALL( cuDeviceGetAttribute((int*)&max_block_DIM,CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,device.cuDevice()));
-    const int grid_x = (nElem + max_block_DIM -1) / max_block_DIM;
-    const int block_y = (nElem/grid_x + warpsize - 1) / warpsize;
+    yacx::CUDA_SAFE_CALL(cuDeviceGetAttribute(
+        (int *)&max_block_DIM, CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
+        device.cuDevice()));
+    const int grid_x = (nElem + max_block_DIM - 1) / max_block_DIM;
+    const int block_y = (nElem / grid_x + warpsize - 1) / warpsize;
 
     dim3 block(warpsize, block_y, 1);
     dim3 grid(grid_x);
 
-    logger(yacx::loglevel::DEBUG1) << "Program sumArray compiles with " << nElem << " Threads" << "\n";
+    logger(yacx::loglevel::DEBUG1)
+        << "Program sumArray compiles with " << nElem << " Threads"
+        << "\n";
     Kernel k =
         source.program("sumArrayOnGPU").compile(options).configure(grid, block);
-    logger(yacx::loglevel::DEBUG1) << "Program sumArray started with " << nElem << " Threads" << "\n";
+    logger(yacx::loglevel::DEBUG1)
+        << "Program sumArray started with " << nElem << " Threads"
+        << "\n";
     k.launch(args, device);
 
     // add vector at host side for result checks

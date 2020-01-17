@@ -49,7 +49,7 @@ class KernelArg : JNIHandle {
   //! downloads data to host
   //! \param pointer to host memory
   //! \return time to download from device
-  float download(void* hdata);
+  float download(void *hdata);
   const size_t size() const { return m_size; }
   bool isDownload() const { return m_download; }
   void setDownload(bool download) { m_download = download; }
@@ -72,42 +72,43 @@ class KernelArg : JNIHandle {
 };
 
 class KernelArgMatrixPadding : public KernelArg {
-  public:
-    //! A constructor
-    /*!
-    *
-    * \param data pointer to argument for kernel function
-    * \param size size of argument in bytes
-    * \param dst_rows number of rows for new matrix with padding
-    * \param dst_columns number of columns for new matrix with padding
-    * \param src_rows number of rows of current matrix without padding
-    * \param src_columns number of columns of currentmatrix without padding
-    * \param paddingValue value to fill up additional rows and columns
-    * \param shortElements true if size of elements in the matrix is 2 byte,
-    * false if size of elements in the matrix is 4 byte
-    * \param download copy the results from device to host after kernel execution
-    * types, e.g. int)
-    */
-    KernelArgMatrixPadding(void *data, size_t size, int dst_rows, int dst_columns, int src_rows,
-      int src_columns, int paddingValue, bool shortElements, bool download = false) :
-      KernelArg(data, size, download, true, true), m_paddingValue(paddingValue),
-      m_shortElements(shortElements),
-      m_dst_rows(shortElements ? dst_rows * 2 : dst_rows * 4),
-      m_dst_columns(shortElements ? dst_columns * 2 : dst_columns * 4),
-      m_src_rows(shortElements ? src_rows * 2 : src_rows * 4),
-      m_src_columns(shortElements ? src_columns * 2 : src_columns * 4) {}
+ public:
+  //! A constructor
+  /*!
+   *
+   * \param data pointer to argument for kernel function
+   * \param size size of argument in bytes
+   * \param dst_rows number of rows for new matrix with padding
+   * \param dst_columns number of columns for new matrix with padding
+   * \param src_rows number of rows of current matrix without padding
+   * \param src_columns number of columns of currentmatrix without padding
+   * \param paddingValue value to fill up additional rows and columns
+   * \param shortElements true if size of elements in the matrix is 2 byte,
+   * false if size of elements in the matrix is 4 byte
+   * \param download copy the results from device to host after kernel execution
+   * types, e.g. int)
+   */
+  KernelArgMatrixPadding(void *data, size_t size, int dst_rows, int dst_columns,
+                         int src_rows, int src_columns, int paddingValue,
+                         bool shortElements, bool download = false)
+      : KernelArg(data, size, download, true, true),
+        m_paddingValue(paddingValue), m_shortElements(shortElements),
+        m_dst_rows(shortElements ? dst_rows * 2 : dst_rows * 4),
+        m_dst_columns(shortElements ? dst_columns * 2 : dst_columns * 4),
+        m_src_rows(shortElements ? src_rows * 2 : src_rows * 4),
+        m_src_columns(shortElements ? src_columns * 2 : src_columns * 4) {}
 
-  protected:
-    void copyDataHtoD() override;
-    void copyDataDtoH() override;
+ protected:
+  void copyDataHtoD() override;
+  void copyDataDtoH() override;
 
-  private:
-    const bool m_shortElements;
-    const int m_paddingValue;
-    const int m_dst_rows;
-    const int m_dst_columns;
-    const int m_src_rows;
-    const int m_src_columns;
+ private:
+  const bool m_shortElements;
+  const int m_paddingValue;
+  const int m_dst_rows;
+  const int m_dst_columns;
+  const int m_src_rows;
+  const int m_src_columns;
 };
 
 class KernelArgs {
@@ -115,7 +116,7 @@ class KernelArgs {
   KernelArgs(std::vector<KernelArg> args);
   float upload();
   float download();
-  float download(void* hdata);
+  float download(void *hdata);
   const void **content();
   size_t size() const;
   size_t maxOutputSize() const;

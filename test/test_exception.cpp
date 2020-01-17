@@ -159,7 +159,7 @@ TEST_CASE("1. Selected nvrtc-Exceptions are returned.") {
     REQUIRE(nvrtc_internal_string == "11~NVRTC_ERROR_INTERNAL_ERROR");
   }
   SECTION("1N. Others:") {
-    const nvrtcResult error = (const nvrtcResult) 41;
+    const nvrtcResult error = (const nvrtcResult)41;
     std::string nvrtc_other_string = yacx::detail::whichError(error);
     REQUIRE(nvrtc_other_string == "Error: 41~error_unknown");
   }
