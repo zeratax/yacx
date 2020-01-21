@@ -83,6 +83,7 @@ const void *KernelArg::content() const {
 }
 
 void KernelArg::copyDataHtoD() {
+  logger(loglevel::DEBUG1) << "normal copy";
   CUDA_SAFE_CALL(cuMemcpyHtoD(m_ddata, const_cast<void *>(m_hdata), m_size));
 }
 
@@ -96,6 +97,13 @@ void KernelArgMatrixPadding::copyDataHtoD() {
   size_t memsetSize = m_shortElements ? (m_dst_columns - m_src_columns) / 2
                                       : (m_dst_columns - m_src_columns) / 4;
 
+//TODO
+printf("COPYDATAhtoD\n");
+  logger(loglevel::DEBUG1) << "CopyDataHtoD";
+  logger(loglevel::DEBUG1) << "Werte: " << m_src_columns << m_src_rows << m_dst_columns << m_dst_rows;
+  logger(loglevel::DEBUG1) << "MemsetSize %i" << memsetSize;
+  logger(loglevel::DEBUG1) << "PaddingValue: " << m_paddingValue;
+  logger(loglevel::DEBUG1) << "CopyDataHtoD Ende";
   for (int i = 0; i < m_src_rows; i++) {
     CUDA_SAFE_CALL(cuMemcpyHtoD(dst, src, m_src_columns));
     if (m_shortElements) {

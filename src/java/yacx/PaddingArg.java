@@ -4,7 +4,9 @@ package yacx;
  * Class representing an argument for the kernel. <br>
  * This argument containing an ArrayArg with a specific padding.
  */
-public class PaddingArg extends KernelArg {
+public class PaddingArg extends ArrayArg {
+	private ArrayArg arg;
+	
 	/**
 	 * Creates a new PaddingArg with the passed ArrayArg interpreting the array as matrix. <br>
 	 * When uploaded, the PaddingArg create a new array (interpreting as matrix) on the
@@ -31,10 +33,13 @@ public class PaddingArg extends KernelArg {
 			throw new UnsupportedOperationException("only ararys with elementsize 2 or 4 bytes are supported");
 		}
 		
-		return createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew, paddingValue, arg.getSizeBytes() == 2);
+		PaddingArg paddingArg =  createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew,
+				paddingValue, arg.getSizeBytes() == 2);
+		paddingArg.arg = arg;
+		return paddingArg;
 	}
 	
-	public static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
+	private static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
 			int rowsNew, int paddingValue, boolean shortElements);
 
 	/**
@@ -43,5 +48,15 @@ public class PaddingArg extends KernelArg {
 	 */
 	PaddingArg(long handle) {
 		super(handle);
+	}
+
+	@Override
+	protected long getSizeBytes() {
+		return arg.getSizeBytes();
+	}
+
+	@Override
+	public ArrayArg slice(int start, int end) {
+		throw new UnsupportedOperationException("slicing a padding arg is not supported");
 	}
 }

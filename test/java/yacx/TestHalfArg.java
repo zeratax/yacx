@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Test;
 public class TestHalfArg extends TestJNI {
 	static final String checkHalfs = "#include <cuda_fp16.h>\n" +
 			"extern \"C\"__global__\n" + 
-			"void checkFtoHSeq(float* floats, half* halfs, int* counter, int n){\n" + 
+			"void checkFtoHSeq(float* floats, __half* halfs, int* counter, int n){\n" + 
 			"    int i = threadIdx.x;\n" + 
-			"    if (__float2half(floats[i]) == halfs[i]){\n" + 
+			"    if (__heq(__float2half(floats[i]), halfs[i])){\n" + 
 			"        atomicAdd(counter, 1);\n" + 
 			"    }\n" + 
 			"}";
-	static final String checkFloats = "#include <cuda_fp16.h>\n" +
+	static final String checkFloats = "#include <cuda_fp16.h>\n" + 
 			"extern \"C\" __global__\n" + 
-			"void checkHtoFSeq(float* floats, half* halfs, int* counter, int n){\n" + 
+			"void checkHtoFSeq(float* floats, __half* halfs, int* counter, int n){\n" + 
 			"    int i = threadIdx.x;\n" + 
-			"    if (((float) halfs[i]) == floats[i]){\n" + 
+			"    if (__half2float(halfs[i]) == floats[i]){\n" + 
 			"        atomicAdd(counter, 1);\n" + 
 			"    }\n" + 
 			"}";
@@ -47,13 +47,15 @@ public class TestHalfArg extends TestJNI {
 		//convert test-data to half-arrays
 		HalfArg testArray0Half = HalfArg.create(testArray0);
 		HalfArg testArray1Half = HalfArg.create(testArray1);
+		System.out.println("TestArray0:");
 		System.out.println(Arrays.toString(testArray0));
+		System.out.println("TestArray0 nach Umwandlung zu halfs und wieder zu floats:");
 		System.out.println(Arrays.toString(testArray0Half.asFloatArray()));
 		TestHalfArg.testArray0Half = testArray0Half.asFloatArray();
 		TestHalfArg.testArray1Half = testArray1Half.asFloatArray();
 		//check result using CUDA conversion from floats to halfs to floats
 		checkHalfs(testArray0, testArray0Half);
-		checkHalfs(testArray1, testArray1Half);
+//		checkHalfs(testArray1, testArray1Half);
 //		checkFloats(testArray0, TestHalfArg.testArray0Half);
 //		checkFloats(testArray1, TestHalfArg.testArray1Half);
 //		
@@ -133,7 +135,8 @@ public class TestHalfArg extends TestJNI {
 		//Counter for false converted floats
 		IntArg counterArg = IntArg.create(new int[] {0}, true);
 		
-		Executor.launch(checkHalfs, "checkFtoHSeq", Options.createOptions("--gpu-architecture=compute_32"), 1, floats.length, FloatArg.create(floats), halfs, counterArg, nArg);
+		Executor.launch(checkHalfs, "checkFtoHSeq", Options.createOptions("--gpu-architecture=compute_60"), 1, floats.length, FloatArg.create(floats), halfs, counterArg, nArg);
+//		Executor.launch(checkHalfs, "checkFtoHSeq", 1, floats.length, FloatArg.create(floats), halfs, counterArg, nArg);
 		assertEquals(1, counterArg.getLength());
 		assertEquals(0, counterArg.asIntArray()[0]);
 	}

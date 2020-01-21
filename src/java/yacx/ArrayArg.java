@@ -95,7 +95,4 @@ public abstract class ArrayArg extends KernelArg {
 	ArrayArg(long handle) {
 		super(handle);
 	}
-	
-	//TODO
-	//clone
 }
