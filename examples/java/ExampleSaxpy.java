@@ -44,7 +44,7 @@ public class ExampleSaxpy {
         //Create compiled Kernel
         Kernel saxpyKernel = saxpy.compile();
 
-        //Compile and launch Kernel
+        //Launch Kernel
         KernelTime executionTime = saxpyKernel.launch(numThreads, numBlocks, aArg, xArg, yArg, outArg, nArg);
 
         //Get Result

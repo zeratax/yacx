@@ -22,13 +22,13 @@ public class TestPaddingArg extends TestJNI {
 			"}\n" + 
 			"";
 	
-	static final String copyHalfArrayString = "#include <cuda_fp16.h>\n" +
-			"\"extern \"C\" __global__\n" + 
-			"void copyHalf(half* in, half* out) {\n" + 
-			"  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + 
-			"  out[i] = in[i];\n" + 
-			"}\n" + 
-			"";
+//	static final String copyHalfArrayString = "#include <cuda_fp16.h>\n" +
+//			"\"extern \"C\" __global__\n" + 
+//			"void copyHalf(half* in, half* out) {\n" + 
+//			"  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + 
+//			"  out[i] = in[i];\n" + 
+//			"}\n" + 
+//			"";
 	
 	@BeforeAll
 	static void init() {
@@ -41,11 +41,11 @@ public class TestPaddingArg extends TestJNI {
 		
 		columns1 = 2;
 		rows1 = 2;
-		columns2 = 2;
-		rows2 = 6;
+//		columns2 = 2;
+//		rows2 = 6;
 		
 		matrix1Arg = IntArg.create(matrix1, true);
-		matrix2Arg = HalfArg.create(matrix2, true);
+//		matrix2Arg = HalfArg.create(matrix2, true);
 	}
 	
 //	@Test
@@ -81,25 +81,25 @@ public class TestPaddingArg extends TestJNI {
 	
 	@Test
 	void test() {
-		System.out.println("\n");
-		System.out.println("------------------------");
+		//TODO
 		IntArg out = IntArg.createOutput(4*4);
-		System.out.println("Download?");
-		System.out.println(matrix1Arg.isDownload());
-		System.out.println("upload?");
-		System.out.println(matrix1Arg.isUpload());
 		PaddingArg in = PaddingArg.createMatrixPadding(matrix1Arg, columns1, rows1, 4, 4, 1);
-		System.out.println("Download?");
-		System.out.println(in.isDownload());
-		System.out.println("upload?");
-		System.out.println(in.isUpload());
+		System.out.println();
+		System.out.println("InArg:");
+		System.out.println(matrix1Arg.toString());
+		System.out.println("PaddingArg:");
+		System.out.println(in.toString());
+		System.out.println();
+		System.out.println("Copy padding to out:");
 		Executor.launch(copyIntArrayString, "copyInt", 1, 4*4, in, out);
+		System.out.println();
+		System.out.println("Copy arg to out:");
+		Executor.launch(copyIntArrayString, "copyInt", 1, 4*4, matrix1Arg, out);
 		
 		assertArrayEquals(matrix1, matrix1Arg.asIntArray());
 		System.out.println("OutArg:");
 		System.out.println(Arrays.toString(out.asIntArray()));
-		assertArrayEquals(new int[] {1,2,0,0, 3,4,0,0, 0,0,0,0, 0,0,0,0}, out.asIntArray());
+		assertArrayEquals(new int[] {1,2,1,1, 3,4,1,1, 1,1,1,1, 1,1,1,1}, out.asIntArray());
 		
-		in = PaddingArg.createMatrixPadding(arg, columnsArg, rowsArg, columnsNew, rowsNew, paddingValue)
 	}
 }

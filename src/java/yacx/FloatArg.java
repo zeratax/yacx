@@ -57,7 +57,8 @@ public class FloatArg extends ArrayArg {
 	}
 	
 	/**
-	 * Create a new HalfArg with the values of this array, which are converted to halfs.
+	 * Create a new HalfArg with the values of this array, which are converted to halfs. <br>
+	 * Required CUDA-device with CUDA version 6 or higher.
 	 * @return a new HalfArg with this data
 	 */
 	public native HalfArg asHalfArg();

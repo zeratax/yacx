@@ -14,7 +14,7 @@ public class PaddingArg extends ArrayArg {
 	 * <code>paddingValue</code> to fill up remaining values. </br>
 	 * if <code>isDownload</code> is true: after kernellaunch the result will be downloaded to the passed ArrayArg
 	 * (without the padding). <br>
-	 * Only supports arrays with elementsize 2 or 4 bytes.
+	 * Only supports arrays with elementsize 1, 2 or 4 bytes.
 	 * @param arg ArrayArg
 	 * @param columnsArg number of columns in the matrix <code>arg</code>
 	 * @param rowsArg number of rows in the matrix <code>arg</code>
@@ -29,18 +29,14 @@ public class PaddingArg extends ArrayArg {
 		assert(columnsNew > 0 && rowsNew > 0);
 		assert(columnsNew >= columnsArg && rowsNew >= rowsArg);
 		
-		if (arg.getSizeBytes() != 2 && arg.getSizeBytes() != 4) {
-			throw new UnsupportedOperationException("only ararys with elementsize 2 or 4 bytes are supported");
-		}
-		
 		PaddingArg paddingArg =  createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew,
-				paddingValue, arg.getSizeBytes() == 2);
+				paddingValue, (int) arg.getSizeBytes());
 		paddingArg.arg = arg;
 		return paddingArg;
 	}
 	
 	private static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
-			int rowsNew, int paddingValue, boolean shortElements);
+			int rowsNew, int paddingValue, int elementSize);
 
 	/**
 	 * Create a new PaddingArg.

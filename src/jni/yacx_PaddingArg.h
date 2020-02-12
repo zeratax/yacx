@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     yacx_PaddingArg
  * Method:    createMatrixPaddingInternal
- * Signature: (Lyacx/ArrayArg;IIIIIZ)Lyacx/PaddingArg;
+ * Signature: (Lyacx/ArrayArg;IIIIII)Lyacx/PaddingArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_PaddingArg_createMatrixPaddingInternal
-  (JNIEnv *, jclass, jobject, jint, jint, jint, jint, jint, jboolean);
+  (JNIEnv *, jclass, jobject, jint, jint, jint, jint, jint, jint);
 
 #ifdef __cplusplus
 }

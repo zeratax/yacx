@@ -4,6 +4,7 @@ package yacx;
  * Class representing an half-array-argument for the kernel. <br>
  * The passed float-arguments will be converted to halfs. Note the possibility
  * of accuracy loss while conversion to half. <br>
+ * Required CUDA-device with CUDA version 6 or higher. <br>
  * Note: The size in bytes for one half-element is fixed and may differ from
  * the size of the corresponding data-type in CUDA, which is depending on your system.
  * So make sure the size of the corresponding data-type is matching {@link #SIZE_BYTES} to avoid

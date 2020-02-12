@@ -65,7 +65,7 @@ jobject Java_yacx_FloatArg_asHalfArg(JNIEnv* env, jobject obj){
         KernelArgJNI* newkernelArgJNIPtr = new KernelArgJNI{NULL, dataSize/2,
             kernelArgPtr->isDownload(), kernelArgPtr->isCopy(), true};
 
-        convertFtoH(data, kernelArgJNIPtr->getHostData(), dataSize);
+        convertFtoH(data, kernelArgJNIPtr->getHostData(), dataSize/sizeof(float));
 
 		return createJNIObject(env, cls, newkernelArgJNIPtr);
     END_TRY_R("converting FloatArg to HalfArg", NULL)

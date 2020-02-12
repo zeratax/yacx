@@ -28,7 +28,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, arrayLength * (sizeof(jfloat)/2), jdownload, true, true};
-        convertFtoH(arrayPtr, kernelArgPtr->getHostData(), arrayLength * (sizeof(jfloat)/2));
+        convertFtoH(arrayPtr, kernelArgPtr->getHostData(), arrayLength);
 
         env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
 
@@ -47,13 +47,13 @@ jfloatArray Java_yacx_HalfArg_asFloatArray (JNIEnv* env, jobject obj){
 
         CHECK_NULL(res, NULL)
 
-        void* dataFloat = malloc(dataSize*2);
-        convertHtoF(data, dataFloat, dataSize);
+        void* dataFloatTmp = malloc(dataSize*2);
+        convertHtoF(data, dataFloatTmp, dataSize/2);
 
         env->SetFloatArrayRegion(res, 0, dataSize*2 / sizeof(jfloat),
-                                   reinterpret_cast<const jfloat*>(dataFloat));
+                                   reinterpret_cast<const jfloat*>(dataFloatTmp));
 
-        free(dataFloat);
+        free(dataFloatTmp);
 
         return res;
     END_TRY_R("getting HalfArg-content", NULL)
@@ -73,7 +73,7 @@ jobject Java_yacx_HalfArg_asFloatArg(JNIEnv* env, jobject obj){
         KernelArgJNI* newkernelArgJNIPtr = new KernelArgJNI{NULL, dataSize*2,
             kernelArgPtr->isDownload(), kernelArgPtr->isCopy(), true};
 
-        convertHtoF(data, kernelArgJNIPtr->getHostData(), dataSize);
+        convertHtoF(data, newkernelArgJNIPtr->getHostData(), dataSize/2);
 
 		return createJNIObject(env, cls, newkernelArgJNIPtr);
     END_TRY_R("converting HalfArg to FloatArg", NULL)

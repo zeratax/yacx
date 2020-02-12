@@ -3,8 +3,63 @@
 #include "JNIHandle.hpp"
 #include <cuda.h>
 #include <vector>
+#include <memory>
 
 namespace yacx {
+  class KernelArg;
+  class KernelArgMatrixPadding;
+
+  namespace detail {
+    class DataCopy {
+      public:
+        //! A constructor
+        //! \param kernelArg KernelArg, which should be copied from/to host to/from device
+        DataCopy(KernelArg* kernelArg) : m_kernelArg(kernelArg) {}
+        //! copy data from host to device
+        virtual void copyDataHtoD() = 0;
+        //! copy data from device to host
+        virtual void copyDataDtoH() = 0;
+
+      protected:
+        KernelArg* m_kernelArg;
+    };
+
+    class DataCopyKernelArg : public DataCopy {
+      public:
+        DataCopyKernelArg(KernelArg* kernelArg) : DataCopy(kernelArg) {}
+        void copyDataHtoD() override;
+        void copyDataDtoH() override;
+    };
+
+    class DataCopyKernelArgMatrixPadding : public DataCopy {
+      public:
+        //! A constructor
+        /*!
+        * \param kernelArg KernelArg, which should be copied from/to host to/from device
+        * \param dst_rows number of rows for new matrix with padding
+        * \param dst_columns number of columns for new matrix with padding
+        * \param src_rows number of rows of current matrix without padding
+        * \param src_columns number of columns of currentmatrix without padding
+        * \param paddingValue value to fill up additional rows and columns
+        * \param elementSize size of each element of the matrix in bytes
+        */
+        DataCopyKernelArgMatrixPadding(KernelArgMatrixPadding* kernelArg, int elementSize,
+          unsigned int paddingValue, int dst_rows, int dst_columns, int src_rows, int src_columns) :
+          DataCopy(reinterpret_cast<KernelArg*> (kernelArg)),
+          m_paddingValue(paddingValue), m_elementSize(elementSize), m_dst_rows(dst_rows),
+          m_dst_columns(dst_columns), m_src_rows(src_rows), m_src_columns(src_columns) {}
+        void copyDataHtoD() override;
+        void copyDataDtoH() override;
+
+      private:
+        const int m_elementSize;
+        const int m_paddingValue;
+        const int m_dst_rows;
+        const int m_dst_columns;
+        const int m_src_rows;
+        const int m_src_columns;
+    };
+  }
 
 /*!
   \class ProgramArg ProgramArg.hpp
@@ -17,6 +72,8 @@ namespace yacx {
 
 class KernelArg : JNIHandle {
   friend class KernelArgs;
+  friend class detail::DataCopyKernelArg;
+  friend class detail::DataCopyKernelArgMatrixPadding;
 
  public:
   //! A constructor
@@ -57,10 +114,6 @@ class KernelArg : JNIHandle {
   void setCopy(bool copy) { m_copy = copy; }
 
  protected:
-  //! copy data from host to device
-  virtual void copyDataHtoD();
-  //! copy data from device to host
-  virtual void copyDataDtoH();
   const void *m_hdata;
   CUdeviceptr m_ddata;
 
@@ -69,6 +122,7 @@ class KernelArg : JNIHandle {
   bool m_download;
   bool m_copy;
   const bool m_upload;
+  std::shared_ptr<detail::DataCopy> m_dataCopy;
 };
 
 class KernelArgMatrixPadding : public KernelArg {
@@ -83,32 +137,19 @@ class KernelArgMatrixPadding : public KernelArg {
    * \param src_rows number of rows of current matrix without padding
    * \param src_columns number of columns of currentmatrix without padding
    * \param paddingValue value to fill up additional rows and columns
-   * \param shortElements true if size of elements in the matrix is 2 byte,
-   * false if size of elements in the matrix is 4 byte
+   * \param elementSize size of each element of the matrix in bytes
    * \param download copy the results from device to host after kernel execution
    * types, e.g. int)
    */
   KernelArgMatrixPadding(void *data, size_t size, int dst_rows, int dst_columns,
                          int src_rows, int src_columns, int paddingValue,
-                         bool shortElements, bool download = false)
-      : KernelArg(data, size, download, true, true),
-        m_paddingValue(paddingValue), m_shortElements(shortElements),
-        m_dst_rows(shortElements ? dst_rows * 2 : dst_rows * 4),
-        m_dst_columns(shortElements ? dst_columns * 2 : dst_columns * 4),
-        m_src_rows(shortElements ? src_rows * 2 : src_rows * 4),
-        m_src_columns(shortElements ? src_columns * 2 : src_columns * 4) {}
-
- protected:
-  void copyDataHtoD() override;
-  void copyDataDtoH() override;
-
- private:
-  const bool m_shortElements;
-  const int m_paddingValue;
-  const int m_dst_rows;
-  const int m_dst_columns;
-  const int m_src_rows;
-  const int m_src_columns;
+                         unsigned int elementSize, bool download = false)
+      : KernelArg(data, size, download, true, true) {}
+        // m_paddingValue(paddingValue), m_shortElements(shortElements),
+        // m_dst_rows(shortElements ? dst_rows * 2 : dst_rows * 4),
+        // m_dst_columns(shortElements ? dst_columns * 2 : dst_columns * 4),
+        // m_src_rows(shortElements ? src_rows * 2 : src_rows * 4),
+        // m_src_columns(shortElements ? src_columns * 2 : src_columns * 4) {}
 };
 
 class KernelArgs {
