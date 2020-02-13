@@ -53,7 +53,6 @@ public class ExampleSimpleGemm {
         
         //Compiler option
         Options options = Options.createOptions("--gpu-architecture=compute_60");
-        options.insert("--include-path=/scratch/tmp/l_sief03/include/include");
 
         //Compile and launch Kernel
         KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, 1,1,1, 1,1,1,
