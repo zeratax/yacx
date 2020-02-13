@@ -12,6 +12,7 @@ add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)
 include_directories(include/yacx)
+include_directories(include/yacx/cexecutor)
 
 link_libraries(cuda nvrtc)
 
@@ -21,6 +22,7 @@ set(JAVA_SOURCE_FILES
     "src/java/yacx/ArrayArg.java"
     "src/java/yacx/BooleanArg.java"
     "src/java/yacx/ByteArg.java"
+    "src/java/yacx/CProgram.java"
     "src/java/yacx/Device.java"
     "src/java/yacx/DoubleArg.java"
     "src/java/yacx/Executor.java"
