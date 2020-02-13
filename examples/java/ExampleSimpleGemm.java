@@ -63,7 +63,7 @@ public class ExampleSimpleGemm {
         //Load Kernel as string
         String kernelString = Utils.loadFile("simple_wmma_gemm.cu");
         
-        //Compiler option
+        //Compiler options
         Options options = Options.createOptions("--gpu-architecture=compute_60");
 
         //Compile and launch Kernel

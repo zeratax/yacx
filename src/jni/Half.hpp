@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../include/yacx/Source.hpp"
-#include "../../include/yacx/Program.hpp"
 #include "../../include/yacx/Kernel.hpp"
+#include "../../include/yacx/Program.hpp"
+#include "../../include/yacx/Source.hpp"
 
 #include <stdlib.h>
 

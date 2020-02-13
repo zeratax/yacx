@@ -2,59 +2,62 @@
 
 #include "JNIHandle.hpp"
 #include <cuda.h>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace yacx {
-  class KernelArg;
-  class KernelArgMatrixPadding;
+class KernelArg;
+class KernelArgMatrixPadding;
 
-  namespace detail {
-    class DataCopy {
-      public:
-        //! A constructor
-        //! \param kernelArg KernelArg, which should be copied from/to host to/from device
-        DataCopy() {}
-        //! copy data from host to device
-        virtual void copyDataHtoD(KernelArg* kernelArg) = 0;
-        //! copy data from device to host
-        virtual void copyDataDtoH(KernelArg* kernelArg) = 0;
-    };
+namespace detail {
+class DataCopy {
+ public:
+  //! A constructor
+  //! \param kernelArg KernelArg, which should be copied from/to host to/from
+  //! device
+  DataCopy() {}
+  //! copy data from host to device
+  virtual void copyDataHtoD(KernelArg *kernelArg) = 0;
+  //! copy data from device to host
+  virtual void copyDataDtoH(KernelArg *kernelArg) = 0;
+};
 
-    class DataCopyKernelArg : public DataCopy {
-      public:
-        DataCopyKernelArg() {}
-        void copyDataHtoD(KernelArg* kernelArg) override;
-        void copyDataDtoH(KernelArg* kernelArg) override;
-    };
+class DataCopyKernelArg : public DataCopy {
+ public:
+  DataCopyKernelArg() {}
+  void copyDataHtoD(KernelArg *kernelArg) override;
+  void copyDataDtoH(KernelArg *kernelArg) override;
+};
 
-    class DataCopyKernelArgMatrixPadding : public DataCopy {
-      public:
-        //! A constructor
-        /*!
-        * \param elementSize size of each element of the matrix in bytes
-        * \param paddingValue value to fill up additional rows and columns
-        * \param src_rows number of rows of current matrix without padding
-        * \param src_columns number of columns of currentmatrix without padding
-        * \param dst_rows number of rows for new matrix with padding
-        * \param dst_columns number of columns for new matrix with padding
-        */
-        DataCopyKernelArgMatrixPadding(int elementSize, unsigned int paddingValue,
-          int src_rows, int src_columns, int dst_rows, int dst_columns) :
-          m_paddingValue(paddingValue), m_elementSize(elementSize), m_src_rows(src_rows),
-          m_src_columns(src_columns), m_dst_rows(dst_rows), m_dst_columns(dst_columns) {}
-        void copyDataHtoD(KernelArg* kernelArg) override;
-        void copyDataDtoH(KernelArg* kernelArg) override;
+class DataCopyKernelArgMatrixPadding : public DataCopy {
+ public:
+  //! A constructor
+  /*!
+   * \param elementSize size of each element of the matrix in bytes
+   * \param paddingValue value to fill up additional rows and columns
+   * \param src_rows number of rows of current matrix without padding
+   * \param src_columns number of columns of currentmatrix without padding
+   * \param dst_rows number of rows for new matrix with padding
+   * \param dst_columns number of columns for new matrix with padding
+   */
+  DataCopyKernelArgMatrixPadding(int elementSize, unsigned int paddingValue,
+                                 int src_rows, int src_columns, int dst_rows,
+                                 int dst_columns)
+      : m_paddingValue(paddingValue), m_elementSize(elementSize),
+        m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
+        m_dst_columns(dst_columns) {}
+  void copyDataHtoD(KernelArg *kernelArg) override;
+  void copyDataDtoH(KernelArg *kernelArg) override;
 
-      private:
-        const int m_elementSize;
-        const int m_paddingValue;
-        const int m_src_rows;
-        const int m_src_columns;
-        const int m_dst_rows;
-        const int m_dst_columns;
-    };
-  }
+ private:
+  const int m_elementSize;
+  const int m_paddingValue;
+  const int m_src_rows;
+  const int m_src_columns;
+  const int m_dst_rows;
+  const int m_dst_columns;
+};
+} // namespace detail
 
 /*!
   \class ProgramArg ProgramArg.hpp
@@ -137,9 +140,10 @@ class KernelArgMatrixPadding : public KernelArg {
    * \param dst_rows number of rows for new matrix with padding
    * \param dst_columns number of columns for new matrix with padding
    */
-  KernelArgMatrixPadding(void *data, size_t size, bool download, int elementSize,
-                         unsigned int paddingValue, int src_rows, int src_columns,
-                         int dst_rows, int dst_columns);
+  KernelArgMatrixPadding(void *data, size_t size, bool download,
+                         int elementSize, unsigned int paddingValue,
+                         int src_rows, int src_columns, int dst_rows,
+                         int dst_columns);
 };
 
 class KernelArgs {
