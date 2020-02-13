@@ -147,9 +147,9 @@ inline void __checkCUresultError(const CUresult error, const char *file,
         error, &description); // method to get the error description from NVIDIA
     std::string exception = name;
     exception = exception + "\n->occoured in file <" + file + " in line " +
-                std::to_string(line) + "\n" + "  ->kurz: " + description +
+                std::to_string(line) + "\n" + "  ->" + description +
                 "\n"
-                "  ->lang: \n" +
+                "  ->" +
                 detail::whichError(error).c_str() + "\n\n";
     // choose which error to throw
     throw CUresultException(error, exception);
