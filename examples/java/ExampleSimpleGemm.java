@@ -13,6 +13,10 @@ import yacx.Options;
 import yacx.Utils;
 
 public class ExampleSimpleGemm {
+	// WMMA dimensions
+	private final static int WMMA_M = 16;
+	private final static int WMMA_N = 16;
+		
 	public static void main(String[] args) throws IOException {
 		//Load Libary
         Executor.loadLibary();
@@ -36,6 +40,14 @@ public class ExampleSimpleGemm {
         	cMatrix[i] = 1f;
         }
         
+        //Calculate block and grid dimensions 
+        // blockDim.x must be a multple of warpSize
+    	// 128x4 means we have 16 warps and a block computes a 64x64 output tile
+    	int blockDimX = 128;
+    	int blockDimY = 4;
+
+    	int gridDimX = (m + (WMMA_M * blockDimX / 32 - 1)) / (WMMA_M * blockDimX / 32);
+    	int gridDimY = (n + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY);
 
         //Create Arguments
         HalfArg aMatrixArg = HalfArg.create(aMatrix);
@@ -55,13 +67,14 @@ public class ExampleSimpleGemm {
         Options options = Options.createOptions("--gpu-architecture=compute_60");
 
         //Compile and launch Kernel
-        KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, 1,1,1, 1,1,1,
+        KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options,
+        		gridDimX,gridDimY,1, blockDimX,blockDimY,1,
         		aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
 
         float[] dMatrix = dMatrixArg.asFloatArray();
         
         //Print Result
-        System.out.println("Kernel simple_wmma_gemm launched" + time.toString());
+        System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
         System.out.println();
         System.out.println("aMatrix:");
         System.out.println(Arrays.toString(aMatrix));
