@@ -12,7 +12,7 @@ namespace yacx{
 
         private:
             void createSrcFile(char* cProgram, char* functionName, int numberParameters, std::ofstream& fileOut);
-            void compile(char* cProgram, char* functionName, int numberParameters, char* compilerWithOptions);
+            void compile(char* cProgram, char* functionName, int numberParameters, char* compilerWithOptions = "gcc -Wall");
 
             static int id;
             struct dynop op;

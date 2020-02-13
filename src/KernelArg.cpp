@@ -21,15 +21,15 @@ KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
 }
 
 KernelArgMatrixPadding::KernelArgMatrixPadding(void *data, size_t size, bool download, int elementSize,
-                         unsigned int paddingValue, int dst_rows, int dst_columns,
-                         int src_rows, int src_columns)
+                         unsigned int paddingValue, int src_rows, int src_columns, 
+                         int dst_rows, int dst_columns)
       : KernelArg(data, size, download, true, true) {
-  m_dataCopy = std::make_shared<DataCopyKernelArgMatrixPadding>(elementSize, paddingValue, dst_rows,
-                    dst_columns, src_rows, src_columns);
+  m_dataCopy = std::make_shared<DataCopyKernelArgMatrixPadding>(elementSize, paddingValue, src_rows,
+                    src_columns, dst_rows, dst_columns);
 
-  logger(loglevel::DEBUG) << "created KernelArgMatrixPadding with src_columns: " << src_columns
-                           << ", src_rows: " << src_rows << ", dst_columns: " << dst_columns
-                           << ", dst_rows: " << dst_rows << ", paddingValue: " << paddingValue;
+  logger(loglevel::DEBUG) << "created KernelArgMatrixPadding with src_rows: " << src_rows
+                           << ", src_columns: " << src_columns << ", dst_rows: " << dst_rows
+                           << ", dst_columns: " << dst_columns << ", paddingValue: " << paddingValue;
 }
 
 float KernelArg::upload() {
@@ -38,7 +38,6 @@ float KernelArg::upload() {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
-    logger(loglevel::ERROR) << "uploading argument2" << m_ddata;
     if (m_copy) {
       logger(loglevel::DEBUG1) << "copying data to device";
 

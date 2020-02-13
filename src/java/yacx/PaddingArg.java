@@ -16,27 +16,27 @@ public class PaddingArg extends ArrayArg {
 	 * (without the padding). <br>
 	 * Only supports arrays with elementsize 1, 2 or 4 bytes.
 	 * @param arg ArrayArg
-	 * @param columnsArg number of columns in the matrix <code>arg</code>
 	 * @param rowsArg number of rows in the matrix <code>arg</code>
-	 * @param columnsNew new number of columns for the new matrix on the device
+	 * @param columnsArg number of columns in the matrix <code>arg</code>
 	 * @param rowsNew new number of rows for the new matrix on the device
+	 * @param columnsNew new number of columns for the new matrix on the device
 	 * @param paddingValue value to fill up remaining for the new matrix
 	 * @return new PaddingArg for the passed ArrayArg with specific padding on the device
 	 */
-	public static PaddingArg createMatrixPadding(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
-			int rowsNew, int paddingValue) {
+	public static PaddingArg createMatrixPadding(ArrayArg arg, int rowsArg, int columnsArg, int rowsNew,
+			int columnsNew, int paddingValue) {
 		assert(columnsArg > 0 && rowsArg > 0);
 		assert(columnsNew > 0 && rowsNew > 0);
 		assert(columnsNew >= columnsArg && rowsNew >= rowsArg);
 		
-		PaddingArg paddingArg =  createMatrixPaddingInternal(arg, columnsArg, rowsArg, columnsNew, rowsNew,
+		PaddingArg paddingArg =  createMatrixPaddingInternal(arg, rowsArg, columnsArg, rowsNew, columnsNew,
 				paddingValue, (int) arg.getSizeBytes());
 		paddingArg.arg = arg;
 		return paddingArg;
 	}
 	
-	private static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int columnsArg, int rowsArg, int columnsNew,
-			int rowsNew, int paddingValue, int elementSize);
+	private static native PaddingArg createMatrixPaddingInternal(ArrayArg arg, int rowsArg, int columnsArg,
+			int rowsNew, int columnsNew, int paddingValue, int elementSize);
 
 	/**
 	 * Create a new PaddingArg.
@@ -44,6 +44,15 @@ public class PaddingArg extends ArrayArg {
 	 */
 	PaddingArg(long handle) {
 		super(handle);
+	}
+	
+	/**
+	 * Return original ArrayArg which is padded in this arg. <br>
+	 * Use this to access data from this PaddingArg.
+	 * @return original ArrayArg
+	 */
+	public ArrayArg getArg() {
+		return arg;
 	}
 
 	@Override

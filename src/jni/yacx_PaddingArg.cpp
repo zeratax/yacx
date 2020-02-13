@@ -6,7 +6,7 @@
 using yacx::KernelArg, yacx::KernelArgMatrixPadding, jni::KernelArgJNI;
 
 jobject Java_yacx_PaddingArg_createMatrixPaddingInternal(JNIEnv* env, jclass cls, jobject jKernelArg,
-    jint jcolumnsArg, jint jrowsArg, jint jcolumnsNew, jint jrowsNew, jint jpaddingValue,
+    jint jrowsArg, jint jcolumnsArg, jint jrowsNew, jint jcolumnsNew, jint jpaddingValue,
     jint elementSize) {
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, jKernelArg);
@@ -21,7 +21,7 @@ jobject Java_yacx_PaddingArg_createMatrixPaddingInternal(JNIEnv* env, jclass cls
 
         KernelArgMatrixPadding* newKernelArgPtr = new KernelArgMatrixPadding{kernelArgJNIPtr->getHostData(),
             static_cast<size_t> (jrowsNew*jcolumnsNew*elementSize), kernelArgPtr->isDownload(), elementSize,
-            static_cast<unsigned int> (jpaddingValue), jrowsNew, jcolumnsNew, jrowsArg, jcolumnsArg};
+            static_cast<unsigned int> (jpaddingValue), jrowsArg, jcolumnsArg, jrowsNew, jcolumnsNew};
 
         KernelArgJNI* newKernelArgJNIPtr = new KernelArgJNI{kernelArgJNIPtr->getHostDataSharedPointer(),
             newKernelArgPtr};
