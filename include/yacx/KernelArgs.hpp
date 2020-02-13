@@ -43,7 +43,7 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
   DataCopyKernelArgMatrixPadding(int elementSize, unsigned int paddingValue,
                                  int src_rows, int src_columns, int dst_rows,
                                  int dst_columns)
-      : m_paddingValue(paddingValue), m_elementSize(elementSize),
+      : m_elementSize(elementSize), m_paddingValue(paddingValue),
         m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
         m_dst_columns(dst_columns) {}
   void copyDataHtoD(KernelArg *kernelArg) override;

@@ -14,9 +14,8 @@ std::shared_ptr<DataCopyKernelArg> KernelArg::dataCopyKernelArg =
 
 KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                      bool upload)
-    : m_hdata{data}, m_size{size},
-      m_download{download}, m_copy{copy}, m_upload{upload},
-      m_dataCopy(KernelArg::dataCopyKernelArg) {
+    : m_hdata{data}, m_dataCopy(KernelArg::dataCopyKernelArg),
+      m_size{size}, m_download{download}, m_copy{copy}, m_upload{upload} {
   logger(loglevel::DEBUG) << "created KernelArg with size: " << size
                           << ", which should " << (m_upload ? "be" : "not be")
                           << " uploaded and should "
