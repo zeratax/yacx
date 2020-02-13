@@ -20,11 +20,12 @@ jobject Java_yacx_PaddingArg_createMatrixPaddingInternal(JNIEnv* env, jclass cls
         CHECK_BIGGER(jcolumnsNew+jrowsNew, jcolumnsArg+jrowsArg, "illegal matrix dimensions: new matrix dimensions are current matrix dimensions", NULL)
 
         KernelArgMatrixPadding* newKernelArgPtr = new KernelArgMatrixPadding{kernelArgJNIPtr->getHostData(),
-            kernelArgPtr->size(), jrowsNew, jcolumnsNew, jrowsArg, jcolumnsArg, jpaddingValue,
-            reinterpret_cast<unsigned int> (elementSize), kernelArgPtr->isDownload()};
+            static_cast<size_t> (jrowsNew*jcolumnsNew*elementSize), kernelArgPtr->isDownload(), elementSize,
+            static_cast<unsigned int> (jpaddingValue), jrowsNew, jcolumnsNew, jrowsArg, jcolumnsArg};
 
         KernelArgJNI* newKernelArgJNIPtr = new KernelArgJNI{kernelArgJNIPtr->getHostDataSharedPointer(),
             newKernelArgPtr};
+
         return createJNIObject(env, cls, newKernelArgJNIPtr);
     END_TRY_R("create PaddinArg", NULL)
 }
