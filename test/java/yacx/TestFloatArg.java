@@ -232,6 +232,9 @@ class TestFloatArg extends TestJNI {
 	
 	@Test
 	void testToHalf() {
+		//CUDA compute-version 6 required
+		org.junit.Assume.assumeTrue("CUDA computer-version 6 or higher required", Device.createDevice().getMinorVersion() >= 6);
+				
 		HalfArg arg = FloatArg.create(testArray0).asHalfArg();
 		
 		TestHalfArg.checkHalfs(testArray0, arg);
