@@ -15,6 +15,54 @@ public class Executor {
     public static void loadLibary() {
         System.loadLibrary("yacx-jni");
     }
+    
+    /**
+     * Launch a CFunction.
+     * @param cProgram string containing the cProgram 
+     * @param functionName name of the function
+     * @param args arguments for function
+     * @return execution time in milliseconds (wallclock time)
+     */
+    public static long executeC(String cProgram, String functionName, KernelArg ...args) {
+    	CProgram cProg = CProgram.create(cProgram, functionName, args.length);
+    	
+    	long t0 = System.currentTimeMillis();
+    	cProg.execute(args);
+    	return System.currentTimeMillis()-t0;
+    }
+    
+    /**
+     * Launch a CFunction.
+     * @param cProgram string containing the cProgram 
+     * @param functionName name of the function
+     * @param compiler name of the compiler for compiling the cProgram
+     * @param args arguments for function
+     * @return execution time in milliseconds (wallclock time)
+     */
+    public static long executeC(String cProgram, String functionName, String compiler, KernelArg ...args) {
+    	CProgram cProg = CProgram.create(cProgram, functionName, args.length, compiler);
+    	
+    	long t0 = System.currentTimeMillis();
+    	cProg.execute(args);
+    	return System.currentTimeMillis()-t0;
+    }
+    
+    /**
+     * Launch a CFunction.
+     * @param cProgram string containing the cProgram 
+     * @param functionName name of the function
+     * @param compiler name of the compiler for compiling the cProgram
+     * @param options options for the passed compiler
+     * @param args arguments for function
+     * @return execution time in milliseconds (wallclock time)
+     */
+    public static long executeC(String cProgram, String functionName, String compiler, Options options, KernelArg ...args) {
+    	CProgram cProg = CProgram.create(cProgram, functionName, args.length, compiler, options);
+    	
+    	long t0 = System.currentTimeMillis();
+    	cProg.execute(args);
+    	return System.currentTimeMillis()-t0;
+    }
 
     /**
      * Launch a CUDA kernel loading the kernel string from a file in directory "kernels" with kernelname.cu as filename.

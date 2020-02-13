@@ -1,19 +1,20 @@
-#include "CProgram.hpp"
-// #include "../../include/yacx/Logger.hpp"
+#include "../../include/yacx/cexecutor/CProgram.hpp"
+#include "../../include/yacx/cexecutor/LibaryLoader.hpp"
+#include "../../include/yacx/Logger.hpp"
 
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
 #include <sstream>
 
-// using yacx::loglevel;
+using yacx::loglevel, yacx::CProgram, yacx::detail::load_op, yacx::detail::unload_op, yacx::detail::dynop;
 
 int CProgram::id = 0;
 
 CProgram::CProgram(char* cProgram, char* functionName, int numberParameters, char* compilerWithOptions) {
-    // logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
-    // << ",number of arguments: " << numberParameters << ", compiler: " << compilerWithOptions;
-    // logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
+    logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
+    << ",number of arguments: " << numberParameters << ", compiler: " << compilerWithOptions;
+    logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
 
     id++;
     
@@ -27,20 +28,25 @@ CProgram::CProgram(char* cProgram, char* functionName, int numberParameters, cha
     libFileS << "lib_" << functionName << "_" << id << ".so";
     libFile = libFileS.str().c_str();
 
-    // logger(loglevel::DEBUG1) << "compile it to " << srcFile << " and " << libFile;
+    logger(loglevel::DEBUG1) << "compile it to " << srcFile << " and " << libFile;
 
     //compile
     compile(cProgram, functionName, numberParameters, compilerWithOptions);
+
+    //open libary
+    load_op(&op, libFile);
 }
 
 CProgram::~CProgram() {
-    // logger(loglevel::DEBUG) << "destroy cProgram with id" << id;
+    logger(loglevel::DEBUG) << "destroy cProgram with id" << id;
+
+    unload_op(&op);
 
     remove(srcFile);
     remove(libFile);
 }
 
-void CProgram::writeSrcFile(char* cProgram, char* functionName, int numberParameters, std::ofstream& fileOut){
+void CProgram::createSrcFile(char* cProgram, char* functionName, int numberParameters, std::ofstream& fileOut){
     std::string executeFunctionName("execute");
     executeFunctionName.append(functionName);
     
@@ -69,14 +75,14 @@ void CProgram::writeSrcFile(char* cProgram, char* functionName, int numberParame
 }
 
 void CProgram::compile(char* cProgram, char* functionName, int numberParameters, char* compilerWithOptions) {
-    // logger(loglevel::DEBUG) << "creating source file...";
+    logger(loglevel::DEBUG) << "creating source file...";
 
     //create and open output file
     std::ofstream fileOut;
     fileOut.open(srcFile);
     
     //write srcfile
-    writeSrcFile(cProgram, functionName, numberParameters, fileOut);
+    createSrcFile(cProgram, functionName, numberParameters, fileOut);
     
     //close file
     fileOut.close();
@@ -86,7 +92,12 @@ void CProgram::compile(char* cProgram, char* functionName, int numberParameters,
     compilerCommand << compilerWithOptions << " -fPIC -shared -Wl,-soname," << libFile
         << " -o " << libFile << " " << srcFile;
 
-    // logger(loglevel::DEBUG) << "compiling to dynamic libary...";
+    logger(loglevel::DEBUG) << "compiling to dynamic libary...";
+
     //compile to libary
     std::system(compilerCommand.str().c_str());
+}
+
+void CProgram::execute(void** arguments) {
+    op.op(arguments);
 }
