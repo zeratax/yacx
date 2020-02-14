@@ -545,7 +545,10 @@ public class Executor {
 			df.setMaximumFractionDigits(1);
 			String[] s = time.split(" ");
 
-			buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[2] + "\n");
+			if (s.length == 3)
+				buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[2] + "\n");
+			else
+				buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[1] + "\n");
 
 			return buffer.toString();
 		}
