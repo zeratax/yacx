@@ -13,20 +13,22 @@ namespace detail {
 class DataCopy {
  public:
   //! A constructor
-  //! \param kernelArg KernelArg, which should be copied from/to host to/from
-  //! device
   DataCopy() {}
   //! copy data from host to device
-  virtual void copyDataHtoD(KernelArg *kernelArg) = 0;
+  //! \param kernelArg KernelArg, which should be copied from host to device
+  //! \param stream to enqueue operation
+  virtual void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) = 0;
   //! copy data from device to host
-  virtual void copyDataDtoH(KernelArg *kernelArg) = 0;
+  //! \param kernelArg KernelArg, which should be copied from device to host
+  //! \param stream to enqueue operation
+  virtual void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) = 0;
 };
 
 class DataCopyKernelArg : public DataCopy {
  public:
   DataCopyKernelArg() {}
-  void copyDataHtoD(KernelArg *kernelArg) override;
-  void copyDataDtoH(KernelArg *kernelArg) override;
+  void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) override;
+  void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) override;
 };
 
 class DataCopyKernelArgMatrixPadding : public DataCopy {
@@ -46,8 +48,8 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
       : m_elementSize(elementSize), m_paddingValue(paddingValue),
         m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
         m_dst_columns(dst_columns) {}
-  void copyDataHtoD(KernelArg *kernelArg) override;
-  void copyDataDtoH(KernelArg *kernelArg) override;
+  void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) override;
+  void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) override;
 
  private:
   const int m_elementSize;
@@ -96,15 +98,17 @@ class KernelArg : JNIHandle {
   //! \return pointer to device data
   CUdeviceptr deviceptr() { return m_ddata; }
   //! uploads data to device
-  //! \return time to upload to device
-  float upload();
+  //! \param stream to enqueue operations
+  void upload(CUstream stream);
   //! downloads data to host
-  //! \return time to download from device
-  float download() { return download(const_cast<void *>(m_hdata)); }
+  //! \param stream to enqueue operations
+  void download(CUstream stream) { download(const_cast<void *>(m_hdata), stream); }
   //! downloads data to host
-  //! \param pointer to host memory
-  //! \return time to download from device
-  float download(void *hdata);
+  //! \param hdata pointer to host memory for the downloaded data
+  //! \param stream to enqueue operations
+  void download(void *hdata, CUstream stream);
+  //! frees the allocated memory on the device
+  void free();
   const size_t size() const { return m_size; }
   bool isDownload() const { return m_download; }
   void setDownload(bool download) { m_download = download; }
@@ -149,9 +153,9 @@ class KernelArgMatrixPadding : public KernelArg {
 class KernelArgs {
  public:
   KernelArgs(std::vector<KernelArg> args);
-  float upload();
-  float download();
-  float download(void *hdata);
+  void upload(CUstream stream);
+  void download(CUstream stream);
+  void download(void *hdata, CUstream stream);
   const void **content();
   size_t size() const;
   size_t maxOutputSize() const;

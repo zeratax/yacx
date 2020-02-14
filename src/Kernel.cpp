@@ -41,6 +41,9 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 
   logger(loglevel::DEBUG) << "loading module";
 
+  CUstream stream;
+  CUDA_SAFE_CALL(cuStreamCreate(&stream, CU_STREAM_NON_BLOCKING));
+
   CUDA_SAFE_CALL(
       cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
   CUDA_SAFE_CALL(
@@ -56,23 +59,26 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   CUDA_SAFE_CALL(
       cuModuleLoadDataEx(&m_module, m_ptx.get(), 0, nullptr, nullptr));
 
-  logger(loglevel::DEBUG) << "uploading arguments";
-  time.upload = args.upload();
-  logger(loglevel::DEBUG) << "getting function for "
-                          << m_demangled_name.c_str();
   CUDA_SAFE_CALL(
       cuModuleGetFunction(&m_kernel, m_module, m_demangled_name.c_str()));
 
+  logger(loglevel::DEBUG) << "uploading arguments";
+  args.upload(stream);
+  logger(loglevel::DEBUG) << "getting function for "
+                          << m_demangled_name.c_str();
+
   logger(loglevel::INFO) << "launching " << m_demangled_name;
 
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
   CUDA_SAFE_CALL(cuEventRecord(launch, 0));
   CUDA_SAFE_CALL(
       cuLaunchKernel(m_kernel,                        // function from program
                      m_grid.x, m_grid.y, m_grid.z,    // grid dim
                      m_block.x, m_block.y, m_block.z, // block dim
-                     0, nullptr,                      // shared mem and stream
+                     0, stream,                      // shared mem and stream
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
   CUDA_SAFE_CALL(cuEventRecord(finish, 0));
   // CUDA_SAFE_CALL(cuCtxSynchronize());
   logger(loglevel::INFO) << "done!";
@@ -80,13 +86,18 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   // download results to host
   logger(loglevel::DEBUG) << "downloading arguments";
   if (!downloadDest)
-    time.download = args.download();
+    args.download(stream);
   else
-    time.download = args.download(downloadDest);
+    args.download(downloadDest, stream);
+
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
+  CUDA_SAFE_CALL(cuStreamDestroy(stream));
 
   CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
+  CUDA_SAFE_CALL(cuEventElapsedTime(&time.upload, start, launch));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
+  CUDA_SAFE_CALL(cuEventElapsedTime(&time.download, start, launch));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
   logger(loglevel::DEBUG) << "freeing module";
@@ -109,13 +120,16 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
   // allocate memory
   void *output;
   if (maxOutputSize) {
-    output = malloc(maxOutputSize);
+    cuMemAllocHost(&output, maxOutputSize);
+    // output = malloc(maxOutputSize);
   }
 
   logger(loglevel::DEBUG) << "create context";
 
   // create context
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+
+  
 
   logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
@@ -134,7 +148,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
 
   // free allocated memory
   if (maxOutputSize) {
-    free(output);
+    cuMemFreeHost(output);
   }
 
   return kernelTimes;

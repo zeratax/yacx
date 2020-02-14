@@ -47,6 +47,7 @@ void initKernel(){
 
     Options options;
     options.insert("--gpu-architecture=compute_60");
+    options.insert("--include-path=/scratch/tmp/l_sief03/include/include");
 
     Source source{
             "#include <cuda_fp16.h>\n"

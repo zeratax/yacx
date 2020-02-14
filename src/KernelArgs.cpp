@@ -1,30 +1,36 @@
 #include "yacx/KernelArgs.hpp"
+#include "yacx/Exception.hpp"
 
+#include <cuda.h>
 #include <algorithm>
 
 using yacx::KernelArgs, yacx::KernelArg;
 
 KernelArgs::KernelArgs(std::vector<KernelArg> args) : m_args{args} {}
 
-float KernelArgs::upload() {
-  float result{0};
+void KernelArgs::upload(CUstream stream) {
   for (auto &arg : m_args)
-    result += arg.upload();
-  return result;
+    arg.upload(stream);
 }
 
-float KernelArgs::download() {
-  float result{0};
+void KernelArgs::download(CUstream stream) {
   for (auto &arg : m_args)
-    result += arg.download();
-  return result;
+    arg.download(stream);
+
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
+
+  for (auto &arg : m_args)
+    arg.free();
 }
 
-float KernelArgs::download(void *hdata) {
-  float result{0};
+void KernelArgs::download(void *hdata, CUstream stream) {
   for (auto &arg : m_args)
-    result += arg.download(hdata);
-  return result;
+    arg.download(hdata, stream);
+
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
+
+  for (auto &arg : m_args)
+    arg.free();
 }
 
 const void **KernelArgs::content() {

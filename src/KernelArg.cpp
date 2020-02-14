@@ -38,61 +38,38 @@ KernelArgMatrixPadding::KernelArgMatrixPadding(void *data, size_t size,
                           << ", paddingValue: " << paddingValue;
 }
 
-float KernelArg::upload() {
-  float time{0};
-
+void KernelArg::upload(CUstream stream) {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
+
     if (m_copy) {
       logger(loglevel::DEBUG1) << "copying data to device";
 
-      cudaEvent_t start, stop;
-      CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT));
-      CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
-
-      CUDA_SAFE_CALL(cuEventRecord(start, 0));
-      m_dataCopy.get()->copyDataHtoD(this);
-      CUDA_SAFE_CALL(cuEventRecord(stop, 0));
-
-      CUDA_SAFE_CALL(cuEventSynchronize(stop));
-      CUDA_SAFE_CALL(cuEventElapsedTime(&time, start, stop));
+      m_dataCopy.get()->copyDataHtoD(this, &stream);
     }
   } else {
     logger(loglevel::DEBUG1) << "NOT uploading argument";
   }
-
-  return time;
 }
 
-float KernelArg::download(void *hdata) {
-  float time{0};
-
+void KernelArg::download(void *hdata, CUstream stream) {
   if (m_download) {
     logger(loglevel::DEBUG1) << "downloading argument";
 
-    cudaEvent_t start, stop;
-    CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT));
-    CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
-
-    CUDA_SAFE_CALL(cuEventRecord(start, 0));
-    m_dataCopy.get()->copyDataDtoH(this);
-    CUDA_SAFE_CALL(cuEventRecord(stop, 0));
-
-    CUDA_SAFE_CALL(cuEventSynchronize(stop));
-    CUDA_SAFE_CALL(cuEventElapsedTime(&time, start, stop));
+    m_dataCopy.get()->copyDataDtoH(this, &stream);
   } else {
     logger(loglevel::DEBUG1) << "NOT downloading argument";
   }
+}
 
+void KernelArg::free(){
   if (m_upload) {
     logger(loglevel::DEBUG1) << "freeing argument from device";
     CUDA_SAFE_CALL(cuMemFree(m_ddata));
   } else {
     logger(loglevel::DEBUG1) << "NOT freeing argument from device";
   }
-
-  return time;
 }
 
 const void *KernelArg::content() const {
@@ -104,23 +81,20 @@ const void *KernelArg::content() const {
   return m_hdata;
 }
 
-void DataCopyKernelArg::copyDataHtoD(KernelArg *kernelArg) {
-  CUDA_SAFE_CALL(cuMemcpyHtoD(kernelArg->m_ddata,
+void DataCopyKernelArg::copyDataHtoD(KernelArg *kernelArg, CUstream *stream) {
+  CUDA_SAFE_CALL(cuMemcpyHtoDAsync(kernelArg->m_ddata,
                               const_cast<void *>(kernelArg->m_hdata),
-                              kernelArg->m_size));
+                              kernelArg->m_size, *stream));
 }
 
-void DataCopyKernelArg::copyDataDtoH(KernelArg *kernelArg) {
-  CUDA_SAFE_CALL(cuMemcpyDtoH(const_cast<void *>(kernelArg->m_hdata),
-                              kernelArg->m_ddata, kernelArg->m_size));
+void DataCopyKernelArg::copyDataDtoH(KernelArg *kernelArg, CUstream *stream) {
+  CUDA_SAFE_CALL(cuMemcpyDtoHAsync(const_cast<void *>(kernelArg->m_hdata),
+                              kernelArg->m_ddata, kernelArg->m_size, *stream));
 }
 
-void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
+void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg, CUstream *stream) {
   CUdeviceptr dst = kernelArg->m_ddata;
   char *src = static_cast<char *>(const_cast<void *>(kernelArg->m_hdata));
-
-  CUstream stream;
-  CUDA_SAFE_CALL(cuStreamCreate(&stream, CU_STREAM_DEFAULT));
 
   const unsigned char paddingValueChar =
       m_paddingValue >> (sizeof(int) - sizeof(char));
@@ -130,15 +104,15 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
   switch (m_elementSize) {
   case 1:
     CUDA_SAFE_CALL(cuMemsetD8Async(dst, paddingValueChar,
-                                   m_dst_rows * m_dst_columns, stream));
+                                   m_dst_rows * m_dst_columns, *stream));
     break;
   case 2:
     CUDA_SAFE_CALL(cuMemsetD16Async(dst, paddingValueShort,
-                                    m_dst_rows * m_dst_columns, stream));
+                                    m_dst_rows * m_dst_columns, *stream));
     break;
   case 4:
     CUDA_SAFE_CALL(cuMemsetD32Async(dst, m_paddingValue,
-                                    m_dst_rows * m_dst_columns, stream));
+                                    m_dst_rows * m_dst_columns, *stream));
     break;
   default:
     throw std::invalid_argument("invalid elementsize of paddingArg. Only 1,2 "
@@ -149,24 +123,21 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
   const size_t sizeDstColumn = m_dst_columns * m_elementSize;
 
   for (int i = 0; i < m_src_rows; i++) {
-    CUDA_SAFE_CALL(cuMemcpyHtoDAsync(dst, src, sizeSrcColumn, stream));
+    CUDA_SAFE_CALL(cuMemcpyHtoDAsync(dst, src, sizeSrcColumn, *stream));
 
     dst += sizeDstColumn;
     src += sizeSrcColumn;
   }
-
-  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
-  CUDA_SAFE_CALL(cuStreamDestroy(stream));
 }
 
-void DataCopyKernelArgMatrixPadding::copyDataDtoH(KernelArg *kernelArg) {
+void DataCopyKernelArgMatrixPadding::copyDataDtoH(KernelArg *kernelArg, CUstream *stream) {
   CUdeviceptr dst = kernelArg->m_ddata;
   char *src = static_cast<char *>(const_cast<void *>(kernelArg->m_hdata));
 
   const size_t sizeSrcColumn = m_src_columns * m_elementSize;
 
   for (int i = 0; i < m_src_rows; i++) {
-    CUDA_SAFE_CALL(cuMemcpyDtoH(src, dst, sizeSrcColumn));
+    CUDA_SAFE_CALL(cuMemcpyDtoHAsync(src, dst, sizeSrcColumn, *stream));
 
     dst += m_dst_columns * m_elementSize;
     src += sizeSrcColumn;
