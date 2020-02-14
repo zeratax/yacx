@@ -37,6 +37,7 @@ set(JAVA_SOURCE_FILES
     "src/java/yacx/KernelTime.java"
     "src/java/yacx/LongArg.java"
     "src/java/yacx/Options.java"
+    "src/java/yacx/PaddingArg.java"
     "src/java/yacx/Program.java"
     "src/java/yacx/ShortArg.java"
     "src/java/yacx/Utils.java")

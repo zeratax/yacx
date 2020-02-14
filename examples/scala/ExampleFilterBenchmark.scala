@@ -16,7 +16,7 @@ object ExampleFilterBenchmark {
               new Executor.KernelArgCreator() {
         
   					          override def getDataLength(dataSizeBytes: Int) : Int = {
-            						return dataSizeBytes/IntArg.SIZE_BYTES
+            						return (dataSizeBytes/IntArg.SIZE_BYTES).asInstanceOf[Int]
             					}
             
             					override def getGrid0(dataLength: Int) : Int = {
@@ -34,7 +34,7 @@ object ExampleFilterBenchmark {
             							in(i) = i
             						}
             						
-            						return Array[KernelArg] (IntArg.createOutput(dataLength/2), IntArg.create(Array[Int](0), true),
+            						return Array[KernelArg] (IntArg.createOutput(dataLength), IntArg.create(Array[Int](0), true),
             													IntArg.create(in: _*), IntArg.create(dataLength))
             					}
 			}, 1*KB, 4*KB, 8*KB, 1024*KB, 4096*KB, 131072*KB))

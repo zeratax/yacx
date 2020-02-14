@@ -24,7 +24,7 @@ set(JAVA_EXAMPLE_FILES
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"
     "java/ExampleFilterExecutor.java"
-    "java/ExampleFilterGauss.java"
+    "java/ExampleGauss.java"
     "java/ExampleSaxpy.java"
     "java/ExampleSaxpyBenchmark.java"
     "java/ExampleSaxpyExecutor.java"

@@ -122,7 +122,7 @@ public class ExampleGauss {
 		imageArg = ByteArg.create(image.getPixel(), true);
 
 		//Create Program
-		String kernelString = Utils.loadFile("gauss.cu");
+		String kernelString = Utils.loadFile("kernels/gauss.cu");
 
 		//Compile and launch Kernel
 		KernelTime executionTime = Executor.launch(kernelString, "gaussFilterKernel", width, height, 1,

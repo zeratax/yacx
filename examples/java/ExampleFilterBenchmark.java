@@ -18,7 +18,7 @@ public class ExampleFilterBenchmark {
         	
 		        	@Override
 					public int getDataLength(int dataSizeBytes) {
-						return dataSizeBytes/(int) IntArg.SIZE_BYTES;
+						return (int) (dataSizeBytes/IntArg.SIZE_BYTES);
 					}
 
 					@Override
@@ -39,7 +39,7 @@ public class ExampleFilterBenchmark {
 							in[i] = i;
 						}
 						
-						return new KernelArg[] {IntArg.createOutput(dataLength/2), IntArg.create(new int[] {0}, true),
+						return new KernelArg[] {IntArg.createOutput(dataLength), IntArg.create(new int[] {0}, true),
 													IntArg.create(in), IntArg.create(dataLength)};
 					}
 				}, 1*KB, 4*KB, 8*KB, 1024*KB, 4096*KB, 131072*KB));
