@@ -14,8 +14,8 @@ std::shared_ptr<DataCopyKernelArg> KernelArg::dataCopyKernelArg =
 
 KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                      bool upload)
-    : m_hdata{data}, m_dataCopy(KernelArg::dataCopyKernelArg),
-      m_size{size}, m_download{download}, m_copy{copy}, m_upload{upload} {
+    : m_hdata{data}, m_dataCopy(KernelArg::dataCopyKernelArg), m_size{size},
+      m_download{download}, m_copy{copy}, m_upload{upload} {
   logger(loglevel::DEBUG) << "created KernelArg with size: " << size
                           << ", which should " << (m_upload ? "be" : "not be")
                           << " uploaded and should "
@@ -122,55 +122,37 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
   CUstream stream;
   CUDA_SAFE_CALL(cuStreamCreate(&stream, CU_STREAM_DEFAULT));
 
-
-  size_t numberElementsMemset = m_dst_columns - m_src_columns;
-  const size_t sizeSrcColumn = m_src_columns * m_elementSize;
-
   const unsigned char paddingValueChar =
       m_paddingValue >> (sizeof(int) - sizeof(char));
   const unsigned short paddingValueShort =
       m_paddingValue >> (sizeof(int) - sizeof(short));
 
-  for (int i = 0; i < m_src_rows; i++) {
-    CUDA_SAFE_CALL(cuMemcpyHtoDAsync(dst, src, sizeSrcColumn, stream));
-
-    switch (m_elementSize) {
-    case 1:
-      CUDA_SAFE_CALL(cuMemsetD8Async(dst + sizeSrcColumn, paddingValueChar,
-                                numberElementsMemset, stream));
-      break;
-    case 2:
-      CUDA_SAFE_CALL(cuMemsetD16Async(dst + sizeSrcColumn, paddingValueShort,
-                                 numberElementsMemset, stream));
-      break;
-    case 4:
-      CUDA_SAFE_CALL(cuMemsetD32Async(dst + sizeSrcColumn, m_paddingValue,
-                                 numberElementsMemset, stream));
-      break;
-    default:
-      throw std::invalid_argument("invalid elementsize of paddingArg. Only 1,2 "
-                                  "or 4 bytes elementsize are supported.");
-    }
-
-    dst += m_dst_columns * m_elementSize;
-    src += sizeSrcColumn;
-  }
-
-  numberElementsMemset = (m_dst_rows - m_src_rows) * m_dst_columns;
-
   switch (m_elementSize) {
   case 1:
-    CUDA_SAFE_CALL(cuMemsetD8Async(dst, m_paddingValue, numberElementsMemset, stream));
+    CUDA_SAFE_CALL(cuMemsetD8Async(dst, paddingValueChar,
+                                   m_dst_rows * m_dst_columns, stream));
     break;
   case 2:
-    CUDA_SAFE_CALL(cuMemsetD16Async(dst, m_paddingValue, numberElementsMemset, stream));
+    CUDA_SAFE_CALL(cuMemsetD16Async(dst, paddingValueShort,
+                                    m_dst_rows * m_dst_columns, stream));
     break;
   case 4:
-    CUDA_SAFE_CALL(cuMemsetD32Async(dst, m_paddingValue, numberElementsMemset, stream));
+    CUDA_SAFE_CALL(cuMemsetD32Async(dst, m_paddingValue,
+                                    m_dst_rows * m_dst_columns, stream));
     break;
   default:
     throw std::invalid_argument("invalid elementsize of paddingArg. Only 1,2 "
                                 "or 4 bytes elementsize are supported.");
+  }
+
+  const size_t sizeSrcColumn = m_src_columns * m_elementSize;
+  const size_t sizeDstColumn = m_dst_columns * m_elementSize;
+
+  for (int i = 0; i < m_src_rows; i++) {
+    CUDA_SAFE_CALL(cuMemcpyHtoDAsync(dst, src, sizeSrcColumn, stream));
+
+    dst += sizeDstColumn;
+    src += sizeSrcColumn;
   }
 
   CUDA_SAFE_CALL(cuStreamSynchronize(stream));
