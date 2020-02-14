@@ -119,6 +119,10 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
   CUdeviceptr dst = kernelArg->m_ddata;
   char *src = static_cast<char *>(const_cast<void *>(kernelArg->m_hdata));
 
+  CUstream stream;
+  CUDA_SAFE_CALL(cuStreamCreate(&stream, CU_STREAM_DEFAULT));
+
+
   size_t numberElementsMemset = m_dst_columns - m_src_columns;
   const size_t sizeSrcColumn = m_src_columns * m_elementSize;
 
@@ -128,20 +132,20 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
       m_paddingValue >> (sizeof(int) - sizeof(short));
 
   for (int i = 0; i < m_src_rows; i++) {
-    CUDA_SAFE_CALL(cuMemcpyHtoD(dst, src, sizeSrcColumn));
+    CUDA_SAFE_CALL(cuMemcpyHtoDAsync(dst, src, sizeSrcColumn, stream));
 
     switch (m_elementSize) {
     case 1:
-      CUDA_SAFE_CALL(cuMemsetD8(dst + sizeSrcColumn, paddingValueChar,
-                                numberElementsMemset));
+      CUDA_SAFE_CALL(cuMemsetD8Async(dst + sizeSrcColumn, paddingValueChar,
+                                numberElementsMemset, stream));
       break;
     case 2:
-      CUDA_SAFE_CALL(cuMemsetD16(dst + sizeSrcColumn, paddingValueShort,
-                                 numberElementsMemset));
+      CUDA_SAFE_CALL(cuMemsetD16Async(dst + sizeSrcColumn, paddingValueShort,
+                                 numberElementsMemset, stream));
       break;
     case 4:
-      CUDA_SAFE_CALL(cuMemsetD32(dst + sizeSrcColumn, m_paddingValue,
-                                 numberElementsMemset));
+      CUDA_SAFE_CALL(cuMemsetD32Async(dst + sizeSrcColumn, m_paddingValue,
+                                 numberElementsMemset, stream));
       break;
     default:
       throw std::invalid_argument("invalid elementsize of paddingArg. Only 1,2 "
@@ -156,18 +160,21 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(KernelArg *kernelArg) {
 
   switch (m_elementSize) {
   case 1:
-    CUDA_SAFE_CALL(cuMemsetD8(dst, m_paddingValue, numberElementsMemset));
+    CUDA_SAFE_CALL(cuMemsetD8Async(dst, m_paddingValue, numberElementsMemset, stream));
     break;
   case 2:
-    CUDA_SAFE_CALL(cuMemsetD16(dst, m_paddingValue, numberElementsMemset));
+    CUDA_SAFE_CALL(cuMemsetD16Async(dst, m_paddingValue, numberElementsMemset, stream));
     break;
   case 4:
-    CUDA_SAFE_CALL(cuMemsetD32(dst, m_paddingValue, numberElementsMemset));
+    CUDA_SAFE_CALL(cuMemsetD32Async(dst, m_paddingValue, numberElementsMemset, stream));
     break;
   default:
     throw std::invalid_argument("invalid elementsize of paddingArg. Only 1,2 "
                                 "or 4 bytes elementsize are supported.");
   }
+
+  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
+  CUDA_SAFE_CALL(cuStreamDestroy(stream));
 }
 
 void DataCopyKernelArgMatrixPadding::copyDataDtoH(KernelArg *kernelArg) {
