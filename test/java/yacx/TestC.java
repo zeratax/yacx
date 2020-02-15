@@ -20,8 +20,8 @@ public class TestC {
 				"\n";
 		
 		saxpy = "#include <stddef.h>\n" +
-				"void saxpy(float* a, float *x, float *y, float *out, size_t* n) {\n" + 
-				"  for (size_t i = 0; i < *n; i++) {\n" + 
+				"void saxpy(float* a, float *x, float *y, float *out, int* n) {\n" + 
+				"  for (int i = 0; i < *n; i++) {\n" + 
 				"    out[i] = *a * x[i] + y[i];\n" + 
 				"  }\n" + 
 				"}";
@@ -37,6 +37,6 @@ public class TestC {
 		saxpyArgs[1] = FloatArg.create(1f, 2f, 3.6f);
 		saxpyArgs[2] = FloatArg.create(2f, 1f, 0f);
 		saxpyArgs[3] = FloatArg.createOutput(3);
-		saxpyArgs[4] = IntArg.createOutput(3);
+		saxpyArgs[4] = IntArg.create(3);
 	}
 }
