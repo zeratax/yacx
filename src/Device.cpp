@@ -1,5 +1,6 @@
 #include "yacx/Device.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/Init.hpp"
 #include "yacx/Logger.hpp"
 
 #include <experimental/iterator>
@@ -9,7 +10,7 @@ using yacx::Device, yacx::CUresultException, yacx::loglevel;
 
 Device::Device() {
   CUdevice device;
-  CUDA_SAFE_CALL(cuInit(0));
+  yacx::detail::init();
   CUDA_SAFE_CALL(cuDeviceGet(&device, 0));
   this->set_device_properties(device);
 }
@@ -19,7 +20,7 @@ Device::Device(std::string name) {
   CUdevice device;
   std::vector<std::string> devices;
 
-  CUDA_SAFE_CALL(cuInit(0));
+  yacx::detail::init();
   CUDA_SAFE_CALL(cuDeviceGetCount(&number));
 
   for (int i{0}; i < number; ++i) {

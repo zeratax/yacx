@@ -1,5 +1,6 @@
 #include "yacx/Program.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/Init.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/util.hpp"
 
@@ -14,7 +15,7 @@ using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
   logger(loglevel::DEBUG) << "created Program " << m_kernel_name;
-  CUDA_SAFE_CALL(cuInit(0));
+  yacx::detail::init();
 }
 
 Program::~Program() {
