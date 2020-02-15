@@ -37,7 +37,7 @@
   }                                                                            \
   catch (const std::exception &err) {                                          \
     logger(yacx::loglevel::ERROR)                                              \
-        << "Executor failure while " << message << ":" << err.what();          \
+        << "Executor failure while " << message << ": " << err.what();          \
                                                                                \
     jclass cls = getClass(env, "yacx/ExecutorFailureException");               \
                                                                                \

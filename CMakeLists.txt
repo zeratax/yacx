@@ -14,9 +14,9 @@ include_directories(include)
 include_directories(include/yacx)
 include_directories(include/yacx/cexecutor)
 
-link_libraries(cuda nvrtc)
+link_libraries(cuda nvrtc dl)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/cexecutor/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES
     "src/java/yacx/ArrayArg.java"

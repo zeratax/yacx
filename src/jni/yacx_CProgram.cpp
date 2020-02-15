@@ -9,10 +9,6 @@
 #include <iostream>
 #include <sstream>
 
-//TODO
-#include "../../include/yacx/Logger.hpp"
-using yacx::loglevel;
-
 using yacx::KernelArg, jni::KernelArgJNI, yacx::Options, yacx::CProgram;
 
 jobject Java_yacx_CProgram_createInternal(JNIEnv* env, jclass cls, jstring jcProgram, jstring jcFunctionName,
@@ -35,8 +31,9 @@ jobject Java_yacx_CProgram_createInternal(JNIEnv* env, jclass cls, jstring jcPro
         compilerWithOptionsS << compiler << " ";
         for (int i = 0; i < optionsPtr->numOptions(); i++){
           compilerWithOptionsS << optionsPtr->content()[i] << " ";
-        } 
-        auto compilerWithOptions = compilerWithOptionsS.str().c_str();
+        }
+        std::string tmp = compilerWithOptionsS.str();
+        auto compilerWithOptions = tmp.c_str();
 
         CProgram* cProgramPtr = new CProgram{cProgram, cFunctionName, jnumberParameter, compilerWithOptions};
 
