@@ -12,13 +12,13 @@
 
 using yacx::loglevel, yacx::detail::dynop, yacx::detail::opfn;
 
-void load_op(struct dynop *dest, const char *filename) {
+void yacx::detail::load_op(struct dynop *dest, const char *filename) {
     //open libary
     void* handle = dlopen((std::string("./") + filename).c_str(), RTLD_LAZY);
     char* error = dlerror();
     if (handle == NULL){
         if (error != NULL){
-            throw std::runtime_error(std::string("error while opening libary with compiled function") + error);
+            throw std::runtime_error(std::string("error while opening libary with compiled function ") + error);
         } else {
             throw std::runtime_error("error while opening libary with compiled function");
         }
@@ -32,7 +32,7 @@ void load_op(struct dynop *dest, const char *filename) {
         
         if (error != NULL){
             throw std::runtime_error(std::string("error while searching \"op\" in libary with"
-            "compiled function") + error);
+            "compiled function ") + error);
         } else {
             throw std::runtime_error("error while searching \"op\" in libary with compiled function");
         }
@@ -43,7 +43,7 @@ void load_op(struct dynop *dest, const char *filename) {
     dest->libhandle = handle;
 }
 
-void unload_op(struct dynop *op) {
+void yacx::detail::unload_op(struct dynop *op) {
     if (op == NULL){
         return;
     }

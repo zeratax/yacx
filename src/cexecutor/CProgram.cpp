@@ -13,21 +13,22 @@ int CProgram::id = 0;
 CProgram::CProgram(const char* cProgram, const char* functionName, int numberParameters,
         const char* compilerWithOptions) 
     : m_numberArguments(numberParameters) {
+        logger(loglevel::ERROR) << "TestC"; //TODO
     logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
     << ",number of arguments: " << numberParameters << ", compiler: " << compilerWithOptions;
     logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
 
     id++;
-    
+
     //filename for srcFile
     std::stringstream srcFileS;
     srcFileS << "src_" << functionName << "_" << id << ".c";
-    m_srcFile = srcFileS.str().c_str();
+    m_srcFile = srcFileS.str();
 
     //filename for libFile
     std::stringstream libFileS; 
     libFileS << "lib_" << functionName << "_" << id << ".so";
-    m_libFile = libFileS.str().c_str();
+    m_libFile = libFileS.str();
 
     logger(loglevel::DEBUG1) << "compile it to " << m_srcFile << " and " << m_libFile;
 
@@ -35,7 +36,7 @@ CProgram::CProgram(const char* cProgram, const char* functionName, int numberPar
     compile(cProgram, functionName, numberParameters, compilerWithOptions);
 
     //open libary
-    load_op(&m_op, m_libFile);
+    load_op(&m_op, m_libFile.c_str());
 }
 
 CProgram::~CProgram() {
@@ -43,8 +44,8 @@ CProgram::~CProgram() {
 
     unload_op(&m_op);
 
-    remove(m_srcFile);
-    remove(m_libFile);
+    remove(m_srcFile.c_str());
+    remove(m_libFile.c_str());
 }
 
 void CProgram::createSrcFile(const char* cProgram, const char* functionName, int numberParameters,
@@ -98,7 +99,12 @@ void CProgram::compile(const char* cProgram, const char* functionName, int numbe
     logger(loglevel::DEBUG) << "compiling to dynamic libary: " << compilerCommand.str();
 
     //compile to libary
-    std::system(compilerCommand.str().c_str());
+    std::string tmp = compilerCommand.str();
+    int result = std::system(tmp.c_str());
+
+    if (result != 0){
+        throw std::runtime_error("compilation failed");
+    }
 }
 
 void CProgram::execute(void** arguments) {

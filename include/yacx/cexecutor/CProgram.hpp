@@ -24,7 +24,7 @@ class CProgram : public JNIHandle {
   static int id;
   int m_numberArguments;
   struct detail::dynop m_op;
-  const char *m_srcFile;
-  const char *m_libFile;
+  std::string m_srcFile;
+  std::string m_libFile;
 };
 } // namespace yacx

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.Ignore;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -19,23 +18,6 @@ public class TestCProgram extends TestC {
 			"}";
 	
 	static CProgram addIntC, saxpyC;
-	static KernelArg[] addIntArgs, saxpyArgs;
-	
-	@BeforeAll
-	static void initArgs() {
-		addIntArgs = new KernelArg[3];
-		saxpyArgs = new KernelArg[5];
-		
-		addIntArgs[0] = IntArg.create(2);
-		addIntArgs[1] = IntArg.create(3);
-		addIntArgs[2] = IntArg.createOutput(1);
-		
-		saxpyArgs[0] = FloatArg.create(2f);
-		saxpyArgs[1] = FloatArg.create(1f, 2f, 3.6f);
-		saxpyArgs[2] = FloatArg.create(2f, 1f, 0f);
-		saxpyArgs[3] = FloatArg.createOutput(3);
-		saxpyArgs[4] = IntArg.createOutput(3);
-	}
 	
 	@Test
 	@Order(1)
@@ -48,11 +30,11 @@ public class TestCProgram extends TestC {
 			CProgram.create(addIntPtrs, null, 3);
 		});
 		
-		assertThrows(NullPointerException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 			CProgram.create(addIntPtrs, "addIntPtrs", -17);
 		}); 
 		
-		assertThrows(NullPointerException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 			CProgram.create(addIntPtrs, "addIntPtrs", 0);
 		}); 
 		
@@ -72,7 +54,7 @@ public class TestCProgram extends TestC {
 		options.insert("-pedantic");;
 		
 		saxpyC = CProgram.create(saxpy, "saxpy", 5, compiler);
-		saxpyC = CProgram.create(saxpy, "saxpy", 3, compiler, options);
+		saxpyC = CProgram.create(saxpy, "saxpy", 5, compiler, options);
 	}
 	
 	@Test
