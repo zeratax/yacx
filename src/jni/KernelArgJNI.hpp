@@ -10,8 +10,6 @@ namespace detail {
 class HDataMem {
  public:
   //! Allocate page-locked memory with passed size
-  //! if no CUDA-context is created yet, this has the same effekt as
-  //! <code>malloc(size)</code>
   HDataMem(size_t size);
   //! Frees allocated page-locked memory
   ~HDataMem();
