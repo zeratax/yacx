@@ -1,18 +1,27 @@
 #include "KernelArgJNI.hpp"
+#include "../../include/yacx/Init.hpp"
 
 #include <cstring>
 #include <stdio.h>
 
-using jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg, std::shared_ptr;
+using jni::detail::HDataMem, jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg;
+
+HDataMem::HDataMem(size_t size){
+    yacx::detail::init();
+    CUDA_SAFE_CALL(cuMemAllocHost(&m_hdata, size));
+}
+
+HDataMem::~HDataMem(){
+    CUDA_SAFE_CALL(cuMemFreeHost(m_hdata));
+}
 
 KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload) {
-    std::shared_ptr<void> hdata(malloc(size), free);
-    m_hdata = hdata;
+    m_hdata = std::make_shared<HDataMem>(size);
 
     if (data)
-        std::memcpy(hdata.get(), data, size);
+        std::memcpy(getHostData(), data, size);
 
-    m_kernelArg = new KernelArg{hdata.get(), size, download, copy, upload};
+    m_kernelArg = new KernelArg{getHostData(), size, download, copy, upload};
 }
 
 KernelArgJNI::~KernelArgJNI() {
@@ -22,5 +31,5 @@ KernelArgJNI::~KernelArgJNI() {
 KernelArgJNISlice::KernelArgJNISlice(size_t start, size_t end, KernelArgJNI* arg) :
     KernelArgJNI(arg->m_hdata, new KernelArg{reinterpret_cast<char*> (arg->getHostData()) + start,
         end-start, arg->kernelArgPtr()->isDownload(), arg->kernelArgPtr()->isCopy(), true}),
-    m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get())
+    m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get()->get())
         + start) {}
