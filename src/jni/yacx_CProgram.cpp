@@ -53,7 +53,7 @@ void Java_yacx_CProgram_execute(JNIEnv* env, jobject obj, jobjectArray jKernelAr
 
         CHECK_BIGGER(argumentsLength, 0, "illegal array length", )
         CHECK_BIGGER(argumentsLength, cProgramPtr->getNumberArguments()-1, "illegal number of arguments", )
-        CHECK_BIGGER(cProgramPtr->getNumberArguments(), argumentsLength, "illegal number of arguments", )
+        CHECK_BIGGER(cProgramPtr->getNumberArguments(), argumentsLength-1, "illegal number of arguments", )
 
         for(int i = 0; i < argumentsLength; i++){
             auto jkernelArg = env->GetObjectArrayElement(jKernelArgs, i);

@@ -13,7 +13,6 @@ int CProgram::id = 0;
 CProgram::CProgram(const char* cProgram, const char* functionName, int numberParameters,
         const char* compilerWithOptions) 
     : m_numberArguments(numberParameters) {
-        logger(loglevel::ERROR) << "TestC"; //TODO
     logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
     << ",number of arguments: " << numberParameters << ", compiler: " << compilerWithOptions;
     logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
@@ -108,5 +107,6 @@ void CProgram::compile(const char* cProgram, const char* functionName, int numbe
 }
 
 void CProgram::execute(void** arguments) {
+    logger(loglevel::DEBUG) << "execute CProgram: " << m_srcFile;
     m_op.op(arguments);
 }

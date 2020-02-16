@@ -1,6 +1,7 @@
 package yacx;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,10 +11,16 @@ public class TestExecutorC extends TestC {
 		Executor.executeC(addIntPtrs, "addIntPtrs", addIntArgs);
 		Executor.executeC(saxpy, "saxpy", saxpyArgs);
 		
+		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
+		assertArrayEquals(new float[] {2+2, 4+1, 7.2f}, ((FloatArg) saxpyArgs[3]).asFloatArray()); 
+		
 		String compiler = "gcc";
 		
 		Executor.executeC(addIntPtrs, "addIntPtrs", compiler, addIntArgs);
 		Executor.executeC(saxpy, "saxpy", compiler, saxpyArgs);
+		
+		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
+		assertArrayEquals(new float[] {2+2, 4+1, 7.2f}, ((FloatArg) saxpyArgs[3]).asFloatArray()); 
 		
 		Options o1 = Options.createOptions();
 		Options o2 = Options.createOptions();
@@ -22,8 +29,9 @@ public class TestExecutorC extends TestC {
 		o2.insert("-pedantic");
 		
 		Executor.executeC(addIntPtrs, "addIntPtrs", compiler, o1, addIntArgs);
-		long eTime = Executor.executeC(saxpy, "saxpy", compiler, o2, saxpyArgs);
+		Executor.executeC(saxpy, "saxpy", compiler, o2, saxpyArgs);
 		
-		assertTrue(eTime > 0);
+		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
+		assertArrayEquals(new float[] {2+2, 4+1, 7.2f}, ((FloatArg) saxpyArgs[3]).asFloatArray()); 
 	}
 }

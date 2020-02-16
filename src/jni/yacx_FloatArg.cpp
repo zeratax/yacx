@@ -4,7 +4,7 @@
 #include "Half.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
 
-using yacx::KernelArg, jni::KernelArgJNI;
+using yacx::KernelArg, jni::KernelArgJNI, yacx::convertFtoH;
 
 jobject JNICALL Java_yacx_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
 	BEGIN_TRY
@@ -65,7 +65,7 @@ jobject Java_yacx_FloatArg_asHalfArg(JNIEnv* env, jobject obj){
         KernelArgJNI* newkernelArgJNIPtr = new KernelArgJNI{NULL, dataSize/2,
             kernelArgPtr->isDownload(), kernelArgPtr->isCopy(), true};
 
-        convertFtoH(data, kernelArgJNIPtr->getHostData(), dataSize/sizeof(float));
+        convertFtoH(data, newkernelArgJNIPtr->getHostData(), dataSize/sizeof(jfloat));
 
 		return createJNIObject(env, cls, newkernelArgJNIPtr);
     END_TRY_R("converting FloatArg to HalfArg", NULL)
