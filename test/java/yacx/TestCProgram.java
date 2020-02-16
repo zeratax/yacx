@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
-@Ignore
 @TestMethodOrder(OrderAnnotation.class)
 public class TestCProgram extends TestC {
 	static String addIntPtrsInvalid = "void addIntPtrs(int* a, int* b, int* result){\n" + 
@@ -80,6 +78,6 @@ public class TestCProgram extends TestC {
 		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
 		
 		saxpyC.execute(saxpyArgs);
-		assertArrayEquals(new float[] {2+2, 4+1, 7.2f}, ((FloatArg) addIntArgs[3]).asFloatArray()); 
+		assertArrayEquals(new float[] {2+2, 4+1, 7.2f}, ((FloatArg) saxpyArgs[3]).asFloatArray()); 
 	}
 }
