@@ -36,6 +36,8 @@ class Device : JNIHandle {
   //! in bytes
   //! \return Memory in bytes
   size_t total_memory() const { return m_memory; }
+  //! \return 16-byte UUID of the device as hexadecimal string
+  std::string uuid() const { return m_uuid.bytes; }
   //!
   //! \param block returns block with maximum dimension
   void max_block_dim(dim3 *block);
@@ -69,13 +71,15 @@ class Device : JNIHandle {
   //! Constructs a Device with the CUDA capable device with passed devicenumber
   Device(int ordinal);
   void set_device_properties(const CUdevice &device);
+  std::string uuidToHex();
 
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
+  CUuuid m_uuid;
+  std::string m_uuidHex;
   size_t m_memory, m_max_shared_memory_per_block, m_multiprocessor_count;
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
-  char* m_uuid; //TODO
 };
 
 class Devices : JNIHandle {
@@ -95,9 +99,9 @@ class Devices : JNIHandle {
     //! \param name Name of the cuda device, e.g.'Tesla K20c'
     static Device* findDevice(std::string name);
 
-    //! \return returns a Device if a CUDA capable device with the passed UUID
+    //! \return returns a Device if a CUDA capable device with the passed 16-byte UUID as hexadecimal string
     //! \param uuid UUID of the cuda device
-    static Device* findDevice(char* uuid);
+    static Device* findDeviceByUUID(std::string uuid);
 
     //! \return vector with all CUDA-capable devices
     static std::vector<Device*> findDevices();

@@ -66,8 +66,23 @@ Device* Devices::findDevice(std::string name){
     }
 }
 
-Device* Devices::findDevice(char* uuid){
-    //TODO
+Device* Devices::findDeviceByUUID(std::string uuid){
+    std::vector<Device*> devices = findDevices([uuid](Device* device){return device->uuid() == uuid;});
+
+    if (!devices.empty()){
+        return devices[0];
+    } else {
+        std::vector<Device*> devices = getInstance()->m_devices;
+        std::stringstream buffer;
+        buffer << "Could not find device with this name! Available UUIDs-devices: [";
+        for (int i{0}; i < devices.size()-1; ++i) {
+            buffer << devices[i]->uuid() << ", ";
+        }
+        buffer << devices[devices.size()-1]->uuid();
+        buffer << "]";
+
+        throw std::invalid_argument(buffer.str());
+    }
 }
 
 std::vector<Device*> Devices::findDevices(){

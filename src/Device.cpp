@@ -2,6 +2,9 @@
 #include "yacx/Exception.hpp"
 #include "yacx/Logger.hpp"
 
+#include <iostream>
+#include <sstream>
+
 using yacx::Device, yacx::CUresultException, yacx::loglevel;
 
 Device::Device(int ordinal) {
@@ -27,10 +30,16 @@ void Device::set_device_properties(const CUdevice &device) {
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 
-  // CUuuid uuid;
-  // CUDA_SAFE_CALL(cuDeviceGetUuid(&uuid, m_device));
-  // //TODO
-  // logger(loglevel::ERROR) << "UUID = " << uuid;
+  CUDA_SAFE_CALL(cuDeviceGetUuid(&m_uuid, m_device));
+  m_uuidHex = uuidToHex();
+}
+
+std::string Device::uuidToHex(){
+  std::stringstream ss;
+  for(int i = 0; i < 16; i++) {
+    ss << std::hex << (int)m_uuid.bytes[i];
+  }
+  return ss.str();
 }
 
 void Device::max_block_dim(dim3 *block) {
