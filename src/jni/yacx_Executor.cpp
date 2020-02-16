@@ -4,7 +4,7 @@
 #include "KernelArgJNI.hpp"
 #include "../../include/yacx/KernelTime.hpp"
 #include "../../include/yacx/Kernel.hpp"
-#include "../../include/yacx/Device.hpp"
+#include "../../include/yacx/Devices.hpp"
 
 #include <cstring>
 #include <stdio.h>
@@ -31,7 +31,7 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		if (!kernelTimeCls) return NULL;
 
 		//Run benchmark-test
-		auto kernelTimes = kernelPtr->benchmark(args, jexecutions, *devicePtr);
+		auto kernelTimes = kernelPtr->benchmark(args, jexecutions, devicePtr);
 
 		//Create Output-Array
 		auto res = (jobjectArray) env->NewObjectArray(jexecutions, kernelTimeCls, NULL);

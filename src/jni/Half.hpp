@@ -1,13 +1,15 @@
 #pragma once
 
-#include "../../include/yacx/Kernel.hpp"
-#include "../../include/yacx/Program.hpp"
-#include "../../include/yacx/Source.hpp"
-
-#include <stdlib.h>
-
+namespace yacx{
+//! converts floats to halfs
+//! \param floats pointer to floats
+//! \param halfs pointer to allocated memory for converted halfs
+//! \param length number of floats to convert
 void convertFtoH(void *floats, void *halfs, unsigned int length);
 
+//! converts halfs to floats
+//! \param halfs pointer to halfs
+//! \param floats pointer to allocated memory for converted floats
+//! \param length number of halfs to convert
 void convertHtoF(void *halfs, void *floats, unsigned int length);
-
-void initKernel();
+}

@@ -27,10 +27,10 @@ void Device::set_device_properties(const CUdevice &device) {
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 
-  CUuuid uuid;
-  CUDA_SAFE_CALL(cuDeviceGetUuid(&uuid, m_device));
-  //TODO
-  logger(loglevel::ERROR) << "UUID = " << uuid;
+  // CUuuid uuid;
+  // CUDA_SAFE_CALL(cuDeviceGetUuid(&uuid, m_device));
+  // //TODO
+  // logger(loglevel::ERROR) << "UUID = " << uuid;
 }
 
 void Device::max_block_dim(dim3 *block) {

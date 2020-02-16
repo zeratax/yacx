@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "Device.hpp"
+#include "Devices.hpp"
 #include "JNIHandle.hpp"
 #include "util.hpp"
 
@@ -100,8 +100,8 @@ class GpuArchitecture {
       : m_arc(std::string("compute_") + std::to_string(major) +
               std::to_string(minor)) {}
 
-  explicit GpuArchitecture(const yacx::Device &device)
-      : GpuArchitecture(device.major_version(), device.minor_version()) {}
+  explicit GpuArchitecture(const yacx::Device* device)
+      : GpuArchitecture(device->major_version(), device->minor_version()) {}
 
   auto name() const { return "--gpu-architecture"; }
   auto &value() const { return m_arc; }

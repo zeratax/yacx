@@ -1,48 +1,23 @@
 #include "Half.hpp"
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Device, yacx::Options;
+#include "../../include/yacx/Devices.hpp"
+#include "../../include/yacx/Kernel.hpp"
+#include "../../include/yacx/Program.hpp"
+#include "../../include/yacx/Source.hpp"
+
+#include <stdlib.h>
+
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Device, yacx::Devices, yacx::Options;
 
 unsigned int maxGridSize = 0;
 yacx::Kernel* kernelFtoH = NULL;
 yacx::Kernel* kernelHtoF = NULL;
 
-void convertFtoH(void* floats, void* halfs, unsigned int length){
-    if (kernelFtoH == NULL){
-        initKernel();
-    }
-
-    std::vector<KernelArg> args;
-    args.emplace_back(KernelArg{floats, length*sizeof(float), false, true, true});
-    args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
-    args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
-
-    dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
-    dim3 block(1);
-
-    kernelFtoH->configure(grid, block).launch(args);
-}
-
-void convertHtoF(void* halfs, void* floats, unsigned int length){
-    if (kernelHtoF == NULL){
-        initKernel();
-    }
-
-    std::vector<KernelArg> args;
-    args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, false, true, true});
-    args.emplace_back(KernelArg{floats, length*sizeof(float), true, false, true});
-    args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
-
-    dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
-    dim3 block(1);
-
-    kernelHtoF->configure(grid, block).launch(args);
-}
-
 void initKernel(){
-    Device dev;
+    Device* dev = Devices::findDevice();
 
     dim3 grid;
-    dev.max_grid_dim(&grid);
+    dev->max_grid_dim(&grid);
     maxGridSize = grid.x;
 
     Options options;
@@ -69,4 +44,36 @@ void initKernel(){
         		"}"};
 
     kernelHtoF = new Kernel{source2.program("halfToFloat").compile(options)};
+}
+
+void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
+    if (kernelFtoH == NULL){
+        initKernel();
+    }
+
+    std::vector<KernelArg> args;
+    args.emplace_back(KernelArg{floats, length*sizeof(float), false, true, true});
+    args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
+    args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
+
+    dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
+    dim3 block(1);
+
+    kernelFtoH->configure(grid, block).launch(args);
+}
+
+void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
+    if (kernelHtoF == NULL){
+        initKernel();
+    }
+
+    std::vector<KernelArg> args;
+    args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, false, true, true});
+    args.emplace_back(KernelArg{floats, length*sizeof(float), true, false, true});
+    args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
+
+    dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
+    dim3 block(1);
+
+    kernelHtoF->configure(grid, block).launch(args);
 }

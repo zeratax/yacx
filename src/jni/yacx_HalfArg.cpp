@@ -4,7 +4,7 @@
 #include "Half.hpp"
 #include "../../include/yacx/KernelArgs.hpp"
 
-using yacx::KernelArg, jni::KernelArgJNI;
+using yacx::KernelArg, jni::KernelArgJNI, yacx::convertFtoH, yacx::convertHtoF;
 
 jobject JNICALL Java_yacx_HalfArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
 	BEGIN_TRY

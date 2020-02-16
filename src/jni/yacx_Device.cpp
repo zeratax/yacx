@@ -1,14 +1,15 @@
 #include "yacx_Device.h"
+
 #include "Handle.h"
 #include "../../include/yacx/Logger.hpp"
-#include "../../include/yacx/Device.hpp"
+#include "../../include/yacx/Devices.hpp"
 #include <cstring>
 
-using yacx::Device;
+using yacx::Device, yacx::Devices;
 
 jobject Java_yacx_Device_createDevice (JNIEnv* env, jclass cls){
     BEGIN_TRY
-        Device* devicePtr = new Device{};
+        Device* devicePtr = Devices::findDevice();
 
     	return createJNIObject(env, cls, devicePtr);
     END_TRY_R("creating Device", NULL);
@@ -20,7 +21,7 @@ jobject Java_yacx_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring 
 
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
 
-        Device* devicePtr = new Device{devicenamePtr};
+        Device* devicePtr = Devices::findDevice(devicenamePtr);
 
         auto obj = createJNIObject(env, cls, devicePtr);
 
