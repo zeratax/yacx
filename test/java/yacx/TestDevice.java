@@ -24,7 +24,7 @@ class TestDevice extends TestJNI {
 		assertNotNull(device2);
 		assertEquals(name, device2.getName());
 		
-		assertNotEquals(device, device2);
+		assertEquals(device, device2);
 		
 		//Check functions should be return meaningful values
 		assertTrue(device.getMemorySize() > 0);

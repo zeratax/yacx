@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Exception.hpp"
-#include "Device.hpp"
+#include "Devices.hpp"
 #include <cuda.h>
 
 namespace yacx {
@@ -13,17 +13,6 @@ static bool instantiated = false;
 static void init() {
   if (!instantiated) {
     CUDA_SAFE_CALL(cuInit(0));
-  }
-}
-
-//TODO
-static bool instantiatedCtx = false;
-static void initCtx() {
-  if (!instantiatedCtx) {
-    Device device;
-    CUcontext ctx;
-    CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&ctx, device.get()));
-    CUDA_SAFE_CALL(cuCtxPushCurrent(ctx));
   }
 }
 } // namespace detail

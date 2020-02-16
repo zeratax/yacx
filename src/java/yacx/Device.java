@@ -99,6 +99,6 @@ public class Device extends JNIHandle {
     public String toString(){
         return "Device: " + getName() + " (Memory: " + getMemorySize()/1024/1024 + " MB, Blocks: "
         		+ Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid()) +
-        		", vomputeversions: " + getMajorVersion() + "-" + getMinorVersion() + ")";
+        		", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
     }
 }
