@@ -8,6 +8,7 @@ using jni::detail::HDataMem, jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::Ke
 
 HDataMem::HDataMem(size_t size){
     yacx::detail::init();
+    yacx::detail::initCtx();
     CUDA_SAFE_CALL(cuMemAllocHost(&m_hdata, size));
 }
 
