@@ -38,7 +38,7 @@ class TestDevice extends TestJNI {
 		assertTrue(device.getClockRate()> 0);
 		assertTrue(device.getMemoryClockRate() > 0);
 		assertTrue(device.getBusWidth() > 0);
-		assertTrue(device.getMinorVersion() > 0);
+		assertTrue(device.getMinorVersion() >= 0);
 		assertTrue(device.getMajorVersion() > 0);
 		
 		//For Debug
