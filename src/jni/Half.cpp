@@ -56,7 +56,11 @@ void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
     args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
     args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
 
+<<<<<<< HEAD
     dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
+=======
+    dim3 grid(length < maxGridSize ? length/1024+1 : maxGridSize);
+>>>>>>> #89
     dim3 block(1);
 
     kernelFtoH->configure(grid, block).launch(args);
@@ -72,7 +76,11 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
     args.emplace_back(KernelArg{floats, length*sizeof(float), true, false, true});
     args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
 
+<<<<<<< HEAD
     dim3 grid(length < maxGridSize ? length/1024 : maxGridSize);
+=======
+    dim3 grid(length < maxGridSize ? length/1024+1 : maxGridSize);
+>>>>>>> #89
     dim3 block(1);
 
     kernelHtoF->configure(grid, block).launch(args);
