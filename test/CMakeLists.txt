@@ -51,22 +51,22 @@ include(Catch)
 catch_discover_tests(tests)
 
 set(JAVA_TEST_FILES
-    "test/java/TestBooleanArg.java"
-    "test/java/TestDevice.java"
-    "test/java/TestDoubleArg.java"
-    "test/java/TestExecuteFilter.java"
-    "test/java/TestExecuteSaxpy.java"
-    "test/java/TestExecutor.java"
-    "test/java/TestFloatArg.java"
-    "test/java/TestHeaders.java"
-    "test/java/TestIntArg.java"
-    "test/java/TestJNIHandle.java"
-    "test/java/TestKernel.java"
-    "test/java/TestLongArg.java"
-    "test/java/TestOptions.java"
-    "test/java/TestProgram.java"
-    "test/java/TestShortArg.java"
-    "test/java/TestUtils.java")
+    "test/java/yacx/TestBooleanArg.java"
+    "test/java/yacx/TestDevice.java"
+    "test/java/yacx/TestDoubleArg.java"
+    "test/java/yacx/TestExecuteFilter.java"
+    "test/java/yacx/TestExecuteSaxpy.java"
+    "test/java/yacx/TestExecutor.java"
+    "test/java/yacx/TestFloatArg.java"
+    "test/java/yacx/TestHeaders.java"
+    "test/java/yacx/TestIntArg.java"
+    "test/java/yacx/TestJNIHandle.java"
+    "test/java/yacx/TestKernel.java"
+    "test/java/yacx/TestLongArg.java"
+    "test/java/yacx/TestOptions.java"
+    "test/java/yacx/TestProgram.java"
+    "test/java/yacx/TestShortArg.java"
+    "test/java/yacx/TestUtils.java")
 
 if(JNI_ENABLED)
   file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/java/bin")
@@ -94,8 +94,8 @@ if(JNI_ENABLED)
             -sourcepath "${PROJECT_SOURCE_DIR}/src/java:${PROJECT_SOURCE_DIR}/test/java"
             -d "${PROJECT_BINARY_DIR}/java/bin"
             -cp "${PROJECT_BINARY_DIR}/java/bin/src/junit-platform-console-standalone-1.5.2.jar"
-            "${PROJECT_SOURCE_DIR}/test/java/${_java_file}"
-      DEPENDS "${PROJECT_SOURCE_DIR}/test/java/${_java_file}")
+            "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}"
+      DEPENDS "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}")
     list(APPEND class_files "${PROJECT_BINARY_DIR}/java/bin/${_class_file}")
   endforeach()
   add_custom_target(JNITestClasses ALL DEPENDS ${class_files} yacx-jni junit-platform-console)
