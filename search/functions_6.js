@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['kernel',['Kernel',['../classyacx_1_1_kernel.html#af0bb713a4f07eb8304525731d0d1a9f9',1,'yacx::Kernel']]],
-  ['kernelarg',['KernelArg',['../classyacx_1_1_kernel_arg.html#aebad149ca9250191719bcb4f33c7b142',1,'yacx::KernelArg::KernelArg(void *data, size_t size, bool download=false, bool copy=true, bool upload=true)'],['../classyacx_1_1_kernel_arg.html#a52d84ba8210a080a8cb6e38d4b09981b',1,'yacx::KernelArg::KernelArg(void *data)']]]
+  ['header',['Header',['../classyacx_1_1_header.html#a359314e42c557b67be2ff790463f4f83',1,'yacx::Header']]],
+  ['headers',['Headers',['../classyacx_1_1_headers.html#ae04c7a09aac2e2417c7f5cb3410b011f',1,'yacx.Headers::Headers(const Header &amp;header)'],['../classyacx_1_1_headers.html#af379ab4de8a97b9af8eff850987ce1d5',1,'yacx.Headers::Headers(const std::string &amp;path)'],['../classyacx_1_1_headers.html#a4741fcbd110385f037be9091e20fd4a9',1,'yacx.Headers::Headers(std::vector&lt; Header &gt; headers)'],['../classyacx_1_1_headers.html#a2c695f86d62e478719878b37027e6cde',1,'yacx.Headers::Headers(const T &amp;arg, const TS &amp;... args)']]]
 ];

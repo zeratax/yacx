@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['program',['Program',['../classyacx_1_1_program.html',1,'yacx::Program'],['../class_program.html',1,'Program']]],
-  ['programarg',['ProgramArg',['../class_program_arg.html',1,'']]]
+  ['opfn',['opfn',['../structyacx_1_1detail_1_1opfn.html',1,'yacx::detail']]],
+  ['options',['Options',['../classyacx_1_1_options.html',1,'yacx']]]
 ];

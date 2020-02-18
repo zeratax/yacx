@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>yacx-YetAnotherCudaExecutor: yacx::Program Class Reference</title>
+<title>yacx-YetAnotherCudaExecutor: yacx.Program Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,43 +66,59 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classyacx_1_1_program-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">yacx::Program Class Reference</div>  </div>
+<div class="title">yacx.Program Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p>Class to instantiate and compile <a class="el" href="classyacx_1_1_source.html" title="Class to wrap kernel strings. ">Source</a> (kernel strings)  
  <a href="classyacx_1_1_program.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="_program_8hpp_source.html">Program.hpp</a>&gt;</code></p>
+<p><code>import&quot;<a class="el" href="_program_8hpp_source.html">Program.hpp</a>&quot;;</code></p>
 <div class="dynheader">
-Inheritance diagram for yacx::Program:</div>
+Inheritance diagram for yacx.Program:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classyacx_1_1_program.png" usemap="#yacx::Program_map" alt=""/>
-  <map id="yacx::Program_map" name="yacx::Program_map">
-<area href="classyacx_1_1_j_n_i_handle.html" alt="yacx::JNIHandle" shape="rect" coords="0,0,104,24"/>
+  <img src="classyacx_1_1_program.png" usemap="#yacx.Program_map" alt=""/>
+  <map id="yacx.Program_map" name="yacx.Program_map">
+<area href="classyacx_1_1_j_n_i_handle.html" alt="yacx.JNIHandle" shape="rect" coords="0,0,102,24"/>
+<area href="classyacx_1_1_j_n_i_handle.html" alt="yacx.JNIHandle" shape="rect" coords="112,0,214,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:afc2d0fdc5c6b9a90584288bd358d2b86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_program.html">Program</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#afc2d0fdc5c6b9a90584288bd358d2b86">instantiate</a> (String... templateParameter)</td></tr>
+<tr class="separator:afc2d0fdc5c6b9a90584288bd358d2b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada4a60b35bcd5978fff6b177c4856f6a"><td class="memItemLeft" align="right" valign="top">native <a class="el" href="classyacx_1_1_kernel.html">Kernel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#ada4a60b35bcd5978fff6b177c4856f6a">compile</a> ()</td></tr>
+<tr class="separator:ada4a60b35bcd5978fff6b177c4856f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a236d6862013350c4196a310dc4e7fcbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a236d6862013350c4196a310dc4e7fcbd">compile</a> (<a class="el" href="classyacx_1_1_options.html">Options</a> options)</td></tr>
+<tr class="separator:a236d6862013350c4196a310dc4e7fcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70cf98f664408ede2787e4505365a82a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a70cf98f664408ede2787e4505365a82a">Program</a> (std::string kernel_name, std::shared_ptr&lt; nvrtcProgram &gt; prog)</td></tr>
 <tr class="separator:a70cf98f664408ede2787e4505365a82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a56f5f93427fdcdec8a9622e9cbeeef11">instantiate</a> (T type)</td></tr>
-<tr class="separator:a56f5f93427fdcdec8a9622e9cbeeef11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9dcab02306deb3e4e234b8962c96e9c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TS&gt; </td></tr>
-<tr class="memitem:aa9dcab02306deb3e4e234b8962c96e9c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#aa9dcab02306deb3e4e234b8962c96e9c">instantiate</a> (T type, TS... types)</td></tr>
-<tr class="separator:aa9dcab02306deb3e4e234b8962c96e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f0b2d0d803cd4759cd0df019c5b0802"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a2f0b2d0d803cd4759cd0df019c5b0802">compile</a> (const <a class="el" href="classyacx_1_1_options.html">Options</a> &amp;options=<a class="el" href="classyacx_1_1_options.html">Options</a>())</td></tr>
-<tr class="separator:a2f0b2d0d803cd4759cd0df019c5b0802"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9e7de768dcbfb251b83737bcaec772"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a0d9e7de768dcbfb251b83737bcaec772">log</a> () const</td></tr>
-<tr class="separator:a0d9e7de768dcbfb251b83737bcaec772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b314b392ab72262ea95ddeba7717740"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3b314b392ab72262ea95ddeba7717740"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a3b314b392ab72262ea95ddeba7717740">instantiate</a> (T type)</td></tr>
+<tr class="separator:a3b314b392ab72262ea95ddeba7717740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eec46ceaa1578d672a4e8b67d82a54e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... TS&gt; </td></tr>
+<tr class="memitem:a2eec46ceaa1578d672a4e8b67d82a54e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a2eec46ceaa1578d672a4e8b67d82a54e">instantiate</a> (T type, TS... types)</td></tr>
+<tr class="separator:a2eec46ceaa1578d672a4e8b67d82a54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2834c7f32be3bba037352a5a5e5114d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a2834c7f32be3bba037352a5a5e5114d3">compile</a> (const <a class="el" href="classyacx_1_1_options.html">Options</a> &amp;options=<a class="el" href="classyacx_1_1_options.html">Options</a>())</td></tr>
+<tr class="separator:a2834c7f32be3bba037352a5a5e5114d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22beb2c0e93c86d9d9df4bef9a8e8edd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a22beb2c0e93c86d9d9df4bef9a8e8edd">log</a> () const</td></tr>
+<tr class="separator:a22beb2c0e93c86d9d9df4bef9a8e8edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a260047ef6b175c11cf31f1ff20b47058"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_program.html">Program</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a260047ef6b175c11cf31f1ff20b47058">create</a> (String kernelString, String kernelName)</td></tr>
+<tr class="separator:a260047ef6b175c11cf31f1ff20b47058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2adce658c9ce3de99f0728cd979220af"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_program.html">Program</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_program.html#a2adce658c9ce3de99f0728cd979220af">create</a> (String kernelString, String kernelName, <a class="el" href="classyacx_1_1_headers.html">Headers</a> headers)</td></tr>
+<tr class="separator:a2adce658c9ce3de99f0728cd979220af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to instantiate and compile <a class="el" href="classyacx_1_1_source.html" title="Class to wrap kernel strings. ">Source</a> (kernel strings) </p>
+<p>Class to instantiate and compile kernel strings. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a70cf98f664408ede2787e4505365a82a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70cf98f664408ede2787e4505365a82a">&#9670;&nbsp;</a></span>Program()</h2>
@@ -140,14 +156,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2f0b2d0d803cd4759cd0df019c5b0802"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f0b2d0d803cd4759cd0df019c5b0802">&#9670;&nbsp;</a></span>compile()</h2>
+<a id="a2834c7f32be3bba037352a5a5e5114d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2834c7f32be3bba037352a5a5e5114d3">&#9670;&nbsp;</a></span>compile() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a> yacx::Program::compile </td>
+          <td class="memname"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a> Program::compile </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classyacx_1_1_options.html">Options</a> &amp;&#160;</td>
           <td class="paramname"><em>options</em> = <code><a class="el" href="classyacx_1_1_options.html">Options</a>()</code></td><td>)</td>
@@ -165,8 +181,158 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a56f5f93427fdcdec8a9622e9cbeeef11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56f5f93427fdcdec8a9622e9cbeeef11">&#9670;&nbsp;</a></span>instantiate() <span class="overload">[1/2]</span></h2>
+<a id="ada4a60b35bcd5978fff6b177c4856f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada4a60b35bcd5978fff6b177c4856f6a">&#9670;&nbsp;</a></span>compile() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">native <a class="el" href="classyacx_1_1_kernel.html">Kernel</a> yacx.Program.compile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compile this <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a> using nvrtc.</p>
+<dl class="section return"><dt>Returns</dt><dd>compiled <a class="el" href="classyacx_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> </dd></dl>
+
+</div>
+</div>
+<a id="a236d6862013350c4196a310dc4e7fcbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a236d6862013350c4196a310dc4e7fcbd">&#9670;&nbsp;</a></span>compile() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a> yacx.Program.compile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classyacx_1_1_options.html">Options</a>&#160;</td>
+          <td class="paramname"><em>options</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compile this <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a> using nvrtc.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">options</td><td>options for the compiler </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>compiled <a class="el" href="classyacx_1_1_kernel.html" title="Class to help launch and configure a CUDA kernel. ">Kernel</a> </dd></dl>
+
+</div>
+</div>
+<a id="a260047ef6b175c11cf31f1ff20b47058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a260047ef6b175c11cf31f1ff20b47058">&#9670;&nbsp;</a></span>create() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classyacx_1_1_program.html">Program</a> yacx.Program.create </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>kernelString</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>kernelName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a new <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kernelString</td><td>string containing the CUDA kernelcode </td></tr>
+    <tr><td class="paramname">kernelName</td><td>name of the kernel </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2adce658c9ce3de99f0728cd979220af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2adce658c9ce3de99f0728cd979220af">&#9670;&nbsp;</a></span>create() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classyacx_1_1_program.html">Program</a> yacx.Program.create </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>kernelString</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>kernelName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classyacx_1_1_headers.html">Headers</a>&#160;</td>
+          <td class="paramname"><em>headers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a new <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kernelString</td><td>string containing the CUDA kernelcode </td></tr>
+    <tr><td class="paramname">kernelName</td><td>name of the kernel </td></tr>
+    <tr><td class="paramname">headers</td><td>headers required by the kernel </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3b314b392ab72262ea95ddeba7717740"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b314b392ab72262ea95ddeba7717740">&#9670;&nbsp;</a></span>instantiate() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +340,7 @@ Public Member Functions</h2></td></tr>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp; Program::instantiate </td>
+          <td class="memname"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp; yacx.Program::instantiate </td>
           <td>(</td>
           <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>type</em></td><td>)</td>
@@ -198,8 +364,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aa9dcab02306deb3e4e234b8962c96e9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9dcab02306deb3e4e234b8962c96e9c">&#9670;&nbsp;</a></span>instantiate() <span class="overload">[2/2]</span></h2>
+<a id="a2eec46ceaa1578d672a4e8b67d82a54e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eec46ceaa1578d672a4e8b67d82a54e">&#9670;&nbsp;</a></span>instantiate() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +373,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T , typename... TS&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp; Program::instantiate </td>
+          <td class="memname"><a class="el" href="classyacx_1_1_program.html">Program</a> &amp; yacx.Program::instantiate </td>
           <td>(</td>
           <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>type</em>, </td>
@@ -243,8 +409,8 @@ template&lt;typename T , typename... TS&gt; </div>
 
 </div>
 </div>
-<a id="a0d9e7de768dcbfb251b83737bcaec772"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d9e7de768dcbfb251b83737bcaec772">&#9670;&nbsp;</a></span>log()</h2>
+<a id="afc2d0fdc5c6b9a90584288bd358d2b86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc2d0fdc5c6b9a90584288bd358d2b86">&#9670;&nbsp;</a></span>instantiate() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -253,7 +419,41 @@ template&lt;typename T , typename... TS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string yacx::Program::log </td>
+          <td class="memname"><a class="el" href="classyacx_1_1_program.html">Program</a> yacx.Program.instantiate </td>
+          <td>(</td>
+          <td class="paramtype">String...&#160;</td>
+          <td class="paramname"><em>templateParameter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Instantiate the template parameters if the kernel contains some.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">templateParameter</td><td>template parameters which should be used for this <a class="el" href="classyacx_1_1_program.html" title="Class to instantiate and compile Source (kernel strings) ">Program</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>this</code> </dd></dl>
+
+</div>
+</div>
+<a id="a22beb2c0e93c86d9d9df4bef9a8e8edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22beb2c0e93c86d9d9df4bef9a8e8edd">&#9670;&nbsp;</a></span>log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string yacx.Program.log </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -270,6 +470,7 @@ template&lt;typename T , typename... TS&gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/java/yacx/Program.java</li>
 <li>include/yacx/<a class="el" href="_program_8hpp_source.html">Program.hpp</a></li>
 <li>src/Program.cpp</li>
 </ul>

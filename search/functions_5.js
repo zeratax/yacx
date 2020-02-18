@@ -1,6 +1,23 @@
 var searchData=
 [
-  ['insert',['insert',['../classyacx_1_1_headers.html#a0428360b3ce224adc3a22bdbd486bfa0',1,'yacx::Headers::insert(std::string const &amp;path)'],['../classyacx_1_1_headers.html#a43251bcac778655f4b539e4e8f56e672',1,'yacx::Headers::insert(Header header)'],['../classyacx_1_1_options.html#a717bfff574dc2134fae4a0b3ffc9d656',1,'yacx::Options::insert(const std::string &amp;op)'],['../classyacx_1_1_options.html#acd9d1aeff97ef155aee30fd3803b0a2a',1,'yacx::Options::insert(const std::string &amp;name, const std::string &amp;value)']]],
-  ['insertoptions',['insertOptions',['../classyacx_1_1_options.html#acd1af6435bdb0efd29cea346205dae0f',1,'yacx::Options::insertOptions(const T &amp;t)'],['../classyacx_1_1_options.html#a2abf98930ddce05563332e82e1964a7e',1,'yacx::Options::insertOptions(const T &amp;t, const TS &amp;... ts)']]],
-  ['instantiate',['instantiate',['../classyacx_1_1_program.html#a56f5f93427fdcdec8a9622e9cbeeef11',1,'yacx::Program::instantiate(T type)'],['../classyacx_1_1_program.html#aa9dcab02306deb3e4e234b8962c96e9c',1,'yacx::Program::instantiate(T type, TS... types)']]]
+  ['get',['get',['../classyacx_1_1_device.html#a57ab1cc30a64204fd7b12b77e2aa37ae',1,'yacx::Device']]],
+  ['getarg',['getArg',['../classyacx_1_1_padding_arg.html#ae1bc318825b990338788e74b889595ac',1,'yacx::PaddingArg']]],
+  ['getbuswidth',['getBusWidth',['../classyacx_1_1_device.html#a48a7329b67e3ae2d9b711b423678afaf',1,'yacx::Device']]],
+  ['getclockrate',['getClockRate',['../classyacx_1_1_device.html#a5f0c68ec8a967abd015668f9910ea535',1,'yacx::Device']]],
+  ['getdownload',['getDownload',['../classyacx_1_1_kernel_time.html#a092b669ffeac264944511a369a6ba1f1',1,'yacx::KernelTime']]],
+  ['getlaunch',['getLaunch',['../classyacx_1_1_kernel_time.html#ad0a3f1d7ad2233fd6f0c1a8e7465c42c',1,'yacx::KernelTime']]],
+  ['getlength',['getLength',['../classyacx_1_1_array_arg.html#a1c3d005fc750536d28a5ebeea137ee6e',1,'yacx::ArrayArg']]],
+  ['getmajorversion',['getMajorVersion',['../classyacx_1_1_device.html#a5037e44a2c12aecf53f76b11a729878d',1,'yacx::Device']]],
+  ['getmaxblock',['getMaxBlock',['../classyacx_1_1_device.html#af0352e61e472612f5fbe969e44db2363',1,'yacx::Device']]],
+  ['getmaxgrid',['getMaxGrid',['../classyacx_1_1_device.html#a07e72b111a8dd02d888e1009cc44b6bd',1,'yacx::Device']]],
+  ['getmemoryclockrate',['getMemoryClockRate',['../classyacx_1_1_device.html#aa51f4a2b8c229a556a9be537d0c95dff',1,'yacx::Device']]],
+  ['getmemorysize',['getMemorySize',['../classyacx_1_1_device.html#a143bbe2ec1b0633ad8ffc5ff39c3adcc',1,'yacx::Device']]],
+  ['getminorversion',['getMinorVersion',['../classyacx_1_1_device.html#a77f14a11aba4976d57e9663c30f6c143',1,'yacx::Device']]],
+  ['getmultiprocessorcount',['getMultiprocessorCount',['../classyacx_1_1_device.html#a7b1bddb2a64235e6ce6451af9b6e3c94',1,'yacx::Device']]],
+  ['getname',['getName',['../classyacx_1_1_device.html#a2b1a2151f7de52c3a46ad83b418ede19',1,'yacx::Device']]],
+  ['getoptions',['getOptions',['../classyacx_1_1_options.html#a974edafdaeef712419b5de057ba75560',1,'yacx::Options']]],
+  ['getsize',['getSize',['../classyacx_1_1_options.html#a9fba56174d334de40c0c589274e9bc69',1,'yacx::Options']]],
+  ['getsizebytes',['getSizeBytes',['../classyacx_1_1_array_arg.html#a173acb89033e694ce00e968f256f828a',1,'yacx::ArrayArg']]],
+  ['gettotal',['getTotal',['../classyacx_1_1_kernel_time.html#a3ec2dc095ee8e23d169442718a081397',1,'yacx::KernelTime']]],
+  ['getupload',['getUpload',['../classyacx_1_1_kernel_time.html#a36d98fa028e0228b09733e8ee839fc23',1,'yacx::KernelTime']]]
 ];

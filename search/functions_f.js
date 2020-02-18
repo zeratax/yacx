@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['what',['what',['../classyacx_1_1_c_uresult_exception.html#a29a19373b00f96712d1da4f349bc3605',1,'yacx::CUresultException']]]
+  ['total_5fmemory',['total_memory',['../classyacx_1_1_device.html#a180ed0d4d7b3d62723d61d8bd003342f',1,'yacx::Device']]]
 ];

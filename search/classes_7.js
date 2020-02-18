@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['intarg',['IntArg',['../class_int_arg.html',1,'']]],
-  ['is_5fheader',['is_header',['../structyacx_1_1is__header.html',1,'yacx']]],
-  ['is_5fstring',['is_string',['../structyacx_1_1is__string.html',1,'yacx']]]
+  ['halfarg',['HalfArg',['../classyacx_1_1_half_arg.html',1,'yacx']]],
+  ['header',['Header',['../classyacx_1_1_header.html',1,'yacx']]],
+  ['headers',['Headers',['../classyacx_1_1_headers.html',1,'yacx']]]
 ];

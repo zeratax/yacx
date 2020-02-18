@@ -66,6 +66,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classjni_1_1_kernel_arg_j_n_i-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">jni::KernelArgJNI Class Reference</div>  </div>
@@ -77,21 +78,34 @@ Inheritance diagram for jni::KernelArgJNI:</div>
  <div class="center">
   <img src="classjni_1_1_kernel_arg_j_n_i.png" usemap="#jni::KernelArgJNI_map" alt=""/>
   <map id="jni::KernelArgJNI_map" name="jni::KernelArgJNI_map">
-<area href="classyacx_1_1_j_n_i_handle.html" alt="yacx::JNIHandle" shape="rect" coords="0,0,108,24"/>
+<area href="classyacx_1_1_j_n_i_handle.html" alt="yacx.JNIHandle" shape="rect" coords="0,0,136,24"/>
+<area href="classjni_1_1_kernel_arg_j_n_i_slice.html" alt="jni::KernelArgJNISlice" shape="rect" coords="0,112,136,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1475760a8c3a9e6b2decd6d44f6832c6"><td class="memItemLeft" align="right" valign="top"><a id="a1475760a8c3a9e6b2decd6d44f6832c6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgJNI</b> (void *data, size_t size, bool download=false, bool copy=true, bool upload=false)</td></tr>
-<tr class="separator:a1475760a8c3a9e6b2decd6d44f6832c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f7dd2dc2034612dfb98695e74da85b"><td class="memItemLeft" align="right" valign="top"><a id="a69f7dd2dc2034612dfb98695e74da85b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgJNI</b> (std::shared_ptr&lt; void &gt; hdata, <a class="el" href="classyacx_1_1_kernel_arg.html">yacx::KernelArg</a> *kernelArg)</td></tr>
+<tr class="separator:a69f7dd2dc2034612dfb98695e74da85b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b624b9c355669f11f0a2d2f36425518"><td class="memItemLeft" align="right" valign="top"><a id="a2b624b9c355669f11f0a2d2f36425518"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgJNI</b> (void *data, size_t size, bool download, bool copy, bool upload)</td></tr>
+<tr class="separator:a2b624b9c355669f11f0a2d2f36425518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bbe24a726c0b3e4873c8cd941e9c708"><td class="memItemLeft" align="right" valign="top"><a id="a7bbe24a726c0b3e4873c8cd941e9c708"></a>
 <a class="el" href="classyacx_1_1_kernel_arg.html">yacx::KernelArg</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>kernelArgPtr</b> ()</td></tr>
 <tr class="separator:a7bbe24a726c0b3e4873c8cd941e9c708"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e1a0eb039024bcd6b4a5490d4f47d0a"><td class="memItemLeft" align="right" valign="top"><a id="a5e1a0eb039024bcd6b4a5490d4f47d0a"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>getHostData</b> ()</td></tr>
-<tr class="separator:a5e1a0eb039024bcd6b4a5490d4f47d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a2422d7c13ffeefb29df4233ad61e2"><td class="memItemLeft" align="right" valign="top"><a id="a91a2422d7c13ffeefb29df4233ad61e2"></a>
+virtual void *&#160;</td><td class="memItemRight" valign="bottom"><b>getHostData</b> () const</td></tr>
+<tr class="separator:a91a2422d7c13ffeefb29df4233ad61e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b4413f53a95ec3f6acd82be2aa47851"><td class="memItemLeft" align="right" valign="top"><a id="a8b4413f53a95ec3f6acd82be2aa47851"></a>
+std::shared_ptr&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getHostDataSharedPointer</b> ()</td></tr>
+<tr class="separator:a8b4413f53a95ec3f6acd82be2aa47851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a6a343aae8526b111c9e19aac69e76379"><td class="memItemLeft" align="right" valign="top"><a id="a6a343aae8526b111c9e19aac69e76379"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgJNISlice</b></td></tr>
+<tr class="separator:a6a343aae8526b111c9e19aac69e76379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/jni/<a class="el" href="_kernel_arg_j_n_i_8hpp_source.html">KernelArgJNI.hpp</a></li>

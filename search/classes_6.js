@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['header',['Header',['../classyacx_1_1_header.html',1,'yacx']]],
-  ['headers',['Headers',['../class_headers.html',1,'Headers'],['../classyacx_1_1_headers.html',1,'yacx::Headers']]]
+  ['gpuarchitecture',['GpuArchitecture',['../classyacx_1_1options_1_1_gpu_architecture.html',1,'yacx::options']]]
 ];

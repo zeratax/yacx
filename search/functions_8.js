@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['major_5fversion',['major_version',['../classyacx_1_1_device.html#ac72d60151e4070d118cd0aadd0d7d448',1,'yacx::Device']]],
-  ['max_5fblock_5fdim',['max_block_dim',['../classyacx_1_1_device.html#a3d7f11438902e714311b41d01ad24e53',1,'yacx::Device']]],
-  ['max_5fgrid_5fdim',['max_grid_dim',['../classyacx_1_1_device.html#ad79c81d07b5c49be6d8cc194a5e649e2',1,'yacx::Device']]],
-  ['minor_5fversion',['minor_version',['../classyacx_1_1_device.html#a5d7a0d5f9c543768323cfc8807d9aa27',1,'yacx::Device']]]
+  ['kernel',['Kernel',['../classyacx_1_1_kernel.html#af0bb713a4f07eb8304525731d0d1a9f9',1,'yacx::Kernel']]],
+  ['kernelarg',['KernelArg',['../classyacx_1_1_kernel_arg.html#a10f9f7255e69ef20c0cad5ed4e091c94',1,'yacx.KernelArg::KernelArg(void *data, size_t size, bool download=false, bool copy=true, bool upload=true)'],['../classyacx_1_1_kernel_arg.html#a322f72843a8fb16c51b83b0af408da9b',1,'yacx.KernelArg::KernelArg(void *data)']]],
+  ['kernelargmatrixpadding',['KernelArgMatrixPadding',['../classyacx_1_1_kernel_arg_matrix_padding.html#ae1deb41319073ffa43589668baa7de63',1,'yacx::KernelArgMatrixPadding']]],
+  ['kerneltime',['KernelTime',['../classyacx_1_1_kernel_time.html#af4b724a54d8c19acc1c5e955fd2147b1',1,'yacx::KernelTime']]]
 ];
