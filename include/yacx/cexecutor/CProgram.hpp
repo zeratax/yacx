@@ -11,7 +11,7 @@ class CProgram : public JNIHandle {
            const char *compilerWithOptions);
   ~CProgram();
 
-  void execute(void **arguments);
+  void execute(void **arguments, bool* pointerArg);
   int getNumberArguments() const { return m_numberArguments; }
 
  private:

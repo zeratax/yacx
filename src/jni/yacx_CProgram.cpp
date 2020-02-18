@@ -65,6 +65,6 @@ void Java_yacx_CProgram_execute(JNIEnv* env, jobject obj, jobjectArray jKernelAr
             argsPtr[i] = kernelArgJNIPtr->getHostData();
         }
 
-        cProgramPtr->execute(argsPtr);
+        //cProgramPtr->execute(argsPtr);
     END_TRY("executing cProgram")
 }

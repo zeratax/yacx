@@ -58,14 +58,17 @@ void CProgram::createSrcFile(const char* cProgram, const char* functionName, int
     
     //function for start function to be executed
     fileOut << "void " << executeFunctionName << " (";
-    fileOut << "void** parameter";
+    fileOut << "void** parameter, bool* pointerArg";
     fileOut << ") {\n";
     //run function to be executed
     fileOut << "    " << functionName << "(";
-    for (int i = 0; i < numberParameters-1; i++){
-        fileOut << "parameter[" << i << "], ";
+    int i = 0;
+    for (; i < numberParameters-1; i++){
+        fileOut << "\n        ";
+        fileOut << "pointerArg[" << i << "] ? parameter[" << i << "] : *((char*) parameter[" << i <<"]),";
     }
-    fileOut << "parameter[" << numberParameters-1 << "]";
+    fileOut << "\n        ";
+    fileOut << "pointerArg[" << i << "] ? parameter[" << i << "] : *((char*) parameter[" << i <<"])";
     fileOut << ");\n";
     fileOut << "}\n\n";
 
@@ -106,7 +109,7 @@ void CProgram::compile(const char* cProgram, const char* functionName, int numbe
     }
 }
 
-void CProgram::execute(void** arguments) {
+void CProgram::execute(void** arguments, bool* pointerArg) {
     logger(loglevel::DEBUG) << "execute CProgram: " << m_srcFile;
-    m_op.op(arguments);
+    m_op.op(arguments, pointerArg);
 }
