@@ -10,13 +10,15 @@ import java.nio.file.Files;
 public class Utils {
 	/**
 	 * Reads a file and returns the content of the file as string.
-	 * @param filename name of a file in current path or complete filename including path to file
+	 * 
+	 * @param filename name of a file in current path or complete filename including
+	 *                 path to file
 	 * @return string with the filecontent
 	 * @throws IOException
 	 */
-    public static String loadFile(String filename) throws IOException {
-        assert(filename != null);
-        
-        return new String(Files.readAllBytes(new File(filename).toPath()));
-    }
+	public static String loadFile(String filename) throws IOException {
+		assert (filename != null);
+
+		return new String(Files.readAllBytes(new File(filename).toPath()));
+	}
 }

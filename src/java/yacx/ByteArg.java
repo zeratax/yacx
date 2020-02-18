@@ -2,10 +2,10 @@ package yacx;
 
 /**
  * Class representing an byte-array-argument for the kernel. <br>
- * Note: The size in bytes for one byte-element is fixed and may differ from
- * the size of the corresponding data-type in CUDA, which is depending on your system.
- * So make sure the size of the corresponding data-type is matching {@link #SIZE_BYTES} to avoid
- * unexpected segmentation faults.
+ * Note: The size in bytes for one byte-element is fixed and may differ from the
+ * size of the corresponding data-type in CUDA, which is depending on your
+ * system. So make sure the size of the corresponding data-type is matching
+ * {@link #SIZE_BYTES} to avoid unexpected segmentation faults.
  */
 public class ByteArg extends ArrayArg {
 	/**
@@ -15,6 +15,7 @@ public class ByteArg extends ArrayArg {
 
 	/**
 	 * Create a byte-value-argument.
+	 * 
 	 * @param value value of the argument
 	 * @return a corresponding KernelArg representing this value
 	 */
@@ -23,10 +24,11 @@ public class ByteArg extends ArrayArg {
 	/**
 	 * Create a new ByteArg with the passed values. <br>
 	 * This argument will be uploaded, but not be downloaded.
+	 * 
 	 * @param bytes values for this argument
 	 * @return a new ByteArg with the passes values
 	 */
-	public static ByteArg create(byte ...bytes) {
+	public static ByteArg create(byte... bytes) {
 		return create(bytes, false);
 	}
 
@@ -34,12 +36,13 @@ public class ByteArg extends ArrayArg {
 	 * Create a new ByteArg with the passed values.<br>
 	 * This argument will be uploaded. The argument will be downloaded when
 	 * <code>download</code> is <code>true</code>.
-	 * @param bytes values for this argument
+	 * 
+	 * @param bytes    values for this argument
 	 * @param download set whether the argument should be downloaded
 	 * @return a new ByteArg with the passes values
 	 */
 	public static ByteArg create(byte[] bytes, boolean download) {
-		assert(bytes != null && bytes.length > 0);
+		assert (bytes != null && bytes.length > 0);
 
 		return createInternal(bytes, download);
 	}
@@ -48,7 +51,9 @@ public class ByteArg extends ArrayArg {
 
 	/**
 	 * Create an output-argument, which will be downloaded but not be uploaded. <br>
-	 * This argument will be allocating enough memory for <code>length</code> byte-elements.
+	 * This argument will be allocating enough memory for <code>length</code>
+	 * byte-elements.
+	 * 
 	 * @param length number of elements for the output-argument
 	 * @return a new ByteArg
 	 */
@@ -62,22 +67,23 @@ public class ByteArg extends ArrayArg {
 
 	/**
 	 * Create a new array containing the data of this array.
+	 * 
 	 * @return data of this array
 	 */
 	public native byte[] asByteArray();
-	
+
 	@Override
 	protected long getSizeBytes() {
 		return SIZE_BYTES;
 	}
-	
+
 	@Override
 	public ByteArg slice(int start, int end) {
 		return new ByteArg(slice(start * SIZE_BYTES, end * SIZE_BYTES + SIZE_BYTES));
 	}
 
 	@Override
-    public String toString(){
-        return "ByteArg " + super.toString();
-    }
+	public String toString() {
+		return "ByteArg " + super.toString();
+	}
 }

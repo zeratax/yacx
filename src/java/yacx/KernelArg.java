@@ -7,9 +7,10 @@ package yacx;
 public class KernelArg extends JNIHandle {
 	/**
 	 * Create a new KernelArg.
+	 * 
 	 * @param handle Pointer to corresponding C-KernelArg-Object
 	 */
-    KernelArg(long handle) {
-       super(handle);
-    }
+	KernelArg(long handle) {
+		super(handle);
+	}
 }
