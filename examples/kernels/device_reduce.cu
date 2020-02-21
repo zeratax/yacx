@@ -17,7 +17,7 @@ __device__ long long func(long long a, long long b) {
 // N has to be equal to the amount of elements in the input array.
 // Also note that this kernel has to be called twice to work correctly:
 // Once to compute the result of each block and once to reduce the results of all blocks to one final result.
-extern "C" __global__ 
+__global__ 
 void deviceReduce(long long* in, long long* out, int N) {
 	
 	// read the value of the input array corresponding with the absolute thread ID
