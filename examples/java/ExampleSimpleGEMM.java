@@ -1,77 +1,86 @@
-public class ExampleSimpleGEMM {
-	
-	// matrix dimensions
-	private static final int M_GLOBAL = 672;
-	private static final int N_GLOBAL = 672;
-	private static final int K_GLOBAL = 672;
-	
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.HalfArg;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.KernelTime;
+import yacx.Options;
+import yacx.Utils;
+
+public class ExampleSimpleGemm {
 	// WMMA dimensions
-	private static final int WMMA_M = 16;
-	private static final int WMMA_N = 16;
-	private static final int WMMA_K = 16;
-	
-	public static void main(String[] args) {
-	//Load Libary
-    	Executor.loadLibary();
-		
-	// Initialize test matrices
-	float[][] A = new float[M][K];
-	float[][] B = new float[K][N];
-	float[][] C = new float[M][N];
-		
-	// fill test matrices
-	for (int i = 0; i < A.length; i++) {
-		for (int j = 0; j < A[0].length; j++) {
-			A[i][j] = i + j;
-		}
-	}
-	for (int i = 0; i < B.length; i++) {
-		for (int j = 0; j < B[0].length; j++) {
-			B[i][j] = i + j;
-		}
-	}
-		
-	// initialize parameters alpha and beta
-	final float alpha = 1.0;
-	final float beta = 1.0;
-		
-	// blockDim.x must be a multple of warpSize
-	// 128x4 means we have 16 warps and a block computes a 64x64 output tile
-	int blockDimX = 128;
-	int blockDimY = 4;
+	private final static int WMMA_M = 16;
+	private final static int WMMA_N = 16;
 
-	int gridDimX = (M_GLOBAL + (WMMA_M * blockDim.x / 32 - 1)) / (WMMA_M * blockDim.x / 32);
-	int gridDimY = (N_GLOBAL + WMMA_N * blockDim.y - 1) / (WMMA_N * blockDim.y);
-	
-	//Initialize Arguments
-	FloatArg inArg_A = FloatArg.create(A, false);
-	FloatArg inArg_B = FloatArg.create(B, false);
-	FloatArg inArg_C = FloatArg.create(C, false);
-	FloatArg outArg_D = FloatArg.createOutput(M_GLOBAL * N_GLOBAL);
-	IntArg mArg = IntArg.create(M_GLOBAL);
-	IntArg nArg = IntArg.create(N_GLOBAL);
-	IntArg kArg = IntArg.create(K_GLOBAL);
-	FloatArg alphaArg = FloatArg.create(alpha);
-	FloatArg betaArg = FloatArg.create(beta);
-		
-	//Load kernelString
-    	String kernelString = Utils.loadFile("simple_wmma_gemm.cu");
-    
-    	//Create Program
-    	Program simpleGEMM = Program.create(kernelString, "simple_wmma_gemm");
-		
-	//Create compiled Kernel
-    	Kernel simpleGEMMKernel = simpleGEMM.compile();
+	public static void main(String[] args) throws IOException {
+		// Load Libary
+		Executor.loadLibary();
 
-    	//Compile and launch Kernel
-    	simpleGEMMKernel.launch(new KernelArg[]{inArg_A, inArg_B, inArg_C, outArg_D, mArg, nArg, kArg, alphaArg, betaArg},
-								            gridDimX, gridDimY, blockDimX, blockDimY);
-								
-	//Get Result
-	float[] out = outArg_D.asFloatArray();
-		
-	// Print Result
-	System.out.println("\nResult:");
-    	System.out.println(Float.toString(out));
+		// Testdata
+		int n = 16;
+		int m = 16;
+		int k = 16;
+		float alpha = 1f;
+		float beta = 1f;
+		float[] aMatrix = new float[n * m];
+		float[] bMatrix = new float[m * k];
+		float[] cMatrix = new float[n * k];
+		for (int i = 0; i < n * m; i++) {
+			aMatrix[i] = 1f;
+		}
+		for (int i = 0; i < m * k; i++) {
+			bMatrix[i] = 1f;
+		}
+		for (int i = 0; i < n * k; i++) {
+			cMatrix[i] = 1f;
+		}
+
+		// Calculate block and grid dimensions
+		// blockDim.x must be a multple of warpSize
+		// 128x4 means we have 16 warps and a block computes a 64x64 output tile
+		int blockDimX = 128;
+		int blockDimY = 4;
+
+		int gridDimX = (m + (WMMA_M * blockDimX / 32 - 1)) / (WMMA_M * blockDimX / 32);
+		int gridDimY = (n + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY);
+
+		// Create Arguments
+		HalfArg aMatrixArg = HalfArg.create(aMatrix);
+		HalfArg bMatrixArg = HalfArg.create(bMatrix);
+		FloatArg cMatrixArg = FloatArg.create(cMatrix);
+		FloatArg dMatrixArg = FloatArg.createOutput(n * k);
+		KernelArg mArg = IntArg.createValue(m);
+		KernelArg nArg = IntArg.createValue(n);
+		KernelArg kArg = IntArg.createValue(k);
+		KernelArg alphaArg = FloatArg.createValue(alpha);
+		KernelArg betaArg = FloatArg.createValue(beta);
+
+		// Load Kernel as string
+		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");
+
+		// Compiler options
+		Options options = Options.createOptions("--gpu-architecture=compute_60");
+
+		// Compile and launch Kernel
+		KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, gridDimX, gridDimY, 1, blockDimX,
+				blockDimY, 1, aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
+
+		float[] dMatrix = dMatrixArg.asFloatArray();
+
+		// Print Result
+		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
+		System.out.println();
+		System.out.println("aMatrix:");
+		System.out.println(Arrays.toString(aMatrix));
+		System.out.println("bMatrix:");
+		System.out.println(Arrays.toString(bMatrix));
+		System.out.println("cMatrix:");
+		System.out.println(Arrays.toString(cMatrix));
+		System.out.println("resultmatrix:");
+		System.out.println(Arrays.toString(dMatrix));
 	}
 }
