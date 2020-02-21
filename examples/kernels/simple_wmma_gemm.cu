@@ -40,7 +40,7 @@
 // designed for
 //       demonstration purposes only to show the CUDA WMMA API use without
 //       relying on availability of the shared memory.
-__global__ void simple_wmma_gemm(half* a, half* b, float* c, float* d, int m_ld,
+__global__ void simple_wmma_gemm(__half* a, __half* b, float* c, float* d, int m_ld,
 	int n_ld, int k_ld, float alpha, float beta) {
 	// Leading dimensions. Packed with no transpositions.
 	int lda = m_ld;
@@ -52,9 +52,9 @@ __global__ void simple_wmma_gemm(half* a, half* b, float* c, float* d, int m_ld,
 	int warpN = (blockIdx.y * blockDim.y + threadIdx.y);
 
 	// Declare the fragments
-	wmma::fragment<wmma::matrix_a, WMMA_M, WMMA_N, WMMA_K, half, wmma::row_major>
+	wmma::fragment<wmma::matrix_a, WMMA_M, WMMA_N, WMMA_K, __half, wmma::row_major>
 		a_frag;
-	wmma::fragment<wmma::matrix_b, WMMA_M, WMMA_N, WMMA_K, half, wmma::col_major>
+	wmma::fragment<wmma::matrix_b, WMMA_M, WMMA_N, WMMA_K, __half, wmma::col_major>
 		b_frag;
 	wmma::fragment<wmma::accumulator, WMMA_M, WMMA_N, WMMA_K, float> acc_frag;
 	wmma::fragment<wmma::accumulator, WMMA_M, WMMA_N, WMMA_K, float> c_frag;

@@ -2,9 +2,62 @@
 
 #include "JNIHandle.hpp"
 #include <cuda.h>
+#include <memory>
 #include <vector>
 
 namespace yacx {
+class KernelArg;
+class KernelArgMatrixPadding;
+
+namespace detail {
+class DataCopy {
+ public:
+  //! A constructor
+  //! \param kernelArg KernelArg, which should be copied from/to host to/from
+  //! device
+  DataCopy() {}
+  //! copy data from host to device
+  virtual void copyDataHtoD(KernelArg *kernelArg) = 0;
+  //! copy data from device to host
+  virtual void copyDataDtoH(KernelArg *kernelArg) = 0;
+};
+
+class DataCopyKernelArg : public DataCopy {
+ public:
+  DataCopyKernelArg() {}
+  void copyDataHtoD(KernelArg *kernelArg) override;
+  void copyDataDtoH(KernelArg *kernelArg) override;
+};
+
+class DataCopyKernelArgMatrixPadding : public DataCopy {
+ public:
+  //! A constructor
+  /*!
+   * \param elementSize size of each element of the matrix in bytes
+   * \param paddingValue value to fill up additional rows and columns
+   * \param src_rows number of rows of current matrix without padding
+   * \param src_columns number of columns of currentmatrix without padding
+   * \param dst_rows number of rows for new matrix with padding
+   * \param dst_columns number of columns for new matrix with padding
+   */
+  DataCopyKernelArgMatrixPadding(int elementSize, unsigned int paddingValue,
+                                 int src_rows, int src_columns, int dst_rows,
+                                 int dst_columns)
+      : m_elementSize(elementSize), m_paddingValue(paddingValue),
+        m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
+        m_dst_columns(dst_columns) {}
+  void copyDataHtoD(KernelArg *kernelArg) override;
+  void copyDataDtoH(KernelArg *kernelArg) override;
+
+ private:
+  const int m_elementSize;
+  const int m_paddingValue;
+  const int m_src_rows;
+  const int m_src_columns;
+  const int m_dst_rows;
+  const int m_dst_columns;
+};
+} // namespace detail
 
 /*!
   \class ProgramArg ProgramArg.hpp
@@ -17,6 +70,8 @@ namespace yacx {
 
 class KernelArg : JNIHandle {
   friend class KernelArgs;
+  friend class detail::DataCopyKernelArg;
+  friend class detail::DataCopyKernelArgMatrixPadding;
 
  public:
   //! A constructor
@@ -45,16 +100,50 @@ class KernelArg : JNIHandle {
   float upload();
   //! downloads data to host
   //! \return time to download from device
-  float download();
+  float download() { return download(const_cast<void *>(m_hdata)); }
+  //! downloads data to host
+  //! \param pointer to host memory
+  //! \return time to download from device
+  float download(void *hdata);
   const size_t size() const { return m_size; }
+  bool isDownload() const { return m_download; }
+  void setDownload(bool download) { m_download = download; }
+  bool isCopy() const { return m_copy; }
+  void setCopy(bool copy) { m_copy = copy; }
+
+ protected:
+  const void *m_hdata;
+  CUdeviceptr m_ddata;
+  std::shared_ptr<detail::DataCopy> m_dataCopy;
 
  private:
-  const void *m_hdata;
   const size_t m_size;
-  CUdeviceptr m_ddata;
-  const bool m_download;
-  const bool m_copy;
+  bool m_download;
+  bool m_copy;
   const bool m_upload;
+  static std::shared_ptr<detail::DataCopyKernelArg> dataCopyKernelArg;
+};
+
+class KernelArgMatrixPadding : public KernelArg {
+ public:
+  //! A constructor
+  /*!
+   *
+   * \param data pointer to argument for kernel function
+   * \param size size of argument in bytes
+   * \param download copy the results from device to host after kernel execution
+   * types, e.g. int)
+   * \param elementSize size of each element of the matrix in bytes
+   * \param paddingValue value to fill up additional rows and columns
+   * \param src_rows number of rows of current matrix without padding
+   * \param src_columns number of columns of currentmatrix without padding
+   * \param dst_rows number of rows for new matrix with padding
+   * \param dst_columns number of columns for new matrix with padding
+   */
+  KernelArgMatrixPadding(void *data, size_t size, bool download,
+                         int elementSize, unsigned int paddingValue,
+                         int src_rows, int src_columns, int dst_rows,
+                         int dst_columns);
 };
 
 class KernelArgs {
@@ -62,8 +151,10 @@ class KernelArgs {
   KernelArgs(std::vector<KernelArg> args);
   float upload();
   float download();
+  float download(void *hdata);
   const void **content();
   size_t size() const;
+  size_t maxOutputSize() const;
 
  private:
   std::vector<KernelArg> m_args;

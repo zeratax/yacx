@@ -1,3 +1,6 @@
+import yacx.Executor;
+import yacx.IntArg;
+
 object ExampleFilterExecutor {
     def main(args: Array[String]) : Unit = {
         //Load Libary

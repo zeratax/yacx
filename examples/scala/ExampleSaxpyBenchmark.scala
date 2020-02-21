@@ -1,3 +1,10 @@
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.Options;
+import yacx.Utils;
+
 object ExampleSaxpyBenchmark {
 	private val KB = 1024
 	
@@ -11,7 +18,7 @@ object ExampleSaxpyBenchmark {
                       val a = 5.1f
                 			
           			      override def getDataLength(dataSizeBytes: Int) : Int = {
-          						  return dataSizeBytes/FloatArg.SIZE_BYTES
+          						  return (dataSizeBytes/FloatArg.SIZE_BYTES).asInstanceOf[Int]
           					  }
           
           					  override def getGrid0(dataLength: Int) : Int = {

@@ -15,6 +15,8 @@ jclass getClass(JNIEnv* env, const char* name) {
         }
 
         env->ThrowNew(cls, name);
+
+        return NULL;
     }
 
     return cls;

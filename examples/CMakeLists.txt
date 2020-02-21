@@ -19,10 +19,17 @@ add_executable(example_program example_program.cpp)
 add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
-SET(JAVA_EXAMPLE_FILES
-        "java/ExampleSaxpy.java"
-        "java/ExampleFilterExecutor.java"
-        "java/ExampleReduce.java")
+set(JAVA_EXAMPLE_FILES
+    "java/ExampleFilter.java"
+    "java/ExampleFilterBenchmark.java"
+    "java/ExampleFilterExecutor.java"
+    "java/ExampleGauss.java"
+    "java/ExampleReduce.java"
+    "java/ExampleSaxpy.java"
+    "java/ExampleSaxpyBenchmark.java"
+    "java/ExampleSaxpyExecutor.java"
+    "java/ExampleSimpleGemm.java"
+    "java/TemplateKernel.java")
 
 if(JNI_ENABLED)
   foreach(_java_path ${JAVA_EXAMPLE_FILES})

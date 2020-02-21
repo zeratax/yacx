@@ -22,12 +22,25 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 }
 
 KernelTime Kernel::launch(KernelArgs args, Device device) {
+  logger(loglevel::DEBUG) << "creating context";
+
+  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+
+  KernelTime time = launch(args, NULL);
+
+  logger(loglevel::DEBUG) << "destroy context";
+
+  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
+
+  return time;
+}
+
+KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   KernelTime time;
   cudaEvent_t start, launch, finish, stop;
 
-  logger(loglevel::DEBUG) << "creating context and loading module";
+  logger(loglevel::DEBUG) << "loading module";
 
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
   CUDA_SAFE_CALL(
       cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
   CUDA_SAFE_CALL(
@@ -66,17 +79,63 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
 
   // download results to host
   logger(loglevel::DEBUG) << "downloading arguments";
-  time.download = args.download();
+  if (!downloadDest)
+    time.download = args.download();
+  else
+    time.download = args.download(downloadDest);
 
   CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
-  logger(loglevel::DEBUG) << "freeing resources";
+  logger(loglevel::DEBUG) << "freeing module";
 
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
   return time;
+}
+
+std::vector<KernelTime>
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
+  logger(loglevel::DEBUG) << "benchmarking kernel";
+
+  std::vector<KernelTime> kernelTimes;
+  kernelTimes.reserve(executions);
+
+  // find a kernelArg that you have to download with maximum size
+  size_t maxOutputSize = args.maxOutputSize();
+
+  // allocate memory
+  void *output;
+  if (maxOutputSize) {
+    output = malloc(maxOutputSize);
+  }
+
+  logger(loglevel::DEBUG) << "create context";
+
+  // create context
+  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+
+  logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
+
+  for (unsigned int i = 0; i < executions; i++) {
+    // launch kernel, but download results into output-memory (do not override
+    // input for next execution)
+    KernelTime kernelTime = launch(args, output);
+
+    kernelTimes.push_back(kernelTime);
+  }
+
+  logger(loglevel::DEBUG) << "destroy context";
+
+  // destroy context
+  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
+
+  // free allocated memory
+  if (maxOutputSize) {
+    free(output);
+  }
+
+  return kernelTimes;
 }

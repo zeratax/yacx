@@ -20,6 +20,13 @@ float KernelArgs::download() {
   return result;
 }
 
+float KernelArgs::download(void *hdata) {
+  float result{0};
+  for (auto &arg : m_args)
+    result += arg.download(hdata);
+  return result;
+}
+
 const void **KernelArgs::content() {
   m_voArgs.resize(m_args.size());
   std::transform(m_args.begin(), m_args.end(), m_voArgs.begin(),
@@ -34,6 +41,15 @@ size_t KernelArgs::size() const {
       result += arg.size();
     if (arg.m_download)
       result += arg.size();
+  }
+  return result;
+}
+
+size_t KernelArgs::maxOutputSize() const {
+  size_t result{0};
+  for (auto const &arg : m_args) {
+    if (arg.m_download && arg.size() > result)
+      result = arg.size();
   }
   return result;
 }

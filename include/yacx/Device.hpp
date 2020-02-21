@@ -48,9 +48,18 @@ class Device : JNIHandle {
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
   }
+
+  //! Number of multiprocessors on device
+  //! \return number of multiprocessors
   size_t multiprocessor_count() const { return m_multiprocessor_count; }
+  //! Peak clock frequency in kilohertz
+  //! \return peak clock frequency
   int clock_rate() const { return m_clock_rate; }
+  //! Peak memory clock frequency in kilohertz
+  //! \return peak memory clock frequency
   int memory_clock_rate() const { return m_memory_clock_rate; }
+  //! Global memory bus width in bits
+  //! \return bus width
   int bus_width() const { return m_bus_width; }
   CUdevice cuDevice() const { return m_device; }
   //! Returns information about the device, see
