@@ -9,7 +9,7 @@ import yacx.LongArg;
 import yacx.Program;
 import yacx.Utils;
 
-public class ExampleBlockReduce {
+public class ExampleReduce {
 	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibary();

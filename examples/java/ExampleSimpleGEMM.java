@@ -11,7 +11,7 @@ import yacx.KernelTime;
 import yacx.Options;
 import yacx.Utils;
 
-public class ExampleSimpleGemm {
+public class ExampleSimpleGEMM {
 	// WMMA dimensions
 	private final static int WMMA_M = 16;
 	private final static int WMMA_N = 16;
