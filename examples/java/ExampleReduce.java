@@ -6,6 +6,7 @@ import yacx.IntArg;
 import yacx.Kernel;
 import yacx.KernelArg;
 import yacx.LongArg;
+import yacx.Options;
 import yacx.Program;
 import yacx.Utils;
 
@@ -35,8 +36,11 @@ public class ExampleReduce {
 		// Create Program
 		Program deviceReduce = Program.create(kernelString, "deviceReduceKernel");
 
+		// Options for using C++14
+		Options options = Options.createOptions("--std=c++14");
+
 		// Create compiled Kernel
-		Kernel deviceReduceKernel = deviceReduce.compile();
+		Kernel deviceReduceKernel = deviceReduce.compile(options);
 
 		// Launch Kernel
 		deviceReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
