@@ -6,16 +6,17 @@ import yacx.IntArg;
 import yacx.Kernel;
 import yacx.KernelArg;
 import yacx.LongArg;
+import yacx.Options;
 import yacx.Program;
 import yacx.Utils;
 
-public class ExampleBlockReduce {
+public class ExampleReduce {
 	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibary();
 
 		// Testdata
-		int arraySize = 32;
+		int arraySize = 26251;
 
 		final int numBlocks = 512;
 		final int numThreads = Math.min((arraySize + numBlocks - 1) / numBlocks, 1024);
@@ -31,20 +32,23 @@ public class ExampleBlockReduce {
 		KernelArg nArg = IntArg.createValue(arraySize);
 
 		// Load kernelString
-		String kernelString = Utils.loadFile("kernels/block_reduce.cu");
+		String kernelString = Utils.loadFile("kernels/device_reduce.cu");
 		// Create Program
-		Program blockReduce = Program.create(kernelString, "deviceReduceKernel");
+		Program deviceReduce = Program.create(kernelString, "deviceReduceKernel");
+
+		// Options for using C++14
+		Options options = Options.createOptions("--std=c++14");
 
 		// Create compiled Kernel
-		Kernel blockReduceKernel = blockReduce.compile();
+		Kernel deviceReduceKernel = deviceReduce.compile(options);
 
 		// Launch Kernel
-		blockReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
+		deviceReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
 
 		// New Input is Output from previous run
 		inArg = LongArg.create(outArg.asLongArray());
 		// Second launch
-		blockReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
+		deviceReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
 
 		// Get Result
 		long out = outArg.asLongArray()[0];
