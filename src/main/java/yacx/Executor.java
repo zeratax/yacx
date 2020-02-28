@@ -364,8 +364,16 @@ public class Executor {
 			kernel.configure(creator.getGrid0(dataLength), creator.getGrid1(dataLength), creator.getGrid2(dataLength),
 					creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength));
 
+			// Create KernelArgs for this dataSize
+			KernelArg[] args = creator.createArgs(dataLength);
+			
 			// Execute Kernel numberExecutions times
-			result[i] = benchmark(kernel, device, creator.createArgs(dataLength), numberExecutions);
+			result[i] = benchmark(kernel, device, args, numberExecutions);
+			
+			// Destroy corresponding C-Objects
+			for (KernelArg arg : args) {
+				arg.dispose();
+			}
 		}
 
 		// Absolute time Measurement

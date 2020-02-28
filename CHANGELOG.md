@@ -24,7 +24,7 @@
 - KernelTime: measure time of kernel execution as well as uploading and downloading of KernelArgs
 - fully featured JNI
 - lots of java and scala examples
-- build and execute script for java/scala: [cudaexecutor.sh](./cudaexecutor.sh)
+- build and execute script for java/scala: [cudaexecutor.sh](https://github.com/ZerataX/yacx/blob/0.3/cudaexecutor.sh)
 
 ### Changes
 - KernelArgs refactor
