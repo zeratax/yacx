@@ -24,7 +24,7 @@ jobject Java_yacx_PaddingArg_createMatrixPaddingInternal(JNIEnv* env, jclass cls
             static_cast<unsigned int> (jpaddingValue), jrowsArg, jcolumnsArg, jrowsNew, jcolumnsNew};
 
         KernelArgJNI* newKernelArgJNIPtr = new KernelArgJNI{kernelArgJNIPtr->getHostDataSharedPointer(),
-            newKernelArgPtr};
+            newKernelArgPtr, kernelArgJNIPtr->getType()};
 
         return createJNIObject(env, cls, newKernelArgJNIPtr);
     END_TRY_R("create PaddinArg", NULL)

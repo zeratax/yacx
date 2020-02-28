@@ -13,6 +13,8 @@ public class FloatArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 4;
 
+	private final static String cType = "float";
+
 	/**
 	 * Create a float-value-argument.
 	 * 

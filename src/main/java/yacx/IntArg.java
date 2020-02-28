@@ -13,6 +13,8 @@ public class IntArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 4;
 
+	private final static String cType = "int32_t";
+
 	/**
 	 * Create a int-value-argument.
 	 * 

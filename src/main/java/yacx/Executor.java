@@ -27,7 +27,7 @@ public class Executor {
 	 * @return execution time in milliseconds (wallclock time)
 	 */
 	public static long executeC(String cProgram, String functionName, KernelArg... args) {
-		CProgram cProg = CProgram.create(cProgram, functionName, args.length);
+		CProgram cProg = CProgram.create(cProgram, functionName, CProgram.getTypes(args));
 
 		long t0 = System.currentTimeMillis();
 		cProg.execute(args);
@@ -44,7 +44,7 @@ public class Executor {
 	 * @return execution time in milliseconds (wallclock time)
 	 */
 	public static long executeC(String cProgram, String functionName, String compiler, KernelArg... args) {
-		CProgram cProg = CProgram.create(cProgram, functionName, args.length, compiler);
+		CProgram cProg = CProgram.create(cProgram, functionName, CProgram.getTypes(args), compiler);
 
 		long t0 = System.currentTimeMillis();
 		cProg.execute(args);
@@ -63,7 +63,7 @@ public class Executor {
 	 */
 	public static long executeC(String cProgram, String functionName, String compiler, Options options,
 			KernelArg... args) {
-		CProgram cProg = CProgram.create(cProgram, functionName, args.length, compiler, options);
+		CProgram cProg = CProgram.create(cProgram, functionName, CProgram.getTypes(args), compiler, options);
 
 		long t0 = System.currentTimeMillis();
 		cProg.execute(args);

@@ -3,6 +3,7 @@ package yacx;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -11,39 +12,54 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class TestCProgram extends TestC {
-	static String addIntPtrsInvalid = "void addIntPtrs(int* a, int* b, int* result){\n" + "    result = *a + *c;\n"
+	static String addIntsInvalid = "void addInts(int32_t a, int32_t b, int32_t* result){\n"
+			+ "    *result = a + c;\n"
 			+ "}";
 
 	static CProgram addIntC, saxpyC;
 
 	@Test
 	@Order(1)
-	void testCompileInvalid() {
-		assertThrows(NullPointerException.class, () -> {
-			CProgram.create(null, "addIntPtrs", 3);
-		});
+	void testGetTypes() {
+		String[] types = CProgram.getTypes(addIntArgs);
+		assertEquals(types.length, 3);
+		assertEquals("int32_t", types[0]);
+		assertEquals("int32_t", types[1]);
+		assertTrue(types[2].endsWith("*"));
 
-		assertThrows(NullPointerException.class, () -> {
-			CProgram.create(addIntPtrs, null, 3);
-		});
-
-		assertThrows(IllegalArgumentException.class, () -> {
-			CProgram.create(addIntPtrs, "addIntPtrs", -17);
-		});
-
-		assertThrows(IllegalArgumentException.class, () -> {
-			CProgram.create(addIntPtrs, "addIntPtrs", 0);
-		});
-
-		assertThrows(ExecutorFailureException.class, () -> {
-			CProgram.create(addIntPtrsInvalid, "addIntPtrs", 3);
-		});
+		types = CProgram.getTypes(saxpyArgs);
+		assertEquals(types.length, 5);
+		assertEquals("float", types[0]);
+		assertTrue(types[1].endsWith("*"));
+		assertTrue(types[2].endsWith("*"));
+		assertTrue(types[3].endsWith("*"));
+		assertEquals("int32_t", types[4]);
 	}
 
 	@Test
 	@Order(2)
+	void testCompileInvalid() {
+		assertThrows(NullPointerException.class, () -> {
+			CProgram.create(null, "addInts", addIntTypes);
+		});
+
+		assertThrows(NullPointerException.class, () -> {
+			CProgram.create(addInts, null, addIntTypes);
+		});
+
+		assertThrows(IllegalArgumentException.class, () -> {
+			CProgram.create(addInts, "addInts", new String[0]);
+		});
+
+		assertThrows(ExecutorFailureException.class, () -> {
+			CProgram.create(addIntsInvalid, "addInts", addIntTypes);
+		});
+	}
+
+	@Test
+	@Order(3)
 	void testCompile() {
-		addIntC = CProgram.create(addIntPtrs, "addIntPtrs", 3);
+		addIntC = CProgram.create(addInts, "addInts", addIntTypes);
 
 		String compiler = "gcc";
 		Options options = Options.createOptions();
@@ -51,28 +67,28 @@ public class TestCProgram extends TestC {
 		options.insert("-pedantic");
 		;
 
-		saxpyC = CProgram.create(saxpy, "saxpy", 5, compiler);
-		saxpyC = CProgram.create(saxpy, "saxpy", 5, compiler, options);
+		saxpyC = CProgram.create(saxpy, "saxpy", saxpyTypes, compiler);
+		saxpyC = CProgram.create(saxpy, "saxpy", saxpyTypes, compiler, options);
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	void testExecuteInvalid() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			addIntC.execute();
 		});
 
-		assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(ExecutorFailureException.class, () -> {
 			saxpyC.execute(saxpyArgs[0], saxpyArgs[1], saxpyArgs[2], saxpyArgs[3]);
 		});
 
-		assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(ExecutorFailureException.class, () -> {
 			addIntC.execute(addIntArgs[0], addIntArgs[1], addIntArgs[2], addIntArgs[2]);
 		});
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	void testExecute() {
 		addIntC.execute(addIntArgs);
 		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);

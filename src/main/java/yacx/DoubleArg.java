@@ -13,6 +13,8 @@ public class DoubleArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 8;
 
+	private final static String cType = "double";
+
 	/**
 	 * Create a double-value-argument.
 	 * 
