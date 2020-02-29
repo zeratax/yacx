@@ -19,7 +19,7 @@ struct opfn {
 //! \param opSymbolName name of the opfn-struct containg the operation, wich should be loaded
 void load_op(struct dynop *dest, std::string filename, std::string opSymbolName);
 //! unloads the libary and cleans the struct
-//! \param op 
+//! \param op struct to store pointer to loaded operation
 void unload_op(struct dynop *op);
 } // namespace detail
 } // namespace yacx
