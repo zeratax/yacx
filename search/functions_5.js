@@ -19,5 +19,6 @@ var searchData=
   ['getsize',['getSize',['../classyacx_1_1_options.html#a9fba56174d334de40c0c589274e9bc69',1,'yacx::Options']]],
   ['getsizebytes',['getSizeBytes',['../classyacx_1_1_array_arg.html#a173acb89033e694ce00e968f256f828a',1,'yacx::ArrayArg']]],
   ['gettotal',['getTotal',['../classyacx_1_1_kernel_time.html#a3ec2dc095ee8e23d169442718a081397',1,'yacx::KernelTime']]],
+  ['gettypes',['getTypes',['../classyacx_1_1_c_program.html#a6797a23dc1aa90e26616f79df6d58361',1,'yacx::CProgram']]],
   ['getupload',['getUpload',['../classyacx_1_1_kernel_time.html#a36d98fa028e0228b09733e8ee839fc23',1,'yacx::KernelTime']]]
 ];
