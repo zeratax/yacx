@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class TestExecutorC extends TestC {
 	@Test
 	void testExecutorC() {
-		Executor.executeC(addIntPtrs, "addIntPtrs", addIntArgs);
+		Executor.executeC(addInts, "addInts", addIntArgs);
 		Executor.executeC(saxpy, "saxpy", saxpyArgs);
 
 		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
@@ -16,7 +16,7 @@ public class TestExecutorC extends TestC {
 
 		String compiler = "gcc";
 
-		Executor.executeC(addIntPtrs, "addIntPtrs", compiler, addIntArgs);
+		Executor.executeC(addInts, "addInts", compiler, addIntArgs);
 		Executor.executeC(saxpy, "saxpy", compiler, saxpyArgs);
 
 		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);
@@ -28,7 +28,7 @@ public class TestExecutorC extends TestC {
 		o2.insert("-Wextra");
 		o2.insert("-pedantic");
 
-		Executor.executeC(addIntPtrs, "addIntPtrs", compiler, o1, addIntArgs);
+		Executor.executeC(addInts, "addInts", compiler, o1, addIntArgs);
 		Executor.executeC(saxpy, "saxpy", compiler, o2, saxpyArgs);
 
 		assertEquals(5, ((IntArg) addIntArgs[2]).asIntArray()[0]);

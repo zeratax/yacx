@@ -13,6 +13,8 @@ public class ShortArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 2;
 
+	private final static String cType = "int16_t";
+
 	/**
 	 * Create a short-value-argument.
 	 * 

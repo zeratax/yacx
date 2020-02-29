@@ -13,6 +13,8 @@ public class BooleanArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 1;
 
+	private final static String cType = "bool";
+
 	/**
 	 * Create a boolean-value-argument.
 	 * 

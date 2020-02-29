@@ -7,12 +7,12 @@ using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject JNICALL Java_yacx_LongArg_createValue(JNIEnv* env, jclass cls, jlong jvalue){
 	BEGIN_TRY
-		cls = getClass(env, "yacx/KernelArg");
-		if (cls == NULL) return NULL;
+		jclass clsKernelArg = getClass(env, "yacx/KernelArg");
+		if (clsKernelArg == NULL) return NULL;
 
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jlong), false, false, false};
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jlong), false, false, false, CTYPE};
 
-		return createJNIObject(env, cls, kernelArgPtr);
+		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating LongValueArg", NULL)
 }
 
@@ -25,7 +25,7 @@ jobject Java_yacx_LongArg_createInternal (JNIEnv* env, jclass cls, jlongArray ja
 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jlong), jdownload, true, true};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jlong), jdownload, true, true, CTYPE + "*"};
 
         env->ReleaseLongArrayElements(jarray, arrayPtr, JNI_ABORT);
 

@@ -13,6 +13,8 @@ public class LongArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 8;
 
+	private final static String cType = "int64_t";
+
 	/**
 	 * Create a long-value-argument.
 	 * 

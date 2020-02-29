@@ -51,12 +51,16 @@ include(Catch)
 catch_discover_tests(tests)
 
 set(JAVA_TEST_FILES
+	"test/java/yacx/TestArrayArg.java"
     "test/java/yacx/TestBooleanArg.java"
+    "test/java/yacx/TestByteArg.java"
+    "test/java/yacx/TestCProgram.java"
     "test/java/yacx/TestDevice.java"
     "test/java/yacx/TestDoubleArg.java"
     "test/java/yacx/TestExecuteFilter.java"
     "test/java/yacx/TestExecuteSaxpy.java"
     "test/java/yacx/TestExecutor.java"
+    "test/java/yacx/TestExecutorC.java"
     "test/java/yacx/TestFloatArg.java"
     "test/java/yacx/TestHeaders.java"
     "test/java/yacx/TestIntArg.java"
@@ -64,6 +68,7 @@ set(JAVA_TEST_FILES
     "test/java/yacx/TestKernel.java"
     "test/java/yacx/TestLongArg.java"
     "test/java/yacx/TestOptions.java"
+    "test/java/yacx/TestPaddingArg.java"
     "test/java/yacx/TestProgram.java"
     "test/java/yacx/TestShortArg.java"
     "test/java/yacx/TestUtils.java")
@@ -91,7 +96,7 @@ if(JNI_ENABLED)
       OUTPUT "${PROJECT_BINARY_DIR}/java/bin/${_class_file}"
       COMMAND
         ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS}
-            -sourcepath "${PROJECT_SOURCE_DIR}/src/java:${PROJECT_SOURCE_DIR}/test/java"
+            -sourcepath "${PROJECT_SOURCE_DIR}/src/main/java:${PROJECT_SOURCE_DIR}/test/java"
             -d "${PROJECT_BINARY_DIR}/java/bin"
             -cp "${PROJECT_BINARY_DIR}/java/bin/src/junit-platform-console-standalone-1.5.2.jar"
             "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}"

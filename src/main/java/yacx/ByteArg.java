@@ -13,6 +13,8 @@ public class ByteArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 1;
 
+	private final static String cType = "uint8_t";
+
 	/**
 	 * Create a byte-value-argument.
 	 * 

@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_FloatArg_SIZE_BYTES
-#define yacx_FloatArg_SIZE_BYTES 1LL
+#define yacx_FloatArg_SIZE_BYTES 4LL
 /*
  * Class:     yacx_FloatArg
  * Method:    createValue

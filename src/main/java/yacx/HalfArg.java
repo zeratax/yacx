@@ -16,6 +16,8 @@ public class HalfArg extends ArrayArg {
 	 */
 	public final static long SIZE_BYTES = 2;
 
+	private final static String cType = ""; // there exist no cType for half
+
 	/**
 	 * Convert the float to a half and create a half-value-argument.
 	 * 
