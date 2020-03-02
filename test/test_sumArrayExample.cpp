@@ -246,7 +246,7 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     int max_block_DIM = 0;
     CUDA_SAFE_CALL(cuDeviceGetAttribute(
         (int *)&max_block_DIM, CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
-        device.cuDevice()));
+        device.get()));
     const int grid_x = (nElem + max_block_DIM - 1) / max_block_DIM;
     const int block_y = (nElem / grid_x + warpsize - 1) / warpsize;
 
