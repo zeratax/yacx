@@ -6,23 +6,23 @@ import org.junit.jupiter.api.BeforeAll;
 
 public class TestJNI {
 	static String saxpy, filterk;
-	
+
 	@BeforeAll
 	static void initLibary() {
-		//Load Libary
+		// Load Libary
 		Executor.loadLibary();
 	}
-	
+
 	@BeforeAll
 	static void loadKernelStrings() throws IOException {
-		//Load Saxpy and Filter-Kernel as String
+		// Load Saxpy and Filter-Kernel as String
 		saxpy = Utils.loadFile("kernels/saxpy.cu");
 		filterk = Utils.loadFile("kernels/filter_k.cu");
 	}
-	
+
 	@BeforeAll
 	static void disableAssertions() {
-		//Disable Assertions
+		// Disable Assertions
 		ClassLoader.getSystemClassLoader().setDefaultAssertionStatus(false);
 	}
 }

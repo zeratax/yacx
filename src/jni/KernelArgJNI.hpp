@@ -10,17 +10,19 @@ class KernelArgJNI : yacx::JNIHandle {
   friend class KernelArgJNISlice;
 
  public:
-  KernelArgJNI(std::shared_ptr<void> hdata, yacx::KernelArg *kernelArg)
-      : m_hdata(hdata), m_kernelArg(kernelArg){};
-  KernelArgJNI(void *data, size_t size, bool download, bool copy, bool upload);
+  KernelArgJNI(std::shared_ptr<void> hdata, yacx::KernelArg *kernelArg, std::string type)
+      : m_hdata(hdata), m_kernelArg(kernelArg), m_type(type) {};
+  KernelArgJNI(void *data, size_t size, bool download, bool copy, bool upload, std::string type);
   ~KernelArgJNI();
   yacx::KernelArg *kernelArgPtr() { return m_kernelArg; }
   virtual void *getHostData() const { return m_hdata.get(); }
   std::shared_ptr<void> getHostDataSharedPointer() { return m_hdata; }
+  std::string& getType() { return m_type; }
 
  private:
   std::shared_ptr<void> m_hdata;
   yacx::KernelArg *m_kernelArg;
+  std::string m_type;
 };
 
 class KernelArgJNISlice : public KernelArgJNI {
