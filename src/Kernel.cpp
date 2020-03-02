@@ -109,7 +109,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   // allocate memory
   void *output;
   if (maxOutputSize) {
-    malloc(maxOutputSize);
+    output = malloc(maxOutputSize);
   }
 
   logger(loglevel::DEBUG) << "create context";
