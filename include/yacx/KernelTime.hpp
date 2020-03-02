@@ -10,5 +10,5 @@ typedef struct {
 } KernelTime;
 
 float effective_bandwidth(float miliseconds, KernelArgs args);
-float theoretical_bandwidth(Device *device);
+float theoretical_bandwidth(Device& device);
 } // namespace yacx

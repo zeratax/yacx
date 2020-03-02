@@ -106,16 +106,16 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   // find a kernelArg that you have to download with maximum size
   size_t maxOutputSize = args.maxOutputSize();
 
+  // allocate memory
+  void *output;
+  if (maxOutputSize) {
+    malloc(maxOutputSize);
+  }
+
   logger(loglevel::DEBUG) << "create context";
 
   // create context
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
-
-  // allocate page-locked memory
-  void *output;
-  if (maxOutputSize) {
-    CUDA_SAFE_CALL(cuMemAllocHost(&output, maxOutputSize));
-  }
 
   logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
@@ -129,13 +129,13 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
 
   logger(loglevel::DEBUG) << "destroy context";
 
-  // free allocated page-locked memory
-  if (maxOutputSize) {
-    CUDA_SAFE_CALL(cuMemFreeHost(output));
-  }
-
   // destroy context
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));
+
+  // free allocated page-locked memory
+  if (maxOutputSize) {
+    free(output);
+  }
 
   return kernelTimes;
 }

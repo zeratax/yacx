@@ -2,6 +2,8 @@ package yacx;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class TestDevices extends TestJNI {
@@ -14,7 +16,7 @@ class TestDevices extends TestJNI {
 		assertNotNull(device);
 
 		// Get name from device
-		String name = device.getName();
+		final String name = device.getName();
 
 		assertNotNull(name);
 
@@ -24,22 +26,36 @@ class TestDevices extends TestJNI {
 		assertNotNull(device2);
 		assertEquals(name, device2.getName());
 
-		//Should be same device, cause devices are singletons
+		// Should be same device, cause devices are singletons
 		assertEquals(device, device2);
-		
-		//Find all devices
+
+		// Find all devices
 		Device[] devices = Devices.findDevices();
-		
+
 		assertTrue(devices.length > 0);
-		
-		//deivce should be in devices-array
+
+		// Device should be in devices-array
 		assertTrue(contains(devices, device));
+		
+		// Find device by name using filter-method
+		List<Device> deviceList = Devices.findDevices(new Devices.DeviceCondition() {
+			
+			@Override
+			public boolean filterDevice(Device device) {
+				return device.getName().equals(name);
+			}
+		});
+		
+		assertEquals(1, deviceList.size());
+		assertEquals(device, deviceList.get(0));
 	}
-	
+
 	/**
-	 * Returns <code>true</code> if device is in devices-array, <code>false</code> otherwise.
+	 * Returns <code>true</code> if device is in devices-array, <code>false</code>
+	 * otherwise.
+	 * 
 	 * @param devices array of devices
-	 * @param device device which should be searched
+	 * @param device  device which should be searched
 	 * @return <code>true</code> if device was found, <code>false</code> otherwise
 	 */
 	boolean contains(Device[] devices, Device device) {
@@ -47,7 +63,7 @@ class TestDevices extends TestJNI {
 			if (d.equals(device))
 				return true;
 		}
-		
+
 		return false;
 	}
 }

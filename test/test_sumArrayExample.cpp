@@ -3,12 +3,12 @@
 #include "yacx/main.hpp"
 #include <catch2/catch.hpp>
 
-using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
+using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::Devices,
     yacx::type_of, yacx::loglevel;
 
 TEST_CASE("sumArray with implicit size", "[example_program]") {
 
-  Device device;
+  Device device = Devices::findDevice();
   Options options{yacx::options::GpuArchitecture(device),
                   yacx::options::FMAD(false)};
   options.insert("--std", "c++14");
@@ -193,7 +193,7 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
 }
 
 TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
-  Device device;
+  Device device = Devices::findDevice();
   Options options{yacx::options::GpuArchitecture(device),
                   yacx::options::FMAD(false)};
   options.insert("--std", "c++14");
