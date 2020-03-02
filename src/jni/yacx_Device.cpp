@@ -7,30 +7,6 @@
 
 using yacx::Device, yacx::Devices;
 
-jobject Java_yacx_Device_createDevice (JNIEnv* env, jclass cls){
-    BEGIN_TRY
-        Device* devicePtr = Devices::findDevice();
-
-    	return createJNIObject(env, cls, devicePtr);
-    END_TRY_R("creating Device", NULL);
-}
-
-jobject Java_yacx_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
-    BEGIN_TRY
-        CHECK_NULL(jdevicename, NULL)
-
-        auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
-
-        Device* devicePtr = Devices::findDevice(devicenamePtr);
-
-        auto obj = createJNIObject(env, cls, devicePtr);
-
-        env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
-
-        return obj;
-    END_TRY_R("creating Device with specific name", NULL);
-}
-
 jstring Java_yacx_Device_getName (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
@@ -170,4 +146,16 @@ jint Java_yacx_Device_getMajorVersion (JNIEnv* env, jobject obj){
 
         return majorVersion;
     END_TRY_R("getting major version from Device", 0);
+}
+
+jstring Java_yacx_Device_getUUID(JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
+
+        auto uuidString = devicePtr->uuid();
+        auto uuidJString = env->NewStringUTF(uuidString.c_str());
+
+        return uuidJString;
+    END_TRY_R("getting UUID from Device", 0);
 }

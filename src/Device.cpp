@@ -30,8 +30,12 @@ void Device::set_device_properties(const CUdevice &device) {
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 
-  CUDA_SAFE_CALL(cuDeviceGetUuid(&m_uuid, m_device));
-  m_uuidHex = uuidToHex();
+  //TODO if (CUDA_Version > 9.2) {
+  // CUDA_SAFE_CALL(cuDeviceGetUuid(&m_uuid, m_device));
+  // m_uuidHex = uuidToHex();
+  //} else {
+  // m_uuidHex = "";
+  //} 
 }
 
 std::string Device::uuidToHex(){

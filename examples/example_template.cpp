@@ -1,6 +1,6 @@
 #include "yacx/main.hpp"
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options,
     yacx::load, yacx::type_of;
 
 int main() {

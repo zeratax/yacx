@@ -25,7 +25,7 @@ public class TestHalfArg extends TestJNI {
 	static void init() {
 		// CUDA compute-version 6 required
 		org.junit.Assume.assumeTrue("CUDA compute-version 6 or higher required",
-				Device.createDevice().getMajorVersion() >= 6);
+				Devices.findDevice().getMajorVersion() >= 6);
 
 		// test-data as float-arrays
 		n = 19;

@@ -6,7 +6,7 @@
 
 jclass getClass(JNIEnv *env, const char *name);
 
-jobjectArray createStringArray(JNIEnv *env, const char **stringArray, int size);
+jobjectArray createJStringArray(JNIEnv *env, const char **stringArray, int size);
 
 std::string getStaticJString(JNIEnv* env, jclass cls, const char* attributeName);
 

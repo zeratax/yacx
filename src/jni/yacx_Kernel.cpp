@@ -63,7 +63,7 @@ jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEn
         auto args = getArguments(env, jArgs);
         if (args.empty()) return NULL;
 
-        return launchInternal(env, kernelPtr, devicePtr, args);
+        return launchInternal(env, kernelPtr, *devicePtr, args);
     END_TRY_R("launching Kernel on specific device", NULL)
 }
 
@@ -78,13 +78,13 @@ jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(
         auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
         std::string devicename{devicenamePtr};
 
-        Device* devicePtr = Devices::findDevice(devicename);
+        Device* devicePtr = &Devices::findDevice(devicename);
 
         env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
 
         auto args = getArguments(env, jArgs);
         if (args.empty()) return NULL;
 
-        return launchInternal(env, kernelPtr, devicePtr, args);
+        return launchInternal(env, kernelPtr, *devicePtr, args);
     END_TRY_R("launching Kernel", NULL)
 }

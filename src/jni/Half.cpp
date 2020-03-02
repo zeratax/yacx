@@ -26,7 +26,7 @@ void initKernel(){
     dim3 grid;
     device->max_grid_dim(&grid);
     maxGridSize = grid.x;
-    dev.max_block_dim(&grid);
+    device->max_block_dim(&grid);
     maxBlockSize = grid.x;
 
     Source source{
@@ -66,7 +66,7 @@ void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelFtoH->configure(grid, block).launch(args, device);
+    kernelFtoH->configure(grid, block).launch(args, *device);
 }
 
 void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
@@ -83,5 +83,5 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelHtoF->configure(grid, block).launch(args, device);
+    kernelHtoF->configure(grid, block).launch(args, *device);
 }

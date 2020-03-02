@@ -35,9 +35,9 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
     return obj;
 }
 
-jobject launchInternal(JNIEnv *env, Kernel* kernelPtr, Device* devicePtr, std::vector<KernelArg> args)
+jobject launchInternal(JNIEnv *env, Kernel* kernelPtr, Device& device, std::vector<KernelArg> args)
 {
-    auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, devicePtr);
+    auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, device);
 
     return createJavaKernelTime(env, &kernelTimePtr);
 }

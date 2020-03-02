@@ -28,7 +28,7 @@ jobjectArray Java_yacx_CProgram_getTypes (JNIEnv* env, jclass cls, jobjectArray 
             types[i] = kernelArgJNIPtr->getType().c_str();
         }
 
-        return createStringArray(env, types, argsLength);
+        return createJStringArray(env, types, argsLength);
     END_TRY_R("getting types of KernelArgs", NULL)
 }
 

@@ -31,7 +31,7 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		if (!kernelTimeCls) return NULL;
 
 		//Run benchmark-test
-		auto kernelTimes = kernelPtr->benchmark(args, jexecutions, devicePtr);
+		auto kernelTimes = kernelPtr->benchmark(args, jexecutions, *devicePtr);
 
 		//Create Output-Array
 		auto res = (jobjectArray) env->NewObjectArray(jexecutions, kernelTimeCls, NULL);

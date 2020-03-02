@@ -56,7 +56,7 @@ class TestJNIHandle extends TestJNI {
 		checkAndDispose(DoubleArg.create(4.7d, 6.8d));
 
 		// Check Device, Options and Headers
-		checkAndDispose(Device.createDevice());
+		checkAndDispose(Devices.findDevice());
 		checkAndDispose(Options.createOptions());
 		checkAndDispose(Headers.createHeaders());
 

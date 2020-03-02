@@ -8,32 +8,10 @@ class TestDevice extends TestJNI {
 
 	@Test
 	void test() {
-		// Create new Device-Object
-		Device device = Device.createDevice();
-
-		assertNotNull(device);
-
-		// Get name from device
-		String name = device.getName();
-
-		assertNotNull(name);
-
-		// Create new Device with equal name
-		Device device2 = Device.createDevice(name);
-
-		assertNotNull(device2);
-		assertEquals(name, device2.getName());
-<<<<<<< HEAD
-		
-		assertEquals(device, device2);
+		// Find a Device-Object
+		Device device = Devices.findDevice();
 		
 		//Check functions should be return meaningful values
-=======
-
-		assertNotEquals(device, device2);
-
-		// Check functions should be return meaningful values
->>>>>>> master
 		assertTrue(device.getMemorySize() > 0);
 		assertTrue(device.getMaxBlock().length == 3);
 		assertTrue(device.getMaxGrid().length == 3);

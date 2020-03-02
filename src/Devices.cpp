@@ -43,15 +43,15 @@ Devices::~Devices(){
     }
 }
 
-Device* Devices::findDevice(){
-    return getInstance()->m_devices[0];
+Device& Devices::findDevice(){
+    return *(getInstance()->m_devices[0]);
 }
 
-Device* Devices::findDevice(std::string name){
+Device& Devices::findDevice(std::string name){
     std::vector<Device*> devices = findDevices([name](Device* device){return device->m_name == name;});
 
     if (!devices.empty()){
-        return devices[0];
+        return *(devices[0]);
     } else {
         std::vector<Device*> devices = getInstance()->m_devices;
         std::stringstream buffer;
@@ -66,11 +66,14 @@ Device* Devices::findDevice(std::string name){
     }
 }
 
-Device* Devices::findDeviceByUUID(std::string uuid){
+Device& Devices::findDeviceByUUID(std::string uuid){
+    //Delete all '-' in uuid
+    uuid.erase(std::remove(uuid.begin(), uuid.end(), '-'), uuid.end());
+
     std::vector<Device*> devices = findDevices([uuid](Device* device){return device->uuid() == uuid;});
 
     if (!devices.empty()){
-        return devices[0];
+        return *(devices[0]);
     } else {
         std::vector<Device*> devices = getInstance()->m_devices;
         std::stringstream buffer;

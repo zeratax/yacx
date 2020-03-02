@@ -13,4 +13,4 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs);
 
 jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr);
 
-jobject launchInternal(JNIEnv *env, Kernel* kernelptr, Device* devicePtr, std::vector<KernelArg> args);
+jobject launchInternal(JNIEnv *env, Kernel* kernelptr, Device& device, std::vector<KernelArg> args);

@@ -28,7 +28,7 @@ for more see the [changelog](./CHANGELOG.md)
 #include <experimental/iterator>
 #include <vector>
 
-using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::Devices, yacx::type_of;
 
 int main() {
   const int data{1};
@@ -42,7 +42,7 @@ int main() {
   std::fill(v.begin(), v.end(), 0);
   
   try {
-    Device device;
+    Device device = Devices::findDevice();
     Options options{yacx::options::GpuArchitecture(device),
                     yacx::options::FMAD(false)};
     options.insert("--std", "c++14");
