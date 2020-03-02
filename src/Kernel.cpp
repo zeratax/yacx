@@ -21,12 +21,12 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-KernelTime Kernel::launch(KernelArgs args, Device& device) {
+KernelTime Kernel::launch(KernelArgs args, Device &device) {
   logger(loglevel::DEBUG) << "creating context";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
 
-  KernelTime time = launch(args, static_cast<void*> (NULL));
+  KernelTime time = launch(args, static_cast<void *>(NULL));
 
   logger(loglevel::DEBUG) << "destroy context";
 
@@ -97,7 +97,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 }
 
 std::vector<KernelTime>
-Kernel::benchmark(KernelArgs args, unsigned int executions, Device& device) {
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;

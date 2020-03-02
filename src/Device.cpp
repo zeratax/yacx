@@ -30,17 +30,17 @@ void Device::set_device_properties(const CUdevice &device) {
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 
-  //TODO if (CUDA_Version > 9.2) {
+  // TODO if (CUDA_Version > 9.2) {
   // CUDA_SAFE_CALL(cuDeviceGetUuid(&m_uuid, m_device));
   // m_uuidHex = uuidToHex();
   //} else {
   // m_uuidHex = "";
-  //} 
+  //}
 }
 
-std::string Device::uuidToHex(){
+std::string Device::uuidToHex() {
   std::stringstream ss;
-  for(int i = 0; i < 16; i++) {
+  for (int i = 0; i < 16; i++) {
     ss << std::hex << (int)m_uuid.bytes[i];
   }
   return ss.str();

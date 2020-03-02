@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Exception.hpp"
 #include "Devices.hpp"
+#include "Exception.hpp"
 #include <cuda.h>
 
 namespace yacx {
