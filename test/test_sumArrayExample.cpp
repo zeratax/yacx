@@ -244,7 +244,7 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
 
     constexpr int warpsize = 32;
     int max_block_DIM = 0;
-    yacx::CUDA_SAFE_CALL(cuDeviceGetAttribute(
+    CUDA_SAFE_CALL(cuDeviceGetAttribute(
         (int *)&max_block_DIM, CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
         device.cuDevice()));
     const int grid_x = (nElem + max_block_DIM - 1) / max_block_DIM;
