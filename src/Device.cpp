@@ -2,6 +2,7 @@
 #include "yacx/Exception.hpp"
 #include "yacx/Logger.hpp"
 
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -30,18 +31,24 @@ void Device::set_device_properties(const CUdevice &device) {
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
 
-  // TODO if (CUDA_Version > 9.2) {
-  // CUDA_SAFE_CALL(cuDeviceGetUuid(&m_uuid, m_device));
-  // m_uuidHex = uuidToHex();
-  //} else {
-  // m_uuidHex = "";
-  //}
+#if CUDA_VERSION >= 9020
+  CUuuid uuid;
+  CUDA_SAFE_CALL(cuDeviceGetUuid(&uuid, m_device));
+  m_uuidHex = uuidToHex(uuid);
+#else
+  m_uuidHex = "";
+#endif
 }
 
-std::string Device::uuidToHex() {
+std::string Device::uuidToHex(CUuuid &uuid) {
   std::stringstream ss;
+  ss << std::hex << std::setfill('0');
   for (int i = 0; i < 16; i++) {
-    ss << std::hex << (int)m_uuid.bytes[i];
+    ss << std::hex << std::setw(2)
+       << (int)static_cast<unsigned char>(uuid.bytes[i]);
+    if (i == 3 || i == 5 || i == 7 || i == 9) {
+      ss << "-";
+    }
   }
   return ss.str();
 }

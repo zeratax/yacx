@@ -147,6 +147,10 @@ jint Java_yacx_Device_getMajorVersion (JNIEnv* env, jobject obj){
 
 jstring Java_yacx_Device_getUUID(JNIEnv* env, jobject obj){
     BEGIN_TRY
+        #if CUDA_VERSION < 9020
+            return NULL;
+        #endif
+
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, 0)
 

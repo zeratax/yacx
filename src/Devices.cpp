@@ -3,7 +3,6 @@
 #include "yacx/Exception.hpp"
 #include "yacx/Init.hpp"
 
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -59,8 +58,10 @@ Device &Devices::findDevice(std::string name) {
 }
 
 Device &Devices::findDeviceByUUID(std::string uuid) {
-  // Delete all '-' in uuid
-  uuid.erase(std::remove(uuid.begin(), uuid.end(), '-'), uuid.end());
+#if CUDA_VERSION < 9020
+  throw std::runtime_error("UUIDs not supported with this CUDA-Version. "
+                           "Required: CUDA_VERSION >= 92");
+#endif
 
   std::vector<Device *> devices =
       findDevices([uuid](Device &device) { return device.uuid() == uuid; });
