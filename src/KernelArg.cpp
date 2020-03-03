@@ -52,7 +52,8 @@ float KernelArg::upload() {
       CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
 
       CUDA_SAFE_CALL(cuEventRecord(start, 0));
-      m_dataCopy.get()->copyDataHtoD(const_cast<void*> (m_hdata), m_ddata, m_size);
+      m_dataCopy.get()->copyDataHtoD(const_cast<void *>(m_hdata), m_ddata,
+                                     m_size);
       CUDA_SAFE_CALL(cuEventRecord(stop, 0));
 
       CUDA_SAFE_CALL(cuEventSynchronize(stop));
@@ -104,15 +105,18 @@ const void *KernelArg::content() const {
   return m_hdata;
 }
 
-void DataCopyKernelArg::copyDataHtoD(void* hdata, CUdeviceptr ddata, size_t size) {
+void DataCopyKernelArg::copyDataHtoD(void *hdata, CUdeviceptr ddata,
+                                     size_t size) {
   CUDA_SAFE_CALL(cuMemcpyHtoD(ddata, hdata, size));
 }
 
-void DataCopyKernelArg::copyDataDtoH(CUdeviceptr ddata, void* hdata, size_t size) {
+void DataCopyKernelArg::copyDataDtoH(CUdeviceptr ddata, void *hdata,
+                                     size_t size) {
   CUDA_SAFE_CALL(cuMemcpyDtoH(hdata, ddata, size));
 }
 
-void DataCopyKernelArgMatrixPadding::copyDataHtoD(void* hdata, CUdeviceptr ddata, size_t) {
+void DataCopyKernelArgMatrixPadding::copyDataHtoD(void *hdata,
+                                                  CUdeviceptr ddata, size_t) {
   char *src = static_cast<char *>(hdata);
 
   const unsigned char paddingValueChar =
@@ -155,7 +159,8 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(void* hdata, CUdeviceptr ddata
   CUDA_SAFE_CALL(cuStreamDestroy(stream));
 }
 
-void DataCopyKernelArgMatrixPadding::copyDataDtoH(CUdeviceptr ddata, void* hdata, size_t) {
+void DataCopyKernelArgMatrixPadding::copyDataDtoH(CUdeviceptr ddata,
+                                                  void *hdata, size_t) {
   char *src = static_cast<char *>(hdata);
 
   const size_t sizeSrcColumn = m_src_columns * m_elementSize;

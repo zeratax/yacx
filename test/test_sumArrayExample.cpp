@@ -3,8 +3,8 @@
 #include "yacx/main.hpp"
 #include <catch2/catch.hpp>
 
-using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::Devices,
-    yacx::type_of, yacx::loglevel;
+using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
+    yacx::Devices, yacx::type_of, yacx::loglevel;
 
 TEST_CASE("sumArray with implicit size", "[example_program]") {
 

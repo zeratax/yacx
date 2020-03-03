@@ -20,19 +20,19 @@ class DataCopy {
   //! \param hdata pointer to host data
   //! \param ddata pointer to device data
   //! \param size size of the data
-  virtual void copyDataHtoD(void* hdata, CUdeviceptr ddata, size_t size) = 0;
+  virtual void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size) = 0;
   //! copy data from device to host
   //! \param ddata pointer to device data
   //! \param hdata pointer to host data
   //! \param size size of the data
-  virtual void copyDataDtoH(CUdeviceptr ddata, void* hdata, size_t size) = 0;
+  virtual void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size) = 0;
 };
 
 class DataCopyKernelArg : public DataCopy {
  public:
   DataCopyKernelArg() {}
-  void copyDataHtoD(void* hdata, CUdeviceptr ddata, size_t size) override;
-  void copyDataDtoH(CUdeviceptr ddata, void* hdata, size_t size) override;
+  void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size) override;
+  void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size) override;
 };
 
 class DataCopyKernelArgMatrixPadding : public DataCopy {
@@ -52,8 +52,8 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
       : m_elementSize(elementSize), m_paddingValue(paddingValue),
         m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
         m_dst_columns(dst_columns) {}
-  void copyDataHtoD(void* hdata, CUdeviceptr ddata, size_t size) override;
-  void copyDataDtoH(CUdeviceptr ddata, void* hdata, size_t size) override;
+  void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size) override;
+  void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size) override;
 
  private:
   const int m_elementSize;

@@ -105,13 +105,13 @@ class Devices : JNIHandle {
   static Device &findDeviceByUUID(std::string uuid);
 
   //! \return vector with all CUDA-capable devices
-  static std::vector<Device>& findDevices();
+  static std::vector<Device> &findDevices();
 
   //! filters the devices satisfying passed condition
   //! \param con condition for devices e.g.'[](Device& d){return
   //! d.total_memory() >= 1024;}' \return list of devices satisfying passed
   //! condition
-  static std::vector<Device *> findDevices(std::function<bool(Device&)> con);
+  static std::vector<Device *> findDevices(std::function<bool(Device &)> con);
 
  private:
   Devices();

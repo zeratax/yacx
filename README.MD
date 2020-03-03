@@ -98,12 +98,12 @@ make -C build yacx-jni
 
 and then compile with:
 ```console 
-g++ -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
+g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
 ```
 
 some syntatic sugar is given using templates, which requires you to include the headers when building:
 ```console 
-g++ -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 -I include/yacx file.cpp
+g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 -I include/yacx file.cpp
 ```
 
 ## Examples

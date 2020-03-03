@@ -36,12 +36,11 @@ Devices::Devices() {
   }
 }
 
-Device &Devices::findDevice() { 
-  return getInstance()->m_devices[0]; }
+Device &Devices::findDevice() { return getInstance()->m_devices[0]; }
 
 Device &Devices::findDevice(std::string name) {
   std::vector<Device *> devices =
-      findDevices([name](Device& device) { return device.m_name == name; });
+      findDevices([name](Device &device) { return device.m_name == name; });
 
   if (!devices.empty()) {
     return *(devices[0]);
@@ -64,12 +63,12 @@ Device &Devices::findDeviceByUUID(std::string uuid) {
   uuid.erase(std::remove(uuid.begin(), uuid.end(), '-'), uuid.end());
 
   std::vector<Device *> devices =
-      findDevices([uuid](Device& device) { return device.uuid() == uuid; });
+      findDevices([uuid](Device &device) { return device.uuid() == uuid; });
 
   if (!devices.empty()) {
     return *(devices[0]);
   } else {
-    std::vector<Device>& devices = getInstance()->m_devices;
+    std::vector<Device> &devices = getInstance()->m_devices;
     std::stringstream buffer;
     buffer
         << "Could not find device with this name! Available UUIDs-devices: [";
@@ -83,18 +82,16 @@ Device &Devices::findDeviceByUUID(std::string uuid) {
   }
 }
 
-std::vector<Device>& Devices::findDevices() {
-  return getInstance()->m_devices;
-}
+std::vector<Device> &Devices::findDevices() { return getInstance()->m_devices; }
 
-std::vector<Device *> Devices::findDevices(std::function<bool(Device&)> con) {
-  std::vector<Device>& devices = getInstance()->m_devices;
+std::vector<Device *> Devices::findDevices(std::function<bool(Device &)> con) {
+  std::vector<Device> &devices = getInstance()->m_devices;
 
   std::vector<Device *> filterd;
   filterd.reserve(devices.size());
 
-  for (unsigned int i = 0; i < devices.size(); ++i){
-    if (con(devices[i])){
+  for (unsigned int i = 0; i < devices.size(); ++i) {
+    if (con(devices[i])) {
       filterd.emplace_back(&devices[i]);
     }
   }
