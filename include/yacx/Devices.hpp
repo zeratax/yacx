@@ -115,7 +115,6 @@ class Devices : JNIHandle {
 
  private:
   Devices();
-  ~Devices();
   std::vector<Device> m_devices;
   static Devices *getInstance();
   static Devices *instance;

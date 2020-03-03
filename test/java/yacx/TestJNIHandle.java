@@ -55,8 +55,8 @@ class TestJNIHandle extends TestJNI {
 		checkAndDispose(FloatArg.create(new float[] { 1, 2f }));
 		checkAndDispose(DoubleArg.create(4.7d, 6.8d));
 
-		// Check Device, Options and Headers
-		checkAndDispose(Devices.findDevice());
+		// Check CProgram, Options and Headers
+		checkAndDispose(CProgram.create("void copy(int i, int* out){*out = i;}", "copy", new String[] {"int", "*"}));
 		checkAndDispose(Options.createOptions());
 		checkAndDispose(Headers.createHeaders());
 
