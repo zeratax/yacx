@@ -26,7 +26,7 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
 
-  KernelTime time = launch(args, static_cast<void *>(NULL));
+  KernelTime time = launch(args, NULL);
 
   logger(loglevel::DEBUG) << "destroy context";
 

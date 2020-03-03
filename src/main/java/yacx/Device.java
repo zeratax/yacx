@@ -110,4 +110,8 @@ public class Device extends JNIHandle {
 					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
 		}
 	}
+	
+	//Devices are Singeltons and should be not destroyed
+	@Override
+	public void dispose() {}
 }

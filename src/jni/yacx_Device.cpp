@@ -14,10 +14,7 @@ jstring Java_yacx_Device_getName (JNIEnv* env, jobject obj){
 
         auto devicenameString = devicePtr->name();
 
-        char devicenamePtr[devicenameString.size() + 1];
-        strcpy(devicenamePtr, devicenameString.c_str());
-
-        auto jdevicename = env->NewStringUTF(devicenamePtr);
+        auto jdevicename = env->NewStringUTF(devicenameString.c_str());
 
         return jdevicename;
     END_TRY_R("getting name from Device", NULL);

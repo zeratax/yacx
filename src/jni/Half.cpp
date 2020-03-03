@@ -17,7 +17,7 @@ yacx::Kernel* kernelHtoF = NULL;
 yacx::Device* device = NULL;
 
 void initKernel(){
-    std::vector<Device*> devices = Devices::findDevices([](Device* device){ return device->major_version() >= 6; });
+    std::vector<Device*> devices = Devices::findDevices([](Device& device){ return device.major_version() >= 6; });
     if (devices.empty()){
         throw std::invalid_argument("no CUDA-device with computeversion >= 6 found for conversion from/to halfs");
     }

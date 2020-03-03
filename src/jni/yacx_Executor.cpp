@@ -11,7 +11,7 @@
 
 using yacx::Kernel, yacx::Device;
 
-jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jkernel, jobject jdevice,
+jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass, jobject jkernel, jobject jdevice,
 		jobjectArray jArgs, jint jexecutions){
 	BEGIN_TRY
 		CHECK_BIGGER(jexecutions, 0, "illegal number of executions", NULL)
@@ -37,7 +37,7 @@ jobjectArray Java_yacx_Executor_benchmark (JNIEnv* env, jclass cls, jobject jker
 		auto res = (jobjectArray) env->NewObjectArray(jexecutions, kernelTimeCls, NULL);
 		CHECK_NULL(res, NULL)
 
-		for (unsigned int i = 0; i < jexecutions; ++i){
+		for (int i = 0; i < jexecutions; ++i){
 			auto jkernelTime = createJavaKernelTime(env, &kernelTimes.at(i));
 			env->SetObjectArrayElement(res, i, jkernelTime);
 		}
