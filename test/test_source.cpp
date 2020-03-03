@@ -2,6 +2,7 @@
 #include "yacx/Headers.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/Source.hpp"
+#include "yacx/Exception.hpp"
 
 #include "test_compare.hpp"
 #include <catch2/catch.hpp>
@@ -14,8 +15,8 @@ using namespace std;
 SCENARIO("Various sources of kernels are created and through them are created"
          ", then tested under the following conditions:"){
     GIVEN("Various sources of kernels with one or more functions."){
-         //A1. Preparing the input for the kernel-compilation using various sources
-         //Controlled results
+        //A1. Preparing the input for the kernel-compilation using various sources
+        //Controlled results
         int datasize{5};
         int *hX = new int[5]{1,2,3,4,5};
         int *hY = new int[5]{6,7,8,9,10};
@@ -90,42 +91,53 @@ SCENARIO("Various sources of kernels are created and through them are created"
             }    
         }
 
-        //C1. Checking for consistencies for running various functions in a kernel-code
+        /**
+         * C1. Checking for consistencies for running various functions in a kernel-code
+         */
         WHEN("More one functions in a kernel-code are used."){
-            args.clear();
-            args.emplace_back(KernelArg{hX, bufferSize});
-            args.emplace_back(KernelArg{hY, bufferSize});
-            args.emplace_back(KernelArg{hOut_Multiply1, bufferSize, true});
-            args.emplace_back(KernelArg(&datasize));
-            
             Headers headersNew2;
             headersNew2.insert(Header{"cuda_runtime.h"});
 
-            Source sourceNew2{
-                "#include \"cuda_runtime.h\"\n"
-                "extern \"C\"\n"
-                "__global__ void cuda_add_normal(int *x, int *y, int *out, int "
-                "datasize) {\n"
-                " int i = threadIdx.x;\n"
-                " out[i] = x[i] + y[i];\n"
-                "}\n"
-                "extern \"C\"\n"
-                "__global__ void cuda_add_five(int *x, int *y, int *out, int"
-                " datasize) {\n"
-                " int i = threadIdx.x;\n"
-                " out[i] = x[i] + y[i] + 5;\n"
-                "}\n", headersNew2};
-
-            /*C2. Compilation of Kernels through the creation of a 
-            program from kernel - source*/
+            //C2. Compilation of Kernels through the creation of a program from kernel - source
             THEN("The results are consistent with the given controlled output."){
+                /*
+                * C3. Reusing the kernel-arguments arrays for testing of the coming functions in a kernel-code by
+                * clearing the kernel-arguments array
+                */
+               args.clear(); 
+               
+               args.emplace_back(KernelArg{hX, bufferSize});
+               args.emplace_back(KernelArg{hY, bufferSize});
+               args.emplace_back(KernelArg{hOut_Multiply1, bufferSize, true});
+               args.emplace_back(KernelArg(&datasize));
+               
+               Source sourceNew2{
+                    "#include \"cuda_runtime.h\"\n"
+                    "extern \"C\"\n"
+                    "__global__ void cuda_add_normal(int *x, int *y, int *out, int "
+                    "datasize) {\n"
+                    " int i = threadIdx.x;\n"
+                    " out[i] = x[i] + y[i];\n"
+                    "}\n"
+                    "extern \"C\"\n"
+                    "__global__ void cuda_add_five(int *x, int *y, int *out, int"
+                    " datasize) {\n"
+                    " int i = threadIdx.x;\n"
+                    " out[i] = x[i] + y[i] + 5;\n"
+                    "}\n", headersNew2};
+
                 dim3 gridNew2(1);
                 dim3 blockNew2(5);
                 
                 sourceNew2.program("cuda_add_five").compile().configure(gridNew2, blockNew2).launch(args);
                 
-                //C3. Compiling another function in a kernel-code.
+                //C4. Compiling another function in a kernel-code.
+                /*
+                * C5. Reusing the kernel-arguments arrays for testing of the coming functions in a kernel-code by
+                *     clearing the kernel-arguments array
+                */
                 args.clear();
+
                 args.emplace_back(KernelArg{hX, bufferSize});
                 args.emplace_back(KernelArg{hY, bufferSize});
                 args.emplace_back(KernelArg{hOut_Multiply2, bufferSize, true});
@@ -133,45 +145,50 @@ SCENARIO("Various sources of kernels are created and through them are created"
                
                 sourceNew2.program("cuda_add_normal").compile().configure(gridNew2, blockNew2).launch(args);
 
-                //C4. Comparing the results for the use of multiple functions in a kernel-code
+                //C6. Comparing the results for the use of multiple functions in a kernel-code
                 for (int i=0;i<5;i++) REQUIRE(hOut_Multiply1[i] == hostCompareOutput_1[i]);
                 for (int i=0;i<5;i++) REQUIRE(hOut_Multiply2[i] == hostCompareOutput_Controlled[i]);
             }    
         }
-
-        //D1. Checking for the consistencies of declaring functions
-        WHEN("Naming a kernel-compilation function is consistent to that of that function of a kernel-code"){
-            Headers headersNew3;
-            headersNew3.insert(Header{"cuda_runtime.h"});
-            string namefunction = "cuda_multiply";
-            
-            Source sourceNew3{
-                "#include \"cuda_runtime.h\"\n"
-                "extern \"C\"\n"
-                "__global__ void "+ namefunction + "(int *x, int *y, int *out, int"
-                " datasize) {\n"
-                " int i = threadIdx.x;\n"
-                " out[i] = x[i]*y[i];\n"
-                "}\n", headersNew3};
-
+        
+        //D1. Checking for the validation of declaring functions
+        WHEN("The naming of the kernel-compilation function is not consistent to that of that function of a kernel-code."){
+            /*
+            * D2. Reusing the kernel-arguments arrays for testing of the coming functions in a kernel-code by
+            * learing the kernel-arguments array
+            */
             args.clear();
+
             args.emplace_back(KernelArg{hX, bufferSize});
             args.emplace_back(KernelArg{hY, bufferSize});
             args.emplace_back(KernelArg{hOut_Multiply1, bufferSize, true});
             args.emplace_back(KernelArg(&datasize));   
+           
+            Headers headersNew3;
+            headersNew3.insert(Header{"cuda_runtime.h"});
             
-            /*D2. Compilation of Kernels through the creation of a 
+            /*D3. Compilation of Kernels through the creation of a 
             program from kernel - source*/
             THEN("The results for naming functions in a kernel-code are consistent."){
+                const CUresult error{CUDA_ERROR_NOT_FOUND};
+
+                Source sourceNew3{
+                    "#include \"cuda_runtime.h\"\n"
+                    "extern \"C\"\n"
+                    "__global__ void cuda_multiply(int *x, int *y, int *out, int" 
+                    " datasize) {\n"
+                    " int i = threadIdx.x;\n"
+                    " out[i] = x[i]*y[i];\n"
+                    "}\n", headersNew3};
+                    
                 dim3 gridNew3(1);
                 dim3 blockNew3(5);
 
-                sourceNew3.program(namefunction).compile().configure(gridNew3, blockNew3).launch(args);
-            
-                //D3. Comparing the results for the consistencies of naming functions in a kernel-code
-                for (int i=0;i<5;i++) REQUIRE(hOut_Multiply1[i] == hostCompareOutput_2[i]);
-
-                REQUIRE(namefunction=="cuda_multiply");
+                /* 
+                * D4. Checking the possibility of calling a kernel compilation function using
+                *     kernel function conventions.
+                */
+                REQUIRE_THROWS_WITH(sourceNew3.program("this_function_does_not_exist").compile().configure(gridNew3, blockNew3).launch(args),Catch::Contains(yacx::detail::whichError(error)));
             }
         }
 
