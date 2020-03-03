@@ -25,7 +25,10 @@ jobs:
           script: |
             mkdir -p /tmp/ci/$GITHUB_REPOSITORY
             cd /tmp/ci/$GITHUB_REPOSITORY
-            [ -d "$COMMIT_SHA" ] && rm -rf $COMMIT_SHA
+            if [ -d $COMMIT_SHA ]
+	    then
+		rm -rf $COMMIT_SHA
+	    fi
             git clone https://github.com/$GITHUB_REPOSITORY.git $COMMIT_SHA
             cd $COMMIT_SHA
             git checkout $COMMIT_SHA
