@@ -15,11 +15,12 @@
 
 ### Changes
 - JNI
-  - exceptions in case of illegal arguments (e.g. null)
-  - split up KernelArg-class into BooleanArg, ByteArg, ShortArg, IntArg, LongArg, HalfArg, FloatArg, DoubleArg and PaddingArg
-    - PaddingArg helps to easily pad matrices to work more easily with e.g. TensorCores
-    - HalfArg will convert a float array with a CUDA Kernel
-  - Java files were moved to a proper package: src/{java=>main/java/yacx}/
+  - exceptions in case of illegal arguments (e.g. `NULL`)
+  - split up `KernelArg`-class into `BooleanArg`, `ByteArg`, `ShortArg`, `IntArg`, `LongArg`, `HalfArg`, `FloatArg`, `DoubleArg` and `PaddingArg`
+    - `PaddingArg` helps to easily pad matrices to work more easily with e.g. TensorCores
+    - `HalfArg` will convert a float array with a CUDA Kernel
+  - Java files were moved to a proper package: `src/{java=>main/java/yacx}/`
+
 
 ## yacx v0.4.1 (2019-12-13)
 ### Documentation
