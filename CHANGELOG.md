@@ -1,4 +1,28 @@
 # Changelog
+## yacx v0.5.0 (2020-03-04)
+
+### Features
+- C Executor
+- Benchmarking
+  - can benchmark both C,CUDA and even works with [rise-lang/executor](https://github.com/rise-lang/executor)
+  - KernelArgCreator to easily benchmark with different KernelArg inputs
+- more example Kernels
+- JNI
+  - more java and scala examples
+  - junits tests
+  - KernelArg Outputs are instantly reusable as Inputs see #89
+- added sbt project file
+
+### Changes
+- JNI
+  - exceptions in case of illegal arguments (e.g. null)
+  - split up KernelArg-class into BooleanArg, ByteArg, ShortArg, IntArg, LongArg, HalfArg, FloatArg, DoubleArg and PaddingArg
+    - PaddingArg helps to easily pad matrices to work more easily with e.g. TensorCores
+    - HalfArg will convert a float array with a CUDA Kernel
+  - Java files were moved to a proper package: src/{java=>main/java/yacx}/
+
+
+
 ## yacx v0.4.1 (2019-12-13)
 ### Documentation
 - created a [classDiagram](docs/diagram/classDiagram.pdf)
