@@ -10,10 +10,7 @@ import yacx.KernelTime;
 import yacx.Options;
 import yacx.Utils;
 
-public class ExampleSimpleGEMM {
-	// WMMA dimensions
-	private final static int WMMA_M = 16;
-	private final static int WMMA_N = 16;
+public class ExampleFastGEMM {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
@@ -38,19 +35,16 @@ public class ExampleSimpleGEMM {
 			cMatrix[i] = 1f;
 		}
 
-		// Get the next biggest multiples of 16 for each dimension
-		int m = (x % 16 == 0) ? x : (x / 16 + 1) * 16;
-		int n = (y % 16 == 0) ? y : (y / 16 + 1) * 16;
-		int k = (z % 16 == 0) ? z : (z / 16 + 1) * 16;
+		// Get the next biggest multiples of 128 for each dimension
+		int m = (x % 128 == 0) ? x : (x / 128 + 1) * 128;
+		int n = (y % 128 == 0) ? y : (y / 128 + 1) * 128;
+		int k = (z % 128 == 0) ? z : (z / 128 + 1) * 128;
 
-		// Calculate block and grid dimensions
-		// blockDim.x must be a multple of warpSize
-		// 128x4 means we have 16 warps and a block computes a 64x64 output tile
-		int blockDimX = 128;
-		int blockDimY = 4;
-
-		int gridDimX = (m + (WMMA_M * blockDimX / 32 - 1)) / (WMMA_M * blockDimX / 32);
-		int gridDimY = (n + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY);
+        // 8 Warps = 256 Threads per Block are required for the kernel to work
+		int threads = 32 * 8;
+        // The amount of blocks can be freely chosen but is optimal when it's equal to the streaming multiprocessor count of the device
+        // (not yet implemented, 80 is the amount of SMs in a Tesla V100 like on the PALMA)
+        int blocks = 80;
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
@@ -69,13 +63,13 @@ public class ExampleSimpleGEMM {
 		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
 
 		// Load Kernel as string
-		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");
+		String kernelString = Utils.loadFile("kernels/fast_wmma_gemm.cu");
 
 		// Compiler options
 		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		// Compile and launch Kernel
-		KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, gridDimX, gridDimY, 1, blockDimX,
+		KernelTime time = Executor.launch(kernelString, "fast_wmma_gemm", options, blocks, threads,
 				blockDimY, 1, aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
 
 		float[] dMatrix = dMatrixArg.asFloatArray();
