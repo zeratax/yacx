@@ -22,16 +22,16 @@ public class ExampleFastGEMM {
 		int z = 2;
 		float alpha = 1f;
 		float beta = 1f;
-		float[] aMatrix = new float[n * m];
-		float[] bMatrix = new float[m * k];
-		float[] cMatrix = new float[n * k];
-		for (int i = 0; i < n * m; i++) {
+		float[] aMatrix = new float[x * z];
+		float[] bMatrix = new float[z * y];
+		float[] cMatrix = new float[x * y];
+		for (int i = 0; i < x * z; i++) {
 			aMatrix[i] = 1f;
 		}
-		for (int i = 0; i < m * k; i++) {
+		for (int i = 0; i < z * y; i++) {
 			bMatrix[i] = 1f;
 		}
-		for (int i = 0; i < n * k; i++) {
+		for (int i = 0; i < x * y; i++) {
 			cMatrix[i] = 1f;
 		}
 
@@ -43,7 +43,7 @@ public class ExampleFastGEMM {
         // 8 Warps = 256 Threads per Block are required for the kernel to work
 		int threads = 32 * 8;
         // The amount of blocks can be freely chosen but is optimal when it's equal to the streaming multiprocessor count of the device
-        // (not yet implemented, 80 is the amount of SMs in a Tesla V100 like on the PALMA)
+        // (not yet implemented, 80 is the amount of SMs on a Tesla V100 like on the PALMA)
         int blocks = 80;
 
 		// Create Arguments
@@ -58,9 +58,9 @@ public class ExampleFastGEMM {
 		KernelArg betaArg = FloatArg.createValue(beta);
 
 		// Do the padding for each input matrix
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
+		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
+		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
+		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
 
 		// Load Kernel as string
 		String kernelString = Utils.loadFile("kernels/fast_wmma_gemm.cu");
@@ -70,12 +70,12 @@ public class ExampleFastGEMM {
 
 		// Compile and launch Kernel
 		KernelTime time = Executor.launch(kernelString, "fast_wmma_gemm", options, blocks, threads,
-				blockDimY, 1, aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
+				blockDimY, 1, aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
 
 		float[] dMatrix = dMatrixArg.asFloatArray();
 
 		// Print Result
-		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
+		System.out.println("Kernel fast_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
 		System.out.println(Arrays.toString(aMatrix));

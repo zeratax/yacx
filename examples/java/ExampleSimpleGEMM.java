@@ -25,16 +25,16 @@ public class ExampleSimpleGEMM {
 		int z = 2;
 		float alpha = 1f;
 		float beta = 1f;
-		float[] aMatrix = new float[n * m];
-		float[] bMatrix = new float[m * k];
-		float[] cMatrix = new float[n * k];
-		for (int i = 0; i < n * m; i++) {
+		float[] aMatrix = new float[x * z];
+		float[] bMatrix = new float[z * y];
+		float[] cMatrix = new float[x * y];
+		for (int i = 0; i < x * z; i++) {
 			aMatrix[i] = 1f;
 		}
-		for (int i = 0; i < m * k; i++) {
+		for (int i = 0; i < z * y; i++) {
 			bMatrix[i] = 1f;
 		}
-		for (int i = 0; i < n * k; i++) {
+		for (int i = 0; i < x * y; i++) {
 			cMatrix[i] = 1f;
 		}
 
@@ -64,9 +64,9 @@ public class ExampleSimpleGEMM {
 		KernelArg betaArg = FloatArg.createValue(beta);
 
 		// Do the padding for each input matrix
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
-		PaddingArg matrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
+		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
+		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
+		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
 
 		// Load Kernel as string
 		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");
@@ -76,7 +76,7 @@ public class ExampleSimpleGEMM {
 
 		// Compile and launch Kernel
 		KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, gridDimX, gridDimY, 1, blockDimX,
-				blockDimY, 1, aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
+				blockDimY, 1, aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArg, mArg, nArg, kArg, alphaArg, betaArg);
 
 		float[] dMatrix = dMatrixArg.asFloatArray();
 
