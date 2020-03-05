@@ -4,7 +4,7 @@
 ### Features
 - C Executor
 - Benchmarking
-  - can benchmark both C,CUDA and even works with [rise-lang/executor](https://github.com/rise-lang/executor)
+  - can benchmark CUDA and even works with [rise-lang/executor](https://github.com/rise-lang/executor)
   - KernelArgCreator to easily benchmark with different KernelArg inputs
 - more example Kernels
 - JNI
