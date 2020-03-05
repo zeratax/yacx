@@ -35,7 +35,7 @@ public class ExampleFastGEMM {
 			cMatrix[i] = 1f;
 		}
 
-		// Get the next biggest multiples of 128 for each dimension
+		// Get the next biggest multiple of 128 for each dimension
 		int m = (x % 128 == 0) ? x : (x / 128 + 1) * 128;
 		int n = (y % 128 == 0) ? y : (y / 128 + 1) * 128;
 		int k = (z % 128 == 0) ? z : (z / 128 + 1) * 128;
@@ -48,7 +48,8 @@ public class ExampleFastGEMM {
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
-		HalfArg bMatrixArg = HalfArg.create(bMatrix);
+		// Kernel expects a transposed B matrix so this has to be done here
+		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, y);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(m * n);
 		KernelArg mArg = IntArg.createValue(m);
@@ -59,7 +60,7 @@ public class ExampleFastGEMM {
 
 		// Do the padding for each input matrix
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
-		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
+		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
 
 		// Load Kernel as string

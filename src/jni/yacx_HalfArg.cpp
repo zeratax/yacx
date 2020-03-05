@@ -36,6 +36,24 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
     END_TRY_R("creating HalfArg", NULL)
 }
 
+jobject Java_yacx_HalfArg_createTransposedInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jint columns, jboolean jdownload){
+    BEGIN_TRY
+        CHECK_NULL(jarray, NULL)
+
+        auto arrayPtr = env->GetFloatArrayElements(jarray, NULL);
+        auto arrayLength = env->GetArrayLength(jarray);
+
+        CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
+
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, arrayLength * (sizeof(jfloat)/2), jdownload, true, true, CTYPE + "*"};
+        convertFtoHT(arrayPtr, kernelArgPtr->getHostData(), columns, arrayLength);
+
+        env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
+
+        return createJNIObject(env, cls, kernelArgPtr);
+    END_TRY_R("creating transposed HalfArg", NULL)
+}
+
 jfloatArray Java_yacx_HalfArg_asFloatArray (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto kernelArgJNIPtr = getHandle<KernelArgJNI>(env, obj);

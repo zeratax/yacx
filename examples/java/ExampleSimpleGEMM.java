@@ -38,7 +38,7 @@ public class ExampleSimpleGEMM {
 			cMatrix[i] = 1f;
 		}
 
-		// Get the next biggest multiples of 16 for each dimension
+		// Get the next biggest multiple of 16 for each dimension
 		int m = (x % 16 == 0) ? x : (x / 16 + 1) * 16;
 		int n = (y % 16 == 0) ? y : (y / 16 + 1) * 16;
 		int k = (z % 16 == 0) ? z : (z / 16 + 1) * 16;
@@ -54,7 +54,8 @@ public class ExampleSimpleGEMM {
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
-		HalfArg bMatrixArg = HalfArg.create(bMatrix);
+		// Kernel expects a transposed B matrix so this has to be done here
+		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, y);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(m * n);
 		KernelArg mArg = IntArg.createValue(m);
@@ -65,7 +66,7 @@ public class ExampleSimpleGEMM {
 
 		// Do the padding for each input matrix
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, z, m, k, 0);
-		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, k, n, 0);
+		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, y, m, n, 0);
 
 		// Load Kernel as string
