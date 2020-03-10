@@ -1,4 +1,4 @@
-#include "yacx/Device.hpp"
+#include "yacx/Devices.hpp"
 #include "yacx/Exception.hpp"
 
 #include <array>
@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <string>
 
-using yacx::Device;
+using yacx::Device, yacx::Devices;
 
 // https://stackoverflow.com/a/478960
 std::string exec(const char *cmd) {
@@ -33,14 +33,16 @@ TEST_CASE("Device can be constructed", "[yacx::device]") {
     name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
 
     SECTION("first device") {
-      Device dev;
+      Device dev = Devices::findDevice();
       REQUIRE(dev.name() == name);
     }
     SECTION("by name") {
-      Device dev{name};
+      Device dev = Devices::findDevice(name);
       REQUIRE(dev.name() == name);
       REQUIRE_THROWS_AS(
-          [&]() { Device dev{std::string{"Radeon RX Vega 64"}}; }(),
+          [&]() {
+            Device dev = Devices::findDevice(std::string{"Radeon RX Vega 64"});
+          }(),
           std::invalid_argument);
     }
 

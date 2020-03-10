@@ -22,7 +22,7 @@ jclass getClass(JNIEnv* env, const char* name) {
     return cls;
 }
 
-jobjectArray createStringArray(JNIEnv* env, const char** stringArray, int size) {
+jobjectArray createJStringArray(JNIEnv* env, const char** stringArray, int size) {
     jclass stringCls = getClass(env, "java/lang/String");
 
     if (!stringCls) return NULL;

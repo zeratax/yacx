@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Device.hpp"
+#include "Devices.hpp"
 #include "Exception.hpp"
 #include <cuda.h>
 

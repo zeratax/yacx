@@ -1,10 +1,9 @@
 #include "KernelArgJNI.hpp"
-#include "../../include/yacx/Init.hpp"
 
 #include <cstring>
 #include <stdio.h>
 
-using jni::detail::HDataMem, jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg;
+using jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg, std::shared_ptr;
 
 HDataMem::HDataMem(size_t size){
     yacx::detail::init();
@@ -20,9 +19,9 @@ KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool co
     m_hdata = std::make_shared<HDataMem>(size);
 
     if (data)
-        std::memcpy(getHostData(), data, size);
+        std::memcpy(hdata.get(), data, size);
 
-    m_kernelArg = new KernelArg{getHostData(), size, download, copy, upload};
+    m_kernelArg = new KernelArg{hdata.get(), size, download, copy, upload};
 }
 
 KernelArgJNI::~KernelArgJNI() {

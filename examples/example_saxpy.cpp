@@ -5,7 +5,7 @@
 #define NUM_BLOCKS 1024
 
 using yacx::Source, yacx::KernelArg, yacx::KernelTime, yacx::Kernel,
-    yacx::Device, yacx::load, yacx::type_of;
+    yacx::Device, yacx::Devices, yacx::load, yacx::type_of;
 
 int main() {
   const float DELTA{0.01f};
@@ -20,7 +20,7 @@ int main() {
   KernelTime time;
 
   try {
-    Device dev;
+    Device dev = Devices::findDevice();
     Source source{
         "extern \"C\" __global__\n"
         "void saxpy(float a, float *x, float *y, float *out, size_t n) {\n"
