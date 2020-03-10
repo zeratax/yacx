@@ -50,7 +50,6 @@ class Kernel : JNIHandle {
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
-  // CUcontext m_context;
   CUmodule m_module;
   CUfunction m_kernel;
 };

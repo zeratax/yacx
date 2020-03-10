@@ -36,7 +36,7 @@ Devices::Devices() {
 }
 
 Devices::~Devices() {
-  for (auto& dev : m_devices) {
+  for (auto &dev : m_devices) {
     CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(dev.m_device));
   }
 }

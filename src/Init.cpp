@@ -18,7 +18,7 @@ bool yacx::detail::instantiatedCtx = false;
 //! Initialize and set a context to current thread if not already done
 void yacx::detail::initCtx() {
   if (!instantiatedCtx) {
-    Device& device = Devices::findDevice();
+    Device &device = Devices::findDevice();
     CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()))
     instantiatedCtx = true;
   }

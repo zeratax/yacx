@@ -1,8 +1,8 @@
 #include "yacx/Kernel.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/Init.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
-#include "yacx/Init.hpp"
 #include <builtin_types.h>
 #include <utility>
 

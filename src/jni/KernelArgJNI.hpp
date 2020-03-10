@@ -7,7 +7,8 @@
 
 namespace jni {
 namespace detail {
-  //! Wrapper class to wrap pointer to pagelocked memory allocated with CUDA Driver API
+//! Wrapper class to wrap pointer to pagelocked memory allocated with CUDA
+//! Driver API
 class HDataMem {
  public:
   //! Allocate page-locked memory with passed size
