@@ -1,6 +1,6 @@
 #pragma once
 
-namespace yacx{
+namespace yacx {
 //! converts floats to halfs
 //! \param floats pointer to floats
 //! \param halfs pointer to allocated memory for converted halfs
@@ -12,4 +12,4 @@ void convertFtoH(void *floats, void *halfs, unsigned int length);
 //! \param floats pointer to allocated memory for converted floats
 //! \param length number of halfs to convert
 void convertHtoF(void *halfs, void *floats, unsigned int length);
-}
+} // namespace yacx

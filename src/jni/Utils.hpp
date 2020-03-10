@@ -2,6 +2,17 @@
 
 #include "../../include/yacx/Logger.hpp"
 #include "Handle.h"
+#include <vector>
+
+jclass getClass(JNIEnv *env, const char *name);
+
+jobjectArray createStringArray(JNIEnv *env, const char **stringArray, int size);
+
+std::string getStaticJString(JNIEnv *env, jclass cls,
+                             const char *attributeName);
+
+std::vector<std::string> jStringsToVector(JNIEnv *env,
+                                          jobjectArray jstringArray);
 
 #define CHECK_NULL(object, returnValue)                                        \
   if (object == NULL) {                                                        \
@@ -81,6 +92,4 @@
     return returnValue;                                                        \
   }
 
-jclass getClass(JNIEnv *env, const char *name);
-
-jobjectArray createStringArray(JNIEnv *env, const char **stringArray, int size);
+#define CTYPE getStaticJString(env, cls, "cType")

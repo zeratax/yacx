@@ -12,7 +12,7 @@
 
 using yacx::loglevel, yacx::detail::dynop, yacx::detail::opfn;
 
-void yacx::detail::load_op(struct dynop *dest, const char *filename) {
+void yacx::detail::load_op(struct dynop *dest, std::string filename, std::string opSymbolName) {
     //open libary
     void* handle = dlopen((std::string("./") + filename).c_str(), RTLD_LAZY);
     char* error = dlerror();
@@ -25,16 +25,17 @@ void yacx::detail::load_op(struct dynop *dest, const char *filename) {
     }
 
     //Search op-struct in libary
-    void* op = dlsym(handle, "op");
+    void* op = dlsym(handle, opSymbolName.c_str());
     error = dlerror();
     if (op == NULL){
         dlclose(handle);
         
         if (error != NULL){
-            throw std::runtime_error(std::string("error while searching \"op\" in libary with"
-            "compiled function ") + error);
+            throw std::runtime_error(std::string("error while searching\"") + std::string(opSymbolName) +
+            std::string("\" in libary with compiled function ") + error);
         } else {
-            throw std::runtime_error("error while searching \"op\" in libary with compiled function");
+            throw std::runtime_error(std::string("error while searching\"") + std::string(opSymbolName) +
+            std::string("\" in libary with compiled function "));
         }
     }
 

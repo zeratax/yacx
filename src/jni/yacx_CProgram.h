@@ -9,11 +9,19 @@ extern "C" {
 #endif
 /*
  * Class:     yacx_CProgram
+ * Method:    getTypes
+ * Signature: ([Lyacx/KernelArg;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_yacx_CProgram_getTypes
+  (JNIEnv *, jclass, jobjectArray);
+
+/*
+ * Class:     yacx_CProgram
  * Method:    createInternal
- * Signature: (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lyacx/Options;)Lyacx/CProgram;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Lyacx/Options;)Lyacx/CProgram;
  */
 JNIEXPORT jobject JNICALL Java_yacx_CProgram_createInternal
-  (JNIEnv *, jclass, jstring, jstring, jint, jstring, jobject);
+  (JNIEnv *, jclass, jstring, jstring, jobjectArray, jstring, jobject);
 
 /*
  * Class:     yacx_CProgram

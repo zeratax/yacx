@@ -16,7 +16,7 @@ HDataMem::~HDataMem(){
     CUDA_SAFE_CALL(cuMemFreeHost(m_hdata));
 }
 
-KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload) {
+KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
     m_hdata = std::make_shared<HDataMem>(size);
 
     if (data)
@@ -31,6 +31,7 @@ KernelArgJNI::~KernelArgJNI() {
 
 KernelArgJNISlice::KernelArgJNISlice(size_t start, size_t end, KernelArgJNI* arg) :
     KernelArgJNI(arg->m_hdata, new KernelArg{reinterpret_cast<char*> (arg->getHostData()) + start,
-        end-start, arg->kernelArgPtr()->isDownload(), arg->kernelArgPtr()->isCopy(), true}),
-    m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get()->get())
+        end-start, arg->kernelArgPtr()->isDownload(), arg->kernelArgPtr()->isCopy(), true},
+        arg->getType()),
+        m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get()->get())
         + start) {}

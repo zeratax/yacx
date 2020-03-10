@@ -6,18 +6,29 @@
 #include <iostream>
 #include <sstream>
 
-using yacx::loglevel, yacx::CProgram, yacx::detail::load_op, yacx::detail::unload_op, yacx::detail::dynop;
+using yacx::loglevel, yacx::CProgram, yacx::Options, yacx::detail::load_op, yacx::detail::unload_op, yacx::detail::dynop;
 
 int CProgram::id = 0;
 
-CProgram::CProgram(const char* cProgram, const char* functionName, int numberParameters,
-        const char* compilerWithOptions) 
-    : m_numberArguments(numberParameters) {
+Options createDefaultOptions(){
+    Options defaultOptions = Options();
+    defaultOptions.insert("-Wall");
+    defaultOptions.insert("-Wextra");
+    defaultOptions.insert("--pedantic");
+    return defaultOptions;
+}
+
+Options CProgram::DEFAULT_OPTIONS = createDefaultOptions();
+
+CProgram::CProgram(const char* cProgram, const char* functionName, std::vector<std::string> &parameterTypes,
+        const char *compiler, Options &options) {
     logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
-    << ",number of arguments: " << numberParameters << ", compiler: " << compilerWithOptions;
+    << ", compiler: " << compiler;
     logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
 
     id++;
+
+    m_numberArguments = parameterTypes.size();
 
     //filename for srcFile
     std::stringstream srcFileS;
@@ -31,11 +42,19 @@ CProgram::CProgram(const char* cProgram, const char* functionName, int numberPar
 
     logger(loglevel::DEBUG1) << "compile it to " << m_srcFile << " and " << m_libFile;
 
+    //compilerCommand with options
+    std::stringstream compilerWithOptionsS;
+    compilerWithOptionsS << compiler << " ";
+    for (int i = 0; i < options.numOptions(); i++){
+        compilerWithOptionsS << options.content()[i] << " ";
+    }
+    std::string compilerWithOptions = compilerWithOptionsS.str();
+
     //compile
-    compile(cProgram, functionName, numberParameters, compilerWithOptions);
+    compile(cProgram, functionName, parameterTypes, compilerWithOptions);
 
     //open libary
-    load_op(&m_op, m_libFile.c_str());
+    load_op(&m_op, m_libFile, std::string("op") + functionName);
 }
 
 CProgram::~CProgram() {
@@ -47,11 +66,38 @@ CProgram::~CProgram() {
     remove(m_libFile.c_str());
 }
 
-void CProgram::createSrcFile(const char* cProgram, const char* functionName, int numberParameters,
-        std::ofstream& fileOut) {
+bool pointerArg(std::string &s){
+    for (std::string::reverse_iterator rit=s.rbegin(); rit!=s.rend(); ++rit){
+        if (*rit != ' '){
+            if (*rit == '*'){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    throw std::runtime_error(std::string("invalid parameter type: ") + s);
+}
+
+void writeParam(std::vector<std::string> &parameterTypes, int i, std::ofstream& fileOut){
+    fileOut << "\n        ";
+    if (pointerArg(parameterTypes[i])){
+        fileOut << "parameter[" << i << "]";
+    } else {
+        fileOut << "*((" << parameterTypes[i] << "*) " << "parameter[" << i << "])";
+    }
+}
+
+void CProgram::createSrcFile(const char* cProgram, const char* functionName,
+        std::vector<std::string> &parameterTypes, std::ofstream& fileOut) {
     std::string executeFunctionName("execute");
     executeFunctionName.append(functionName);
-    
+    std::string opfnName("opfn");
+    opfnName.append(functionName);
+    std::string opName("op");
+    opName.append(functionName);
+
     //write c function to be executed
     fileOut << cProgram;
     fileOut << "\n\n";
@@ -62,22 +108,24 @@ void CProgram::createSrcFile(const char* cProgram, const char* functionName, int
     fileOut << ") {\n";
     //run function to be executed
     fileOut << "    " << functionName << "(";
-    for (int i = 0; i < numberParameters-1; i++){
-        fileOut << "parameter[" << i << "], ";
+    int i = 0;
+    for (; i < parameterTypes.size()-1; i++){
+        writeParam(parameterTypes, i, fileOut);
+        fileOut << ",";
     }
-    fileOut << "parameter[" << numberParameters-1 << "]";
+    writeParam(parameterTypes, i, fileOut);
     fileOut << ");\n";
     fileOut << "}\n\n";
 
     //struct to store function pointer
-    fileOut << "struct opfn{ void (*op)(void** parameter);};\n\n";
+    fileOut << "struct " << opfnName << "{ void (*op)(void** parameter);};\n\n";
     
     //create instance of struct as interface
-    fileOut << "struct opfn op = {.op = " << executeFunctionName << "};\n";
+    fileOut << "struct " << opfnName << " " << opName << " = {.op = " << executeFunctionName << "};\n";
 }
 
-void CProgram::compile(const char* cProgram, const char* functionName, int numberParameters,
-        const char* compilerWithOptions) {
+void CProgram::compile(const char* cProgram, const char* functionName, std::vector<std::string> &parameterTypes,
+        std::string &compilerWithOptions) {
     logger(loglevel::DEBUG) << "creating source file...";
 
     //create and open output file
@@ -85,7 +133,7 @@ void CProgram::compile(const char* cProgram, const char* functionName, int numbe
     fileOut.open(m_srcFile);
     
     //write srcfile
-    createSrcFile(cProgram, functionName, numberParameters, fileOut);
+    createSrcFile(cProgram, functionName, parameterTypes, fileOut);
     
     //close file
     fileOut.close();
@@ -106,7 +154,14 @@ void CProgram::compile(const char* cProgram, const char* functionName, int numbe
     }
 }
 
-void CProgram::execute(void** arguments) {
+void CProgram::execute(std::vector<void*> arguments) {
     logger(loglevel::DEBUG) << "execute CProgram: " << m_srcFile;
-    m_op.op(arguments);
+
+    if (arguments.size() != m_numberArguments){
+        std::stringstream errorS;
+        errorS << "invalid number of arguments expected: " << m_numberArguments << " found: " << arguments.size();
+        throw std::runtime_error(errorS.str());
+    }
+
+    m_op.op(&arguments[0]);
 }

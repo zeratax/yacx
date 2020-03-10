@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Exception.hpp"
 #include "Device.hpp"
+#include "Exception.hpp"
 #include <cuda.h>
 
 namespace yacx {
@@ -16,7 +16,7 @@ static void init() {
   }
 }
 
-//TODO
+// TODO
 static bool instantiatedCtx = false;
 static void initCtx() {
   if (!instantiatedCtx) {

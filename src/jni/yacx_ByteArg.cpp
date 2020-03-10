@@ -7,12 +7,12 @@ using yacx::KernelArg, jni::KernelArgJNI;
 
 jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jvalue){
 	BEGIN_TRY
-		cls = getClass(env, "yacx/KernelArg");
-		if (cls == NULL) return NULL;
+		jclass clsKernelArg = getClass(env, "yacx/KernelArg");
+		if (clsKernelArg == NULL) return NULL;
 
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jbyte), false, false, false};
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jbyte), false, false, false, CTYPE};
 
-		return createJNIObject(env, cls, kernelArgPtr);
+		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating ByteValueArg", NULL)
 }
 
@@ -25,7 +25,7 @@ jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray ja
 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jbyte), jdownload, true, true};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jbyte), jdownload, true, true, CTYPE + "*"};
 
         env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
 
