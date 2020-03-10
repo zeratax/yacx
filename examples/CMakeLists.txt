@@ -20,6 +20,7 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
 set(JAVA_EXAMPLE_FILES
+    "java/ExampleFastGemm.java"
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"
     "java/ExampleFilterExecutor.java"

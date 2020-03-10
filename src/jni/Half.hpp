@@ -14,7 +14,7 @@ void convertFtoH(void *floats, void *halfs, unsigned int length);
 void convertHtoF(void *halfs, void *floats, unsigned int length);
 }
 
-//! converts floats to halfs and transposed the matrix
+//! converts floats to halfs and transposes the matrix
 //! \param floats pointer to floats
 //! \param halfs pointer to allocated memory for converted halfs
 //! \param columns amount of columns of the matrix
