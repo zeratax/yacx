@@ -2,6 +2,7 @@
 #include "yacx/Exception.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
+#include "yacx/Init.hpp"
 #include <builtin_types.h>
 #include <utility>
 
@@ -22,15 +23,10 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 }
 
 KernelTime Kernel::launch(KernelArgs args, Device &device) {
-  logger(loglevel::DEBUG) << "creating context";
-
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+  logger(loglevel::DEBUG) << "setting context";
+  CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
   KernelTime time = launch(args, NULL);
-
-  logger(loglevel::DEBUG) << "destroy context";
-
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
   return time;
 }
@@ -74,7 +70,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
   CUDA_SAFE_CALL(cuEventRecord(finish, 0));
-  // CUDA_SAFE_CALL(cuCtxSynchronize());
+
   logger(loglevel::INFO) << "done!";
 
   // download results to host
@@ -106,16 +102,14 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   // find a kernelArg that you have to download with maximum size
   size_t maxOutputSize = args.maxOutputSize();
 
+  logger(loglevel::DEBUG) << "setting context";
+  CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
+
   // allocate memory
   void *output;
   if (maxOutputSize) {
-    output = malloc(maxOutputSize);
+    CUDA_SAFE_CALL(cuMemAllocHost(&output, maxOutputSize));
   }
-
-  logger(loglevel::DEBUG) << "create context";
-
-  // create context
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
 
   logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
@@ -127,14 +121,9 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
     kernelTimes.push_back(kernelTime);
   }
 
-  logger(loglevel::DEBUG) << "destroy context";
-
-  // destroy context
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
-
   // free allocated page-locked memory
   if (maxOutputSize) {
-    free(output);
+    CUDA_SAFE_CALL(cuMemFreeHost(output));
   }
 
   return kernelTimes;

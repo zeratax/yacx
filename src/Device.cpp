@@ -12,6 +12,8 @@ Device::Device(int ordinal) {
   CUdevice device;
   CUDA_SAFE_CALL(cuDeviceGet(&device, ordinal));
   this->set_device_properties(device);
+
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&m_primaryContext, device));
 }
 
 void Device::set_device_properties(const CUdevice &device) {
