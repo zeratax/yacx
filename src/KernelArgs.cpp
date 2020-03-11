@@ -1,8 +1,8 @@
 #include "yacx/KernelArgs.hpp"
 #include "yacx/Exception.hpp"
 
-#include <cuda.h>
 #include <algorithm>
+#include <cuda.h>
 
 using yacx::KernelArgs, yacx::KernelArg;
 
@@ -23,7 +23,7 @@ void KernelArgs::download(void *hdata, CUstream stream) {
     arg.download(hdata, stream);
 }
 
-void KernelArgs::free(CUstream stream){
+void KernelArgs::free(CUstream stream) {
   CUDA_SAFE_CALL(cuStreamSynchronize(stream));
 
   for (auto &arg : m_args)

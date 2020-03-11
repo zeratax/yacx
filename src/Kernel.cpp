@@ -68,7 +68,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
       cuLaunchKernel(m_kernel,                        // function from program
                      m_grid.x, m_grid.y, m_grid.z,    // grid dim
                      m_block.x, m_block.y, m_block.z, // block dim
-                     0, stream,                      // shared mem and stream
+                     0, stream,                       // shared mem and stream
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
   CUDA_SAFE_CALL(cuEventRecord(finish, stream));

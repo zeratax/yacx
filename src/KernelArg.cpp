@@ -42,7 +42,7 @@ void KernelArg::upload(CUstream stream) {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
-    
+
     if (m_copy) {
       logger(loglevel::DEBUG1) << "copying data to device";
       m_dataCopy.get()->copyDataHtoD(const_cast<void *>(m_hdata), m_ddata,
@@ -51,7 +51,6 @@ void KernelArg::upload(CUstream stream) {
   } else {
     logger(loglevel::DEBUG1) << "NOT uploading argument";
   }
-
 }
 
 void KernelArg::download(void *hdata, CUstream stream) {
@@ -64,7 +63,7 @@ void KernelArg::download(void *hdata, CUstream stream) {
   }
 }
 
-void KernelArg::free(){
+void KernelArg::free() {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "freeing argument from device";
     CUDA_SAFE_CALL(cuMemFree(m_ddata));
@@ -93,7 +92,8 @@ void DataCopyKernelArg::copyDataDtoH(CUdeviceptr ddata, void *hdata,
 }
 
 void DataCopyKernelArgMatrixPadding::copyDataHtoD(void *hdata,
-                                                  CUdeviceptr ddata, size_t, CUstream stream) {
+                                                  CUdeviceptr ddata, size_t,
+                                                  CUstream stream) {
   char *src = static_cast<char *>(hdata);
 
   const unsigned char paddingValueChar =
@@ -131,7 +131,8 @@ void DataCopyKernelArgMatrixPadding::copyDataHtoD(void *hdata,
 }
 
 void DataCopyKernelArgMatrixPadding::copyDataDtoH(CUdeviceptr ddata,
-                                                  void *hdata, size_t, CUstream stream) {
+                                                  void *hdata, size_t,
+                                                  CUstream stream) {
   char *src = static_cast<char *>(hdata);
 
   const size_t sizeSrcColumn = m_src_columns * m_elementSize;
