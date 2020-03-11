@@ -20,11 +20,11 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
 set(JAVA_EXAMPLE_FILES
-    "java/ExampleBlockReduce.java"
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"
     "java/ExampleFilterExecutor.java"
-    "java/ExampleFilterGauss.java"
+    "java/ExampleGauss.java"
+    "java/ExampleReduce.java"
     "java/ExampleSaxpy.java"
     "java/ExampleSaxpyBenchmark.java"
     "java/ExampleSaxpyExecutor.java"

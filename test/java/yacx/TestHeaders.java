@@ -6,8 +6,8 @@ class TestHeaders {
 
 	@Test
 	void test() {
-		//TODO
-		//Issue #70
+		// TODO
+		// Issue #70
 	}
 
 }

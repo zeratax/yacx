@@ -17,18 +17,18 @@ class DataCopy {
   //! copy data from host to device
   //! \param kernelArg KernelArg, which should be copied from host to device
   //! \param stream to enqueue operation
-  virtual void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) = 0;
+  virtual void copyDataHtoD(KernelArg *kernelArg, CUstream stream) = 0;
   //! copy data from device to host
   //! \param kernelArg KernelArg, which should be copied from device to host
   //! \param stream to enqueue operation
-  virtual void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) = 0;
+  virtual void copyDataDtoH(KernelArg *kernelArg, CUstream stream) = 0;
 };
 
 class DataCopyKernelArg : public DataCopy {
  public:
   DataCopyKernelArg() {}
-  void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) override;
-  void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) override;
+  void copyDataHtoD(KernelArg *kernelArg, CUstream stream) override;
+  void copyDataDtoH(KernelArg *kernelArg, CUstream stream) override;
 };
 
 class DataCopyKernelArgMatrixPadding : public DataCopy {
@@ -48,8 +48,8 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
       : m_elementSize(elementSize), m_paddingValue(paddingValue),
         m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
         m_dst_columns(dst_columns) {}
-  void copyDataHtoD(KernelArg *kernelArg, CUstream* stream) override;
-  void copyDataDtoH(KernelArg *kernelArg, CUstream* stream) override;
+  void copyDataHtoD(KernelArg *kernelArg, CUstream stream) override;
+  void copyDataDtoH(KernelArg *kernelArg, CUstream stream) override;
 
  private:
   const int m_elementSize;

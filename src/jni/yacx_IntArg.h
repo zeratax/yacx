@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef yacx_IntArg_SIZE_BYTES
-#define yacx_IntArg_SIZE_BYTES 1LL
+#define yacx_IntArg_SIZE_BYTES 4LL
 /*
  * Class:     yacx_IntArg
  * Method:    createValue

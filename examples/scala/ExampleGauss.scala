@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
+import yacx.ByteArg;
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+import yacx.KernelArg;
+import yacx.KernelTime;
+import yacx.Utils;
+
 object ExampleGauss {
   	def writePPM(pixels: PixelArray, filename: String) : Unit = {
     		var os : FileOutputStream = null
@@ -133,7 +141,7 @@ object ExampleGauss {
     		val imageArg = ByteArg.create(image.getPixel(), true)
     
     		//Create Program
-    		val kernelString = Utils.loadFile("gauss.cu")
+    		val kernelString = Utils.loadFile("kernels/gauss.cu")
     
     		//Compile and launch Kernel
     		val executionTime = Executor.launch(kernelString, "gaussFilterKernel", width, height, 1,

@@ -5,7 +5,7 @@
 
 using jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg, std::shared_ptr;
 
-KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload) {
+KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
     std::shared_ptr<void> hdata(malloc(size), free);
     m_hdata = hdata;
 
@@ -21,6 +21,7 @@ KernelArgJNI::~KernelArgJNI() {
 
 KernelArgJNISlice::KernelArgJNISlice(size_t start, size_t end, KernelArgJNI* arg) :
     KernelArgJNI(arg->m_hdata, new KernelArg{reinterpret_cast<char*> (arg->getHostData()) + start,
-        end-start, arg->kernelArgPtr()->isDownload(), arg->kernelArgPtr()->isCopy(), true}),
-    m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get())
+        end-start, arg->kernelArgPtr()->isDownload(), arg->kernelArgPtr()->isCopy(), true},
+        arg->getType()),
+        m_offset(static_cast<char*> (arg->getHostData()) - static_cast<char*> (arg->m_hdata.get())
         + start) {}
