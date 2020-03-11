@@ -36,8 +36,7 @@ jintArray Java_yacx_Device_getMaxBlock (JNIEnv* env, jobject obj){
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, NULL)
 
-        dim3 block;
-        devicePtr->max_block_dim(&block);
+        dim3 block = devicePtr->max_block_dim();
 
         auto res = env->NewIntArray(3);
 
@@ -60,8 +59,7 @@ jintArray Java_yacx_Device_getMaxGrid (JNIEnv* env, jobject obj){
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, NULL)
 
-        dim3 grid;
-        devicePtr->max_grid_dim(&grid);
+        dim3 grid = devicePtr->max_grid_dim();
 
         auto res = env->NewIntArray(3);
         if (res == nullptr) return nullptr;

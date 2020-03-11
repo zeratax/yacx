@@ -39,11 +39,11 @@ class Device : JNIHandle {
   //! \return 16-byte UUID of the device as hexadecimal string
   std::string uuid() const { return m_uuidHex; }
   //!
-  //! \param block returns block with maximum dimension
-  void max_block_dim(dim3 *block);
+  //! \return block returns block with maximum dimension
+  dim3 max_block_dim();
   //!
-  //! \param grid returns grid with maximum dimension
-  void max_grid_dim(dim3 *grid);
+  //! \return grid returns grid with maximum dimension
+  dim3 max_grid_dim();
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
   }

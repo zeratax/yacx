@@ -23,11 +23,10 @@ void initKernel(){
     }
     device = devices[0];
 
-    dim3 grid;
-    device->max_grid_dim(&grid);
+    dim3 grid = device->max_grid_dim();
     maxGridSize = grid.x;
-    device->max_block_dim(&grid);
-    maxBlockSize = grid.x;
+    dim3 block = device->max_block_dim();
+    maxBlockSize = block.x;
 
     Source source{
             "#include <cuda_fp16.h>\n"
