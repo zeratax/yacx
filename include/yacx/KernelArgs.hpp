@@ -15,20 +15,22 @@ class DataCopy {
   //! A constructor
   DataCopy() {}
   //! copy data from host to device
-  //! \param kernelArg KernelArg, which should be copied from host to device
-  //! \param stream to enqueue operation
-  virtual void copyDataHtoD(KernelArg *kernelArg, CUstream stream) = 0;
+  //! \param hdata pointer to host data
+  //! \param ddata pointer to device data
+  //! \param size size of the data
+  virtual void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size, CUstream stream) = 0;
   //! copy data from device to host
-  //! \param kernelArg KernelArg, which should be copied from device to host
-  //! \param stream to enqueue operation
-  virtual void copyDataDtoH(KernelArg *kernelArg, CUstream stream) = 0;
+  //! \param ddata pointer to device data
+  //! \param hdata pointer to host data
+  //! \param size size of the data
+  virtual void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size, CUstream stream) = 0;
 };
 
 class DataCopyKernelArg : public DataCopy {
  public:
   DataCopyKernelArg() {}
-  void copyDataHtoD(KernelArg *kernelArg, CUstream stream) override;
-  void copyDataDtoH(KernelArg *kernelArg, CUstream stream) override;
+  void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size, CUstream stream) override;
+  void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size, CUstream stream) override;
 };
 
 class DataCopyKernelArgMatrixPadding : public DataCopy {
@@ -48,8 +50,8 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
       : m_elementSize(elementSize), m_paddingValue(paddingValue),
         m_src_rows(src_rows), m_src_columns(src_columns), m_dst_rows(dst_rows),
         m_dst_columns(dst_columns) {}
-  void copyDataHtoD(KernelArg *kernelArg, CUstream stream) override;
-  void copyDataDtoH(KernelArg *kernelArg, CUstream stream) override;
+  void copyDataHtoD(void *hdata, CUdeviceptr ddata, size_t size, CUstream stream) override;
+  void copyDataDtoH(CUdeviceptr ddata, void *hdata, size_t size, CUstream stream) override;
 
  private:
   const int m_elementSize;
@@ -72,8 +74,6 @@ class DataCopyKernelArgMatrixPadding : public DataCopy {
 
 class KernelArg : JNIHandle {
   friend class KernelArgs;
-  friend class detail::DataCopyKernelArg;
-  friend class detail::DataCopyKernelArgMatrixPadding;
 
  public:
   //! A constructor
@@ -109,7 +109,7 @@ class KernelArg : JNIHandle {
   void download(void *hdata, CUstream stream);
   //! frees the allocated memory on the device
   void free();
-  const size_t size() const { return m_size; }
+  size_t size() const { return m_size; }
   bool isDownload() const { return m_download; }
   void setDownload(bool download) { m_download = download; }
   bool isCopy() const { return m_copy; }

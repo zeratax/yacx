@@ -81,6 +81,9 @@ std::string yacx::detail::descriptionFkt(const std::string &desc) {
  * and the program itself is in
  * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
  */
+// Ignore -Wswitch
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
 std::string yacx::detail::whichError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
@@ -901,4 +904,5 @@ std::string yacx::detail::whichError(const CUresult &error) {
     ret.append(description);
     return ret;
   }
+#pragma GCC diagnostic pop
 }

@@ -38,7 +38,7 @@ const void **KernelArgs::content() {
   std::transform(m_args.begin(), m_args.end(), m_voArgs.begin(),
                  [](auto &arg) { return arg.content(); });
   return m_voArgs.data();
-};
+}
 
 size_t KernelArgs::size() const {
   size_t result{0};

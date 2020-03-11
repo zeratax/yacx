@@ -11,12 +11,12 @@
 
 using yacx::KernelArg, jni::KernelArgJNI, yacx::Options, yacx::CProgram;
 
-jobjectArray Java_yacx_CProgram_getTypes (JNIEnv* env, jclass cls, jobjectArray jKernelArgs){
+jobjectArray Java_yacx_CProgram_getTypes (JNIEnv* env, jclass, jobjectArray jKernelArgs){
     BEGIN_TRY
         auto argsLength = env->GetArrayLength(jKernelArgs);
         CHECK_BIGGER(argsLength, 0, "illegal array length", NULL)
 
-        const char* types[argsLength];
+        const char** types = new const char*[argsLength];
 
         for(int i = 0; i < argsLength; i++){
             auto jkernelArg = env->GetObjectArrayElement(jKernelArgs, i);
@@ -28,7 +28,11 @@ jobjectArray Java_yacx_CProgram_getTypes (JNIEnv* env, jclass cls, jobjectArray 
             types[i] = kernelArgJNIPtr->getType().c_str();
         }
 
-        return createStringArray(env, types, argsLength);
+        auto jStringArray = createJStringArray(env, types, argsLength);
+
+        delete types;
+
+        return jStringArray;
     END_TRY_R("getting types of KernelArgs", NULL)
 }
 

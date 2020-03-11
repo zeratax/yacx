@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "Device.hpp"
+#include "Devices.hpp"
 #include "JNIHandle.hpp"
 #include "util.hpp"
 

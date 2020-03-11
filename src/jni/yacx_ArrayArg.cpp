@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI, jni::KernelArgJNISlice;
 
-jlong Java_yacx_ArrayArg_createOutputInternal(JNIEnv* env, jclass cls, jlong jNumberBytes){
+jlong Java_yacx_ArrayArg_createOutputInternal(JNIEnv* env, jclass, jlong jNumberBytes){
     BEGIN_TRY
         CHECK_BIGGER(jNumberBytes, 0, "illegal array length", 0)
 
@@ -72,7 +72,7 @@ jlong Java_yacx_ArrayArg_sliceInternal(JNIEnv* env, jobject obj, jlong jstart, j
 
         CHECK_BIGGER(jstart, -1, "illegal indices for slice", 0)
         CHECK_BIGGER(jend, jstart, "illegal indices for slice", 0)
-        CHECK_BIGGER(kernelArgJNIPtr->kernelArgPtr()->size(), jend, "illegal indices for slice", 0)
+        CHECK_BIGGER(kernelArgJNIPtr->kernelArgPtr()->size(), static_cast<size_t> (jend), "illegal indices for slice", 0)
 
         KernelArgJNISlice* newkernelArgJNIPtr = new KernelArgJNISlice{static_cast<size_t> (jstart),
             static_cast<size_t> (jend), kernelArgJNIPtr};

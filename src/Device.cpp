@@ -1,42 +1,17 @@
-#include "yacx/Device.hpp"
+#include "yacx/Devices.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/Logger.hpp"
 
-#include <experimental/iterator>
-#include <vector>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 using yacx::Device, yacx::CUresultException, yacx::loglevel;
 
-Device::Device() {
+Device::Device(int ordinal) {
   CUdevice device;
-  CUDA_SAFE_CALL(cuInit(0));
-  CUDA_SAFE_CALL(cuDeviceGet(&device, 0));
+  CUDA_SAFE_CALL(cuDeviceGet(&device, ordinal));
   this->set_device_properties(device);
-}
-Device::Device(std::string name) {
-  int number{};
-  char cname[50];
-  CUdevice device;
-  std::vector<std::string> devices;
-
-  CUDA_SAFE_CALL(cuInit(0));
-  CUDA_SAFE_CALL(cuDeviceGetCount(&number));
-
-  for (int i{0}; i < number; ++i) {
-    CUDA_SAFE_CALL(cuDeviceGet(&device, i));
-    CUDA_SAFE_CALL(cuDeviceGetName(cname, 50, device));
-    if (name == std::string{cname}) {
-      this->set_device_properties(device);
-      return;
-    }
-    devices.push_back(std::string{cname});
-  }
-  std::ostringstream buffer;
-  std::copy(devices.begin(), devices.end(),
-            std::experimental::make_ostream_joiner(buffer, ", "));
-  throw std::invalid_argument(
-      "Could not find device with this name! Available devices: [" +
-      buffer.str() + ']');
 }
 
 void Device::set_device_properties(const CUdevice &device) {
@@ -55,28 +30,55 @@ void Device::set_device_properties(const CUdevice &device) {
   m_bus_width = attribute(CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH);
 
   CUDA_SAFE_CALL(cuDeviceTotalMem(&m_memory, m_device));
+
+#if CUDA_VERSION >= 9020
+  CUuuid uuid;
+  CUDA_SAFE_CALL(cuDeviceGetUuid(&uuid, m_device));
+  m_uuidHex = uuidToHex(uuid);
+#else
+  m_uuidHex = "";
+#endif
 }
 
-void Device::max_block_dim(dim3 *block) {
-  block->x = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X);
-  logger(loglevel::DEBUG1) << "block.x = " << block->x;
-  block->y = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y);
-  ;
-  logger(loglevel::DEBUG1) << "block.y = " << block->y;
-  block->z = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z);
-  ;
-  logger(loglevel::DEBUG1) << "block.z = " << block->z;
+std::string Device::uuidToHex(CUuuid &uuid) {
+  std::stringstream ss;
+  ss << std::hex << std::setfill('0');
+  for (int i = 0; i < 16; i++) {
+    ss << std::hex << std::setw(2)
+       << (int)static_cast<unsigned char>(uuid.bytes[i]);
+    if (i == 3 || i == 5 || i == 7 || i == 9) {
+      ss << "-";
+    }
+  }
+  return ss.str();
 }
 
-void Device::max_grid_dim(dim3 *grid) {
-  grid->x = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X);
-  logger(loglevel::DEBUG1) << "grid.x = " << grid->x;
-  grid->y = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y);
-  ;
-  logger(loglevel::DEBUG1) << "grid.y = " << grid->y;
-  grid->z = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z);
-  ;
-  logger(loglevel::DEBUG1) << "grid.z = " << grid->z;
+dim3 Device::max_block_dim() {
+  dim3 block;
+  block.x = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X);
+  logger(loglevel::DEBUG1) << "block.x = " << block.x;
+
+  block.y = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y);
+  logger(loglevel::DEBUG1) << "block.y = " << block.y;
+
+  block.z = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z);
+  logger(loglevel::DEBUG1) << "block.z = " << block.z;
+
+  return block;
+}
+
+dim3 Device::max_grid_dim() {
+  dim3 grid;
+  grid.x = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X);
+  logger(loglevel::DEBUG1) << "grid.x = " << grid.x;
+
+  grid.y = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y);
+  logger(loglevel::DEBUG1) << "grid.y = " << grid.y;
+
+  grid.z = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z);
+  logger(loglevel::DEBUG1) << "grid.z = " << grid.z;
+
+  return grid;
 }
 
 int Device::attribute(CUdevice_attribute attrib) const {

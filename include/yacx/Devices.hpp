@@ -1,14 +1,16 @@
 #pragma once
 
-#include <cuda.h>
-#include <string>
-#include <vector_types.h>
-
 #include "JNIHandle.hpp"
 
-namespace yacx {
+#include <cuda.h>
+#include <functional>
+#include <string>
+#include <vector>
+#include <vector_types.h>
 
+namespace yacx {
 class Device : JNIHandle {
+  friend class Devices;
   /*!
     \class Device Device.hpp
     \brief Class to help get a CUDA-capable device
@@ -17,12 +19,6 @@ class Device : JNIHandle {
     Driver API documentation</a>
   */
  public:
-  //! Constructs a Device with the first CUDA capable device it finds
-  Device();
-  //! Constructs a Device if a CUDA capable device with the identifier is
-  //! available
-  //! \param name Name of the cuda device, e.g.'Tesla K20c'
-  explicit Device(std::string name);
   //! Minor compute capability version number
   //! \return version number
   [[nodiscard]] int minor_version() const { return m_minor; }
@@ -39,12 +35,15 @@ class Device : JNIHandle {
   //! in bytes
   //! \return Memory in bytes
   size_t total_memory() const { return m_memory; }
+  //! uuid for the device
+  //! \return 16-byte UUID of the device as hexadecimal string
+  std::string uuid() const { return m_uuidHex; }
   //!
-  //! \param block returns block with maximum dimension
-  void max_block_dim(dim3 *block);
+  //! \return block returns block with maximum dimension
+  dim3 max_block_dim();
   //!
-  //! \param grid returns grid with maximum dimension
-  void max_grid_dim(dim3 *grid);
+  //! \return grid returns grid with maximum dimension
+  dim3 max_grid_dim();
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
   }
@@ -61,7 +60,6 @@ class Device : JNIHandle {
   //! Global memory bus width in bits
   //! \return bus width
   int bus_width() const { return m_bus_width; }
-  CUdevice cuDevice() const { return m_device; }
   //! Returns information about the device, see
   //! <a
   //! href=https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266>CUdevice_attribute</a>
@@ -70,13 +68,53 @@ class Device : JNIHandle {
   int attribute(CUdevice_attribute attrib) const;
 
  private:
+  //! Constructs a Device with the CUDA capable device with passed devicenumber
+  Device(int ordinal);
   void set_device_properties(const CUdevice &device);
+  std::string uuidToHex(CUuuid &uuid);
 
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
+  std::string m_uuidHex;
   size_t m_memory, m_max_shared_memory_per_block, m_multiprocessor_count;
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
 };
 
+class Devices : JNIHandle {
+  /*!
+    \class Devices Devices.hpp
+    \brief Class to help find CUDA-capable devices
+    for more info see: <a
+    href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266">CUDA
+    Driver API documentation</a>
+  */
+ public:
+  //! \return returns a Device with the first CUDA capable device it finds
+  static Device &findDevice();
+
+  //! \return returns a Device if a CUDA capable device with the identifier is
+  //! available
+  //! \param name Name of the cuda device, e.g.'Tesla K20c'
+  static Device &findDevice(std::string name);
+
+  //! \return returns a Device if a CUDA capable device with the passed 16-byte
+  //! UUID as hexadecimal string \param uuid UUID of the cuda device
+  static Device &findDeviceByUUID(std::string uuid);
+
+  //! \return vector with all CUDA-capable devices
+  static std::vector<Device> &findDevices();
+
+  //! filters the devices satisfying passed condition
+  //! \param con condition for devices e.g.'[](Device& d){return
+  //! d.total_memory() >= 1024;}' \return list of devices satisfying passed
+  //! condition
+  static std::vector<Device *> findDevices(std::function<bool(Device &)> con);
+
+ private:
+  Devices();
+  std::vector<Device> m_devices;
+  static Devices *getInstance();
+  static Devices *instance;
+};
 } // namespace yacx

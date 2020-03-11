@@ -51,7 +51,7 @@ class TestExecutor extends TestJNI {
 		block1 = 1;
 		block2 = 1;
 		options = Options.createOptions();
-		device = Device.createDevice();
+		device = Devices.findDevice();
 		devicename = device.getName();
 
 		// init kernel-arguments
@@ -198,7 +198,7 @@ class TestExecutor extends TestJNI {
 
 		// Try to run kernel without passing template parameter
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+			Executor.launch(kernelString, kernelName, Options.createOptions(), Devices.findDevice().getName(),
 					new String[0], 1, 1, resultArg);
 		});
 
@@ -207,7 +207,7 @@ class TestExecutor extends TestJNI {
 		// Run with different template parameters
 		templateParameter = "int";
 
-		Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+		Executor.launch(kernelString, kernelName, Options.createOptions(), Devices.findDevice().getName(),
 				new String[] { templateParameter }, 1, 1, resultArg);
 
 		assertEquals(IntArg.SIZE_BYTES, resultArg.asIntArray()[0],
@@ -215,7 +215,7 @@ class TestExecutor extends TestJNI {
 
 		templateParameter = "long";
 
-		Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+		Executor.launch(kernelString, kernelName, Options.createOptions(), Devices.findDevice().getName(),
 				new String[] { templateParameter }, 1, 1, resultArg);
 
 		assertEquals(LongArg.SIZE_BYTES, resultArg.asIntArray()[0],
@@ -224,7 +224,7 @@ class TestExecutor extends TestJNI {
 		// Use the other template-launch-method
 		templateParameter = "double";
 
-		Executor.launch(kernelString, kernelName, Options.createOptions(), Device.createDevice().getName(),
+		Executor.launch(kernelString, kernelName, Options.createOptions(), Devices.findDevice().getName(),
 				new String[] { templateParameter }, 1, 1, 1, 1, 1, 1, resultArg);
 
 		assertEquals(DoubleArg.SIZE_BYTES, resultArg.asIntArray()[0],
@@ -235,22 +235,22 @@ class TestExecutor extends TestJNI {
 	void testBenchmarkInvalid() {
 		// Invalid number of executions
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 0, creatorSaxpy, 1024, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 0, creatorSaxpy, 1024, 2048);
 		});
 
 		// Invalid dataSize
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, creatorSaxpy, 1024, -1, 2048);
+			Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 3, creatorSaxpy, 1024, -1, 2048);
 		});
 
 		// null
 		assertThrows(NullPointerException.class, () -> {
-			Executor.benchmark(saxpy, null, options, Device.createDevice(), 3, creatorSaxpy, 1024, 2048);
+			Executor.benchmark(saxpy, null, options, Devices.findDevice(), 3, creatorSaxpy, 1024, 2048);
 		});
 
 		// invalid KernelArgCreator
 		assertThrows(IllegalArgumentException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, new Executor.KernelArgCreator() {
+			Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 3, new Executor.KernelArgCreator() {
 
 				@Override
 				public int getDataLength(int dataSizeBytes) {
@@ -303,13 +303,13 @@ class TestExecutor extends TestJNI {
 			}
 		};
 
-		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3,
+		Executor.BenchmarkResult result = Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 3,
 				creatorInvalid, 1024, 2048);
 		assertNotNull(result);
 
 		// Run with more than 2048 dataSize
 		assertThrows(NullPointerException.class, () -> {
-			Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 3, creatorInvalid, 2048, 4096);
+			Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 3, creatorInvalid, 2048, 4096);
 		});
 	}
 
@@ -320,11 +320,11 @@ class TestExecutor extends TestJNI {
 		assertNotNull(result);
 
 		// Other saxpy-benchmark-test
-		result = Executor.benchmark(saxpy, "saxpy", options, Device.createDevice(), 7, creatorSaxpy, 512, 768);
+		result = Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 7, creatorSaxpy, 512, 768);
 		assertNotNull(result);
 
 		// Run filter-benchmark-tests correctly
-		result = Executor.benchmark(filterk, "filter_k", options, Device.createDevice(), 4, creatorFilter, 1024, 2048,
+		result = Executor.benchmark(filterk, "filter_k", options, Devices.findDevice(), 4, creatorFilter, 1024, 2048,
 				4096);
 		assertNotNull(result);
 	}

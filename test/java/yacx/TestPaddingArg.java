@@ -15,10 +15,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(OrderAnnotation.class)
 public class TestPaddingArg extends TestJNI {
 	static int[] matrix1; // 2x2 matrix
-	static float[] matrix2; // 2x6 matrix
+	static short[] matrix2; // 2x6 matrix
 	static int columns1, columns2, rows1, rows2;
 	static IntArg matrix1Arg;
-	static HalfArg matrix2Arg;
+	static ShortArg matrix2Arg;
 
 	static final String copyIntArrayString = "extern \"C\" __global__\n" + "void copyInt(int* in, int* out) {\n"
 			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
@@ -26,17 +26,17 @@ public class TestPaddingArg extends TestJNI {
 	static final String addIntArrayString = "extern \"C\" __global__\n" + "void addInt(int* sum1, int* sum2) {\n"
 			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  sum1[i] += sum2[i];\n" + "}\n" + "";
 
-	static final String copyHalfArrayString = "#include <cuda_fp16.h>\n" + "\"extern \"C\" __global__\n"
-			+ "void copyHalf(half* in, half* out) {\n" + "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
-			+ "  out[i] = in[i];\n" + "}\n" + "";
+	static final String addShortArrayString = "extern \"C\" __global__\n"
+			+ "void addShort(short* sum1, short* sum2) {\n" + "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+			+ "  sum1[i] += sum2[i];\n" + "}\n" + "";
 
 	@BeforeAll
 	static void init() {
 		matrix1 = new int[] { 1, 2, 3, 4 };
-		matrix2 = new float[3 * 4];
+		matrix2 = new short[2 * 6];
 
-		for (int i = 0; i < 12; i++) {
-			matrix2[i] = i * i * 2.678f;
+		for (int i = 0; i < matrix2.length; i++) {
+			matrix2[i] = (short) (3 * i);
 		}
 
 		columns1 = 2;
@@ -45,8 +45,7 @@ public class TestPaddingArg extends TestJNI {
 		rows2 = 6;
 
 		matrix1Arg = IntArg.create(matrix1, true);
-		// TODO use matrix2Arg
-//		matrix2Arg = HalfArg.create(matrix2, true);
+		matrix2Arg = ShortArg.create(matrix2, true);
 	}
 
 	@Test
@@ -139,7 +138,7 @@ public class TestPaddingArg extends TestJNI {
 	}
 
 	@Test
-	@Order(3) // this test change matrix1Arg
+	@Order(3) // this test change matrixArgs
 	void testAdd() {
 		matrix1Arg.setDownload(true);
 		assertTrue(matrix1Arg.isDownload());
@@ -151,11 +150,12 @@ public class TestPaddingArg extends TestJNI {
 		assertTrue(in.isDownload());
 		assertEquals(3 * 5, in.getLength());
 
-		// copy matrix1 with 0-padding to 4x5 matrix
+		// add matrix1 with 0-padding to 3x5 matrix
 		Executor.launch(addIntArrayString, "addInt", 1, 3 * 5, in, sum2);
 
 		// original matrix should be changed
 		assertEquals(matrix1.length, matrix1Arg.getLength());
+		// check result
 		for (int i = 0; i < matrix1.length; i++) {
 			assertEquals(matrix1[i] + 1, matrix1Arg.asIntArray()[i]);
 		}
@@ -167,10 +167,10 @@ public class TestPaddingArg extends TestJNI {
 		assertTrue(sum22.isDownload());
 		assertEquals(2 * 6, sum22.getLength());
 
-		// copy matrix1 with 0-padding to 4x5 matrix
+		// add matrix1 with 0-padding to 2x6 matrix
 		Executor.launch(addIntArrayString, "addInt", 1, 2 * 6, sum12, sum22);
 
-		// original matrix should be unchanged
+		// check result
 		for (int i = 0; i < matrix1.length; i++) {
 			assertEquals(matrix1[i] + 1, matrix1Arg.asIntArray()[i]);
 		}
@@ -189,5 +189,29 @@ public class TestPaddingArg extends TestJNI {
 		assertEquals(3 + 2, sum12.asIntArray()[9]);
 		assertEquals(3 + 2, sum12.asIntArray()[10]);
 		assertEquals(3 + 2, sum12.asIntArray()[11]);
+
+		// use matrix2Arg
+		matrix2Arg.setDownload(true);
+		assertTrue(matrix2Arg.isDownload());
+
+		PaddingArg in3 = PaddingArg.createMatrixPadding(matrix2Arg, rows2, columns2, 128, 128, 0);
+		short[] sum3Array = new short[128 * 128];
+		for (short i = 0; i < sum3Array.length; i++)
+			sum3Array[i] = 42;
+		ShortArg sum3 = ShortArg.create(sum3Array);
+
+		assertTrue(matrix2Arg.isDownload());
+		assertTrue(in3.isDownload());
+		assertEquals(128 * 128, in3.getLength());
+
+		// copy matrix1 with 0-padding to 4x5 matrix
+		Executor.launch(addShortArrayString, "addShort", 128*128, 1, in3, sum3);
+
+		// original matrix should be changed
+		assertEquals(matrix2.length, matrix2Arg.getLength());
+		// check result
+		for (int i = 0; i < matrix1.length; i++) {
+			assertEquals((short) (matrix2[i] + 42), matrix2Arg.asShortArray()[i]);
+		}
 	}
 }

@@ -61,6 +61,6 @@ jobjectArray Java_yacx_Options_getOptions (JNIEnv* env, jobject obj){
         auto size = optionPtr->numOptions();
         auto options = optionPtr->content();
 
-        return createStringArray(env, options, size);
+        return createJStringArray(env, options, size);
     END_TRY_R("getting Strings of Options", NULL)
 }

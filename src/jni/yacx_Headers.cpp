@@ -55,7 +55,7 @@ jobjectArray Java_yacx_Headers_names (JNIEnv* env, jobject obj){
         auto size = headersPtr->numHeaders();
         auto names = headersPtr->names();
 
-        return createStringArray(env, names, size);
+        return createJStringArray(env, names, size);
     END_TRY_R("getting names of headers", NULL)
 }
 
@@ -66,6 +66,6 @@ jobjectArray Java_yacx_Headers_content (JNIEnv* env, jobject obj){
         auto size = headersPtr->numHeaders();
         auto content = headersPtr->content();
 
-        return createStringArray(env, content, size);
+        return createJStringArray(env, content, size);
     END_TRY_R("getting content of headers", NULL)
 }

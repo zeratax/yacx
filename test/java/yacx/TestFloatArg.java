@@ -2,8 +2,6 @@ package yacx;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -228,7 +226,7 @@ class TestFloatArg extends TestJNI {
 	void testToHalf() {
 		// CUDA compute-version 6 required
 		org.junit.Assume.assumeTrue("CUDA computer-version 6 or higher required",
-				Device.createDevice().getMajorVersion() >= 6);
+				Devices.findDevice().getMajorVersion() >= 6);
 
 		HalfArg arg = FloatArg.create(testArray0).asHalfArg();
 

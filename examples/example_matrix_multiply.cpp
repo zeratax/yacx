@@ -86,7 +86,7 @@ int main() {
 
   try {
     // Select Device
-    Device dev;
+    Device dev = Devices::findDevice();
     std::cout << "===================================\n";
     std::cout << "Selected " << dev.name() << " with "
               << (dev.total_memory() / 1024) / 1024 << "mb VRAM\n";
