@@ -35,6 +35,12 @@ Devices::Devices() {
   }
 }
 
+Devices::~Devices() {
+  for (auto &dev : m_devices) {
+    CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(dev.m_device));
+  }
+}
+
 Device &Devices::findDevice() { return getInstance()->m_devices[0]; }
 
 Device &Devices::findDevice(std::string name) {

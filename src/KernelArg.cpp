@@ -42,22 +42,23 @@ void KernelArg::upload(CUstream stream) {
   if (m_upload) {
     logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
-
+    
     if (m_copy) {
       logger(loglevel::DEBUG1) << "copying data to device";
-
-      m_dataCopy.get()->copyDataHtoD(this, stream);
+      m_dataCopy.get()->copyDataHtoD(const_cast<void *>(m_hdata), m_ddata,
+                                     m_size, stream);
     }
   } else {
     logger(loglevel::DEBUG1) << "NOT uploading argument";
   }
+
 }
 
 void KernelArg::download(void *hdata, CUstream stream) {
   if (m_download) {
     logger(loglevel::DEBUG1) << "downloading argument";
 
-    m_dataCopy.get()->copyDataDtoH(this, stream);
+    m_dataCopy.get()->copyDataDtoH(m_ddata, hdata, m_size, stream);
   } else {
     logger(loglevel::DEBUG1) << "NOT downloading argument";
   }

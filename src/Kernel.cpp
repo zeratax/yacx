@@ -1,5 +1,6 @@
 #include "yacx/Kernel.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/Init.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
 #include <builtin_types.h>
@@ -22,17 +23,10 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 }
 
 KernelTime Kernel::launch(KernelArgs args, Device &device) {
-  logger(loglevel::DEBUG) << "creating context";
+  logger(loglevel::DEBUG) << "setting context";
+  CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
-
-  KernelTime time = launch(args, NULL);
-
-  logger(loglevel::DEBUG) << "destroy context";
-
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
-
-  return time;
+  return launch(args, NULL);
 }
 
 KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
@@ -53,7 +47,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   CUDA_SAFE_CALL(
       cuEventCreate(&stop, CU_EVENT_DEFAULT)); // end of Kernel launch
 
-  CUDA_SAFE_CALL(cuEventRecord(start, 0));
+  CUDA_SAFE_CALL(cuEventRecord(start, stream));
 
   logger(loglevel::DEBUG1) << m_ptx.get();
   CUDA_SAFE_CALL(
@@ -69,8 +63,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 
   logger(loglevel::INFO) << "launching " << m_demangled_name;
 
-  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
-  CUDA_SAFE_CALL(cuEventRecord(launch, 0));
+  CUDA_SAFE_CALL(cuEventRecord(launch, stream));
   CUDA_SAFE_CALL(
       cuLaunchKernel(m_kernel,                        // function from program
                      m_grid.x, m_grid.y, m_grid.z,    // grid dim
@@ -78,9 +71,8 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
                      0, stream,                      // shared mem and stream
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
-  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
-  CUDA_SAFE_CALL(cuEventRecord(finish, 0));
-  // CUDA_SAFE_CALL(cuCtxSynchronize());
+  CUDA_SAFE_CALL(cuEventRecord(finish, stream));
+
   logger(loglevel::INFO) << "done!";
 
   // download results to host
@@ -90,15 +82,16 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   else
     args.download(downloadDest, stream);
 
-  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
-  CUDA_SAFE_CALL(cuStreamDestroy(stream));
+  args.free(stream);
 
-  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
+  CUDA_SAFE_CALL(cuEventRecord(stop, stream));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.upload, start, launch));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.download, start, launch));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
+
+  CUDA_SAFE_CALL(cuStreamDestroy(stream));
 
   logger(loglevel::DEBUG) << "freeing module";
 
@@ -117,19 +110,14 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   // find a kernelArg that you have to download with maximum size
   size_t maxOutputSize = args.maxOutputSize();
 
+  logger(loglevel::DEBUG) << "setting context";
+  CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
+
   // allocate memory
   void *output;
   if (maxOutputSize) {
-    cuMemAllocHost(&output, maxOutputSize);
-    // output = malloc(maxOutputSize);
+    CUDA_SAFE_CALL(cuMemAllocHost(&output, maxOutputSize));
   }
-
-  logger(loglevel::DEBUG) << "create context";
-
-  // create context
-  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
-
-  
 
   logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
@@ -141,14 +129,9 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
     kernelTimes.push_back(kernelTime);
   }
 
-  logger(loglevel::DEBUG) << "destroy context";
-
-  // destroy context
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
-
   // free allocated page-locked memory
   if (maxOutputSize) {
-    cuMemFreeHost(output);
+    CUDA_SAFE_CALL(cuMemFreeHost(output));
   }
 
   return kernelTimes;

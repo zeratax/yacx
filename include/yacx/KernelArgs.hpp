@@ -107,7 +107,7 @@ class KernelArg : JNIHandle {
   //! \param hdata pointer to host memory for the downloaded data
   //! \param stream to enqueue operations
   void download(void *hdata, CUstream stream);
-  //! frees the allocated memory on the device
+  //! frees allocated data on device
   void free();
   size_t size() const { return m_size; }
   bool isDownload() const { return m_download; }
@@ -156,6 +156,7 @@ class KernelArgs {
   void upload(CUstream stream);
   void download(CUstream stream);
   void download(void *hdata, CUstream stream);
+  void free(CUstream stream);
   const void **content();
   size_t size() const;
   size_t maxOutputSize() const;

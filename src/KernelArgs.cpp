@@ -16,17 +16,14 @@ void KernelArgs::upload(CUstream stream) {
 void KernelArgs::download(CUstream stream) {
   for (auto &arg : m_args)
     arg.download(stream);
-
-  CUDA_SAFE_CALL(cuStreamSynchronize(stream));
-
-  for (auto &arg : m_args)
-    arg.free();
 }
 
 void KernelArgs::download(void *hdata, CUstream stream) {
   for (auto &arg : m_args)
     arg.download(hdata, stream);
+}
 
+void KernelArgs::free(CUstream stream){
   CUDA_SAFE_CALL(cuStreamSynchronize(stream));
 
   for (auto &arg : m_args)
