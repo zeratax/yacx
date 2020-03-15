@@ -62,8 +62,9 @@
 
 // Note: The dimension of the input matrices (m_global, n_global & k_global) have to be multiples of 128 for the kernel to work correctly.
 
-#include <cuda.h>
 #include <mma.h>
+
+using namespace nvcuda;
 
 #ifndef SHARED_MEMORY_LIMIT_64K
 // Set this to 0 to use more than 64 Kb of shared memory to cache data, to
@@ -134,7 +135,8 @@
 // nvcuda::wmma::load_matrix_sync.
 #define SKEW_HALF 8
 
-__global__ void compute_gemm(const __half* A, const __half* B, const float* C,
+extern "C" __global__
+void fast_wmma_gemm(const __half* A, const __half* B, const float* C,
 	float* D, float alpha, float beta, int m_global, int n_global, int k_global) {
 	extern __shared__ __half shmem[][CHUNK_K * K + SKEW_HALF];
 	
