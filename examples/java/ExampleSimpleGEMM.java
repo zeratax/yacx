@@ -21,22 +21,22 @@ public class ExampleSimpleGEMM {
 		Executor.loadLibary();
 
 		// Testdata
-		int x = 4;
-		int y = 3;
-		int z = 2;
+		int x = 101;
+		int y = 101;
+		int z = 101;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
 		float[] bMatrix = new float[y * z];
 		float[] cMatrix = new float[x * z];
 		for (int i = 0; i < aMatrix.length; i++) {
-			aMatrix[i] = i + 1;
+			aMatrix[i] = 1f;
 		}
 		for (int i = 0; i < bMatrix.length; i++) {
-			bMatrix[i] = x * y + i + 1;
+			bMatrix[i] = 1f;
 		}
 		for (int i = 0; i < cMatrix.length; i++) {
-			cMatrix[i] = i + 1;
+			cMatrix[i] = 1f;
 		}
 
 		// Get the next biggest multiple of 16 for each dimension
@@ -57,7 +57,7 @@ public class ExampleSimpleGEMM {
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		//TODO
 		// Kernel expects a transposed B matrix so this has to be done here
-		//HalfArg bMatrixArg = HalfArg.createTransposed(z, bMatrix);
+//		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, z);
 		HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);

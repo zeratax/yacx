@@ -12,7 +12,6 @@ unsigned int maxGridSize = 0;
 unsigned int maxBlockSize = 0;
 yacx::Kernel* kernelFtoH = NULL;
 yacx::Kernel* kernelHtoF = NULL;
-yacx::Kernel* kernelFtoHT = NULL;
 
 void initKernel(){
     Device dev;
@@ -45,18 +44,19 @@ void initKernel(){
 
     kernelHtoF = new Kernel{source2.program("halfToFloat").compile()};
 
-     Source source3{
-             "#include <cuda_fp16.h>\n"
-             "extern \"C\" __global__\n"
-                 "void floatToHalfTransposed(float* floats, half* out, int columns, unsigned int n) {\n"
-                 "  for (int i = threadIdx.x+blockIdx.x*blockDim.x; i < n; i += gridDim.x*blockDim.x){\n"
-                 "    int x = i / columns;\n"
-                 "    int y = i % columns;\n"
-                 "    out[x * columns + y] = __float2half(floats[y * columns + x]);\n"
-                 "  }\n"
-                 "}"};
+//TODO
+    // Source source3{
+    //         "#include <cuda_fp16.h>\n"
+    //         "extern \"C\" __global__\n"
+    //             "void floatToHalfTransposed(float* floats, half* out, int columns, unsigned int n) {\n"
+    //             "  for (int i = threadIdx.x+blockIdx.x*blockDim.x; i < n; i += gridDim.x*blockDim.x){\n"
+    //             "    int x = i / columns;\n"
+    //             "    int y = i % columns;\n"
+    //             "    out[x * columns + y] = __float2half(floats[y * columns + x]);\n"
+    //             "  }\n"
+    //             "}"};
 
-     kernelFtoHT = new Kernel{source3.program("floatToHalfTranposed").compile()};
+    // kernelFtoHT = new Kernel{source3.program("floatToHalfTranposed").compile()};
 }
 
 void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
@@ -93,21 +93,21 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
     kernelHtoF->configure(grid, block).launch(args);
 }
 
+//TODO
+// void yacx::convertFtoHT(void* floats, void* halfs, int columns, unsigned int length){
+//     if (kernelFtoHT == NULL){
+//         initKernel();
+//     }
 
- void yacx::convertFtoHT(void* floats, void* halfs, int columns, unsigned int length){
-     if (kernelFtoHT == NULL){
-         initKernel();
-     }
+//     std::vector<KernelArg> args;
+//     args.emplace_back(KernelArg{floats, length*sizeof(float), false, true, true});
+//     args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
+//     args.emplace_back(KernelArg{const_cast<int*>(&columns)});
+//     args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
 
-     std::vector<KernelArg> args;
-     args.emplace_back(KernelArg{floats, length*sizeof(float), false, true, true});
-     args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
-     args.emplace_back(KernelArg{const_cast<int*>(&columns)});
-     args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
+//     unsigned int grids = length/maxBlockSize+1;
+//     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
+//     dim3 block(maxBlockSize);
 
-     unsigned int grids = length/maxBlockSize+1;
-     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
-     dim3 block(maxBlockSize);
-
-     kernelFtoHT->configure(grid, block).launch(args);
- }
+//     kernelFtoHT->configure(grid, block).launch(args);
+// }
