@@ -150,8 +150,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:aac80875e469c325d4f43850fecf5d6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ec703c2b5c88b507a043a7c223fce92"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_half_arg.html#a3ec703c2b5c88b507a043a7c223fce92">create</a> (float... floats)</td></tr>
 <tr class="separator:a3ec703c2b5c88b507a043a7c223fce92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1351a96d773ad2ae0a70cd4957189112"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_half_arg.html#a1351a96d773ad2ae0a70cd4957189112">createTransposed</a> (int columns, float... floats)</td></tr>
+<tr class="separator:a1351a96d773ad2ae0a70cd4957189112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af97424498ebae3031b72afb702283536"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_half_arg.html#af97424498ebae3031b72afb702283536">create</a> (float[] floats, boolean <a class="el" href="classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73">download</a>)</td></tr>
 <tr class="separator:af97424498ebae3031b72afb702283536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e161b4564d7f451bc5216d7c29bd11"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_half_arg.html#a37e161b4564d7f451bc5216d7c29bd11">createTransposed</a> (float[] floats, int columns, boolean <a class="el" href="classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73">download</a>)</td></tr>
+<tr class="separator:a37e161b4564d7f451bc5216d7c29bd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaa4190d6856814247740986f45d6a4c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_half_arg.html#acaa4190d6856814247740986f45d6a4c">createOutput</a> (int length)</td></tr>
 <tr class="separator:acaa4190d6856814247740986f45d6a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -344,6 +348,104 @@ std::shared_ptr&lt; detail::DataCopy &gt;&#160;</td><td class="memItemRight" val
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1351a96d773ad2ae0a70cd4957189112"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1351a96d773ad2ae0a70cd4957189112">&#9670;&nbsp;</a></span>createTransposed() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> yacx.HalfArg.createTransposed </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>columns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float...&#160;</td>
+          <td class="paramname"><em>floats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a new <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> with the passed values which is going to be transposed. <br />
+ This argument will be uploaded, but not be downloaded.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">floats</td><td>values for this argument, which will be convert to halfs </td></tr>
+    <tr><td class="paramname">columns</td><td>amount of columns of the matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> with the passes values </dd></dl>
+
+</div>
+</div>
+<a id="a37e161b4564d7f451bc5216d7c29bd11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37e161b4564d7f451bc5216d7c29bd11">&#9670;&nbsp;</a></span>createTransposed() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> yacx.HalfArg.createTransposed </td>
+          <td>(</td>
+          <td class="paramtype">float []&#160;</td>
+          <td class="paramname"><em>floats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>columns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boolean&#160;</td>
+          <td class="paramname"><em>download</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a new <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> with the passed values which is going to be transposed.<br />
+ This argument will be uploaded. The argument will be downloaded when <code>download</code> is <code>true</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">floats</td><td>values for this argument, which will be convert to halfs </td></tr>
+    <tr><td class="paramname">download</td><td>set whether the argument should be downloaded </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="classyacx_1_1_half_arg.html">HalfArg</a> with the passes values </dd></dl>
 
 </div>
 </div>
