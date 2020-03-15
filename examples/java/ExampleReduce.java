@@ -35,9 +35,11 @@ public class ExampleReduce {
 		// Load kernelString
 		String kernelString = Utils.loadFile("kernels/device_reduce.cu");
 
-		// Options for using C++14
-		Options options = Options.createOptions("--std=c++14");
+		// Options for using C++11
+		Options options = Options.createOptions("--std=c++11");
 		options.insert("--gpu-architecture=compute_70");
+		options.insert("-default-device");
+
 
 		// Launch Kernel
 		KernelTime time = Executor.launch(kernelString, "device_reduce", options, numBlocks, numThreads, inArg, outArg, nArg);
