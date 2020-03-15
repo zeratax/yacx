@@ -5,6 +5,7 @@ import yacx.Executor;
 import yacx.IntArg;
 import yacx.Kernel;
 import yacx.KernelArg;
+import yacx.KernelTime;
 import yacx.LongArg;
 import yacx.Options;
 import yacx.Program;
@@ -16,47 +17,45 @@ public class ExampleReduce {
 		Executor.loadLibary();
 
 		// Testdata
-		int arraySize = 26251;
+		int arraySize = 49631;
 
-		final int numBlocks = 512;
-		final int numThreads = Math.min((arraySize + numBlocks - 1) / numBlocks, 1024);
+		final int numThreads = 512;
+		final int numBlocks = Math.min((arraySize + numThreads - 1) / numThreads, 1024);
 
 		long[] in = new long[arraySize];
-		for (int i = 1; i <= in.length; i++) {
-			in[i - 1] = i;
+		for (int i = 0; i < in.length; i++) {
+			in[i] = i + 1;
 		}
 
 		// Initialize Arguments
-		LongArg inArg = LongArg.create(in, false);
+		LongArg inArg = LongArg.create(in);
 		LongArg outArg = LongArg.createOutput(arraySize);
 		KernelArg nArg = IntArg.createValue(arraySize);
 
 		// Load kernelString
 		String kernelString = Utils.loadFile("kernels/device_reduce.cu");
-		// Create Program
-		Program deviceReduce = Program.create(kernelString, "deviceReduceKernel");
 
 		// Options for using C++14
 		Options options = Options.createOptions("--std=c++14");
-
-		// Create compiled Kernel
-		Kernel deviceReduceKernel = deviceReduce.compile(options);
+		options.insert("--gpu-architecture=compute_70");
 
 		// Launch Kernel
-		deviceReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
+		KernelTime time = Executor.launch(kernelString, "device_reduce", options, numBlocks, numThreads, inArg, outArg, nArg);
 
 		// New Input is Output from previous run
 		inArg = LongArg.create(outArg.asLongArray());
 		// Second launch
-		deviceReduceKernel.launch(numThreads, numBlocks, inArg, outArg, nArg);
+		time.addKernelTime(Executor.launch(kernelString, "device_reduce", options, 1, 1024, inArg, outArg, nArg));
 
 		// Get Result
 		long out = outArg.asLongArray()[0];
+		long expected = ((long)arraySize * ((long)arraySize + 1)) / 2;
 
 		// Print Result
-		System.out.println("\nInput:");
-		System.out.println(Arrays.toString(in));
+		System.out.println("Kernel deviceReduce launched " + time.toString());
+		System.out.println();
+		System.out.println("\nInput: 1..." + arraySize);
 		System.out.println("\nResult:   " + out);
-		System.out.println("Expected: " + (arraySize * (arraySize + 1)) / 2);
+		System.out.println("Expected: " + expected);
 	}
 }

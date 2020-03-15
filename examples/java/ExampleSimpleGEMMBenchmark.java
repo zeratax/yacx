@@ -17,9 +17,11 @@ public class ExampleSimpleGEMMBenchmark {
 	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibary();
+		
+		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		// Benchmark Simple-GEMM-Kernel
-		System.out.println(Executor.benchmark("simple_wmma_gemm", Options.createOptions("--gpu-architecture=compute_70"), 10, new Executor.KernelArgCreator() {
+		System.out.println(Executor.benchmark("simple_wmma_gemm", options, 10, new Executor.KernelArgCreator() {
 
 			@Override
 			public int getDataLength(int dataSizeBytes) {
@@ -86,13 +88,8 @@ public class ExampleSimpleGEMMBenchmark {
 				KernelArg kArg = IntArg.createValue(m);
 				KernelArg alphaArg = FloatArg.createValue(alpha);
 				KernelArg betaArg = FloatArg.createValue(beta);
-				
-				PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, x, m, m, 0);
-				PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, x, x, m, m, 0);
-				PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, x, m, m, 0);
-				PaddingArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, x, x, m, m, 0);
 
-				return new KernelArg[] { aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding,
+				return new KernelArg[] { aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg,
 										 mArg, nArg, kArg, alphaArg, betaArg };
 			}
 		}, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB, 4 * MB, 16 * MB, 64 * MB, 256 * MB));

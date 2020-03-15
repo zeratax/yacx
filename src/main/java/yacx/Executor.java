@@ -495,7 +495,7 @@ public class Executor {
 		private final int numberExecutions;
 		private final int[] dataSizes;
 		private final KernelTime[][] result;
-		private final KernelTime[] average;
+		private 	  KernelTime[] average;
 		private final String kernelName;
 		private final long testDuration;
 
@@ -584,6 +584,17 @@ public class Executor {
 		 */
 		public String getKernelName() {
 			return kernelName;
+		}
+
+		/**
+	 	 * Adds all average KernelTimes of another BenchmarkResult to the calling BenchmarkResult.
+	 	 * 
+	     * @return time BenchmarkResult to be added
+	     */
+		public void addBenchmarkResult(BenchmarkResult result) {
+			for (int i = 0; i < average.length; i++) {
+				this.average[i].addKernelTime(result.getAverage()[i]);
+			}
 		}
 
 		@Override

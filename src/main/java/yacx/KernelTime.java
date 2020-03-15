@@ -6,10 +6,10 @@ import java.text.DecimalFormat;
  * Wrapperclass for representing the execution-time of a kernel.
  */
 public class KernelTime {
-	private final float upload;
-	private final float download;
-	private final float launch;
-	private final float total;
+	private float upload;
+	private float download;
+	private float launch;
+	private float total;
 
 	/**
 	 * Create a new KernelTime.
@@ -61,6 +61,18 @@ public class KernelTime {
 	 */
 	public float getTotal() {
 		return total;
+	}
+
+	/**
+	 * Adds all times of another KernelTime to the calling KernelTime.
+	 * 
+	 * @return time KernelTime to be added
+	 */
+	public void addKernelTime(KernelTime time) {
+		this.upload += time.getUpload();
+		this.download += time.getDownload();
+		this.launch += time.getLaunch();
+		this.total += time.getTotal();
 	}
 
 	@Override
