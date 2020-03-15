@@ -45,10 +45,10 @@ public class HalfArg extends ArrayArg {
 	 * @param columns amount of columns of the matrix
 	 * @return a new HalfArg with the passes values
 	 */
-	//TODO
-//	public static HalfArg createTransposed(int columns, float... floats) {
-//		return createTransposed(floats, columns, false);
-//	}
+
+	public static HalfArg createTransposed(int columns, float... floats) {
+		return createTransposed(floats, columns, false);
+	}
 
 	/**
 	 * Create a new HalfArg with the passed values.<br>
@@ -74,17 +74,17 @@ public class HalfArg extends ArrayArg {
 	 * @param download set whether the argument should be downloaded
 	 * @return a new HalfArg with the passes values
 	 */
-	//TODO
-//	public static HalfArg createTransposed(float[] floats, int columns, boolean download) {
-//		assert (floats != null && floats.length > 0 && columns > 0);
-//
-//		return createTransposedInternal(floats, columns, download);
-//	}
+
+	public static HalfArg createTransposed(float[] floats, int columns, boolean download) {
+		assert (floats != null && floats.length > 0 && columns > 0);
+
+		return createTransposedInternal(floats, columns, download);
+	}
 
 	private static native HalfArg createInternal(float[] floats, boolean download);
 
-	//TODO
-//	private static native HalfArg createTransposedInternal(float[] floats, int columns, boolean download);
+
+	private static native HalfArg createTransposedInternal(float[] floats, int columns, boolean download);
 
 	/**
 	 * Create an output-argument, which will be downloaded but not be uploaded. <br>

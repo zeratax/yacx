@@ -21,19 +21,19 @@ public class ExampleSimpleGEMM {
 		Executor.loadLibary();
 
 		// Testdata
-		int x = 101;
-		int y = 101;
-		int z = 101;
+		int x = 4;
+		int y = 3;
+		int z = 2;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
 		float[] bMatrix = new float[y * z];
 		float[] cMatrix = new float[x * z];
 		for (int i = 0; i < aMatrix.length; i++) {
-			aMatrix[i] = 1f;
+			aMatrix[i] = i + 1;
 		}
 		for (int i = 0; i < bMatrix.length; i++) {
-			bMatrix[i] = 1f;
+			bMatrix[i] = x * y + i + 1;
 		}
 		for (int i = 0; i < cMatrix.length; i++) {
 			cMatrix[i] = 1f;
@@ -55,9 +55,8 @@ public class ExampleSimpleGEMM {
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
-		//TODO
 		// Kernel expects a transposed B matrix so this has to be done here
-//		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, z);
+		//HalfArg bMatrixArg = HalfArg.createTransposed(z, bMatrix);
 		HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
