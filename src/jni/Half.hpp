@@ -19,5 +19,5 @@ void convertHtoF(void *halfs, void *floats, unsigned int length);
  //! \param halfs pointer to allocated memory for converted halfs
  //! \param columns amount of columns of the matrix
  //! \param length number of floats to convert
- void convertFtoHT(void *floats, void *halfs, int columns, unsigned int length);
+ void convertFtoHT(void *floats, void *halfs, int rows, int columns, unsigned int length);
 }

@@ -31,7 +31,7 @@ JNIEXPORT jobject JNICALL Java_yacx_HalfArg_createInternal
  * Signature: ([FZ)Lyacx/HalfArg;
  */
 JNIEXPORT jobject JNICALL Java_yacx_HalfArg_createTransposedInternal
-  (JNIEnv *, jclass, jfloatArray, jint, jboolean);
+  (JNIEnv *, jclass, jfloatArray, jint, jint, jboolean);
 
 /*
  * Class:     yacx_HalfArg

@@ -49,15 +49,15 @@ void initKernel(){
      Source source3{
              "#include <cuda_fp16.h>\n"
              "extern \"C\" __global__\n"
-                 "void floatToHalfTransposed(float* floats, half* out, int columns, unsigned int n) {\n"
+                 "void floatToHalfTransposed(float* floats, half* out, int rows, int columns, unsigned int n) {\n"
                  "  for (int i = threadIdx.x+blockIdx.x*blockDim.x; i < n; i += gridDim.x*blockDim.x){\n"
                  "    int x = i / columns;\n"
                  "    int y = i % columns;\n"
-                 "    out[x * columns + y] = __float2half(floats[y * columns + x]);\n"
+                 "    out[y * rows + x] = __float2half(floats[x * columns + y]);\n"
                  "  }\n"
                  "}"};
 
-     kernelFtoHT = new Kernel{source3.program("floatToHalfTranposed").compile()};
+     kernelFtoHT = new Kernel{source3.program("floatToHalfTransposed").compile()};
 }
 
 void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
@@ -95,7 +95,7 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
 }
 
 
- void yacx::convertFtoHT(void* floats, void* halfs, int columns, unsigned int length){
+ void yacx::convertFtoHT(void* floats, void* halfs, int rows, int columns, unsigned int length){
      if (kernelFtoHT == NULL){
          initKernel();
      }
@@ -103,6 +103,7 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
      std::vector<KernelArg> args;
      args.emplace_back(KernelArg{floats, length*sizeof(float), false, true, true});
      args.emplace_back(KernelArg{halfs, length*sizeof(float)/2, true, false, true});
+     args.emplace_back(KernelArg{const_cast<int*>(&rows)});
      args.emplace_back(KernelArg{const_cast<int*>(&columns)});
      args.emplace_back(KernelArg{const_cast<unsigned int*>(&length)});
 

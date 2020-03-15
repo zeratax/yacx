@@ -37,7 +37,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
 }
 
 
- jobject Java_yacx_HalfArg_createTransposedInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jint columns, jboolean jdownload){
+ jobject Java_yacx_HalfArg_createTransposedInternal (JNIEnv* env, jclass cls, jfloatArray jarray, jint rows, jint columns, jboolean jdownload){
      BEGIN_TRY
          CHECK_NULL(jarray, NULL)
 
@@ -47,7 +47,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
          CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
          KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, arrayLength * (sizeof(jfloat)/2), jdownload, true, true, CTYPE + "*"};
-         convertFtoHT(arrayPtr, kernelArgPtr->getHostData(), columns, arrayLength);
+         convertFtoHT(arrayPtr, kernelArgPtr->getHostData(), rows, columns, arrayLength);
 
          env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
 

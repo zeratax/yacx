@@ -36,7 +36,7 @@ public class ExampleSimpleGEMM {
 			bMatrix[i] = x * y + i + 1;
 		}
 		for (int i = 0; i < cMatrix.length; i++) {
-			cMatrix[i] = 1f;
+			cMatrix[i] = 2 * (i + 1);
 		}
 
 		// Get the next biggest multiple of 16 for each dimension
@@ -56,8 +56,8 @@ public class ExampleSimpleGEMM {
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		// Kernel expects a transposed B matrix so this has to be done here
-		//HalfArg bMatrixArg = HalfArg.createTransposed(z, bMatrix);
-		HalfArg bMatrixArg = HalfArg.create(bMatrix);
+		HalfArg bMatrixArg = HalfArg.createTransposed(y, z, bMatrix);
+		//HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
 		KernelArg mArg = IntArg.createValue(m);
@@ -69,7 +69,7 @@ public class ExampleSimpleGEMM {
 		// Do the padding for each input matrix
 		//TODO Padding falls (x,y,z) = (m,n,k)
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
-		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
+		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
 		PaddingArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
 
@@ -90,7 +90,7 @@ public class ExampleSimpleGEMM {
 		System.out.println("aMatrix:");
 		MatrixUtils.printlnMatrix(aMatrixArg, y);
 		System.out.println("bMatrix:");
-		MatrixUtils.printlnMatrix(bMatrixArg, z);
+		MatrixUtils.printlnMatrix(bMatrixArg, y);
 		System.out.println("cMatrix:");
 		MatrixUtils.printlnMatrix(cMatrixArg, z);
 		System.out.println("resultmatrix:");
