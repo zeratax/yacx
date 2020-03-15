@@ -29,7 +29,8 @@ set(JAVA_EXAMPLE_FILES
     "java/ExampleSaxpy.java"
     "java/ExampleSaxpyBenchmark.java"
     "java/ExampleSaxpyExecutor.java"
-    "java/ExampleSimpleGemm.java"
+    "java/ExampleSimpleGEMM.java"
+    "java/ExampleSimpleGEMMBenchmark.java"
     "java/TemplateKernel.java")
 
 if(JNI_ENABLED)

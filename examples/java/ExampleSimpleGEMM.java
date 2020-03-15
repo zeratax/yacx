@@ -57,7 +57,6 @@ public class ExampleSimpleGEMM {
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		// Kernel expects a transposed B matrix so this has to be done here
 		HalfArg bMatrixArg = HalfArg.createTransposed(y, z, bMatrix);
-		//HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
 		KernelArg mArg = IntArg.createValue(m);
@@ -89,7 +88,7 @@ public class ExampleSimpleGEMM {
 		System.out.println();
 		System.out.println("aMatrix:");
 		MatrixUtils.printlnMatrix(aMatrixArg, y);
-		System.out.println("bMatrix:");
+		System.out.println("bMatrix (transposed):");
 		MatrixUtils.printlnMatrix(bMatrixArg, y);
 		System.out.println("cMatrix:");
 		MatrixUtils.printlnMatrix(cMatrixArg, z);
