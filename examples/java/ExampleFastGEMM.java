@@ -18,9 +18,9 @@ public class ExampleFastGEMM {
 		Executor.loadLibary();
 
 		// Testdata
-		int x = 4;
-		int y = 3;
-		int z = 2;
+		int x = 10001;
+		int y = 10001;
+		int z = 10001;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
@@ -74,18 +74,16 @@ public class ExampleFastGEMM {
 		KernelTime time = Executor.launch("fast_wmma_gemm", options, threads, blocks, aMatrixArgPadding,
 				bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg, kArg, alphaArg, betaArg);
 
-		float[] dMatrix = dMatrixArg.asFloatArray();
-
 		// Print Result
 		System.out.println("Kernel fast_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
-		System.out.println(Arrays.toString(aMatrix));
+		MatrixUtils.printlnMatrix(aMatrixArg, y);
 		System.out.println("bMatrix:");
-		System.out.println(Arrays.toString(bMatrix));
+		MatrixUtils.printlnMatrix(bMatrixArg, z);
 		System.out.println("cMatrix:");
-		System.out.println(Arrays.toString(cMatrix));
+		MatrixUtils.printlnMatrix(cMatrixArg, z);
 		System.out.println("resultmatrix:");
-		System.out.println(Arrays.toString(dMatrix));
+		MatrixUtils.printlnMatrix(dMatrixArg, z);
 	}
 }

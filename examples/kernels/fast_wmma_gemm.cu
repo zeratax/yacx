@@ -83,6 +83,23 @@ using namespace nvcuda;
 #define N 16
 #define K 16
 
+// GEMM configuration.
+
+#define X_GLOBAL 2
+#define Y_GLOBAL 2
+#define Z_GLOBAL 17
+
+#define TEMP ((X_GLOBAL > Y_GLOBAL) ? X_GLOBAL : Y_GLOBAL)
+#define MAX_DIMENSION ((TEMP > Z_GLOBAL) ? TEMP : Z_GLOBAL)
+
+#define M_GLOBAL ((MAX_DIMENSION % 16 == 0) ? MAX_DIMENSION : ((MAX_DIMENSION / 16 + 1) * 16))
+#define N_GLOBAL M_GLOBAL
+#define K_GLOBAL M_GLOBAL
+
+#define M_TILES (M_GLOBAL / M)
+#define N_TILES (N_GLOBAL / N)
+#define K_TILES (K_GLOBAL / K)
+
 #define C_LAYOUT wmma::mem_row_major
 
 // Implementation constants.

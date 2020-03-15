@@ -21,9 +21,9 @@ public class ExampleSimpleGEMM {
 		Executor.loadLibary();
 
 		// Testdata
-		int x = 4;
-		int y = 3;
-		int z = 2;
+		int x = 101;
+		int y = 101;
+		int z = 101;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
@@ -60,7 +60,7 @@ public class ExampleSimpleGEMM {
 //		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, z);
 		HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
-		FloatArg dMatrixArg = FloatArg.createOutput(m * n);
+		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
 		KernelArg mArg = IntArg.createValue(m);
 		KernelArg nArg = IntArg.createValue(n);
 		KernelArg kArg = IntArg.createValue(k);
@@ -68,6 +68,7 @@ public class ExampleSimpleGEMM {
 		KernelArg betaArg = FloatArg.createValue(beta);
 
 		// Do the padding for each input matrix
+		//TODO Padding falls (x,y,z) = (m,n,k)
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
 		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
@@ -84,18 +85,16 @@ public class ExampleSimpleGEMM {
 				blockDimY, 1, aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg,
 				kArg, alphaArg, betaArg);
 
-		float[] dMatrix = dMatrixArg.asFloatArray();
-
 		// Print Result
 		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
-		System.out.println(Arrays.toString(aMatrix));
+		MatrixUtils.printlnMatrix(aMatrixArg, y);
 		System.out.println("bMatrix:");
-		System.out.println(Arrays.toString(bMatrix));
+		MatrixUtils.printlnMatrix(bMatrixArg, z);
 		System.out.println("cMatrix:");
-		System.out.println(Arrays.toString(cMatrix));
+		MatrixUtils.printlnMatrix(cMatrixArg, z);
 		System.out.println("resultmatrix:");
-		System.out.println(Arrays.toString(dMatrix));
+		MatrixUtils.printlnMatrix(dMatrixArg, z);
 	}
 }
