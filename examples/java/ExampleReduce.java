@@ -37,7 +37,9 @@ public class ExampleReduce {
 		Program deviceReduce = Program.create(kernelString, "deviceReduceKernel");
 
 		// Options for using C++14
-		Options options = Options.createOptions("--std=c++14");
+		Options options = Options.createOptions("--std=c++11");
+		options.insert("-G");
+		options.insert("-default-device");
 
 		// Create compiled Kernel
 		Kernel deviceReduceKernel = deviceReduce.compile(options);

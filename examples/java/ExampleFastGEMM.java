@@ -18,9 +18,9 @@ public class ExampleFastGEMM {
 		Executor.loadLibary();
 
 		// Testdata
-		int x = 10001;
-		int y = 10001;
-		int z = 10001;
+		int x = 127;
+		int y = 127;
+		int z = 127;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
@@ -37,9 +37,9 @@ public class ExampleFastGEMM {
 		}
 
 		// Get the next biggest multiple of 128 for each dimension
-		int m = (x % 16 == 0) ? x : (x / 16 + 1) * 16;
-		int k = (y % 16 == 0) ? y : (y / 16 + 1) * 16;
-		int n = (z % 16 == 0) ? z : (z / 16 + 1) * 16;
+		int m = (x % 128 == 0) ? x : (x / 128 + 1) * 16;
+		int k = (y % 128 == 0) ? y : (y / 128 + 1) * 16;
+		int n = (z % 128 == 0) ? z : (z / 128 + 1) * 16;
 
 		// 8 Warps = 256 Threads per Block are required for the kernel to work
 		int threads = 32 * 8;
