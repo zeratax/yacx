@@ -1,0 +1,36 @@
+#Usage:
+#./runPalma ExampleSimpleGEMM
+
+CURRENTDIR='/scratch/tmp/l_sief03/yacx'
+CUDA='/Applic.HPC/Easybuild/skylake/2019a/software/CUDA/10.1.105-GCC-8.2.0-2.31.1/targets/x86_64-linux'
+GCCINCLUDE='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c\+\+/8.2.0'
+GCCINCLUDE2='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c\+\+/8.2.0/x86_64-pc-linux-gnu'
+
+CUDAFP16="$CUDA/include/cuda_fp16.h"
+INCLUDECUDA="--include-path=$CUDA/include"
+INCLUDEGCC="--include-path=$GCCINCLUDE"
+INCLUDEGCC2="--include-path=$GCCINCLUDE2"
+INCLUDECURRENT="--include-path=$CURRENTDIR"
+
+HALFCPP='src/jni/Half.cpp'  
+EXAMPLESJAVA='examples/java'
+
+MODULES='Java GCC/8.2.0-2.31.1 CUDA/10.1.105 CMake'
+MODULESADD="module add $MODULES"
+
+#Load modules
+$MODULESADD
+
+#Change <cuda_fp16.h> to "cuda_fp16.h"
+sed -in "s+<cuda_fp16.h>+\\\\\"$CUDAFP16\\\\\"+g" $HALFCPP
+
+#Insert Options for search in right directories for required headers
+sed -in "s+--gpu-architecture=compute_70\");+--gpu-architecture=compute_70\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
+#sed -in "s+14\");+14\");options.insert(\"$INCLUDECUDA\");options.insert(\"$INCLUDEGCC\");options.insert(\"$INCLUDEGCC2\");options.insert(\"$INCLUDECURRENT\");+g" $EXAMPLESJAVA/*.java
+sed -in "s+11\");+11\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
+
+#Build
+./yacx.sh --buildj
+
+#Execute GEMM
+./yacx.sh --execute-java $@
