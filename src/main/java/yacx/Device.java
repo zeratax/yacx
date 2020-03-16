@@ -101,6 +101,20 @@ public class Device extends JNIHandle {
 	public native int getMajorVersion();
 
 	/**
+	 * Amount of shared memory per block on device.
+	 * 
+	 * @return amount of shared memory per block
+	 */
+	public native int getSharedMemPerBlock();
+
+	/**
+	 * Amount of shared memory per multiprocessor on device.
+	 * 
+	 * @return amount of shared memory per multiprocessor
+	 */
+	public native int getSharedMemPerMultiprocessor();
+
+	/**
 	 * Create a new Device.
 	 * 
 	 * @param handle Pointer to corresponding C-Device-Object

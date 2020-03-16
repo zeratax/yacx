@@ -49,6 +49,8 @@ void Device::set_device_properties(const CUdevice &device) {
   m_minor = attribute(CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR);
   m_max_shared_memory_per_block =
       attribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK);
+  m_max_shared_memory_per_multiprocessor =
+      attribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR);
   m_multiprocessor_count = attribute(CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT);
   m_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_CLOCK_RATE);
   m_memory_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE);

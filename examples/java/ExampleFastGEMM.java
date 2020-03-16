@@ -13,6 +13,21 @@ import yacx.PaddingArg;
 public class ExampleFastGEMM {
 
 	public static void main(String[] args) throws IOException {
+		// Constants for shared memory calculation
+		final int M = 16;
+		final int N = 16;
+		final int K = 16;
+		final boolean SHARED_MEMORY_LIMIT_64K = true;
+		final int BLOCK_ROW_WARPS = 2;
+		final int BLOCK_COL_WARPS = 4;
+		final int WARP_ROW_TILES = 4;
+		final int WARP_COL_TILES = 2;
+		final int BLOCK_COL_TILES = WARP_COL_TILES * BLOCK_COL_WARPS;
+		final int CHUNK_K = SHARED_MEMORY_LIMIT_64K ? 4 : 8;
+		final int SKEW_HALF = 8;
+		final int HALF_SIZE = 2;
+		final int FLOAT_SIZE = 4;
+		
 		// Load Libary
 		Executor.loadLibary();
 
@@ -40,12 +55,36 @@ public class ExampleFastGEMM {
 		int k = (y % 128 == 0) ? y : (y / 128 + 1) * 128;
 		int n = (z % 128 == 0) ? z : (z / 128 + 1) * 128;
 
+		// Get Device
+		Device device = Device.createDevice();
+
 		// 8 Warps = 256 Threads per Block are required for the kernel to work
 		int threads = 32 * 8;
 		// The amount of blocks can be freely chosen but is optimal when it's equal to
 		// the streaming multiprocessor count of the device
-		int blocks = Device.createDevice().getMultiprocessorCount();
-
+		int blocks = device.getMultiprocessorCount();
+		
+		// Compute the right amount of shared memory to request.
+		// We need shared memory to hold per-CTA C and D matrix tiles, and to cache per-CTA chunks of the A and B matrices.
+		// Therefore, the right amount to request is the maximum of those two numbers.
+		int SHMEM_SZ = Math.max(
+			HALF_SIZE * (BLOCK_COL_TILES * M) * (CHUNK_K * K + SKEW_HALF) * 2,
+			M * (BLOCK_ROW_WARPS * WARP_ROW_TILES) * N *
+			(BLOCK_COL_WARPS * WARP_COL_TILES) * FLOAT_SIZE);
+		
+		// Calculate and print out the required and available shared memory size
+		int required = SHMEM_SZ / 1024;
+		int available = device.getSharedMemPerMultiprocessor() / 1024;
+		System.out.println("Required shared memory size per multiprocessor: " + required + " KB");
+		System.out.println("Available shared memory size per multiprocessor: " + available + " KB");
+		
+		// Check if there's enough shared memory per block available on the device for this kernel
+		if (required > available) {
+			System.out.println("Not enough shared memory per block available on the device for this kernel! Abort!");
+			System.out.println("Please use the simple GEMM kernel instead or increase the amount of shared memory per block if possible!");
+			System.exit(1); 
+		}
+		
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		// Kernel expects a transposed B matrix so this has to be done here
@@ -68,7 +107,7 @@ public class ExampleFastGEMM {
 		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		// Compile and launch Kernel
-		KernelTime time = Executor.launch("fast_wmma_gemm", options, blocks, threads, aMatrixArgPadding,
+		KernelTime time = Executor.launch("fast_wmma_gemm", options, blocks, threads, SHMEM_SZ, aMatrixArgPadding,
 				bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg, kArg, alphaArg, betaArg);
 
 		// Print Result
