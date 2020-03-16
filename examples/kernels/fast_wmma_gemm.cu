@@ -83,23 +83,6 @@ using namespace nvcuda;
 #define N 16
 #define K 16
 
-// GEMM configuration.
-
-#define X_GLOBAL 2
-#define Y_GLOBAL 2
-#define Z_GLOBAL 17
-
-#define TEMP ((X_GLOBAL > Y_GLOBAL) ? X_GLOBAL : Y_GLOBAL)
-#define MAX_DIMENSION ((TEMP > Z_GLOBAL) ? TEMP : Z_GLOBAL)
-
-#define M_GLOBAL ((MAX_DIMENSION % 16 == 0) ? MAX_DIMENSION : ((MAX_DIMENSION / 16 + 1) * 16))
-#define N_GLOBAL M_GLOBAL
-#define K_GLOBAL M_GLOBAL
-
-#define M_TILES (M_GLOBAL / M)
-#define N_TILES (N_GLOBAL / N)
-#define K_TILES (K_GLOBAL / K)
-
 #define C_LAYOUT wmma::mem_row_major
 
 // Implementation constants.
@@ -154,11 +137,15 @@ using namespace nvcuda;
 
 extern "C" __global__
 void fast_wmma_gemm(const __half* A, const __half* B, const float* C,
-	float* D, float alpha, float beta, int m_global, int n_global, int k_global) {
+	float* D, int m_global, int n_global, int k_global, float alpha, float beta) {
 	extern __shared__ __half shmem[][CHUNK_K * K + SKEW_HALF];
 	
 	int global_mem_stride = n_global;
-
+	
+	int m_tiles = m_global / M;
+	int n_tiles = n_global / N;
+	int k_tiles = k_global / K;
+	
 	// Warp and lane identification.
 	const unsigned int warpId = threadIdx.x / WARP_SIZE;
 	const unsigned int laneId = threadIdx.x % WARP_SIZE;
@@ -187,11 +174,11 @@ void fast_wmma_gemm(const __half* A, const __half* B, const float* C,
 	// there's no such tile, all warps in this CTA exit.
 	for (unsigned int block_pos = blockIdx.x;; block_pos += gridDim.x) {
 		const unsigned int block_tile_i =
-			((block_pos * BLOCK_ROW_TILES) / N_TILES) * (BLOCK_COL_TILES);
-		const unsigned int block_tile_j = (block_pos * BLOCK_COL_TILES) % N_TILES;
+			((block_pos * BLOCK_ROW_TILES) / n_tiles) * (BLOCK_COL_TILES);
+		const unsigned int block_tile_j = (block_pos * BLOCK_COL_TILES) % n_tiles;
 
 		// Stop when there are no more D matrix tiles to compute in this CTA.
-		if (block_tile_i >= M_TILES) {
+		if (block_tile_i >= m_tiles) {
 			break;
 		}
 
@@ -253,7 +240,7 @@ void fast_wmma_gemm(const __half* A, const __half* B, const float* C,
 
 		// Go through the global K dimension by a fixed step at a time.
 		#pragma unroll
-		for (int tile_k = 0; tile_k < K_TILES; tile_k += CHUNK_K) {
+		for (int tile_k = 0; tile_k < k_tiles; tile_k += CHUNK_K) {
 			// Copy slices of the A and B matrices to shared memory.
 			// The first half of the warps in the CTA copy the A matrix, the rest copy
 			// the B matrix.

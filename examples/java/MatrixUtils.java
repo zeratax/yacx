@@ -73,10 +73,10 @@ public class MatrixUtils {
 			Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 			//Warm up
-			Executor.benchmark(kernel, options, 30, this, 256 * MB);
+			Executor.benchmark(kernel, options, 10, this, 256 * MB);
 			
-			return Executor.benchmark(kernel, options, 30, this, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB,
-					4 * MB, 16 * MB, 64 * MB, 256 * MB, 512 * MB);
+			return Executor.benchmark(kernel, options, 20, this, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB,
+					4 * MB, 16 * MB, 64 * MB, 256 * MB);
 		}
 	}
 }

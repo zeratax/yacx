@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import yacx.Executor;
+import yacx.Options;
 
 public class ExampleSimpleGEMMBenchmark {
 
