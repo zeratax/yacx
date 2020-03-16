@@ -48,6 +48,9 @@ class Device : JNIHandle {
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
   }
+  size_t max_shared_memory_per_multiprocessor() const {
+    return m_max_shared_memory_per_multiprocessor;
+  }
 
   //! Number of multiprocessors on device
   //! \return number of multiprocessors
@@ -75,7 +78,7 @@ class Device : JNIHandle {
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
-  size_t m_memory, m_max_shared_memory_per_block, m_multiprocessor_count;
+  size_t m_memory, m_max_shared_memory_per_block, m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
 };
 

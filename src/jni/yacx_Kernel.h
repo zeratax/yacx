@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (IIIIII)V
  */
 JNIEXPORT void JNICALL Java_yacx_Kernel_configureInternal
-  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     yacx_Kernel

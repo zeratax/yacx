@@ -6,6 +6,9 @@ import yacx.Options;
 public class ExampleSimpleGEMMBenchmark {
 
 	public static void main(String[] args) throws IOException {
+		final int WMMA_M = 16;
+		final int WMMA_N = 16;	
+		
 		// Load Libary
 		Executor.loadLibary();
 		
@@ -17,14 +20,12 @@ public class ExampleSimpleGEMMBenchmark {
 			@Override
 			public int getGrid0(int dim) {
 				int m = (dim % 16 == 0) ? dim : (dim / 16 + 1) * 16;
-				int WMMA_M = 16;
 				int blockDimX = getBlock0(0);
 				return (m + (WMMA_M * blockDimX / 32 - 1)) / (WMMA_M * blockDimX / 32);
 			}
 
 			@Override
 			public int getGrid1(int dim) {
-				int WMMA_N = 16;
 				int blockDimY = getBlock1(0);
 				return (dim + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY);
 			}

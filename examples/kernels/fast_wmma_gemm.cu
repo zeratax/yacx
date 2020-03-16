@@ -137,7 +137,7 @@ using namespace nvcuda;
 
 extern "C" __global__
 void fast_wmma_gemm(const __half* A, const __half* B, const float* C,
-	float* D, int m_global, int n_global, int k_global, float alpha, float beta) {
+	float* D, int m_global, int n_global, int k_global, float alpha, float beta) {	
 	extern __shared__ __half shmem[][CHUNK_K * K + SKEW_HALF];
 	
 	int global_mem_stride = n_global;

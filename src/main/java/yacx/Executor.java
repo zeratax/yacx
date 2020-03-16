@@ -101,6 +101,23 @@ public class Executor {
 	}
 
 	/**
+	 * Launch a CUDA kernel with dynamic shared memory loading the kernel string from a file in directory.
+	 * "kernels" with kernelname.cu as filename.
+	 * 
+	 * @param kernelName name of the kernel
+	 * @param options    options for the nvtrc compiler
+	 * @param grid       number of grids for kernellaunch
+	 * @param block      number of blocks for kernellaunch
+	 * @param shared	 amount of dynamic shared memory
+	 * @param args       KernelArgs
+	 * @return KernelTime for the Execution of this Kernel
+	 */
+	public static KernelTime launch(String kernelName, Options options, int grid, int block, int shared, KernelArg... args)
+			throws IOException {
+		return launch(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, grid, block, shared, args);
+	}
+
+	/**
 	 * Launch a CUDA kernel loading the kernel string from a file in directory
 	 * "kernels" with kernelname.cu as filename.
 	 * 
@@ -146,6 +163,23 @@ public class Executor {
 	public static KernelTime launch(String kernelString, String kernelName, Options options, int grid, int block,
 			KernelArg... args) {
 		return Program.create(kernelString, kernelName).compile(options).configure(grid, block).launch(args);
+	}
+
+	/**
+	 * Launch a CUDA kernel with dynamic shared memory.
+	 * 
+	 * @param kernelString string containing the CUDA kernelcode
+	 * @param kernelName   name of the kernel
+	 * @param options      options for the nvtrc compiler
+	 * @param grid         number of grids for kernellaunch
+	 * @param block        number of blocks for kernellaunch
+	 * @param shared	   amount of dynamic shared memory
+	 * @param args         KernelArgs
+	 * @return KernelTime for the Execution of this Kernel
+	 */
+	public static KernelTime launch(String kernelString, String kernelName, Options options, int grid, int block, int shared,
+			KernelArg... args) {
+		return Program.create(kernelString, kernelName).compile(options).configure(grid, block, shared).launch(args);
 	}
 
 	/**

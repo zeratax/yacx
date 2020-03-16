@@ -29,8 +29,9 @@ class Kernel : JNIHandle {
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
+  //! \param shared amount of shared memory to allocate
   //! \return this (for method chaining)
-  Kernel &configure(dim3 grid, dim3 block);
+  Kernel &configure(dim3 grid, dim3 block, unsigned int shared);
   //!
   //! \param kernel_args
   //! \return KernelTime
@@ -50,6 +51,7 @@ class Kernel : JNIHandle {
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
+  unsigned int m_shared;
   CUcontext m_context;
   CUmodule m_module;
   CUfunction m_kernel;

@@ -11,7 +11,7 @@
 
 using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, jni::KernelArgJNI;
 
-void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
+void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2, jint jshared)
 {
     BEGIN_TRY
         CHECK_BIGGER(jgrid0, 0, "illegal size for grid0", )
@@ -20,14 +20,16 @@ void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, j
         CHECK_BIGGER(jblock0, 0, "illegal size for block0", )
         CHECK_BIGGER(jblock1, 0, "illegal size for block1", )
         CHECK_BIGGER(jblock2, 0, "illegal size for block2", )
+        CHECK_BIGGER(jshared, -1, "illegal size for shared", )
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
     	CHECK_NULL(kernelPtr, )
 
         dim3 grid{static_cast<unsigned int> (jgrid0), static_cast<unsigned int> (jgrid1), static_cast<unsigned int> (jgrid2)};
         dim3 block{static_cast<unsigned int> (jblock0), static_cast<unsigned int> (jblock1), static_cast<unsigned int> (jblock2)};
+        unsigned int shared = static_cast<unsigned int> (jshared);
 
-        kernelPtr->configure(grid, block);
+        kernelPtr->configure(grid, block, shared);
     END_TRY("configuring Kernel")
 }
 
