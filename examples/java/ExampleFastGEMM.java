@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Arrays;
 
 import yacx.Device;
 import yacx.Executor;
@@ -76,12 +75,12 @@ public class ExampleFastGEMM {
 		System.out.println("Kernel fast_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
-		MatrixUtils.printlnMatrix(aMatrixArg, y);
-		System.out.println("bMatrix (transposed):");
-		MatrixUtils.printlnMatrix(bMatrixArg, y);
+		MatrixUtils.printlnMatrix(aMatrix, y);
+		System.out.println("bMatrix:");
+		MatrixUtils.printlnMatrix(bMatrix, z);
 		System.out.println("cMatrix:");
-		MatrixUtils.printlnMatrix(cMatrixArg, z);
+		MatrixUtils.printlnMatrix(cMatrix, z);
 		System.out.println("resultmatrix:");
-		MatrixUtils.printlnMatrix(dMatrixArg, z);
+		MatrixUtils.printlnMatrix(dMatrixArg.asFloatArray(), z);
 	}
 }

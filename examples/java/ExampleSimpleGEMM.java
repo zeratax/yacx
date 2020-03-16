@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Arrays;
 
 import yacx.Executor;
 import yacx.FloatArg;
@@ -66,7 +65,7 @@ public class ExampleSimpleGEMM {
 		KernelArg betaArg = FloatArg.createValue(beta);
 
 		// Do the padding for each input matrix
-		//TODO Padding falls (x,y,z) = (m,n,k)
+		// TODO Padding falls (x,y,z) = (m,n,k)
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
 		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
@@ -87,12 +86,12 @@ public class ExampleSimpleGEMM {
 		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
-		MatrixUtils.printlnMatrix(aMatrixArg, y);
-		System.out.println("bMatrix (transposed):");
-		MatrixUtils.printlnMatrix(bMatrixArg, y);
+		MatrixUtils.printlnMatrix(aMatrix, y);
+		System.out.println("bMatrix:");
+		MatrixUtils.printlnMatrix(bMatrix, z);
 		System.out.println("cMatrix:");
-		MatrixUtils.printlnMatrix(cMatrixArg, z);
+		MatrixUtils.printlnMatrix(cMatrix, z);
 		System.out.println("resultmatrix:");
-		MatrixUtils.printlnMatrix(dMatrixArg, z);
+		MatrixUtils.printlnMatrix(dMatrixArg.asFloatArray(), z);
 	}
 }

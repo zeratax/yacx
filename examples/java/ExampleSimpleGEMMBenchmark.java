@@ -1,15 +1,12 @@
 import java.io.IOException;
 
 import yacx.Executor;
-import yacx.Options;
 
 public class ExampleSimpleGEMMBenchmark {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibary();
-		
-		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		// Benchmark Simple-GEMM-Kernel
 		System.out.println(new MatrixUtils.BenchmarkGEMM() {
