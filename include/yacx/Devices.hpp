@@ -28,9 +28,9 @@ class Device : JNIHandle {
   //! identifer string for the device
   //! \return identifer string
   std::string name() const { return m_name; }
-  //! Return Device as CUdevice
-  //! \return CUdevice
-  CUdevice get() const { return m_device; }
+  //! returns the primary context of this device
+  //! \return primary context
+  CUcontext getPrimaryContext() const { return m_primaryContext; }
   //! Memory available on device for __constant__ variables in a CUDA C kernel
   //! in bytes
   //! \return Memory in bytes
@@ -84,6 +84,7 @@ class Device : JNIHandle {
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
+  CUcontext m_primaryContext;
   std::string m_uuidHex;
   size_t m_memory, m_max_shared_memory_per_block,
       m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
@@ -122,6 +123,7 @@ class Devices : JNIHandle {
 
  private:
   Devices();
+  ~Devices();
   std::vector<Device> m_devices;
   static Devices *getInstance();
   static Devices *instance;

@@ -52,7 +52,6 @@ class Kernel : JNIHandle {
 
   dim3 m_grid, m_block;
   unsigned int m_shared;
-  CUcontext m_context;
   CUmodule m_module;
   CUfunction m_kernel;
 };
