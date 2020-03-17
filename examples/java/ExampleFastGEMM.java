@@ -18,7 +18,8 @@ public class ExampleFastGEMM {
 		final int M = 16;
 		final int N = 16;
 		final int K = 16;
-		final boolean SHARED_MEMORY_LIMIT_64K = true;
+		// If you change this, don't forget to adjust the SHARED_MEMORY_LIMIT_64K in the kernel, too.
+		final boolean SHARED_MEMORY_LIMIT_64K = false;
 		final int BLOCK_ROW_WARPS = 2;
 		final int BLOCK_COL_WARPS = 4;
 		final int WARP_ROW_TILES = 4;

@@ -56,7 +56,7 @@ public class ExampleReduceBenchmark {
 		}, 256 * MB);
 
 		// Benchmark Reduce-Kernel
-		Executor.BenchmarkResult result = Executor.benchmark("device_reduce", options, 20, new Executor.KernelArgCreator() {
+		Executor.BenchmarkResult result = Executor.benchmark("device_reduce", options, 30, new Executor.KernelArgCreator() {
 			
 			@Override
 			public int getDataLength(int dataSizeBytes) {
@@ -90,7 +90,7 @@ public class ExampleReduceBenchmark {
 		}, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB, 4 * MB, 16 * MB, 64 * MB, 256 * MB);
 
 		// Simulate second kernel call
-		Executor.BenchmarkResult result2 = Executor.benchmark("device_reduce", options, 20, new Executor.KernelArgCreator() {
+		Executor.BenchmarkResult result2 = Executor.benchmark("device_reduce", options, 30, new Executor.KernelArgCreator() {
 
 			@Override
 			public int getDataLength(int dataSizeBytes) {

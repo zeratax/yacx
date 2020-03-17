@@ -328,6 +328,24 @@ public class Executor {
 	}
 
 	/**
+	 * Benchmark a CUDA kernel with dynamic shared memory loading the kernel string from a file in directory
+	 * "kernels" with kernelname.cu as filename.
+	 * 
+	 * @param kernelName       name of the kernel
+	 * @param options          options for the nvtrc compiler
+	 * @param numberExecutions number of executions for the kernel
+	 * @param creator          KernelArgCreator for creating KernelArgs for the
+	 *                         kernel
+	 * @param dataSizesBytes   data sizes of the kernel arguments in bytes
+	 * @return result of benchmark-test
+	 */
+	public static BenchmarkResult benchmark(String kernelName, Options options, int shared, int numberExecutions,
+			KernelArgCreator creator, int... dataSizesBytes) throws IOException {
+		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Device.createDevice(), shared,
+				new String[0], numberExecutions, creator, dataSizesBytes);
+	}
+
+	/**
 	 * Benchmark a CUDA kernel.
 	 * 
 	 * @param kernelString     string containing the CUDA kernelcode
@@ -343,7 +361,7 @@ public class Executor {
 	 */
 	public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device,
 			int numberExecutions, KernelArgCreator creator, int... dataSizesBytes) {
-		return benchmark(kernelString, kernelName, options, device, new String[0], numberExecutions, creator,
+		return benchmark(kernelString, kernelName, options, device, 0, new String[0], numberExecutions, creator,
 				dataSizesBytes);
 	}
 
@@ -365,7 +383,7 @@ public class Executor {
 	 *                          tested, in bytes
 	 * @return result of benchmark-test
 	 */
-	public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device,
+	public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device, int shared,
 			String[] templateParameter, int numberExecutions, KernelArgCreator creator, int... dataSizesBytes) {
 		if (dataSizesBytes == null)
 			throw new NullPointerException();
@@ -396,7 +414,7 @@ public class Executor {
 			// Configure Kernel
 			int dataLength = creator.getDataLength(dataSize);
 			kernel.configure(creator.getGrid0(dataLength), creator.getGrid1(dataLength), creator.getGrid2(dataLength),
-					creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength));
+					creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength), shared);
 
 			// Create KernelArgs for this dataSize
 			KernelArg[] args = creator.createArgs(dataLength);

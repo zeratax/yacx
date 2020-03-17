@@ -71,7 +71,7 @@ using namespace nvcuda;
 // improve the performance of the computations on GPU.
 // Note that you need a GPU that can have more than 64 Kb of shared memory
 // per multiprocessor.
-#define SHARED_MEMORY_LIMIT_64K 1
+#define SHARED_MEMORY_LIMIT_64K 0
 #endif
 
 // GPU configuration.

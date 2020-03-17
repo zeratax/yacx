@@ -16,7 +16,7 @@ Kernel &Kernel::configure(dim3 grid, dim3 block, unsigned int shared) {
   logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
                           << grid.y << ", " << grid.z << ", block: "
                           << block.x << ", " << block.y << ", " << block.z
-                          << "and shared memory size: " << shared;
+                          << " and shared memory size: " << shared;
   m_grid = grid;
   m_block = block;
   m_shared = shared;

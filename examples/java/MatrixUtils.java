@@ -69,13 +69,25 @@ public class MatrixUtils {
 					betaArg };
 		}
 
+		// Benchmark function for simple GEMM kernel
 		public BenchmarkResult benchmark(String kernel) throws IOException {
 			Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 			//Warm up
 			Executor.benchmark(kernel, options, 10, this, 256 * MB);
 			
-			return Executor.benchmark(kernel, options, 20, this, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB,
+			return Executor.benchmark(kernel, options, 30, this, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB,
+					4 * MB, 16 * MB, 64 * MB, 256 * MB);
+		}
+		
+		// Benchmark function for fast GEMM kernel
+		public BenchmarkResult benchmark(String kernel, int sharedMemSize) throws IOException {
+			Options options = Options.createOptions("--gpu-architecture=compute_70");
+
+			//Warm up
+			Executor.benchmark(kernel, options, sharedMemSize, 10, this, 256 * MB);
+			
+			return Executor.benchmark(kernel, options, sharedMemSize, 30, this, 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB,
 					4 * MB, 16 * MB, 64 * MB, 256 * MB);
 		}
 	}
