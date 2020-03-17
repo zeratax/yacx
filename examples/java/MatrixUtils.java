@@ -46,7 +46,7 @@ public class MatrixUtils {
 
 	public static abstract class BenchmarkGEMM extends Executor.KernelArgCreator {
 		private final long[] dataSizes = new long[] { 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB, 4 * MB,
-				16 * MB, 64 * MB, 256 * MB };
+				16 * MB, 64 * MB, 256 * MB, 512 * MB, 1024 * MB };
 
 		@Override
 		public int getDataLength(long dataSizeBytes) {
@@ -86,7 +86,7 @@ public class MatrixUtils {
 			KernelArg betaArg = FloatArg.createValue(beta);
 
 			KernelArg[] kernelArgsPadding = createMatrixPadding(aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, dim);
-			
+
 			return new KernelArg[] { kernelArgsPadding[0], kernelArgsPadding[1], kernelArgsPadding[2],
 					kernelArgsPadding[3], mArg, nArg, kArg, alphaArg, betaArg };
 		}
