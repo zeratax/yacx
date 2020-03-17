@@ -67,25 +67,8 @@ public class ExampleFastGEMMBenchmark {
 			}
 
 			@Override
-			public KernelArg[] createMatrixPadding(ArrayArg aMatrixArg, ArrayArg bMatrixArg, ArrayArg cMatrixArg,
-					ArrayArg dMatrixArg, int dim) {
-				if (dim % 128 != 0) {
-					int dimPadding = (dim / 128 + 1) * 128;
-
-					KernelArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, dim, dim, dimPadding,
-							dimPadding, 0);
-					KernelArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, dim, dim, dimPadding,
-							dimPadding, 0);
-					KernelArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, dim, dim, dimPadding,
-							dimPadding, 0);
-					KernelArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, dim, dim, dimPadding,
-							dimPadding, 0);
-
-					return new KernelArg[] { aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding,
-							dMatrixArgPadding };
-				} else {
-					return super.createMatrixPadding(aMatrixArg, bMatrixArg, cMatrixArg, dMatrixArg, dim);
-				}
+			public int getPaddingDim(int dim) {
+				return (dim % 128 == 0) ? dim : (dim / 128 + 1) * 128;
 			}
 		}.benchmark("fast_wmma_gemm");
 	}
