@@ -90,7 +90,7 @@ public class MatrixUtils {
 			KernelArg bMatrixArgPadding;
 			KernelArg cMatrixArgPadding;
 			KernelArg dMatrixArgPadding;
-			
+
 			if (dim != paddingDim) {
 				aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, dim, dim, paddingDim, paddingDim, 0);
 				bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, dim, dim, paddingDim, paddingDim, 0);
@@ -103,8 +103,8 @@ public class MatrixUtils {
 				dMatrixArgPadding = dMatrixArg;
 			}
 
-			return new KernelArg[] { aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg,
-					kArg, alphaArg, betaArg };
+			return new KernelArg[] { aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg,
+					nArg, kArg, alphaArg, betaArg };
 		}
 
 		public void benchmark(String kernel) throws IOException {
@@ -113,8 +113,9 @@ public class MatrixUtils {
 			// Test dataSize with and without Padding
 			long[] dataSizes = new long[this.dataSizes.length * 2];
 			for (int i = 0; i < dataSizes.length; i += 2) {
-				dataSizes[i] = this.dataSizes[i / 2];
-				dataSizes[i + 1] = (long) Math.pow(Math.sqrt(dataSizes[i] / FloatArg.SIZE_BYTES) - 1, 2) * FloatArg.SIZE_BYTES;
+				dataSizes[i+1] = this.dataSizes[i / 2];
+				dataSizes[i] = (long) Math.pow(Math.sqrt(dataSizes[i+1] / FloatArg.SIZE_BYTES) - 1, 2)
+						* FloatArg.SIZE_BYTES;
 			}
 
 			// Warm up
@@ -124,8 +125,11 @@ public class MatrixUtils {
 
 			String resultString = result.toString();
 			for (long dataSize : dataSizes) {
+				String empty = "";
+				if (getDataLength(dataSize) < 100)
+					empty = "  ";
 				resultString = resultString.replaceFirst("B: execution-time:", "B (" + getDataLength(dataSize) + "x"
-						+ getDataLength(dataSize) + " matrices): execution-time:");
+						+ getDataLength(dataSize) + " matrices): execution-time:" + empty);
 			}
 
 			System.out.println(resultString);

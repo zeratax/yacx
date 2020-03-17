@@ -554,7 +554,6 @@ public class Executor {
 				String kernelName, long testDuration) {
 			this.numberExecutions = numberExecutions;
 			this.dataSizes = dataSizes;
-			Arrays.parallelSort(dataSizes);
 			this.result = result;
 			this.kernelName = kernelName;
 			this.testDuration = testDuration;
