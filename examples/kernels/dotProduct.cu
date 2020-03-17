@@ -1,4 +1,4 @@
 extern "C" __global__
-void saxpy(float *x, float *y, float *out) {
-   out[threadIdx.x] = a * x[threadIdx.x] + y[threadIdx.x];
+void dotProduct(float* vecA, float* vecB, float* output){
+  atomicAdd(output, vecA[threadIdx.x] * vecB[threadIdx.x]);
 }

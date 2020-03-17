@@ -27,7 +27,7 @@ public class ExampleDotProduct {
 		FloatArg outArg = FloatArg.createOutput(1);
 
 		// Compile and Launch
-		KernelTime executionTime = Executor.launch("dotProduct", numberElements, 1, xArg, yArg, outArg);
+		KernelTime executionTime = Executor.launch("dotProduct", 1, numberElements, xArg, yArg, outArg);
 
 		// Get Result
 		float result = outArg.asFloatArray()[0];
