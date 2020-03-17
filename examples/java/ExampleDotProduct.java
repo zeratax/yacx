@@ -1,57 +1,42 @@
-import yacx.Executor;
-import ya
+import java.io.IOException;
+import java.util.Arrays;
 
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.KernelTime;
 
 public class ExampleDotProduct {
-    public static void main(String[] args ){
-        //load library
-        Executor.load();
+	public static void main(String[] args) throws IOException {
+		// Load library
+		Executor.loadLibary();
 
-        //testdata
-        final int numThreads = 4;
-        final int numBlocks = 1;
+		// Testdata
+		int numberElements = 9;
+		
+		float[] x = new float[9];
+		float[] y = new float[9];
 
-        int n = numThreads * numBlocks;
-        float[] x = new float[n];
-        float[] y = new float[n];
+		for (int i = 0; i < 9; i++) {
+			x[i] = i;
+			y[i] = 2 * i;
+		}
 
-        for(int i = 0; i < n; i++){
-            x[i] = i;
-            y[i] = 2 * i;
-        }
+		// Initalize arguments
+		FloatArg xArg = FloatArg.create(x);
+		FloatArg yArg = FloatArg.create(y);
+		FloatArg outArg = FloatArg.createOutput(1);
 
-        //initalize arguments
-        KernelArg nArg, xArg, yArg;
-        FloatArg outArg;
-        xArg = FloatArg.create(x);
-        yArg = FloatArg.create(y);
-        outArg = FloatArg.createOutput(n);
-        nArg = IntArg.createValue(n);
+		// Compile and Launch
+		KernelTime executionTime = Executor.launch("dotProduct", numberElements, 1, xArg, yArg, outArg);
 
-        // Create Program
-        String kernelString = Utils.loadFile("kernels/dotProduct.cu");
-        Program dotProduct = Program.create(kernelString, "dotProduct");
+		// Get Result
+		float result = outArg.asFloatArray()[0];
 
-        // Create compiled Kernel
-        Kernel dotProductKernel = dotProduct.compile();
-
-        // Launch Kernel
-        KernelTime executionTime = dotProductKernel.launch(numThreads, numBlocks, xArg, yArg, outArg, nArg);
-
-        // Get Result
-        float[] out = outArg.asFloatArray();
-
-        // Print Result
-        System.out.println("\ndotProduct-Kernel sucessfully launched:");
-        System.out.println(executionTime);
-        System.out.println("\nInput x: " + Arrays.toString(x));
-        System.out.println("Input y: " + Arrays.toString(y));
-        System.out.println("Result:  " + Arrays.toString(out));
-
-
-    }
-
-
-
+		// Print Result
+		System.out.println("\ndotProduct-Kernel sucessfully launched:");
+		System.out.println(executionTime);
+		System.out.println("\nInput x: " + Arrays.toString(x));
+		System.out.println("Input y: " + Arrays.toString(y));
+		System.out.println("Result:  " + result);
+	}
 }
-
