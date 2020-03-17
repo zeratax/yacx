@@ -45,7 +45,7 @@ CProgram::CProgram(const char* cProgram, const char* functionName, std::vector<s
     //compilerCommand with options
     std::stringstream compilerWithOptionsS;
     compilerWithOptionsS << compiler << " ";
-    for (int i = 0; i < options.numOptions(); i++){
+    for (unsigned int i = 0; i < options.numOptions(); i++){
         compilerWithOptionsS << options.content()[i] << " ";
     }
     std::string compilerWithOptions = compilerWithOptionsS.str();
@@ -108,7 +108,7 @@ void CProgram::createSrcFile(const char* cProgram, const char* functionName,
     fileOut << ") {\n";
     //run function to be executed
     fileOut << "    " << functionName << "(";
-    int i = 0;
+    unsigned int i = 0;
     for (; i < parameterTypes.size()-1; i++){
         writeParam(parameterTypes, i, fileOut);
         fileOut << ",";

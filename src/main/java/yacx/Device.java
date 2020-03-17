@@ -3,30 +3,9 @@ package yacx;
 import java.util.Arrays;
 
 /**
- * Class to help get a CUDA-capable device.
+ * Class to handle a CUDA-capable device.
  */
 public class Device extends JNIHandle {
-	/**
-	 * Constructs a Device with the first CUDA capable device it finds.
-	 * 
-	 * @return a CUDA capable device
-	 */
-	public static native Device createDevice();
-
-	/**
-	 * Constructs a Device if a CUDA capable device with the identifier is available
-	 * 
-	 * @param name name of the cuda device, e.g.'Tesla K20c'
-	 * @return a CUDA capable device with the passed parameter as name
-	 */
-	public static Device createDevice(String name) {
-		assert (name != null && name.length() > 0);
-
-		return createDeviceInternal(name);
-	}
-
-	private static native Device createDeviceInternal(String name);
-
 	/**
 	 * Identifer string for the device.
 	 * 
@@ -115,6 +94,14 @@ public class Device extends JNIHandle {
 	public native int getSharedMemPerMultiprocessor();
 
 	/**
+	 * Returns the UUID for this device or <code>null</code> if not available (CUDA
+	 * version 9.2 or higher required).
+	 * 
+	 * @return 16-byte UUID of the device as hexadecimal string or <code>null</code>
+	 */
+	public native String getUUID();
+
+	/**
 	 * Create a new Device.
 	 * 
 	 * @param handle Pointer to corresponding C-Device-Object
@@ -125,8 +112,20 @@ public class Device extends JNIHandle {
 
 	@Override
 	public String toString() {
-		return "Device: " + getName() + " (Memory: " + getMemorySize() / 1024 / 1024 + " MB, Blocks: "
-				+ Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid()) + " Version: "
-				+ getMinorVersion() + "-" + getMajorVersion() + ")";
+		String uuid = getUUID();
+
+		if (uuid == null) {
+			return "Device: " + getName() + " (Memory: " + getMemorySize() / 1024 / 1024 + " MB, Blocks: "
+					+ Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid())
+					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
+		} else {
+			return "Device: " + getName() + " (UUID: " + uuid + " ,Memory: " + getMemorySize() / 1024 / 1024
+					+ " MB, Blocks: " + Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid())
+					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
+		}
 	}
+	
+	//Devices are Singeltons and should be not destroyed
+	@Override
+	public void dispose() {}
 }

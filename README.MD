@@ -28,7 +28,7 @@ for more see the [changelog](./CHANGELOG.md)
 #include <experimental/iterator>
 #include <vector>
 
-using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::Devices, yacx::type_of;
 
 int main() {
   const int data{1};
@@ -42,7 +42,7 @@ int main() {
   std::fill(v.begin(), v.end(), 0);
   
   try {
-    Device device;
+    Device device = Devices::findDevice();
     Options options{yacx::options::GpuArchitecture(device),
                     yacx::options::FMAD(false)};
     options.insert("--std", "c++14");
@@ -98,12 +98,12 @@ make -C build yacx-jni
 
 and then compile with:
 ```console 
-g++ -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
+g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
 ```
 
 some syntatic sugar is given using templates, which requires you to include the headers when building:
 ```console 
-g++ -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 -I include/yacx file.cpp
+g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 -I include/yacx file.cpp
 ```
 
 ## Examples

@@ -1,5 +1,5 @@
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_definitions(-Wall -Dcurrent_log_level=loglevel::INFO)
+  add_definitions(-Wall -Wextra --pedantic -Dcurrent_log_level=loglevel::INFO)
 endif()
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/gauss.h
@@ -20,6 +20,7 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
 set(JAVA_EXAMPLE_FILES
+    "java/ExampleDotProduct.java"
     "java/ExampleFastGemm.java"
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"

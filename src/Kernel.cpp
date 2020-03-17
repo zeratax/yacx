@@ -23,7 +23,7 @@ Kernel &Kernel::configure(dim3 grid, dim3 block, unsigned int shared) {
   return *this;
 }
 
-KernelTime Kernel::launch(KernelArgs args, Device device) {
+KernelTime Kernel::launch(KernelArgs args, Device &device) {
   logger(loglevel::DEBUG) << "creating context";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
@@ -102,7 +102,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 }
 
 std::vector<KernelTime>
-Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;
@@ -137,7 +137,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
   // destroy context
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
-  // free allocated memory
+  // free allocated page-locked memory
   if (maxOutputSize) {
     free(output);
   }

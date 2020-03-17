@@ -335,7 +335,7 @@ public class Executor {
 	 */
 	public static BenchmarkResult benchmark(String kernelName, Options options, int numberExecutions,
 			KernelArgCreator creator, long... dataSizesBytes) throws IOException {
-		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Device.createDevice(),
+		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Devices.findDevice(),
 				numberExecutions, creator, dataSizesBytes);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Jona Abdinghoff
+ * Copyright (c) 2020 Jona Abdinghoff
  *
  * LICENSE TEXT
  ******************************************************************************/
@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include "yacx/Device.hpp"
+#include "yacx/Devices.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/Headers.hpp"
 #include "yacx/Kernel.hpp"

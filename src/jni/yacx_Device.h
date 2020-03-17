@@ -9,22 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     yacx_Device
- * Method:    createDevice
- * Signature: ()Lyacx/Device;
- */
-JNIEXPORT jobject JNICALL Java_yacx_Device_createDevice
-  (JNIEnv *, jclass);
-
-/*
- * Class:     yacx_Device
- * Method:    createDeviceInternal
- * Signature: (Ljava/lang/String;)Lyacx/Device;
- */
-JNIEXPORT jobject JNICALL Java_yacx_Device_createDeviceInternal
-  (JNIEnv *, jclass, jstring);
-
-/*
- * Class:     yacx_Device
  * Method:    getName
  * Signature: ()Ljava/lang/String;
  */
@@ -117,6 +101,14 @@ JNIEXPORT jint JNICALL Java_yacx_Device_getSharedMemPerBlock
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_yacx_Device_getSharedMemPerMultiprocessor
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     yacx_Device
+ * Method:    getUUID
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_yacx_Device_getUUID
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

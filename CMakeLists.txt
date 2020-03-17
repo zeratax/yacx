@@ -28,6 +28,7 @@ set(JAVA_SOURCE_FILES
     "src/main/java/yacx/ByteArg.java"
     "src/main/java/yacx/CProgram.java"
     "src/main/java/yacx/Device.java"
+    "src/main/java/yacx/Devices.java"
     "src/main/java/yacx/DoubleArg.java"
     "src/main/java/yacx/Executor.java"
     "src/main/java/yacx/ExecutorFailureException.java"
