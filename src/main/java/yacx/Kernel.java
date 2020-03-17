@@ -135,7 +135,7 @@ public class Kernel extends JNIHandle {
 	 * @return KernelTime for the Execution of this Kernel
 	 */
 	public KernelTime launch(String devicename, KernelArg... args) {
-		return launchInternal(Device.createDevice(devicename), args);
+		return launchInternal(Devices.findDevice(devicename), args);
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import yacx.Device;
+import yacx.Devices;
 import yacx.Executor;
 import yacx.FloatArg;
 import yacx.HalfArg;
@@ -57,7 +58,7 @@ public class ExampleFastGEMM {
 		int n = (z % 128 == 0) ? z : (z / 128 + 1) * 128;
 
 		// Get Device
-		Device device = Device.createDevice();
+		Device device = Devices.findDevice();
 
 		// 8 Warps = 256 Threads per Block are required for the kernel to work
 		int threads = 32 * 8;

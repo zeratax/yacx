@@ -143,7 +143,7 @@ jint Java_yacx_Device_getMajorVersion (JNIEnv* env, jobject obj){
     END_TRY_R("getting major version from Device", 0);
 }
 
-<<<<<<< HEAD
+
 jint Java_yacx_Device_getSharedMemPerBlock (JNIEnv* env, jobject obj){
     BEGIN_TRY
         auto devicePtr = getHandle<Device>(env, obj);
@@ -165,7 +165,7 @@ jint Java_yacx_Device_getSharedMemPerMultiprocessor (JNIEnv* env, jobject obj){
         return sharedMemPerMultiprocessor;
     END_TRY_R("getting amount of shared memory per multiprocessor from Device", 0);
 }
-=======
+
 jstring Java_yacx_Device_getUUID(JNIEnv* env, jobject obj){
     BEGIN_TRY
         #if CUDA_VERSION < 9020
@@ -181,4 +181,4 @@ jstring Java_yacx_Device_getUUID(JNIEnv* env, jobject obj){
         return uuidJString;
     END_TRY_R("getting UUID from Device", 0);
 }
->>>>>>> #57
+

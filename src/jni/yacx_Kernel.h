@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     yacx_Kernel
  * Method:    configureInternal
- * Signature: (IIIIII)V
+ * Signature: (IIIIIIJ)V
  */
 JNIEXPORT void JNICALL Java_yacx_Kernel_configureInternal
-  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint, jlong);
 
 /*
  * Class:     yacx_Kernel
@@ -30,14 +30,6 @@ JNIEXPORT jobject JNICALL Java_yacx_Kernel_launchInternal___3Lyacx_KernelArg_2
  */
 JNIEXPORT jobject JNICALL Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2
   (JNIEnv *, jobject, jobject, jobjectArray);
-
-/*
- * Class:     yacx_Kernel
- * Method:    launchInternal
- * Signature: (Ljava/lang/String;[Lyacx/KernelArg;)Lyacx/KernelTime;
- */
-JNIEXPORT jobject JNICALL Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2
-  (JNIEnv *, jobject, jstring, jobjectArray);
 
 #ifdef __cplusplus
 }

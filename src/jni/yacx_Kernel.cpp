@@ -12,7 +12,7 @@
 using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, yacx::Devices,
       jni::KernelArgJNI;
 
-void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2, jint jshared)
+void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2, jlong jshared)
 {
     BEGIN_TRY
         CHECK_BIGGER(jgrid0, 0, "illegal size for grid0", )
@@ -67,26 +67,4 @@ jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEn
 
         return launchInternal(env, kernelPtr, *devicePtr, args);
     END_TRY_R("launching Kernel on specific device", NULL)
-}
-
-jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
-{
-    BEGIN_TRY
-        CHECK_NULL(jdevicename, NULL)
-        CHECK_NULL(jArgs, NULL);
-
-        auto kernelPtr = getHandle<Kernel>(env, obj);
-        CHECK_NULL(kernelPtr, NULL);
-        auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
-        std::string devicename{devicenamePtr};
-
-        Device* devicePtr = &Devices::findDevice(devicename);
-
-        env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
-
-        auto args = getArguments(env, jArgs);
-        if (args.empty()) return NULL;
-
-        return launchInternal(env, kernelPtr, *devicePtr, args);
-    END_TRY_R("launching Kernel", NULL)
 }

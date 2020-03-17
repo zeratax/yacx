@@ -2,6 +2,7 @@ import java.io.IOException;
 
 import yacx.ArrayArg;
 import yacx.Device;
+import yacx.Devices;
 import yacx.Executor;
 import yacx.FloatArg;
 import yacx.HalfArg;
@@ -29,13 +30,16 @@ public class ExampleFastGEMMBenchmark {
 		// Load Libary
 		Executor.loadLibary();
 
+		// Get Device
+		Device device = Devices.findDevice();
+
 		// Compute required shared memory size
 		final long SHMEM_SZ = Math.max(HalfArg.SIZE_BYTES * (BLOCK_COL_TILES * M) * (CHUNK_K * K + SKEW_HALF) * 2,
 				M * (BLOCK_ROW_WARPS * WARP_ROW_TILES) * N * (BLOCK_COL_WARPS * WARP_COL_TILES) * FloatArg.SIZE_BYTES);
 
 		// Calculate and print out the required and available shared memory size
 		long required = SHMEM_SZ / 1024;
-		long available = Device.createDevice().getSharedMemPerMultiprocessor() / 1024;
+		long available = device.getSharedMemPerMultiprocessor() / 1024;
 		System.out.println("Required shared memory size per multiprocessor: " + required + " KB");
 		System.out.println("Available shared memory size per multiprocessor: " + available + " KB");
 
@@ -53,7 +57,7 @@ public class ExampleFastGEMMBenchmark {
 
 			@Override
 			public int getGrid0(int dim) {
-				return Device.createDevice().getMultiprocessorCount();
+				return device.getMultiprocessorCount();
 			}
 
 			@Override
