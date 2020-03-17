@@ -74,7 +74,7 @@ void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelFtoH->configure(grid, block, 0).launch(args);
+    kernelFtoH->configure(grid, block).launch(args);
 }
 
 void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
@@ -91,7 +91,7 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelHtoF->configure(grid, block, 0).launch(args);
+    kernelHtoF->configure(grid, block).launch(args);
 }
 
 
@@ -111,5 +111,5 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
      dim3 grid(grids < maxGridSize ? grids : maxGridSize);
      dim3 block(maxBlockSize);
 
-     kernelFtoHT->configure(grid, block, 0).launch(args);
+     kernelFtoHT->configure(grid, block).launch(args);
  }

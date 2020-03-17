@@ -14,9 +14,9 @@ Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
 
 Kernel &Kernel::configure(dim3 grid, dim3 block, unsigned int shared) {
   logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
-                          << grid.y << ", " << grid.z << ", block: "
-                          << block.x << ", " << block.y << ", " << block.z
-                          << "and shared memory size: " << shared;
+                          << grid.y << ", " << grid.z << ", block: " << block.x
+                          << ", " << block.y << ", " << block.z
+                          << " and shared memory size: " << shared;
   m_grid = grid;
   m_block = block;
   m_shared = shared;
@@ -68,12 +68,14 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   logger(loglevel::INFO) << "launching " << m_demangled_name;
 
   CUDA_SAFE_CALL(cuEventRecord(launch, 0));
-  if (m_shared > 0) CUDA_SAFE_CALL(cuFuncSetAttribute(m_kernel, CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES, m_shared));
+  if (m_shared > 0)
+    CUDA_SAFE_CALL(cuFuncSetAttribute(
+        m_kernel, CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES, m_shared));
   CUDA_SAFE_CALL(
       cuLaunchKernel(m_kernel,                        // function from program
                      m_grid.x, m_grid.y, m_grid.z,    // grid dim
                      m_block.x, m_block.y, m_block.z, // block dim
-                     m_shared, nullptr,               // shared mem and stream
+                     m_shared, nullptr, // dynamic shared mem and stream
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
   CUDA_SAFE_CALL(cuEventRecord(finish, 0));

@@ -29,9 +29,9 @@ class Kernel : JNIHandle {
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
-  //! \param shared amount of shared memory to allocate
+  //! \param shared amount of dynamic shared memory to allocate
   //! \return this (for method chaining)
-  Kernel &configure(dim3 grid, dim3 block, unsigned int shared);
+  Kernel &configure(dim3 grid, dim3 block, unsigned int shared = 0);
   //!
   //! \param kernel_args
   //! \return KernelTime

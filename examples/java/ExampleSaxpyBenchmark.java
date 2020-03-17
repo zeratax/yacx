@@ -7,7 +7,7 @@ import yacx.KernelArg;
 import yacx.Options;
 
 public class ExampleSaxpyBenchmark {
-	private final static int KB = 1024;
+	private final static long KB = 1024;
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
@@ -18,7 +18,7 @@ public class ExampleSaxpyBenchmark {
 			final float a = 5.1f;
 
 			@Override
-			public int getDataLength(int dataSizeBytes) {
+			public int getDataLength(long dataSizeBytes) {
 				return (int) (dataSizeBytes / FloatArg.SIZE_BYTES);
 			}
 

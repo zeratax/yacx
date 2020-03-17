@@ -8,9 +8,11 @@ jclass getClass(JNIEnv *env, const char *name);
 
 jobjectArray createStringArray(JNIEnv *env, const char **stringArray, int size);
 
-std::string getStaticJString(JNIEnv* env, jclass cls, const char* attributeName);
+std::string getStaticJString(JNIEnv *env, jclass cls,
+                             const char *attributeName);
 
-std::vector<std::string> jStringsToVector(JNIEnv* env, jobjectArray jstringArray);
+std::vector<std::string> jStringsToVector(JNIEnv *env,
+                                          jobjectArray jstringArray);
 
 #define CHECK_NULL(object, returnValue)                                        \
   if (object == NULL) {                                                        \
@@ -39,6 +41,10 @@ std::vector<std::string> jStringsToVector(JNIEnv* env, jobjectArray jstringArray
                                                                                \
     return returnValue;                                                        \
   }
+
+#define CHECK_EQUAL(object, than, message, returnValue)                        \
+  CHECK_BIGGER(than, object - 1, message, returnValue)                         \
+  CHECK_BIGGER(object, than - 1, message, returnValue)
 
 #define BEGIN_TRY try {
 

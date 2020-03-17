@@ -32,8 +32,8 @@ class Device : JNIHandle {
   //! identifer string for the device
   //! \return identifer string
   std::string name() const { return m_name; }
-  //!
-  //! \return
+  //! Return Device as CUdevice
+  //! \return CUdevice
   CUdevice get() const { return m_device; }
   //! Memory available on device for __constant__ variables in a CUDA C kernel
   //! in bytes
@@ -45,9 +45,13 @@ class Device : JNIHandle {
   //!
   //! \param grid returns grid with maximum dimension
   void max_grid_dim(dim3 *grid);
+  //! Maximum shared memory available per block in bytes
+  //! \return Shared Memory in bytes
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
   }
+  //! Maximum shared memory available per multiprocessor in bytes
+  //! \return Shared Memory in bytes
   size_t max_shared_memory_per_multiprocessor() const {
     return m_max_shared_memory_per_multiprocessor;
   }
@@ -69,7 +73,7 @@ class Device : JNIHandle {
   //! <a
   //! href=https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266>CUdevice_attribute</a>
   //! \param attrib CUDA device attribute
-  //! \return
+  //! \return device attribute value
   int attribute(CUdevice_attribute attrib) const;
 
  private:
@@ -78,7 +82,8 @@ class Device : JNIHandle {
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
-  size_t m_memory, m_max_shared_memory_per_block, m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
+  size_t m_memory, m_max_shared_memory_per_block,
+      m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
 };
 

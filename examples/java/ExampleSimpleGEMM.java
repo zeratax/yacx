@@ -55,7 +55,7 @@ public class ExampleSimpleGEMM {
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		// Kernel expects a transposed B matrix so this has to be done here
-		HalfArg bMatrixArg = HalfArg.createTransposed(y, z, bMatrix);
+		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, y, z);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
 		KernelArg mArg = IntArg.createValue(m);
@@ -64,12 +64,15 @@ public class ExampleSimpleGEMM {
 		KernelArg alphaArg = FloatArg.createValue(alpha);
 		KernelArg betaArg = FloatArg.createValue(beta);
 
-		// Do the padding for each input matrix
-		// TODO Padding falls (x,y,z) = (m,n,k)
-		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
-		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, z, y, n, k, 0);
-		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
-		PaddingArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
+		// Do the padding for each input matrix if necessary
+		KernelArg aMatrixArgPadding = (x == m && y == k) ? aMatrixArg
+				: PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
+		KernelArg bMatrixArgPadding = (z == n && y == k) ? bMatrixArg
+				: PaddingArg.createMatrixPadding(bMatrixArg, z, y, n, k, 0);
+		KernelArg cMatrixArgPadding = (x == m && z == n) ? cMatrixArg
+				: PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
+		KernelArg dMatrixArgPadding = (x == m && z == n) ? dMatrixArg
+				: PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
 
 		// Load Kernel as string
 		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");

@@ -45,6 +45,9 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
          auto arrayLength = env->GetArrayLength(jarray);
 
          CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
+         CHECK_BIGGER(rows, 0, "illegal number of rows", NULL)
+         CHECK_BIGGER(columns, 0, "illegal number of columns", NULL)
+         CHECK_EQUAL(arrayLength, rows*columns, "rows * columns do not match arraylength", NULL)
 
          KernelArgJNI* kernelArgPtr = new KernelArgJNI{NULL, arrayLength * (sizeof(jfloat)/2), jdownload, true, true, CTYPE + "*"};
          convertFtoHT(arrayPtr, kernelArgPtr->getHostData(), rows, columns, arrayLength);

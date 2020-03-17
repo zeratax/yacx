@@ -26,7 +26,7 @@ exej() {
     find examples/java -type f -iname "*.java" -exec basename '{}' \; | sed 's/\.java$//1'
   else
     pushd "${PWD}/${JAVA_BIN}"
-    java -ea -Djava.library.path=../../ $1
+    java -Xmx4096m -ea -Djava.library.path=../../ $1
     popd
   fi
 }

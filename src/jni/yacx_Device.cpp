@@ -187,8 +187,8 @@ jint Java_yacx_Device_getSharedMemPerMultiprocessor (JNIEnv* env, jobject obj){
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, 0)
 
-        auto sharedMemPerBlock = devicePtr->max_shared_memory_per_multiprocessor();
+        auto sharedMemPerMultiprocessor = devicePtr->max_shared_memory_per_multiprocessor();
 
-        return sharedMemPerBlock;
+        return sharedMemPerMultiprocessor;
     END_TRY_R("getting amount of shared memory per multiprocessor from Device", 0);
 }
