@@ -2,17 +2,18 @@ package yacx;
 
 public class Logger {
 	enum LogLevel {
+		/** don't log at all */
 		NONE,
-		/** < don't log at all */
+		/** an ERROR which should not be ignored */
 		ERROR,
-		/** < an ERROR which should not be ignored */
+		/** a WARNING which might be ignored */
 		WARNING,
-		/** < a WARNING which might be ignored */
+		/** a INFO which can be ignored */
 		INFO,
-		/** < a INFO which can be ignored */
+		/** verbose INFO which can be ignored */
 		DEBUG,
-		/** < verbose INFO which can be ignored */
-		DEBUG1 /** < verbose DEBUG which can be ignored */
+		/** verbose DEBUG which can be ignored */
+		DEBUG1
 	}
 
 	/**

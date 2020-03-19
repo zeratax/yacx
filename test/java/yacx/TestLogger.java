@@ -16,6 +16,8 @@ public class TestLogger extends TestJNI {
 
 	@Test
 	void test() throws IOException {
+		logFile.deleteOnExit();
+
 		if (logFile.exists())
 			if (!logFile.delete())
 				throw new IOException("could not delete " + logFile.getAbsolutePath());
@@ -33,9 +35,10 @@ public class TestLogger extends TestJNI {
 																										// compilable!
 				"    out[tid] = a * x[tid] + y[tid];\n" + "  }\n" + "}\n" + "";
 
-		assertThrows(ExecutorFailureException.class, () -> {
-			Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
-		});
+		for (int i = 0; i < 50; i++)
+			assertThrows(ExecutorFailureException.class, () -> {
+				Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
+			});
 
 		// Something should be logged
 		String log = Utils.loadFile(logFile.getAbsolutePath());
@@ -46,9 +49,16 @@ public class TestLogger extends TestJNI {
 		// More verbose loglevel
 		Logger.setLogLevel(LogLevel.DEBUG);
 
-		assertThrows(ExecutorFailureException.class, () -> {
-			Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
-		});
+		// Delete Logfile
+		if (!logFile.delete())
+			throw new IOException("could not delete " + logFile.getAbsolutePath());
+		// Set Logfile again
+		Logger.setLogfile(logFile.getAbsolutePath());
+
+		for (int i = 0; i < 50; i++)
+			assertThrows(ExecutorFailureException.class, () -> {
+				Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
+			});
 
 		String log2 = Utils.loadFile(logFile.getAbsolutePath());
 

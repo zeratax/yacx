@@ -45,11 +45,11 @@ static std::string get_datetime() {
 class logger {
 
  public:
-    //! returns the logger instance.
-    static logger &getInstance() {
-        static logger instance;
-        return instance;
-    }
+  //! returns the logger instance.
+  static logger &getInstance() {
+    static logger instance;
+    return instance;
+  }
 
   //!
   logger() {
@@ -134,7 +134,7 @@ class logger {
  private:
   bool cout_flag = true;
   bool cerr_flag = false;
-  loglevel limit = loglevel::DEBUG1;
+  loglevel limit = loglevel::WARNING;
 
   loglevel current_loglevel;
   std::unique_ptr<std::ofstream> logfile_stream;
@@ -154,6 +154,7 @@ class log_null_sink {
 #ifdef NO_LOGGING
 #define logger(level) yacx::log_null_sink()
 #else
-#define logger(level) yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
+#define logger(level)                                                          \
+  yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
 } // namespace yacx
