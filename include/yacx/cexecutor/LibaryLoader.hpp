@@ -16,8 +16,10 @@ struct opfn {
 //! loads a libary and search a specific operation
 //! \param dest struct to store information
 //! \param filename name of the libary
-//! \param opSymbolName name of the opfn-struct containg the operation, wich should be loaded
-void load_op(struct dynop *dest, std::string filename, std::string opSymbolName);
+//! \param opSymbolName name of the opfn-struct containg the operation, wich
+//! should be loaded
+void load_op(struct dynop *dest, std::string filename,
+             std::string opSymbolName);
 //! unloads the libary and cleans the struct
 //! \param op struct to store pointer to loaded operation
 void unload_op(struct dynop *op);
