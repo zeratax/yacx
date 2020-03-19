@@ -150,11 +150,10 @@ class log_null_sink {
     return *this;
   }
 };
->>>>>>> 1e84400111284fc2daa4d70fc1acbdf03438b03e
 
 #ifdef NO_LOGGING
 #define logger(level) yacx::log_null_sink()
 #else
-#define logger(level) yacx::logger::getInstance()prepare(level, __FILE__, __LINE__)
+#define logger(level) yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
 } // namespace yacx
