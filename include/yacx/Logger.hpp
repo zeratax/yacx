@@ -52,6 +52,11 @@ namespace yacx {
     class logger {
 
     public:
+        //! returns the only instance of logger;
+    	static logger &getInstance() {
+            static logger instance;
+            return instance;
+        } 
 
         //!
         logger() {
@@ -70,7 +75,6 @@ namespace yacx {
         }
 
         logger(logger const &) = delete;
-
         logger &operator=(logger const &) = delete;
 
 
@@ -160,11 +164,13 @@ namespace yacx {
         }
     };
 
+    const logger logger_instance;
+
 #ifdef NO_LOGGING
 #define logger(level)                                   \
     yacx::log_null_sink()
 #else
 #define logger(level)                                   \
-    yacx::logger().prepare(level, __FILE__, __LINE__)
+    yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
 } //namespace yacx
