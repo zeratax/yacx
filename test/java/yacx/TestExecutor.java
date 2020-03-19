@@ -18,6 +18,7 @@ class TestExecutor extends TestJNI {
 	static Options options;
 	static Device device;
 	static String devicename;
+	static String saxpy, filterk;
 
 	static float a;
 	static float[] x, y;
@@ -29,6 +30,10 @@ class TestExecutor extends TestJNI {
 
 	@BeforeAll
 	static void init() throws IOException {
+		// Load Saxpy and Filter-Kernel as String
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+		filterk = Utils.loadFile("kernels/filter_k.cu");
+
 		// Init test-data
 		a = 5.1f;
 		n = 16 * 8;
