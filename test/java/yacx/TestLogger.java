@@ -35,6 +35,7 @@ public class TestLogger extends TestJNI {
 																										// compilable!
 				"    out[tid] = a * x[tid] + y[tid];\n" + "  }\n" + "}\n" + "";
 
+		// Log something (enough for flushing buffer to logfile)
 		for (int i = 0; i < 50; i++)
 			assertThrows(ExecutorFailureException.class, () -> {
 				Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
@@ -55,6 +56,7 @@ public class TestLogger extends TestJNI {
 		// Set Logfile again
 		Logger.setLogfile(logFile.getAbsolutePath());
 
+		// Log same as above with different logfile
 		for (int i = 0; i < 50; i++)
 			assertThrows(ExecutorFailureException.class, () -> {
 				Executor.launch(kernelInvalid, "saxpy", 1, 1, FloatArg.createValue(1f));
