@@ -2,12 +2,22 @@ package yacx;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TestArrayArg extends TestJNI {
+	static String saxpy, filterk;
 	ArrayArg arg;
+
+	@BeforeAll
+	static void loadSaxpyFilter() throws IOException {
+		// Load Saxpy and Filter-Kernel as String
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+		filterk = Utils.loadFile("kernels/filter_k.cu");
+	}
 
 	@Test
 	void testGetLength() {

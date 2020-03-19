@@ -16,10 +16,15 @@ class TestProgram extends TestJNI {
 	final static String archValueInvalid = "compute_8000";
 
 	static Options options, optionsInvalid;
+	static String saxpy, filterk;
 	static String kernelInvalid, kernelInvalidName;
 
 	@BeforeAll
 	static void init() throws IOException {
+		// Load Saxpy and Filter-Kernel as String
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+		filterk = Utils.loadFile("kernels/filter_k.cu");
+
 		options = Options.createOptions();
 		options.insert(fastMath);
 		options.insert(debug);
