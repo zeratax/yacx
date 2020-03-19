@@ -162,9 +162,9 @@ namespace yacx {
 
 #ifdef NO_LOGGING
 #define logger(level)                                   \
-log_null_sink()
+    yacx::log_null_sink()
 #else
 #define logger(level)                                   \
-logger().prepare(level, __FILE__, __LINE__)
+    yacx::logger().prepare(level, __FILE__, __LINE__)
 #endif
 } //namespace yacx
