@@ -8,7 +8,7 @@ import yacx.Utils;
 object ExampleTemplateKernel {
     def main(args: Array[String]) : Unit = {
         //Load Libary
-        Executor.loadLibary()
+        Executor.loadLibrary()
 
         //Testdata
         val numThreads = 1

@@ -8,13 +8,13 @@ import java.util.Arrays;
  * Class for initialization (load native library) and easily execute CUDA
  * kernels. <br>
  * Before using other classes in this package it is necessary to load the native
- * libary.
+ * library.
  */
 public class Executor {
 	/**
 	 * Loads the native library.
 	 */
-	public static void loadLibary() {
+	public static void loadLibrary() {
 		System.loadLibrary("yacx-jni");
 	}
 

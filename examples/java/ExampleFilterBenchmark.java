@@ -10,7 +10,7 @@ public class ExampleFilterBenchmark {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Benchmark filter-Kernel
 		System.out.println(Executor.benchmark("filter_k", Options.createOptions(), 10, new Executor.KernelArgCreator() {

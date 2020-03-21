@@ -6,7 +6,7 @@ public class TestJNI {
 	@BeforeAll
 	static void initLibary() {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 	}
 
 	@BeforeAll

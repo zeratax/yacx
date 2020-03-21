@@ -4,7 +4,7 @@ import yacx.IntArg;
 object ExampleFilterExecutor {
     def main(args: Array[String]) : Unit = {
         //Load Libary
-        Executor.loadLibary()
+        Executor.loadLibrary()
 
         //Create OutputArgument
         val n = 4

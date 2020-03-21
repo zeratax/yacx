@@ -10,7 +10,7 @@ object ExampleSaxpyBenchmark {
 	
     def main(args: Array[String]) : Unit = {
     	//Load Libary
-    	Executor.loadLibary()
+    	Executor.loadLibrary()
     	
       //Benchmark saxpy-Kernel
       println(Executor.benchmark("saxpy", Options.createOptions(), 10,
