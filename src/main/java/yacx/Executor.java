@@ -2,7 +2,6 @@ package yacx;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 /**
  * Class for initialization (load native library) and easily execute CUDA
@@ -690,7 +689,7 @@ public class Executor {
 		@Override
 		public String toString() {
 			StringBuffer buffer = new StringBuffer(200);
-			buffer.append("\nBenchmark " + kernelName + "-Kernel");
+			buffer.append("\nBenchmark " + kernelName + "-Kernel ");
 			buffer.append(deviceInformation + "\n");
 
 			buffer.append("  Datasize  Result (Average)\n");

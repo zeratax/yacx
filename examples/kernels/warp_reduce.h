@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <nvfunctional>
-
 // Performs a warp-wide reduction with func as the reduction function while ensuring that inactive threads, 
 // whose shuffle value is always zero, are being ignored during the reduction as these might distort the
 // result for certain reduction functions (e.g. minimum or multiplication).

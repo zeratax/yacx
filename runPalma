@@ -26,8 +26,7 @@ sed -in "s+<cuda_fp16.h>+\\\\\"$CUDAFP16\\\\\"+g" $HALFCPP
 
 #Insert Options for search in right directories for required headers
 sed -in "s+--gpu-architecture=compute_70\");+--gpu-architecture=compute_70\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
-#sed -in "s+14\");+14\");options.insert(\"$INCLUDECUDA\");options.insert(\"$INCLUDEGCC\");options.insert(\"$INCLUDEGCC2\");options.insert(\"$INCLUDECURRENT\");+g" $EXAMPLESJAVA/*.java
-sed -in "s+11\");+11\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
+#sed -in "s+11\");+11\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
 
 #Build
 ./yacx.sh --buildj

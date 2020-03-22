@@ -1,7 +1,5 @@
 #include "kernels/block_reduce.h"
 
-//#include <algorithm>
-
 // Reduction function, currently the minimum of a and b
 // Common alternatives would be:
 // 	- sum 	 	(return a + b;)
