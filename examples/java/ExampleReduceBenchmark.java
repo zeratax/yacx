@@ -12,10 +12,8 @@ public class ExampleReduceBenchmark {
 	private final static long MB = 1024 * 1024;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibary();
-
-		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		KernelArgCreator creator1 = new Executor.KernelArgCreator() {
 
@@ -85,6 +83,9 @@ public class ExampleReduceBenchmark {
 
 		long[] dataSizes = new long[] { 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB, 4 * MB, 16 * MB, 64 * MB,
 				256 * MB, 1024 * MB };
+
+		// Options
+		Options options = Options.createOptions();
 
 		// Warm up
 		Executor.benchmark("device_reduce", options, 30, creator1, 256 * MB);

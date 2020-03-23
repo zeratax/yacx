@@ -5,11 +5,10 @@ import yacx.IntArg;
 import yacx.KernelArg;
 import yacx.KernelTime;
 import yacx.LongArg;
-import yacx.Options;
 
 public class ExampleReduce {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibary();
 
 		// Testdata
@@ -28,21 +27,21 @@ public class ExampleReduce {
 		LongArg outArg = LongArg.createOutput(arraySize);
 		KernelArg nArg = IntArg.createValue(arraySize);
 
-		// Options for using C++11
-		Options options = Options.createOptions("--std=c++11");
-		options.insert("--gpu-architecture=compute_70");
-		options.insert("-default-device");
-
 		// Launch Kernel
-		KernelTime time = Executor.launch("device_reduce", options, numBlocks, numThreads, inArg, outArg, nArg);
+		KernelTime time = Executor.launch("device_reduce", numBlocks, numThreads, inArg, outArg, nArg);
 
 		// New Input is Output from previous run
-		inArg = LongArg.create(outArg.asLongArray());
+		outArg.setUpload(true);
+		outArg.setDownload(false);
+		// Use Input from previous run as Output
+		inArg.setUpload(false);
+		inArg.setDownload(true);
+
 		// Second launch
-		time.addKernelTime(Executor.launch("device_reduce", options, 1, 1024, inArg, outArg, nArg));
+		time.addKernelTime(Executor.launch("device_reduce", 1, 1024, outArg, inArg, nArg));
 
 		// Get Result
-		long out = outArg.asLongArray()[0];
+		long out = inArg.asLongArray()[0];
 		long expected = ((long) arraySize * ((long) arraySize + 1)) / 2;
 
 		// Print Result

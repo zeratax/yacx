@@ -4,7 +4,7 @@
 // whose shuffle value is always zero, are being ignored during the reduction as these might distort the
 // result for certain reduction functions (e.g. minimum or multiplication).
 extern "C" __inline__ __device__ 
-long long warpReduce(long long val, /*const nvstd::function<long long(long long, long long)> &func,*/ int N) {
+long long warpReduce(long long val, long long (*func) (long long, long long), int N) {
 	
 	// calculate the absolute ID of this thread
 	int ID = blockIdx.x * blockDim.x + threadIdx.x;
@@ -16,8 +16,7 @@ long long warpReduce(long long val, /*const nvstd::function<long long(long long,
 		// perform the shuffle operation
 		long long x = __shfl_down_sync(0xFFFFFFFF, val, offset);
 		// ignore the read value if the source lane is out of bounds (so inactive)
-		val = (shuffle_id < N) ? val + x : val;
-		//val = (shuffle_id < N) ? func(val, x) : val;
+		val = (shuffle_id < N) ? (*func)(val, x) : val;
 	}
 	
 	return val;

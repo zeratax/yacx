@@ -102,7 +102,7 @@ public class ExampleGauss {
 	}
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibary();
 
 		// Testdata

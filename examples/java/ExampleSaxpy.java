@@ -12,7 +12,7 @@ import yacx.Utils;
 
 public class ExampleSaxpy {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibary();
 
 		// Testdata

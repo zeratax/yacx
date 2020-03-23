@@ -13,10 +13,10 @@ public class ExampleDotProduct {
 		// Testdata
 		int numberElements = 9;
 		
-		float[] x = new float[9];
-		float[] y = new float[9];
+		float[] x = new float[numberElements];
+		float[] y = new float[numberElements];
 
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < numberElements; i++) {
 			x[i] = i;
 			y[i] = 2 * i;
 		}

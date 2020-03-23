@@ -30,7 +30,7 @@ public class ExampleFastGEMM {
 		final int CHUNK_K = SHARED_MEMORY_LIMIT_64K ? 4 : 8;
 		final int SKEW_HALF = 8;
 
-		// Load Libary
+		// Load library
 		Executor.loadLibary();
 
 		// Testdata
