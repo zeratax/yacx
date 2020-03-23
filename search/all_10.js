@@ -1,6 +1,14 @@
 var searchData=
 [
+  ['set_5fcerr',['set_cerr',['../classyacx_1_1logger.html#a4861da2ee3b4632d277bdb944195b9df',1,'yacx::logger']]],
+  ['set_5fcout',['set_cout',['../classyacx_1_1logger.html#aadf9c437b15afd49114731dc22c49b5e',1,'yacx::logger']]],
+  ['set_5flogfile',['set_logfile',['../classyacx_1_1logger.html#a134d8e89c7e278d2b6d46b7e3cc985af',1,'yacx::logger']]],
+  ['set_5floglimit',['set_loglimit',['../classyacx_1_1logger.html#a7bed602402c943482675c667643117e4',1,'yacx::logger']]],
+  ['setcerr',['setCerr',['../classyacx_1_1_logger.html#a3973c82d8863f64f0cbc06b7de568a36',1,'yacx::Logger']]],
+  ['setcout',['setCout',['../classyacx_1_1_logger.html#a0ef2418418f4a7fae6bfb7c51fecba6a',1,'yacx::Logger']]],
   ['setdownload',['setDownload',['../classyacx_1_1_array_arg.html#a987b7dcb48507aa09794372f02943938',1,'yacx::ArrayArg']]],
+  ['setlogfile',['setLogfile',['../classyacx_1_1_logger.html#a6a8eedc4a0b47d21df91f496aaae0772',1,'yacx::Logger']]],
+  ['setloglevel',['setLogLevel',['../classyacx_1_1_logger.html#af05792bff3e26fb60826222204edaa6d',1,'yacx::Logger']]],
   ['setupload',['setUpload',['../classyacx_1_1_array_arg.html#a1695350e0d6ec20cd10216b683586c8e',1,'yacx::ArrayArg']]],
   ['shortarg',['ShortArg',['../classyacx_1_1_short_arg.html',1,'yacx']]],
   ['size_5fbytes',['SIZE_BYTES',['../classyacx_1_1_boolean_arg.html#a0486d99d82d0970c6e313aed5b3d64d5',1,'yacx.BooleanArg.SIZE_BYTES()'],['../classyacx_1_1_byte_arg.html#a35cf7c844065e3a95c6c11ee6fd9f402',1,'yacx.ByteArg.SIZE_BYTES()'],['../classyacx_1_1_double_arg.html#ada458aa1d1c6caa14bb2b73371728d67',1,'yacx.DoubleArg.SIZE_BYTES()'],['../classyacx_1_1_float_arg.html#ad48d80addf6cf4871f1edc4794b5fec2',1,'yacx.FloatArg.SIZE_BYTES()'],['../classyacx_1_1_half_arg.html#abeeb4eeb07b5b82b6aabd5515f888e36',1,'yacx.HalfArg.SIZE_BYTES()'],['../classyacx_1_1_int_arg.html#a495ebaa923503451ba65ca02789f2d40',1,'yacx.IntArg.SIZE_BYTES()'],['../classyacx_1_1_long_arg.html#a33aa99ea30f8a4d049eac037bcd12720',1,'yacx.LongArg.SIZE_BYTES()'],['../classyacx_1_1_short_arg.html#acb8b1a53f0b9a7a5699bd600ed4e493e',1,'yacx.ShortArg.SIZE_BYTES()']]],

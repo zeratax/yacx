@@ -5,6 +5,7 @@ var searchData=
   ['getbuswidth',['getBusWidth',['../classyacx_1_1_device.html#a48a7329b67e3ae2d9b711b423678afaf',1,'yacx::Device']]],
   ['getclockrate',['getClockRate',['../classyacx_1_1_device.html#a5f0c68ec8a967abd015668f9910ea535',1,'yacx::Device']]],
   ['getdownload',['getDownload',['../classyacx_1_1_kernel_time.html#a092b669ffeac264944511a369a6ba1f1',1,'yacx::KernelTime']]],
+  ['getinstance',['getInstance',['../classyacx_1_1logger.html#a78d38e80815fa28334c6dffd180fed39',1,'yacx::logger']]],
   ['getlaunch',['getLaunch',['../classyacx_1_1_kernel_time.html#ad0a3f1d7ad2233fd6f0c1a8e7465c42c',1,'yacx::KernelTime']]],
   ['getlength',['getLength',['../classyacx_1_1_array_arg.html#a1c3d005fc750536d28a5ebeea137ee6e',1,'yacx::ArrayArg']]],
   ['getmajorversion',['getMajorVersion',['../classyacx_1_1_device.html#a5037e44a2c12aecf53f76b11a729878d',1,'yacx::Device']]],
