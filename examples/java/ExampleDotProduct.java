@@ -8,7 +8,7 @@ import yacx.KernelTime;
 public class ExampleDotProduct {
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int numberElements = 9;

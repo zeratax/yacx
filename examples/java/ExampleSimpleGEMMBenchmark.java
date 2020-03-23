@@ -9,7 +9,7 @@ public class ExampleSimpleGEMMBenchmark {
 		final int WMMA_N = 16;
 
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Benchmark Simple-GEMM-Kernel
 		new MatrixUtils.BenchmarkGEMM() {

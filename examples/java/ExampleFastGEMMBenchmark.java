@@ -25,7 +25,7 @@ public class ExampleFastGEMMBenchmark {
 		final int SKEW_HALF = 8;
 
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Get Device
 		Device device = Devices.findDevice();

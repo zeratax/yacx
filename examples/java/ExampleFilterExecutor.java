@@ -6,8 +6,8 @@ import yacx.IntArg;
 
 public class ExampleFilterExecutor {
 	public static void main(String[] args) throws IOException {
-		// Load library
-		Executor.loadLibary();
+		// Load Library
+		Executor.loadLibrary();
 
 		// Create OutputArgument
 		int n = 4;

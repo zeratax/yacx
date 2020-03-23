@@ -13,7 +13,7 @@ public class ExampleReduceBenchmark {
 
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		KernelArgCreator creator1 = new Executor.KernelArgCreator() {
 

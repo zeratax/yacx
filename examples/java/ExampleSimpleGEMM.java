@@ -17,7 +17,7 @@ public class ExampleSimpleGEMM {
 
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int x = 4;

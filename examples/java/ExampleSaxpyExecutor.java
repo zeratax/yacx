@@ -8,7 +8,7 @@ import yacx.IntArg;
 public class ExampleSaxpyExecutor {
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Create OutputArgument
 		int n = 4;

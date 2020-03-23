@@ -25,7 +25,8 @@ Program::~Program() {
   nvrtcResult error = nvrtcDestroyProgram(m_prog.get());
   if (error != NVRTC_SUCCESS) {
     auto description = whichError(error);
-    std::cout << descriptionFkt(description) << std::endl;
+    logger(loglevel::ERROR)
+        << "could not destroy program: " << descriptionFkt(description);
   }
 }
 

@@ -9,7 +9,7 @@ import yacx.LongArg;
 public class ExampleReduce {
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int arraySize = 49631;
