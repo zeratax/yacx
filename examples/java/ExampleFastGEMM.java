@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Arrays;
 
 import yacx.Device;
 import yacx.Executor;
@@ -15,7 +14,7 @@ public class ExampleFastGEMM {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int x = 10001;

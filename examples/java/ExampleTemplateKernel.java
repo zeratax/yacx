@@ -10,7 +10,7 @@ import yacx.Utils;
 public class ExampleTemplateKernel {
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		final int numThreads = 1;
