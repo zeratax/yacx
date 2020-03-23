@@ -10,8 +10,8 @@ public class ExampleSaxpyBenchmark {
 	private final static long KB = 1024;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
+		// Load library
+		Executor.loadLibrary();
 
 		// Benchmark saxpy-Kernel
 		System.out.println(Executor.benchmark("saxpy", Options.createOptions(), 10, new Executor.KernelArgCreator() {

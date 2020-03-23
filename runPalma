@@ -1,19 +1,23 @@
 #Usage:
 #./runPalma ExampleSimpleGEMM
 
-CURRENTDIR='/scratch/tmp/l_sief03/yacx'
+CURRENTDIR="$(echo $PWD)"
 CUDA='/Applic.HPC/Easybuild/skylake/2019a/software/CUDA/10.1.105-GCC-8.2.0-2.31.1/targets/x86_64-linux'
-GCCINCLUDE='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c\+\+/8.2.0'
-GCCINCLUDE2='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c\+\+/8.2.0/x86_64-pc-linux-gnu'
+GCC='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c++/8.2.0/'
+GCC2='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/include/c++/8.2.0/x86_64-pc-linux-gnu/'
+GCC3='/Applic.HPC/Easybuild/skylake/2019a/software/Core/GCCcore/8.2.0/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include'
 
 CUDAFP16="$CUDA/include/cuda_fp16.h"
 INCLUDECUDA="--include-path=$CUDA/include"
-INCLUDEGCC="--include-path=$GCCINCLUDE"
-INCLUDEGCC2="--include-path=$GCCINCLUDE2"
-INCLUDECURRENT="--include-path=$CURRENTDIR"
+INCLUDECUDA2="--include-path=$CURRENTDIR/include/include"
+INCLUDEGCC="--include-path=$(echo $GCC | sed "s/+/\\\\+/g")"
+INCLUDEGCC2="--include-path=$(echo $GCC2 | sed "s/+/\\\\+/g")"
+INCLUDEGCC3="--include-path=$GCC3"
+INCLUDEGNU="--include-path=$CURRENTDIR"
 
 HALFCPP='src/jni/Half.cpp'  
 EXAMPLESJAVA='examples/java'
+EXAMPLEREDUCE='examples/java/ExampleReduce.java'
 
 MODULES='Java GCC/8.2.0-2.31.1 CUDA/10.1.105 CMake'
 MODULESADD="module add $MODULES"
@@ -26,8 +30,15 @@ sed -in "s+<cuda_fp16.h>+\\\\\"$CUDAFP16\\\\\"+g" $HALFCPP
 
 #Insert Options for search in right directories for required headers
 sed -in "s+--gpu-architecture=compute_70\");+--gpu-architecture=compute_70\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
-#sed -in "s+14\");+14\");options.insert(\"$INCLUDECUDA\");options.insert(\"$INCLUDEGCC\");options.insert(\"$INCLUDEGCC2\");options.insert(\"$INCLUDECURRENT\");+g" $EXAMPLESJAVA/*.java
-sed -in "s+11\");+11\");options.insert(\"$INCLUDECUDA\");+g" $EXAMPLESJAVA/*.java
+
+#For reduce
+[ ! -d "include/include" ] && cp -r "/Applic.HPC/Easybuild/skylake/2019a/software/CUDA/10.1.105-GCC-8.2.0-2.31.1/targets/x86_64-linux/include" include
+#sed -in "s+<nvfunctional>+\"$CURRENTDIR/include/include/nvfunctional\"+g" "$REDUCEKERNEL"
+sed -in "s+--std=c\+\+11\");+--std=c\+\+11\"); options.insert(\"$INCLUDECUDA2\"); options.insert(\"$INCLUDEGCC\"); options.insert(\"$INCLUDEGCC2\"); options.insert(\"$INCLUDEGNU\"); options.insert(\"$INCLUDEGCC3\");+g" $EXAMPLEREDUCE
+sed -in "s+<type_traits>+\"$CURRENTDIR/include/include/thrust/detail/type_traits.h\"+g" include/include/crt/nvfunctional
+#sed -in "s+<thrust/detail/config.h>+\"$CURRENTDIR/include/include/thrust/detail/config.h\"+g" include/include/thrust/detail/type_traits.h
+#sed -in "s+<thrust/version.h>+\"$CURRENTDIR/include/include/thrust/version.h\"+g" include/include/thrust/detail/config.h
+#sed -in "s+<thrust/detail/config/config.h>+\"$CURRENTDIR/include/include/thrust/detail/config/config.h\"+g" include/include/thrust/detail/config.h 
 
 #Build
 ./yacx.sh --buildj

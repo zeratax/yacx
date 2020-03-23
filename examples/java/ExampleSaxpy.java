@@ -12,8 +12,8 @@ import yacx.Utils;
 
 public class ExampleSaxpy {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
+		// Load library
+		Executor.loadLibrary();
 
 		// Testdata
 		final int numThreads = 4;

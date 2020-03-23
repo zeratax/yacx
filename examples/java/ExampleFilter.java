@@ -10,8 +10,8 @@ import yacx.Utils;
 
 public class ExampleFilter {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
+		// Load Library
+		Executor.loadLibrary();
 
 		// Testdata
 		final int numThreads = 16;

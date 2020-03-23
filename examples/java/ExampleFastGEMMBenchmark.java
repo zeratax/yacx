@@ -1,13 +1,10 @@
 import java.io.IOException;
 
-import yacx.ArrayArg;
 import yacx.Device;
 import yacx.Devices;
 import yacx.Executor;
 import yacx.FloatArg;
 import yacx.HalfArg;
-import yacx.KernelArg;
-import yacx.PaddingArg;
 
 public class ExampleFastGEMMBenchmark {
 
@@ -27,8 +24,8 @@ public class ExampleFastGEMMBenchmark {
 		final int CHUNK_K = SHARED_MEMORY_LIMIT_64K ? 4 : 8;
 		final int SKEW_HALF = 8;
 
-		// Load Libary
-		Executor.loadLibary();
+		// Load library
+		Executor.loadLibrary();
 
 		// Get Device
 		Device device = Devices.findDevice();

@@ -1,9 +1,6 @@
 import java.io.IOException;
 
-import yacx.ArrayArg;
 import yacx.Executor;
-import yacx.KernelArg;
-import yacx.PaddingArg;
 
 public class ExampleSimpleGEMMBenchmark {
 
@@ -11,8 +8,8 @@ public class ExampleSimpleGEMMBenchmark {
 		final int WMMA_M = 16;
 		final int WMMA_N = 16;
 
-		// Load Libary
-		Executor.loadLibary();
+		// Load library
+		Executor.loadLibrary();
 
 		// Benchmark Simple-GEMM-Kernel
 		new MatrixUtils.BenchmarkGEMM() {

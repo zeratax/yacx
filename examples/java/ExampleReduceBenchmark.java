@@ -2,7 +2,6 @@ import java.io.IOException;
 
 import yacx.Executor;
 import yacx.Executor.KernelArgCreator;
-import yacx.FloatArg;
 import yacx.LongArg;
 import yacx.IntArg;
 import yacx.KernelArg;
@@ -13,16 +12,14 @@ public class ExampleReduceBenchmark {
 	private final static long MB = 1024 * 1024;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
-
-		Options options = Options.createOptions("--gpu-architecture=compute_70");
+		// Load library
+		Executor.loadLibrary();
 
 		KernelArgCreator creator1 = new Executor.KernelArgCreator() {
 
 			@Override
 			public int getDataLength(long dataSizeBytes) {
-				return (int) (dataSizeBytes / FloatArg.SIZE_BYTES);
+				return (int) (dataSizeBytes / LongArg.SIZE_BYTES);
 			}
 
 			@Override
@@ -55,7 +52,7 @@ public class ExampleReduceBenchmark {
 
 			@Override
 			public int getDataLength(long dataSizeBytes) {
-				return (int) (dataSizeBytes / FloatArg.SIZE_BYTES);
+				return (int) (dataSizeBytes / LongArg.SIZE_BYTES);
 			}
 
 			@Override
@@ -83,9 +80,12 @@ public class ExampleReduceBenchmark {
 				return new KernelArg[] { inArg, outArg, nArg };
 			}
 		};
-		
+
 		long[] dataSizes = new long[] { 1 * KB, 4 * KB, 16 * KB, 64 * KB, 256 * KB, 1 * MB, 4 * MB, 16 * MB, 64 * MB,
-				256 * MB };
+				256 * MB, 1024 * MB };
+
+		// Options
+		Options options = Options.createOptions();
 
 		// Warm up
 		Executor.benchmark("device_reduce", options, 30, creator1, 256 * MB);

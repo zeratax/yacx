@@ -16,8 +16,8 @@ public class ExampleSimpleGEMM {
 	private final static int WMMA_N = 16;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
+		// Load library
+		Executor.loadLibrary();
 
 		// Testdata
 		int x = 4;

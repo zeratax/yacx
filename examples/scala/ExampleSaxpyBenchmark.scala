@@ -9,8 +9,8 @@ object ExampleSaxpyBenchmark {
 	private val KB = 1024
 	
     def main(args: Array[String]) : Unit = {
-    	//Load Libary
-    	Executor.loadLibary()
+    	//Load library
+    	Executor.loadLibrary()
     	
       //Benchmark saxpy-Kernel
       println(Executor.benchmark("saxpy", Options.createOptions(), 10,

@@ -9,9 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class TestJNIHandle extends TestJNI {
+	static String saxpy;
+
+	@BeforeAll
+	static void loadSaxpy() throws IOException {
+		// Load Saxpy-Kernel as String
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+	}
 
 	/**
 	 * Check handle-member not 0 and after destroying c-object the handle-member

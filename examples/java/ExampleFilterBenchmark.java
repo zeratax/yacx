@@ -9,8 +9,8 @@ public class ExampleFilterBenchmark {
 	private final static long KB = 1024;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
-		Executor.loadLibary();
+		// Load Library
+		Executor.loadLibrary();
 
 		// Benchmark filter-Kernel
 		System.out.println(Executor.benchmark("filter_k", Options.createOptions(), 10, new Executor.KernelArgCreator() {
