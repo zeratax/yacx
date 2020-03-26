@@ -53,6 +53,12 @@ public class TestLogger extends TestJNI {
 		// Delete Logfile
 		if (!logFile.delete())
 			throw new IOException("could not delete " + logFile.getAbsolutePath());
+		
+		//Test Null
+		assertThrows(NullPointerException.class, () -> {
+			Logger.setLogfile(null);
+		});
+		
 		// Set Logfile again
 		Logger.setLogfile(logFile.getAbsolutePath());
 
