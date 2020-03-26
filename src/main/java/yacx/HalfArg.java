@@ -64,7 +64,6 @@ public class HalfArg extends ArrayArg {
 	 * @param columns amount of columns of the matrix
 	 * @return a new HalfArg with the passes values
 	 */
-
 	public static HalfArg createTransposed(float[] floats, int rows, int columns) {
 		assert (floats != null && floats.length > 0);
 		assert (rows > 0 && columns > 0);
