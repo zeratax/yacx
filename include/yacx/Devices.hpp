@@ -30,7 +30,16 @@ class Device : JNIHandle {
   std::string name() const { return m_name; }
   //! returns the primary context of this device
   //! \return primary context
-  CUcontext getPrimaryContext() const { return m_primaryContext; }
+  CUcontext getPrimaryContext();
+  //! returns the uploadstream for arguments of this device
+  //! \return uploadstream
+  CUstream getUploadStream();
+  //! returns the launchstream for arguments of this device
+  //! \return launchstream
+  CUstream getLaunchStream();
+  //! returns the downloadstream for arguments of this device
+  //! \return downloadstream
+  CUstream getDownloadStream();
   //! Memory available on device for __constant__ variables in a CUDA C kernel
   //! in bytes
   //! \return Memory in bytes
@@ -79,12 +88,15 @@ class Device : JNIHandle {
   //! Constructs a Device with the CUDA capable device with passed devicenumber
   Device(int ordinal);
   void set_device_properties(const CUdevice &device);
+  void initContext();
   std::string uuidToHex(CUuuid &uuid);
 
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
+  bool m_contextCreated = false;
   CUcontext m_primaryContext;
+  CUstream m_upload, m_launch, m_download;
   std::string m_uuidHex;
   size_t m_memory, m_max_shared_memory_per_block,
       m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;

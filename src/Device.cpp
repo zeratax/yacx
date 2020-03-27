@@ -12,8 +12,6 @@ Device::Device(int ordinal) {
   CUdevice device;
   CUDA_SAFE_CALL(cuDeviceGet(&device, ordinal));
   this->set_device_properties(device);
-
-  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&m_primaryContext, device));
 }
 
 void Device::set_device_properties(const CUdevice &device) {
@@ -42,6 +40,51 @@ void Device::set_device_properties(const CUdevice &device) {
 #else
   m_uuidHex = "";
 #endif
+}
+
+void Device::initContext(){
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&m_primaryContext, m_device));
+
+  CUDA_SAFE_CALL(cuCtxSetCurrent(m_primaryContext));
+  CUDA_SAFE_CALL(cuStreamCreate(&m_upload, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&m_launch, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&m_download, CU_STREAM_NON_BLOCKING));
+
+  m_contextCreated = true;
+}
+
+CUcontext Device::getPrimaryContext() {
+  if (!m_contextCreated){
+    initContext();
+  }
+
+  return m_primaryContext;
+}
+
+CUstream Device::getUploadStream() {
+  if (!m_contextCreated){
+    initContext();
+  }
+  
+  return m_upload;
+}
+
+
+CUstream Device::getLaunchStream() {
+  if (!m_contextCreated){
+    initContext();
+  }
+  
+  return m_launch;
+}
+
+
+CUstream Device::getDownloadStream() {
+  if (!m_contextCreated){
+    initContext();
+  }
+  
+  return m_download;
 }
 
 std::string Device::uuidToHex(CUuuid &uuid) {

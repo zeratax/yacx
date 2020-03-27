@@ -37,6 +37,11 @@ Devices::Devices() {
 
 Devices::~Devices() {
   for (auto &dev : m_devices) {
+    CUDA_SAFE_CALL(cuCtxSetCurrent(dev.m_primaryContext));
+    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_upload));
+    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_launch));
+    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_download));
+    
     CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(dev.m_device));
   }
 }
