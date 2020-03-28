@@ -37,57 +37,14 @@ logmap state = {
 
 namespace detail {
 
-bool starts_with(const std::string &str, const std::string &substr) {
-  return (str.rfind(substr, 0) == 0);
-}
+const char *get_name(loglevel level);
 
-bool is_flag(const std::string &arg) { return arg[0] == '-'; }
-
-std::string flag_value(const std::string &flag) {
-  int pos = flag.find_first_of('=');
-  if (pos != std::string::npos)
-    return flag.substr(0, pos);
-  throw std::invalid_argument("Value flags have the syntax --key=value");
-}
-
-void handle_flag(const std::string &flag) {
-  if (starts_with(flag, "-v") || starts_with(flag, "--verbose")) {
-    Logger::getInstance().set_log_level(flag_value(flag));
-  } else if (starts_with(flag, "-f") || starts_with(flag, "--file")) {
-    Logger::getInstance().set_log_file(flag_value(flag));
-  }
-}
-
-void handle_flags(const std::vector<const std::string> &flags) {
-  for (auto &flag : flags) {
-    if (is_flag(flag)) {
-      handle_flag(flag);
-    }
-  }
-}
-
-const char *get_name(loglevel level) { return state.find(level)->second.first; }
-
-const char *get_color(loglevel level) {
-  return state.find(level)->second.second;
-}
-
-static std::string get_datetime() {
-  auto t = std::time(nullptr);
-  auto tm = *std::localtime(&t);
-  std::ostringstream oss;
-  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
-  return oss.str();
-}
+const char *get_color(loglevel level);
+std::string get_datetime();
 
 } // namespace detail
 
-void handle_logging_args(int argc, char const *const *const argv) {
-  for (int i = 1; i < argc; ++i) {
-    std::arguments.push_back(argv[i]);
-  }
-  detail::handle_flags(std::arguments);
-}
+void handle_logging_args(int argc, char const *const *const argv);
 
 /*!
   \class logger Logger.hpp
@@ -96,6 +53,8 @@ void handle_logging_args(int argc, char const *const *const argv) {
 class Logger {
 
  public:
+  loglevel limit = loglevel::WARNING;
+
   //! returns the logger instance.
   static Logger &getInstance() {
     static Logger instance;
@@ -187,7 +146,6 @@ class Logger {
  private:
   bool cout_flag = true;
   bool cerr_flag = false;
-  loglevel limit = loglevel::WARNING;
 
   loglevel current_loglevel;
   std::unique_ptr<std::ofstream> logfile_stream;
