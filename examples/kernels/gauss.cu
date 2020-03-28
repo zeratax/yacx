@@ -1,4 +1,4 @@
-#include "kernels/gauss.h"
+#include "examples/kernels/gauss.h"
 
 extern "C" __global__ void gaussFilterKernel(Pixel *image,
                                              float weight[5][5],

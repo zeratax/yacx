@@ -90,9 +90,7 @@ int main(int argc, char **argv) {
   Pixel *image = readPPM(inFilename, &width, &height);
 
   try {
-    Headers headers;
-    headers.insert(Header{"kernels/gauss.h"});
-    Source source{load("kernels/gauss.cu"), headers};
+    Source source{load("examples/kernels/gauss.cu")};
 
     size_t size_pixel = height * width * sizeof(Pixel);
     size_t size_weights = 5 * 5 * sizeof(float);
