@@ -1,33 +1,75 @@
 #pragma once
 
-#include <bits/unique_ptr.h>
+#include "Colors.hpp"
+
 #include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <map>
+#include <stdexcept>
 #include <string>
+#include <vector>
+
+// we don't have P1275 but this works well enough as a substitute for now
+namespace std {
+std::vector<std::string const> arguments;
+}
 
 namespace yacx {
-
 enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
 
-static std::string get_name(loglevel l) {
-  switch (l) {
-  case loglevel::NONE:
-    return "   NONE";
-  case loglevel::ERROR:
-    return "  ERROR";
-  case loglevel::WARNING:
-    return "WARNING";
-  case loglevel::INFO:
-    return "   INFO";
-  case loglevel::DEBUG:
-    return "  DEBUG";
-  case loglevel::DEBUG1:
-    return " DEBUG1";
-  default:
-    return "UNKNOWN";
+using logmap = std::map<loglevel, std::pair<const char *, const char *>>;
+
+logmap state = {
+    {loglevel::NONE,
+     std::pair<const char *, const char *>{"   NONE", gColorBrightDefault}},
+    {loglevel::ERROR,
+     std::pair<const char *, const char *>{"  ERROR", gColorBrightRed}},
+    {loglevel::WARNING,
+     std::pair<const char *, const char *>{"WARNING", gColorBrightYellow}},
+    {loglevel::INFO,
+     std::pair<const char *, const char *>{"   INFO", gColorBrightDefault}},
+    {loglevel::DEBUG,
+     std::pair<const char *, const char *>{"  DEBUG", gColorGray}},
+    {loglevel::DEBUG1,
+     std::pair<const char *, const char *>{" DEBUG1", gColorGray}}};
+
+namespace detail {
+
+bool starts_with(const std::string &str, const std::string &substr) {
+  return (str.rfind(substr, 0) == 0);
+}
+
+bool is_flag(const std::string &arg) { return arg[0] == '-'; }
+
+std::string flag_value(const std::string &flag) {
+  int pos = flag.find_first_of('=');
+  if (pos != std::string::npos)
+    return flag.substr(0, pos);
+  throw std::invalid_argument("Value flags have the syntax --key=value");
+}
+
+void handle_flag(const std::string &flag) {
+  if (starts_with(flag, "-v") || starts_with(flag, "--verbose")) {
+    Logger::getInstance().set_log_level(flag_value(flag));
+  } else if (starts_with(flag, "-f") || starts_with(flag, "--file")) {
+    Logger::getInstance().set_log_file(flag_value(flag));
   }
+}
+
+void handle_flags(const std::vector<const std::string> &flags) {
+  for (auto &flag : flags) {
+    if (is_flag(flag)) {
+      handle_flag(flag);
+    }
+  }
+}
+
+const char *get_name(loglevel level) { return state.find(level)->second.first; }
+
+const char *get_color(loglevel level) {
+  return state.find(level)->second.second;
 }
 
 static std::string get_datetime() {
@@ -38,21 +80,30 @@ static std::string get_datetime() {
   return oss.str();
 }
 
+} // namespace detail
+
+void handle_logging_args(int argc, char const *const *const argv) {
+  for (int i = 1; i < argc; ++i) {
+    std::arguments.push_back(argv[i]);
+  }
+  detail::handle_flags(std::arguments);
+}
+
 /*!
   \class logger Logger.hpp
   \brief Class to log events of varying severity.
 */
-class logger {
+class Logger {
 
  public:
   //! returns the logger instance.
-  static logger &getInstance() {
-    static logger instance;
+  static Logger &getInstance() {
+    static Logger instance;
     return instance;
   }
 
   //!
-  logger() {
+  Logger() {
 #ifdef LOG_FILE
     set_logfile(LOG_FILE);
 #endif
@@ -67,9 +118,9 @@ class logger {
 #endif
   }
 
-  logger(logger const &) = delete;
+  Logger(Logger const &) = delete;
 
-  logger &operator=(logger const &) = delete;
+  Logger &operator=(Logger const &) = delete;
 
   //! set the loglimit
   //! \param limit new limit for logging.
@@ -94,9 +145,9 @@ class logger {
   //! \param value value to be printed.
   template <typename T> void print(T const &value) {
     if (cout_flag)
-      std::cout << value;
+      std::cout << value << gColorReset;
     if (cerr_flag)
-      std::cerr << value;
+      std::cerr << value << gColorReset;
     if (logfile_stream) {
       *logfile_stream << value;
       if (logfile_stream->fail()) {
@@ -110,21 +161,23 @@ class logger {
   //! \param severity The severity of the current logging reason.
   //! \param src_file The source file where the logging request was issued.
   //! \param src_line The source line where the logging request was issued.
-  [[nodiscard]] logger &prepare(loglevel severity, std::string src_file,
+  [[nodiscard]] Logger &prepare(loglevel severity, std::string src_file,
                                 int src_line) {
+    using namespace detail;
     current_loglevel = severity;
     if (current_loglevel <= limit) {
       std::stringstream prefix_ss;
       prefix_ss << std::endl
-                << get_datetime() << " " << get_name(severity) << "["
-                << src_file << ":" << src_line << "]: ";
+                << detail::get_color(severity) << get_datetime() << " "
+                << get_name(severity) << "[" << src_file << ":" << src_line
+                << "]: ";
       std::string prefix = prefix_ss.str();
       print(prefix);
     }
     return *this;
   }
 
-  template <typename T> logger &operator<<(T const &value) {
+  template <typename T> Logger &operator<<(T const &value) {
     if (current_loglevel <= limit) {
       print(value);
     }
@@ -152,9 +205,9 @@ class log_null_sink {
 };
 
 #ifdef NO_LOGGING
-#define logger(level) yacx::log_null_sink()
+#define Logger(level) yacx::log_null_sink()
 #else
-#define logger(level)                                                          \
-  yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
+#define Logger(level)                                                          \
+  yacx::Logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
 } // namespace yacx
