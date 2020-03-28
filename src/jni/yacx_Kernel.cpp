@@ -8,6 +8,7 @@
 #include "../../include/yacx/KernelTime.hpp"
 
 #include <string>
+#include <limits.h>
 
 using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, yacx::Devices,
       jni::KernelArgJNI;
@@ -21,7 +22,8 @@ void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, j
         CHECK_BIGGER(jblock0, 0, "illegal size for block0", )
         CHECK_BIGGER(jblock1, 0, "illegal size for block1", )
         CHECK_BIGGER(jblock2, 0, "illegal size for block2", )
-        CHECK_BIGGER(jshared, -1, "illegal size for shared", )
+        CHECK_BIGGER(jshared, -1, "illegal size for shared memory", )
+        CHECK_BIGGER(UINT_MAX, jshared - 1, "illegal size for shared memory", )
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
     	CHECK_NULL(kernelPtr, )
