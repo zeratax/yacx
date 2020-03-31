@@ -16,7 +16,7 @@ typedef struct {
   
   float effective_bandwidth_up() { return effective_bandwidth(upload, size_upload)}
   float effective_bandwidth_down() { return effective_bandwidth(download, size_download)}
-  float effective_bandwidth_total() { return effective_bandwidth(total, size_total)}
+  float effective_bandwidth_launch() { return effective_bandwidth(launch, size_total)}
 
   ostream& operator<<(ostream& os, const KernelTime& time)
   {
