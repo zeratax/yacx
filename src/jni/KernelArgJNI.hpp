@@ -31,7 +31,7 @@ class KernelArgJNI : yacx::JNIHandle {
   KernelArgJNI(std::shared_ptr<detail::HDataMem> hdata,
                yacx::KernelArg *kernelArg, std::string type)
       : m_hdata(hdata), m_kernelArg(kernelArg), m_type(type){};
-  KernelArgJNI(void *data, size_t size, bool download, bool copy, bool upload,
+  KernelArgJNI(size_t size, bool download, bool copy, bool upload,
                std::string type);
   ~KernelArgJNI();
   yacx::KernelArg *kernelArgPtr() { return m_kernelArg; }

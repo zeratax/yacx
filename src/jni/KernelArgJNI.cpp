@@ -16,11 +16,8 @@ HDataMem::~HDataMem(){
     CUDA_SAFE_CALL(cuMemFreeHost(m_hdata));
 }
 
-KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
+KernelArgJNI::KernelArgJNI(size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
     m_hdata = std::make_shared<HDataMem>(size);
-
-    if (data)
-        std::memcpy(getHostData(), data, size);
 
     m_kernelArg = new KernelArg{getHostData(), size, download, copy, upload};
 }
