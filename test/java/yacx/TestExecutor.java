@@ -68,7 +68,7 @@ class TestExecutor extends TestJNI {
 		// KernelArg-Creator for saxpy-benchmark-test
 		creatorSaxpy = new Executor.KernelArgCreator() {
 			@Override
-			public int getDataLength(int dataSizeBytes) {
+			public int getDataLength(long dataSizeBytes) {
 				return (int) (dataSizeBytes / FloatArg.SIZE_BYTES);
 			}
 
@@ -103,7 +103,7 @@ class TestExecutor extends TestJNI {
 		creatorFilter = new Executor.KernelArgCreator() {
 
 			@Override
-			public int getDataLength(int dataSizeBytes) {
+			public int getDataLength(long dataSizeBytes) {
 				return (int) (dataSizeBytes / IntArg.SIZE_BYTES);
 			}
 
@@ -230,7 +230,7 @@ class TestExecutor extends TestJNI {
 		templateParameter = "double";
 
 		Executor.launch(kernelString, kernelName, Options.createOptions(), Devices.findDevice().getName(),
-				new String[] { templateParameter }, 1, 1, 1, 1, 1, 1, resultArg);
+				new String[] { templateParameter }, 1, 1, 1, 1, 1, 1, 0, resultArg);
 
 		assertEquals(DoubleArg.SIZE_BYTES, resultArg.asIntArray()[0],
 				"an double in CUDA is not " + DoubleArg.SIZE_BYTES + " bytes long");
@@ -258,7 +258,7 @@ class TestExecutor extends TestJNI {
 			Executor.benchmark(saxpy, "saxpy", options, Devices.findDevice(), 3, new Executor.KernelArgCreator() {
 
 				@Override
-				public int getDataLength(int dataSizeBytes) {
+				public int getDataLength(long dataSizeBytes) {
 					return creatorSaxpy.getDataLength(dataSizeBytes);
 				}
 
@@ -283,7 +283,7 @@ class TestExecutor extends TestJNI {
 		Executor.KernelArgCreator creatorInvalid = new Executor.KernelArgCreator() {
 
 			@Override
-			public int getDataLength(int dataSizeBytes) {
+			public int getDataLength(long dataSizeBytes) {
 				return creatorSaxpy.getDataLength(dataSizeBytes);
 			}
 
