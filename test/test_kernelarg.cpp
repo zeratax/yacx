@@ -10,7 +10,7 @@ using yacx::KernelArg, yacx::Source, yacx::Headers;
 
 CATCH_REGISTER_ENUM(compare, compare::CORRECT, compare::CHECK_COMPARE_WRONG,
                     compare::A_COMPARE_WRONG, compare::X_COMPARE_WRONG,
-                    compare::Y_COMPARE_WRONG, compare::OUT_COMPARE_WRONG);
+                    compare::Y_COMPARE_WRONG, compare::OUT_COMPARE_WRONG)
 
 TEST_CASE("KernelArg can be constructed", "[yacx::KernelArg]") {
   int a{5};

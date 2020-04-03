@@ -62,10 +62,8 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
 
     // check device results
     double epsilon = 1.0E-8;
-    bool match = 1;
     for (int i = 0; i < nElem; ++i) {
       if (abs(hostRef[i] - gpuRef[i]) > epsilon) {
-        match = 0;
         char *error_string;
         asprintf(
             &error_string,
@@ -122,10 +120,8 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
 
     // check device results
     double epsilon = 1.0E-8;
-    bool match = 1;
     for (int i = 0; i < nElem; ++i) {
       if (abs(hostRef[i] - gpuRef[i]) > epsilon) {
-        match = 0;
         char *error_string;
         asprintf(
             &error_string,
@@ -171,10 +167,9 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
 
     // check device results
     double epsilon = 1.0E-8;
-    bool match = 1;
+
     for (int i = 0; i < nElem; ++i) {
       if (abs(hostRef[i] - gpuRef[i]) > epsilon) {
-        match = 0;
         char *error_string;
         asprintf(
             &error_string,
@@ -242,11 +237,13 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
     args.emplace_back(KernelArg{gpuRef, nBytes, true});
     args.emplace_back(KernelArg{&nElem, sizeof(int), false});
 
+    CUdevice deviceCU;
+    CUDA_SAFE_CALL(cuDeviceGet(&deviceCU, 0));
     constexpr int warpsize = 32;
     int max_block_DIM = 0;
     CUDA_SAFE_CALL(cuDeviceGetAttribute(
         (int *)&max_block_DIM, CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
-        device.get()));
+        deviceCU));
     const int grid_x = (nElem + max_block_DIM - 1) / max_block_DIM;
     const int block_y = (nElem / grid_x + warpsize - 1) / warpsize;
 
@@ -269,10 +266,8 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
 
     // check device results
     double epsilon = 1.0E-8;
-    bool match = 1;
     for (int i = 0; i < nElem; ++i) {
       if (abs(hostRef[i] - gpuRef[i]) > epsilon) {
-        match = 0;
         char *error_string;
         asprintf(
             &error_string,
