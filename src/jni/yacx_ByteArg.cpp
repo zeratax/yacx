@@ -10,7 +10,8 @@ jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jva
 		jclass clsKernelArg = getClass(env, "yacx/KernelArg");
 		if (clsKernelArg == NULL) return NULL;
 
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jbyte), false, false, false, CTYPE};
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jbyte), false, false, false, CTYPE};
+        *(static_cast<jbyte*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating ByteValueArg", NULL)
@@ -20,14 +21,11 @@ jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray ja
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
-        auto arrayPtr = env->GetByteArrayElements(jarray, NULL);
         auto arrayLength = env->GetArrayLength(jarray);
-
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jbyte), jdownload, true, true, CTYPE + "*"};
-
-        env->ReleaseByteArrayElements(jarray, arrayPtr, JNI_ABORT);
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jbyte), jdownload, true, true, CTYPE + "*"};
+        env->GetByteArrayRegion(jarray, 0, arrayLength, static_cast<jbyte*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);
     END_TRY_R("creating ByteArg", NULL)
