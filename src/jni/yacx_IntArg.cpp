@@ -10,7 +10,8 @@ jobject JNICALL Java_yacx_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalu
 		jclass clsKernelArg = getClass(env, "yacx/KernelArg");
 		if (clsKernelArg == NULL) return NULL;
 
-		KernelArgJNI* kernelArgPtr = new KernelArgJNI{&jvalue, sizeof(jint), false, false, false, CTYPE};
+		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jint), false, false, false, CTYPE};
+        *(static_cast<jint*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating IntValueArg", NULL)
@@ -20,14 +21,11 @@ jobject Java_yacx_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarr
     BEGIN_TRY
         CHECK_NULL(jarray, NULL)
 
-        auto arrayPtr = env->GetIntArrayElements(jarray, NULL);
         auto arrayLength = env->GetArrayLength(jarray);
-
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayPtr, arrayLength * sizeof(jint), jdownload, true, true, CTYPE + "*"};
-
-        env->ReleaseIntArrayElements(jarray, arrayPtr, JNI_ABORT);
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jint), jdownload, true, true, CTYPE + "*"};
+        env->GetIntArrayRegion(jarray, 0, arrayLength, static_cast<jint*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);
     END_TRY_R("creating IntArg", NULL)

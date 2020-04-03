@@ -5,12 +5,9 @@
 
 using jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg, std::shared_ptr;
 
-KernelArgJNI::KernelArgJNI(void* const data, size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
+KernelArgJNI::KernelArgJNI(size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
     std::shared_ptr<void> hdata(malloc(size), free);
     m_hdata = hdata;
-
-    if (data)
-        std::memcpy(hdata.get(), data, size);
 
     m_kernelArg = new KernelArg{hdata.get(), size, download, copy, upload};
 }
