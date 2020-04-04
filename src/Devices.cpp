@@ -31,7 +31,7 @@ Devices::Devices() {
   }
 
   for (int i{0}; i < number; ++i) {
-    m_devices.emplace_back(Device(i));
+    m_devices.emplace_back(i);
   }
 }
 
