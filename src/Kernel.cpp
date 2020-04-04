@@ -165,6 +165,12 @@ Kernel::benchmark(std::vector<KernelArg>& argsVector, unsigned int executions, D
   logger(loglevel::DEBUG) << "setting context";
   CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
+  if (m_shared > 0){
+    logger(loglevel::DEBUG) << "kernel use " << m_shared << " dynamic shared memory";
+    CUDA_SAFE_CALL(cuFuncSetAttribute(
+        m_kernel, CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES, m_shared));
+  }
+
   // allocate memory
   void *output;
   if (maxOutputSize) {
