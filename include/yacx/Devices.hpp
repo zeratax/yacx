@@ -19,6 +19,10 @@ class Device : JNIHandle {
     Driver API documentation</a>
   */
  public:
+  //! Constructs a Device with the CUDA capable device with passed devicenumber
+  Device(int ordinal);
+  //! Constructs a Device with the first CUDA capable device it finds
+  Device() : Device(0) {};
   //! Minor compute capability version number
   //! \return version number
   [[nodiscard]] int minor_version() const { return m_minor; }
@@ -76,8 +80,6 @@ class Device : JNIHandle {
   int attribute(CUdevice_attribute attrib) const;
 
  private:
-  //! Constructs a Device with the CUDA capable device with passed devicenumber
-  Device(int ordinal);
   void set_device_properties(const CUdevice &device);
   std::string uuidToHex(CUuuid &uuid);
 
