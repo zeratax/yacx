@@ -42,49 +42,58 @@ void Device::set_device_properties(const CUdevice &device) {
 #endif
 }
 
-void Device::initContext(){
-  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&m_primaryContext, m_device));
+Device::Context::Context(CUdevice device){
+  this->device = device;
 
-  CUDA_SAFE_CALL(cuCtxSetCurrent(m_primaryContext));
-  CUDA_SAFE_CALL(cuStreamCreate(&m_upload, CU_STREAM_NON_BLOCKING));
-  CUDA_SAFE_CALL(cuStreamCreate(&m_launch, CU_STREAM_NON_BLOCKING));
-  CUDA_SAFE_CALL(cuStreamCreate(&m_download, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&primaryContext, device));
 
-  m_contextCreated = true;
+  CUDA_SAFE_CALL(cuCtxSetCurrent(primaryContext));
+  CUDA_SAFE_CALL(cuStreamCreate(&upload, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&launch, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&download, CU_STREAM_NON_BLOCKING));
+}
+
+Device::Context::~Context(){
+  CUDA_SAFE_CALL(cuCtxSetCurrent(primaryContext));
+  CUDA_SAFE_CALL(cuStreamDestroy(upload));
+  CUDA_SAFE_CALL(cuStreamDestroy(launch));
+  CUDA_SAFE_CALL(cuStreamDestroy(download));
+    
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(device));
 }
 
 CUcontext Device::getPrimaryContext() {
-  if (!m_contextCreated){
-    initContext();
+  if (!m_context){
+    m_context = std::make_shared<struct Context>(m_device);
   }
 
-  return m_primaryContext;
+  return m_context.get()->primaryContext;
 }
 
 CUstream Device::getUploadStream() {
-  if (!m_contextCreated){
-    initContext();
+  if (!m_context){
+    m_context = std::make_shared<struct Context>(m_device);
   }
   
-  return m_upload;
+  return m_context.get()->upload;
 }
 
 
 CUstream Device::getLaunchStream() {
-  if (!m_contextCreated){
-    initContext();
+  if (!m_context){
+    m_context = std::make_shared<struct Context>(m_device);
   }
   
-  return m_launch;
+  return m_context.get()->launch;
 }
 
 
 CUstream Device::getDownloadStream() {
-  if (!m_contextCreated){
-    initContext();
+  if (!m_context){
+    m_context = std::make_shared<struct Context>(m_device);
   }
   
-  return m_download;
+  return m_context.get()->download;
 }
 
 std::string Device::uuidToHex(CUuuid &uuid) {

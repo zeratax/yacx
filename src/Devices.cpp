@@ -31,18 +31,7 @@ Devices::Devices() {
   }
 
   for (int i{0}; i < number; ++i) {
-    m_devices.emplace_back(Device(i));
-  }
-}
-
-Devices::~Devices() {
-  for (auto &dev : m_devices) {
-    CUDA_SAFE_CALL(cuCtxSetCurrent(dev.m_primaryContext));
-    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_upload));
-    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_launch));
-    CUDA_SAFE_CALL(cuStreamDestroy(dev.m_download));
-    
-    CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(dev.m_device));
+    m_devices.emplace_back(i);
   }
 }
 

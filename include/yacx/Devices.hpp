@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <vector_types.h>
+#include <memory>
 
 namespace yacx {
 class Device : JNIHandle {
@@ -93,12 +94,20 @@ class Device : JNIHandle {
   void initContext();
   std::string uuidToHex(CUuuid &uuid);
 
+  struct Context {
+    CUcontext primaryContext;
+    CUstream upload, launch, download;
+    CUdevice device;
+
+    Context(CUdevice device);
+
+    ~Context();
+  };
+
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
-  bool m_contextCreated = false;
-  CUcontext m_primaryContext;
-  CUstream m_upload, m_launch, m_download;
+  std::shared_ptr<struct Context> m_context;
   std::string m_uuidHex;
   size_t m_memory, m_max_shared_memory_per_block,
       m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
@@ -137,7 +146,6 @@ class Devices : JNIHandle {
 
  private:
   Devices();
-  ~Devices();
   std::vector<Device> m_devices;
   static Devices *getInstance();
   static Devices *instance;
