@@ -7,13 +7,25 @@
 
 using jni::KernelArgJNI, jni::KernelArgJNISlice, yacx::KernelArg, std::shared_ptr, jni::detail::HDataMem;
 
+#ifndef PINNEDMEMORY
+#define PINNEDMEMORY true
+#endif
+
 HDataMem::HDataMem(size_t size){
-    yacx::detail::initCtx();
-    CUDA_SAFE_CALL(cuMemAllocHost(&m_hdata, size));
+    #if PINNEDMEMORY
+        yacx::detail::initCtx();
+        CUDA_SAFE_CALL(cuMemAllocHost(&m_hdata, size));
+    #else
+        m_hdata = malloc(size);
+    #endif
 }
 
 HDataMem::~HDataMem(){
-    CUDA_SAFE_CALL(cuMemFreeHost(m_hdata));
+    #if PINNEDMEMORY
+        CUDA_SAFE_CALL(cuMemFreeHost(m_hdata));
+    #else
+        free(m_hdata);
+    #endif
 }
 
 KernelArgJNI::KernelArgJNI(size_t size, bool download, bool copy, bool upload, std::string type) : m_type(type) {
