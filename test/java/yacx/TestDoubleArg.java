@@ -24,16 +24,23 @@ class TestDoubleArg extends TestJNI {
 		}
 
 		// Kernel for copy double* in to double* out
-		String copyDoubleArrayString = "extern \"C\" __global__\n" + "void copyDouble(double* in, double* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyDoubleArrayString = "extern \"C\" __global__\n"
+				+ "void copyDouble(double* in, double* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n"
+				+ "";
 
 		cpDoubleArray = Program.create(copyDoubleArrayString, "copyDouble").compile();
 		// Configure with kernel n Threads
 		cpDoubleArray.configure(n, 1);
 
 		// Kernel for copy a double-value
-		String copyDoubleString = "extern \"C\" __global__\n" + "void copyDouble(double in, double* out) {\n"
-				+ "  *out = in;\n" + "}\n" + "";
+		String copyDoubleString = "extern \"C\" __global__\n"
+				+ "void copyDouble(double in, double* out) {\n"
+				+ "  *out = in;\n"
+				+ "}\n"
+				+ "";
 
 		cpDoubleSingle = Program.create(copyDoubleString, "copyDouble").compile();
 		// Configure Kernel with 1 thread

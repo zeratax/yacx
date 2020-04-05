@@ -37,11 +37,12 @@ class TestProgram extends TestJNI {
 		// Invalid kernel (very simalar to saxpy-kernel)
 		kernelInvalid = "extern \"C\" __global__\n"
 				+ "void saxpy(float a, float *x, float *y, float *out, size_t n) {\n"
-				+ "  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;\n" + "  if (tid < m) {\n" + // <- There is a m,
-																										// not a n. It
-																										// is not
-																										// compilable!
-				"    out[tid] = a * x[tid] + y[tid];\n" + "  }\n" + "}\n" + "";
+				+ "  size_t tid = blockIdx.x * blockDim.x + threadIdx.x;\n"
+				+ "  if (tid < m) {\n" // <- There is a m,  not a n. It is not compilable!
+				+ "    out[tid] = a * x[tid] + y[tid];\n"
+				+ "  }\n"
+				+ "}\n"
+				+ "";
 
 		kernelInvalidName = "saxpy";
 	}

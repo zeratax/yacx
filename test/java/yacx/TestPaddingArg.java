@@ -20,15 +20,26 @@ public class TestPaddingArg extends TestJNI {
 	static IntArg matrix1Arg;
 	static ShortArg matrix2Arg;
 
-	static final String copyIntArrayString = "extern \"C\" __global__\n" + "void copyInt(int* in, int* out) {\n"
-			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+	static final String copyIntArrayString = "extern \"C\" __global__\n"
+			+ "void copyInt(int* in, int* out) {\n"
+			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+			+ "  out[i] = in[i];\n"
+			+ "}\n"
+			+ "";
 
-	static final String addIntArrayString = "extern \"C\" __global__\n" + "void addInt(int* sum1, int* sum2) {\n"
-			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  sum1[i] += sum2[i];\n" + "}\n" + "";
+	static final String addIntArrayString = "extern \"C\" __global__\n"
+			+ "void addInt(int* sum1, int* sum2) {\n"
+			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+			+ "  sum1[i] += sum2[i];\n"
+			+ "}\n"
+			+ "";
 
 	static final String addShortArrayString = "extern \"C\" __global__\n"
-			+ "void addShort(short* sum1, short* sum2) {\n" + "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
-			+ "  sum1[i] += sum2[i];\n" + "}\n" + "";
+			+ "void addShort(short* sum1, short* sum2) {\n"
+			+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+			+ "  sum1[i] += sum2[i];\n"
+			+ "}\n"
+			+ "";
 
 	@BeforeAll
 	static void init() {

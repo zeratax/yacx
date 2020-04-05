@@ -10,8 +10,10 @@ class TestDevice extends TestJNI {
 	void test() {
 		// Find a Device-Object
 		Device device = Devices.findDevice();
-		
-		//Check functions should be return meaningful values
+
+		// Check functions should be return meaningful values (and no
+		// UnsatisfiedLinkError)
+		assertNotNull(device.getName());
 		assertTrue(device.getMemorySize() > 0);
 		assertTrue(device.getMaxBlock().length == 3);
 		assertTrue(device.getMaxGrid().length == 3);
@@ -25,6 +27,10 @@ class TestDevice extends TestJNI {
 		assertTrue(device.getBusWidth() > 0);
 		assertTrue(device.getMinorVersion() >= 0);
 		assertTrue(device.getMajorVersion() > 0);
+		assertTrue(device.getSharedMemPerBlock() >= 0);
+		assertTrue(device.getSharedMemPerMultiprocessor() >= 0);
+		// This could be null
+		device.getUUID();
 
 		// For Debug
 		System.out.println("Device-Information:");

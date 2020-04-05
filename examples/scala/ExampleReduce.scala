@@ -6,7 +6,7 @@ import yacx.KernelTime
 import yacx.LongArg
 
 object ExampleReduce {
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
     // Load library
     Executor.loadLibrary()
 
@@ -20,7 +20,7 @@ object ExampleReduce {
     }
 
     // Initialize Arguments
-    val inArg = LongArg.create(in)
+    val inArg = LongArg.create(in: _*)
     val outArg = LongArg.createOutput(arraySize)
     val nArg = IntArg.createValue(arraySize)
 
@@ -38,7 +38,7 @@ object ExampleReduce {
     time.addKernelTime(Executor.launch("device_reduce", 1, 1024, outArg, inArg, nArg))
 
     // Get Result
-    val out = inArg.asLongArray(0)
+    val out = inArg.asLongArray()(0)
     val expected = (arraySize.toLong * (arraySize.toLong + 1)) / 2
 
     // Print Result

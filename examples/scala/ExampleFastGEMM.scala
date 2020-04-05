@@ -12,7 +12,7 @@ import yacx.PaddingArg
 import yacx.Utils
 
 object ExampleFastGEMM {
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
     // Constants for shared memory calculation
     val M = 16
     val N = 16
@@ -88,11 +88,11 @@ object ExampleFastGEMM {
     }
 
     // Create Arguments
-    val aMatrixArg = HalfArg.create(aMatrix)
+    val aMatrixArg = HalfArg.create(aMatrix: _*)
 
     // Kernel expects a transposed B matrix so this has to be done here
     val bMatrixArg = HalfArg.createTransposed(bMatrix, y, z)
-    val cMatrixArg = FloatArg.create(cMatrix)
+    val cMatrixArg = FloatArg.create(cMatrix: _*)
     val dMatrixArg = FloatArg.createOutput(x * z)
     val mArg = IntArg.createValue(m)
     val nArg = IntArg.createValue(n)
