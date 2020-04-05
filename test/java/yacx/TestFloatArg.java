@@ -24,16 +24,23 @@ class TestFloatArg extends TestJNI {
 		}
 
 		// Kernel for copy float* in to float* out
-		String copyFloatArrayString = "extern \"C\" __global__\n" + "void copyFloat(float* in, float* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyFloatArrayString = "extern \"C\" __global__\n"
+				+ "void copyFloat(float* in, float* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n"
+				+ "";
 
 		cpFloatArray = Program.create(copyFloatArrayString, "copyFloat").compile();
 		// Configure with kernel n Threads
 		cpFloatArray.configure(n, 1);
 
 		// Kernel for copy a float-value
-		String copyFloatString = "extern \"C\" __global__\n" + "void copyFloat(float in, float* out) {\n"
-				+ "  *out = in;\n" + "}\n" + "";
+		String copyFloatString = "extern \"C\" __global__\n"
+				+ "void copyFloat(float in, float* out) {\n"
+				+ "  *out = in;\n"
+				+ "}\n"
+				+ "";
 
 		cpFloatSingle = Program.create(copyFloatString, "copyFloat").compile();
 		// Configure Kernel with 1 thread

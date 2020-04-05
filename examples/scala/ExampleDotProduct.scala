@@ -1,11 +1,11 @@
 import java.io.IOException
-import java.util
+import java.util.Arrays
 import yacx.Executor
 import yacx.FloatArg
 import yacx.KernelTime
 
 object ExampleDotProduct {
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
     // Load library
     Executor.loadLibrary()
 
@@ -19,15 +19,15 @@ object ExampleDotProduct {
     }
 
     // Initalize arguments
-    val xArg = FloatArg.create(x)
-    val yArg = FloatArg.create(y)
+    val xArg = FloatArg.create(x: _*)
+    val yArg = FloatArg.create(y: _*)
     val outArg = FloatArg.createOutput(1)
 
     // Compile and Launch
     val executionTime = Executor.launch("dotProduct", 1, numberElements, xArg, yArg, outArg)
 
     // Get Result
-    val result = outArg.asFloatArray(0)
+    val result = outArg.asFloatArray()(0)
 
     // Print Result
     println("\ndotProduct-Kernel sucessfully launched:")

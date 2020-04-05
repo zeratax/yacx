@@ -24,8 +24,12 @@ class TestIntArg extends TestJNI {
 		}
 
 		// Kernel for copy int* in to int* out
-		String copyIntArrayString = "extern \"C\" __global__\n" + "void copyInt(int* in, int* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyIntArrayString = "extern \"C\" __global__\n"
+				+ "void copyInt(int* in, int* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n"
+				+ "";
 
 		cpIntArray = Program.create(copyIntArrayString, "copyInt").compile();
 		// Configure with kernel n Threads

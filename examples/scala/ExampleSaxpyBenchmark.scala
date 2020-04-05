@@ -17,7 +17,7 @@ object ExampleSaxpyBenchmark {
               new Executor.KernelArgCreator() {
                       val a = 5.1f
                 			
-          			      override def getDataLength(dataSizeBytes: Int) : Int = {
+          			      override def getDataLength(dataSizeBytes: Long) : Int = {
           						  return (dataSizeBytes/FloatArg.SIZE_BYTES).asInstanceOf[Int]
           					  }
           

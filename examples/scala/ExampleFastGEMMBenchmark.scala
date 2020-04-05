@@ -9,7 +9,7 @@ import yacx.KernelArg
 import yacx.PaddingArg
 
 object ExampleFastGEMMBenchmark {
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
     // Constants for shared memory calculation
     val M = 16
     val N = 16
