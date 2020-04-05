@@ -15,7 +15,7 @@ object ExampleFilterBenchmark {
       println(Executor.benchmark("filter_k", Options.createOptions(), 10,
               new Executor.KernelArgCreator() {
         
-  					          override def getDataLength(dataSizeBytes: Int) : Int = {
+  					          override def getDataLength(dataSizeBytes: Long) : Int = {
             						return (dataSizeBytes/IntArg.SIZE_BYTES).asInstanceOf[Int]
             					}
             

@@ -25,16 +25,23 @@ class TestShortArg extends TestJNI {
 		}
 
 		// Kernel for copy short* in to short* out
-		String copyShortArrayString = "extern \"C\" __global__\n" + "void copyShort(short* in, short* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyShortArrayString = "extern \"C\" __global__\n"
+				+ "void copyShort(short* in, short* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n"
+				+ "";
 
 		cpShortArray = Program.create(copyShortArrayString, "copyShort").compile();
 		// Configure with kernel n Threads
 		cpShortArray.configure(n, 1);
 
 		// Kernel for copy a short-value
-		String copyShortString = "extern \"C\" __global__\n" + "void copyShort(short in, short* out) {\n"
-				+ "  *out = in;\n" + "}\n" + "";
+		String copyShortString = "extern \"C\" __global__\n"
+				+ "void copyShort(short in, short* out) {\n"
+				+ "  *out = in;\n"
+				+ "}\n"
+				+ "";
 
 		cpShortSingle = Program.create(copyShortString, "copyShort").compile();
 		// Configure Kernel with 1 thread

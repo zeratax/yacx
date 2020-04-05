@@ -14,7 +14,7 @@ object ExampleSimpleGEMM {
   private val WMMA_M = 16
   private val WMMA_N = 16
 
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
     // Load library
     Executor.loadLibrary()
 
@@ -51,10 +51,10 @@ object ExampleSimpleGEMM {
     val gridDimY = (n + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY)
 
     // Create Arguments
-    val aMatrixArg = HalfArg.create(aMatrix)
+    val aMatrixArg = HalfArg.create(aMatrix: _*)
     // Kernel expects a transposed B matrix so this has to be done here
     val bMatrixArg = HalfArg.createTransposed(bMatrix, y, z)
-    val cMatrixArg = FloatArg.create(cMatrix)
+    val cMatrixArg = FloatArg.create(cMatrix: _*)
     val dMatrixArg = FloatArg.createOutput(x * z)
     val mArg = IntArg.createValue(m)
     val nArg = IntArg.createValue(n)

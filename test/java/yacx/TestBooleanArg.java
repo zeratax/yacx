@@ -24,8 +24,11 @@ class TestBooleanArg extends TestJNI {
 		}
 
 		// Kernel for copy bool* in to bool* out
-		String copyBooleanArrayString = "extern \"C\" __global__\n" + "void copyBoolean(bool* in, bool* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyBooleanArrayString = "extern \"C\" __global__\n"
+				+ "void copyBoolean(bool* in, bool* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n" + "";
 
 		cpBooleanArray = Program.create(copyBooleanArrayString, "copyBoolean").compile();
 		// Configure with kernel n Threads
@@ -42,7 +45,7 @@ class TestBooleanArg extends TestJNI {
 
 	/**
 	 * Check if testArray is expected testArray0
-	 * 
+	 *
 	 * @param testArray the array to be tested
 	 */
 	void checkTestArray0(boolean[] testArray) {
@@ -58,7 +61,7 @@ class TestBooleanArg extends TestJNI {
 
 	/**
 	 * Check if testArray is expected testArray1
-	 * 
+	 *
 	 * @param testArray the array to be tested
 	 */
 	void checkTestArray1(boolean[] testArray) {

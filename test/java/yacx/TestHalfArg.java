@@ -7,13 +7,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TestHalfArg extends TestJNI {
-	static final String checkHalfs = "#include <cuda_fp16.h>\n" + "extern \"C\"__global__\n"
-			+ "void checkFtoHSeq(float* floats, __half* halfs, int* counter, int n){\n" + "    int i = threadIdx.x;\n"
-			+ "    if (__heq(__float2half(floats[i]), halfs[i])){\n" + "        atomicAdd(counter, 1);\n" + "    }\n"
+	static final String checkHalfs = "#include <cuda_fp16.h>\n"
+			+ "extern \"C\"__global__\n"
+			+ "void checkFtoHSeq(float* floats, __half* halfs, int* counter, int n){\n"
+			+ "    int i = threadIdx.x;\n"
+			+ "    if (__heq(__float2half(floats[i]), halfs[i])){\n"
+			+ "        atomicAdd(counter, 1);\n"
+			+ "    }\n"
 			+ "}";
-	static final String checkFloats = "#include <cuda_fp16.h>\n" + "extern \"C\" __global__\n"
-			+ "void checkHtoFSeq(float* floats, __half* halfs, int* counter, int n){\n" + "    int i = threadIdx.x;\n"
-			+ "    if (__half2float(halfs[i]) == floats[i]){\n" + "        atomicAdd(counter, 1);\n" + "    }\n" + "}";
+	static final String checkFloats = "#include <cuda_fp16.h>\n"
+			+ "extern \"C\" __global__\n"
+			+ "void checkHtoFSeq(float* floats, __half* halfs, int* counter, int n){\n"
+			+ "    int i = threadIdx.x;\n"
+			+ "    if (__half2float(halfs[i]) == floats[i]){\n"
+			+ "        atomicAdd(counter, 1);\n"
+			+ "    }\n" + "}";
 
 	static Kernel cpHalfArray, cpHalfSingle;
 	static int n, dimN0, dimM0, dimN1, dimM1;

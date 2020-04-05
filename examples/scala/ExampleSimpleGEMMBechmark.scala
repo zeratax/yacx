@@ -5,7 +5,7 @@ import yacx.KernelArg
 import yacx.PaddingArg
 
 object ExampleSimpleGEMMBenchmark {
-  def main(args: Array[Nothing]): Unit = {
+  def main(args: Array[String]) : Unit = {
 
     val WMMA_M = 16
     val WMMA_N = 16
