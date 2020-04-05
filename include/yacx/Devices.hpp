@@ -23,7 +23,7 @@ class Device : JNIHandle {
   //! Constructs a Device with the CUDA capable device with passed devicenumber
   Device(int ordinal);
   //! Constructs a Device with the first CUDA capable device it finds
-  Device() : Device(0) {};
+  Device() : Device(0){};
   //! Minor compute capability version number
   //! \return version number
   [[nodiscard]] int minor_version() const { return m_minor; }
