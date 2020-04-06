@@ -6,6 +6,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI, yacx::convertHtoF, yacx::convertFtoH;
 
+
 jobject JNICALL Java_yacx_HalfArg_createValue(JNIEnv* env, jclass cls, jfloat jvalue){
 	BEGIN_TRY
 		jclass clsKernelArg = getClass(env, "yacx/KernelArg");

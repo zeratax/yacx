@@ -37,7 +37,7 @@ class CProgram : public JNIHandle {
 
   static int id;
   static Options DEFAULT_OPTIONS;
-  int m_numberArguments;
+  unsigned int m_numberArguments;
   struct detail::dynop m_op;
   std::string m_srcFile;
   std::string m_libFile;
