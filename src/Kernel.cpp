@@ -5,7 +5,7 @@
 #include "yacx/KernelTime.hpp"
 #include <utility>
 
-using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::eventInterval;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type, yacx::eventInterval;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -140,13 +140,14 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   CUDA_SAFE_CALL(cuEventRecord(stop, NULL));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
 
-  logger(loglevel::DEBUG) << "upload";
   time.upload = upload.elapsed();
-  logger(loglevel::DEBUG) << "launch";
   time.launch = launch.elapsed();
-  logger(loglevel::DEBUG) << "download";
   time.download = download.elapsed();
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
+
+  time.size_upload = args.size(arg_type::UPLOAD);
+  time.size_download = args.size(arg_type::DOWNLOAD);
+  time.size_total = args.size(arg_type::TOTAL);
 
   return time;
 }
