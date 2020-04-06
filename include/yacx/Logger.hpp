@@ -47,7 +47,7 @@ std::string get_datetime();
 void handle_logging_args(int argc, char const *const *const argv);
 
 /*!
-  \class logger Logger.hpp
+  \class Logger Logger.hpp
   \brief Class to log events of varying severity.
 */
 class Logger {

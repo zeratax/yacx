@@ -22,9 +22,9 @@ Options CProgram::DEFAULT_OPTIONS = createDefaultOptions();
 
 CProgram::CProgram(const char* cProgram, const char* functionName, std::vector<std::string> &parameterTypes,
         const char *compiler, Options &options) {
-    logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
+    Logger(loglevel::DEBUG) << "creating cProgram " << functionName << " with id: " << id
     << ", compiler: " << compiler;
-    logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
+    Logger(loglevel::DEBUG1) << "cFunction:\n" << cProgram;
 
     id++;
 
@@ -40,7 +40,7 @@ CProgram::CProgram(const char* cProgram, const char* functionName, std::vector<s
     libFileS << "lib_" << functionName << "_" << id << ".so";
     m_libFile = libFileS.str();
 
-    logger(loglevel::DEBUG1) << "compile it to " << m_srcFile << " and " << m_libFile;
+    Logger(loglevel::DEBUG1) << "compile it to " << m_srcFile << " and " << m_libFile;
 
     //compilerCommand with options
     std::stringstream compilerWithOptionsS;
@@ -58,7 +58,7 @@ CProgram::CProgram(const char* cProgram, const char* functionName, std::vector<s
 }
 
 CProgram::~CProgram() {
-    logger(loglevel::DEBUG) << "destroy cProgram with id" << id;
+    Logger(loglevel::DEBUG) << "destroy cProgram with id" << id;
 
     unload_op(&m_op);
 
@@ -126,7 +126,7 @@ void CProgram::createSrcFile(const char* cProgram, const char* functionName,
 
 void CProgram::compile(const char* cProgram, const char* functionName, std::vector<std::string> &parameterTypes,
         std::string &compilerWithOptions) {
-    logger(loglevel::DEBUG) << "creating source file...";
+    Logger(loglevel::DEBUG) << "creating source file...";
 
     //create and open output file
     std::ofstream fileOut;
@@ -143,7 +143,7 @@ void CProgram::compile(const char* cProgram, const char* functionName, std::vect
     compilerCommand << compilerWithOptions << " -fPIC -shared -Wl,-soname," << m_libFile
         << " -o " << m_libFile << " " << m_srcFile;
 
-    logger(loglevel::DEBUG) << "compiling to dynamic libary: " << compilerCommand.str();
+    Logger(loglevel::DEBUG) << "compiling to dynamic libary: " << compilerCommand.str();
 
     //compile to libary
     std::string tmp = compilerCommand.str();
@@ -155,7 +155,7 @@ void CProgram::compile(const char* cProgram, const char* functionName, std::vect
 }
 
 void CProgram::execute(std::vector<void*> arguments) {
-    logger(loglevel::DEBUG) << "execute CProgram: " << m_srcFile;
+    Logger(loglevel::DEBUG) << "execute CProgram: " << m_srcFile;
 
     if (arguments.size() != m_numberArguments){
         std::stringstream errorS;

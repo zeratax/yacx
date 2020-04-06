@@ -3,7 +3,7 @@
 #include "Utils.hpp"
 #include "../../include/yacx/Logger.hpp"
 
-using yacx::logger;
+using yacx::Logger;
 
 void Java_yacx_Logger_setLogLevel (JNIEnv* env, jclass cls, jobject jloglevel){
   BEGIN_TRY
@@ -16,19 +16,19 @@ void Java_yacx_Logger_setLogLevel (JNIEnv* env, jclass cls, jobject jloglevel){
       jint loglevel = env->CallIntMethod(jloglevel, ordinal);
       CHECK_BIGGER(loglevel, -1, "unknown loglevel", )
 
-      logger::getInstance().set_loglimit(static_cast<yacx::loglevel> (loglevel));
+      Logger::getInstance().set_loglimit(static_cast<yacx::loglevel> (loglevel));
   END_TRY("setting loglevel")
 }
 
 void Java_yacx_Logger_setCout (JNIEnv* env, jclass cls, jboolean jcout){
   BEGIN_TRY
-      logger::getInstance().set_cout(jcout);
+      Logger::getInstance().set_cout(jcout);
   END_TRY("setting/unsetting cout as ouput for logger")
 }
 
 void Java_yacx_Logger_setCerr (JNIEnv* env, jclass cls, jboolean jcerr){
   BEGIN_TRY
-    logger::getInstance().set_cerr(jcerr);
+    Logger::getInstance().set_cerr(jcerr);
   END_TRY("setting/unsetting cerr as ouput for logger")
 }
 
@@ -39,7 +39,7 @@ void Java_yacx_Logger_setLogfile (JNIEnv* env, jclass cls, jstring jfilename){
     auto filename = env->GetStringUTFChars(jfilename, NULL);
     CHECK_NULL(filename, )
 
-    logger::getInstance().set_logfile(filename);
+    Logger::getInstance().set_logfile(filename);
 
     env->ReleaseStringUTFChars(jfilename, filename);
   END_TRY("setting logfile")
