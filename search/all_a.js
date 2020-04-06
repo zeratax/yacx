@@ -6,5 +6,6 @@ var searchData=
   ['kernelargjnislice',['KernelArgJNISlice',['../classjni_1_1_kernel_arg_j_n_i_slice.html',1,'jni']]],
   ['kernelargmatrixpadding',['KernelArgMatrixPadding',['../classyacx_1_1_kernel_arg_matrix_padding.html',1,'yacx::KernelArgMatrixPadding'],['../classyacx_1_1_kernel_arg_matrix_padding.html#ae1deb41319073ffa43589668baa7de63',1,'yacx::KernelArgMatrixPadding::KernelArgMatrixPadding()']]],
   ['kernelargs',['KernelArgs',['../classyacx_1_1_kernel_args.html',1,'yacx']]],
-  ['kerneltime',['KernelTime',['../classyacx_1_1_kernel_time.html',1,'yacx.KernelTime'],['../classyacx_1_1_kernel_time.html#af4b724a54d8c19acc1c5e955fd2147b1',1,'yacx.KernelTime.KernelTime()']]]
+  ['kerneltime',['KernelTime',['../classyacx_1_1_kernel_time.html',1,'yacx.KernelTime'],['../classyacx_1_1_kernel_time.html#ae7b42fd64a35a346c42882d8eb61731d',1,'yacx.KernelTime.KernelTime()']]],
+  ['kerneltimestruct',['KernelTimeStruct',['../structyacx_1_1_kernel_time_struct.html',1,'yacx']]]
 ];

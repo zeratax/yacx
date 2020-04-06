@@ -5,6 +5,6 @@ var searchData=
   ['loadlibrary',['loadLibrary',['../classyacx_1_1_executor.html#a249f540699c752ab6482ad0cdfea3d34',1,'yacx::Executor']]],
   ['log',['log',['../classyacx_1_1_program.html#a22beb2c0e93c86d9d9df4bef9a8e8edd',1,'yacx::Program']]],
   ['log_5fnull_5fsink',['log_null_sink',['../classyacx_1_1log__null__sink.html',1,'yacx']]],
-  ['logger',['Logger',['../classyacx_1_1_logger.html',1,'yacx.Logger'],['../classyacx_1_1logger.html',1,'yacx::logger']]],
+  ['logger',['logger',['../classyacx_1_1logger.html',1,'yacx::logger'],['../classyacx_1_1_logger.html',1,'yacx.Logger']]],
   ['longarg',['LongArg',['../classyacx_1_1_long_arg.html',1,'yacx']]]
 ];
