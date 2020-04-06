@@ -72,7 +72,7 @@ jlong Java_yacx_ArrayArg_sliceInternal(JNIEnv* env, jobject obj, jlong jstart, j
 
         CHECK_BIGGER(jstart, -1, "illegal indices for slice", 0)
         CHECK_BIGGER(jend, jstart, "illegal indices for slice", 0)
-        CHECK_BIGGER(kernelArgJNIPtr->kernelArgPtr()->size(), static_cast<size_t> (jend), "illegal indices for slice", 0)
+        CHECK_BIGGER(kernelArgJNIPtr->kernelArgPtr()->size(), jend-1, "illegal indices for slice", 0)
 
         KernelArgJNISlice* newkernelArgJNIPtr = new KernelArgJNISlice{static_cast<size_t> (jstart),
             static_cast<size_t> (jend), kernelArgJNIPtr};

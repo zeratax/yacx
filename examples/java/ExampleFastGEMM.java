@@ -1,6 +1,6 @@
 import java.io.IOException;
-import java.util.Arrays;
 
+import yacx.Device;
 import yacx.Executor;
 import yacx.FloatArg;
 import yacx.HalfArg;
@@ -9,21 +9,17 @@ import yacx.KernelArg;
 import yacx.KernelTime;
 import yacx.Options;
 import yacx.PaddingArg;
-import yacx.Utils;
 
-public class ExampleSimpleGEMM {
-	// WMMA dimensions
-	private final static int WMMA_M = 16;
-	private final static int WMMA_N = 16;
+public class ExampleFastGEMM {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
 		Executor.loadLibrary();
 
 		// Testdata
-		int x = 101;
-		int y = 101;
-		int z = 101;
+		int x = 10001;
+		int y = 10001;
+		int z = 10001;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
@@ -39,28 +35,25 @@ public class ExampleSimpleGEMM {
 			cMatrix[i] = 1f;
 		}
 
-		// Get the next biggest multiple of 16 for each dimension
+		// Get the next biggest multiple of 128 for each dimension
 		int m = (x % 16 == 0) ? x : (x / 16 + 1) * 16;
 		int k = (y % 16 == 0) ? y : (y / 16 + 1) * 16;
 		int n = (z % 16 == 0) ? z : (z / 16 + 1) * 16;
 
-		// Calculate block and grid dimensions
-		// blockDim.x must be a multple of warpSize
-		// 128x4 means we have 16 warps and a block zomputes a 64x64 output tile
-		int blockDimX = 128;
-		int blockDimY = 4;
-
-		int gridDimX = (m + (WMMA_M * blockDimX / 32 - 1)) / (WMMA_M * blockDimX / 32);
-		int gridDimY = (n + WMMA_N * blockDimY - 1) / (WMMA_N * blockDimY);
+		// 8 Warps = 256 Threads per Block are required for the kernel to work
+		int threads = 32 * 8;
+		// The amount of blocks can be freely chosen but is optimal when it's equal to
+		// the streaming multiprocessor count of the device
+		int blocks = Device.createDevice().getMultiprocessorCount();
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
 		//TODO
 		// Kernel expects a transposed B matrix so this has to be done here
-//		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, z);
+//		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, y);
 		HalfArg bMatrixArg = HalfArg.create(bMatrix);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
-		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
+		FloatArg dMatrixArg = FloatArg.createOutput(x * y);
 		KernelArg mArg = IntArg.createValue(m);
 		KernelArg nArg = IntArg.createValue(n);
 		KernelArg kArg = IntArg.createValue(k);
@@ -68,25 +61,20 @@ public class ExampleSimpleGEMM {
 		KernelArg betaArg = FloatArg.createValue(beta);
 
 		// Do the padding for each input matrix
-		//TODO Padding falls (x,y,z) = (m,n,k)
 		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
 		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
 		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
 		PaddingArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
 
-		// Load Kernel as string
-		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");
-
 		// Compiler options
 		Options options = Options.createOptions("--gpu-architecture=compute_70");
 
 		// Compile and launch Kernel
-		KernelTime time = Executor.launch(kernelString, "simple_wmma_gemm", options, gridDimX, gridDimY, 1, blockDimX,
-				blockDimY, 1, aMatrixArgPadding, bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg,
-				kArg, alphaArg, betaArg);
+		KernelTime time = Executor.launch("fast_wmma_gemm", options, threads, blocks, aMatrixArgPadding,
+				bMatrixArgPadding, cMatrixArgPadding, dMatrixArgPadding, mArg, nArg, kArg, alphaArg, betaArg);
 
 		// Print Result
-		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
+		System.out.println("Kernel fast_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
 		MatrixUtils.printlnMatrix(aMatrixArg, y);

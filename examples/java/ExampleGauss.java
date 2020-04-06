@@ -103,7 +103,7 @@ public class ExampleGauss {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		final String inputFile = "kernels/lena.ppm";

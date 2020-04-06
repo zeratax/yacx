@@ -122,7 +122,7 @@ object ExampleGauss {
 
   	def main(args: Array[String]) : Unit = {
     		// Load Libary
-    		Executor.loadLibary()
+    		Executor.loadLibrary()
     
     		// Testdata
     		val inputFile = "kernels/lena.ppm"
