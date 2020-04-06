@@ -134,6 +134,11 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   upload = uploadAsync(args, device);
   launch = runAsync(args, device, upload.end);
   download = downloadAsync(args, device, launch.end, NULL);
+
+  time.size_upload = args.size(arg_type::UPLOAD);
+  time.size_download = args.size(arg_type::DOWNLOAD);
+  time.size_total = args.size(arg_type::TOTAL);
+
   CUDA_SAFE_CALL(cuStreamSynchronize(device.getDownloadStream()));
   args.free();
 
@@ -144,10 +149,6 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   time.launch = launch.elapsed();
   time.download = download.elapsed();
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
-
-  time.size_upload = args.size(arg_type::UPLOAD);
-  time.size_download = args.size(arg_type::DOWNLOAD);
-  time.size_total = args.size(arg_type::TOTAL);
 
   return time;
 }
