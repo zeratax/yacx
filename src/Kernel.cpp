@@ -66,7 +66,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   if (m_shared > 0)
     CUDA_SAFE_CALL(cuFuncSetAttribute(
         m_kernel, CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES, m_shared));
-        
+
   CUDA_SAFE_CALL(cuEventRecord(launch, 0));
 
   CUDA_SAFE_CALL(
