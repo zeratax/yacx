@@ -95,8 +95,7 @@ public class KernelTime {
 	}
 
 	/**
-	 * Returns the effective bandwidth of launching kernel inclusive uploading and
-	 * downloading arguments.
+	 * Returns the effective bandwidth of launching kernel.
 	 * 
 	 * @return bandwidth in GB per second
 	 */
