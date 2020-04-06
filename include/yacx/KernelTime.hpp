@@ -5,7 +5,10 @@
 #include <iostream>
 
 namespace yacx {
-typedef struct {
+float effective_bandwidth(float miliseconds, size_t sizeInBytes);
+float theoretical_bandwidth(Device& device);
+
+typedef struct KernelTimeStruct {
   float upload{0};
   float download{0};
   float launch{0};
@@ -14,11 +17,11 @@ typedef struct {
   size_t size_upload{0};
   size_t size_total{0};
   
-  float effective_bandwidth_up() { return effective_bandwidth(upload, size_upload)}
-  float effective_bandwidth_down() { return effective_bandwidth(download, size_download)}
-  float effective_bandwidth_launch() { return effective_bandwidth(launch, size_total)}
+  float effective_bandwidth_up() { return effective_bandwidth(upload, size_upload); }
+  float effective_bandwidth_down() { return effective_bandwidth(download, size_download); }
+  float effective_bandwidth_launch() { return effective_bandwidth(launch, size_total); }
 
-  ostream& operator<<(ostream& os, const KernelTime& time)
+  friend std::ostream& operator<<(std::ostream& os, const struct KernelTimeStruct& time)
   {
       os << "upload time:     " << time.upload
             << " ms\nexecution time:  " << time.launch
@@ -27,7 +30,4 @@ typedef struct {
       return os;
   } 
 } KernelTime;
-
-float effective_bandwidth(float miliseconds, size_t sizeInBytes);
-float theoretical_bandwidth(Device& device);
 } // namespace yacx
