@@ -1,34 +1,11 @@
 #include "yacx_Device.h"
+
 #include "Handle.h"
 #include "../../include/yacx/Logger.hpp"
-#include "../../include/yacx/Device.hpp"
+#include "../../include/yacx/Devices.hpp"
 #include <cstring>
 
-using yacx::Device;
-
-jobject Java_yacx_Device_createDevice (JNIEnv* env, jclass cls){
-    BEGIN_TRY
-        Device* devicePtr = new Device{};
-
-    	return createJNIObject(env, cls, devicePtr);
-    END_TRY_R("creating Device", NULL);
-}
-
-jobject Java_yacx_Device_createDeviceInternal (JNIEnv* env, jclass cls, jstring jdevicename){
-    BEGIN_TRY
-        CHECK_NULL(jdevicename, NULL)
-
-        auto devicenamePtr = env->GetStringUTFChars(jdevicename, NULL);
-
-        Device* devicePtr = new Device{devicenamePtr};
-
-        auto obj = createJNIObject(env, cls, devicePtr);
-
-        env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
-
-        return obj;
-    END_TRY_R("creating Device with specific name", NULL);
-}
+using yacx::Device, yacx::Devices;
 
 jstring Java_yacx_Device_getName (JNIEnv* env, jobject obj){
     BEGIN_TRY
@@ -37,10 +14,7 @@ jstring Java_yacx_Device_getName (JNIEnv* env, jobject obj){
 
         auto devicenameString = devicePtr->name();
 
-        char devicenamePtr[devicenameString.size() + 1];
-        strcpy(devicenamePtr, devicenameString.c_str());
-
-        auto jdevicename = env->NewStringUTF(devicenamePtr);
+        auto jdevicename = env->NewStringUTF(devicenameString.c_str());
 
         return jdevicename;
     END_TRY_R("getting name from Device", NULL);
@@ -62,8 +36,7 @@ jintArray Java_yacx_Device_getMaxBlock (JNIEnv* env, jobject obj){
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, NULL)
 
-        dim3 block;
-        devicePtr->max_block_dim(&block);
+        dim3 block = devicePtr->max_block_dim();
 
         auto res = env->NewIntArray(3);
 
@@ -86,8 +59,7 @@ jintArray Java_yacx_Device_getMaxGrid (JNIEnv* env, jobject obj){
         auto devicePtr = getHandle<Device>(env, obj);
 		CHECK_NULL(devicePtr, NULL)
 
-        dim3 grid;
-        devicePtr->max_grid_dim(&grid);
+        dim3 grid = devicePtr->max_grid_dim();
 
         auto res = env->NewIntArray(3);
         if (res == nullptr) return nullptr;
@@ -169,4 +141,20 @@ jint Java_yacx_Device_getMajorVersion (JNIEnv* env, jobject obj){
 
         return majorVersion;
     END_TRY_R("getting major version from Device", 0);
+}
+
+jstring Java_yacx_Device_getUUID(JNIEnv* env, jobject obj){
+    BEGIN_TRY
+        #if CUDA_VERSION < 9020
+            return NULL;
+        #endif
+
+        auto devicePtr = getHandle<Device>(env, obj);
+		CHECK_NULL(devicePtr, 0)
+
+        auto uuidString = devicePtr->uuid();
+        auto uuidJString = env->NewStringUTF(uuidString.c_str());
+
+        return uuidJString;
+    END_TRY_R("getting UUID from Device", 0);
 }

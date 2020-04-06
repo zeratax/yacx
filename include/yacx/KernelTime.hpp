@@ -1,5 +1,5 @@
 #pragma once
-#include "Device.hpp"
+#include "Devices.hpp"
 #include "KernelArgs.hpp"
 
 #include <iostream>
@@ -29,5 +29,5 @@ typedef struct {
 } KernelTime;
 
 float effective_bandwidth(float miliseconds, size_t sizeInBytes);
-float theoretical_bandwidth(Device device);
+float theoretical_bandwidth(Device& device);
 } // namespace yacx

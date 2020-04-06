@@ -10,8 +10,8 @@
 #define NUM_THREADS 16
 #define NUM_BLOCKS 32
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
-    yacx::load, yacx::type_of, yacx::Headers, yacx::Header;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::load,
+    yacx::type_of, yacx::Headers, yacx::Header;
 
 void writePPM(Pixel *pixels, const char *filename, int width, int height) {
   std::ofstream outputFile(filename, std::ios::binary);

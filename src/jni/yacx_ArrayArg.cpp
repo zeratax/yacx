@@ -5,7 +5,7 @@
 
 using yacx::KernelArg, jni::KernelArgJNI, jni::KernelArgJNISlice;
 
-jlong Java_yacx_ArrayArg_createOutputInternal(JNIEnv* env, jclass cls, jlong jNumberBytes){
+jlong Java_yacx_ArrayArg_createOutputInternal(JNIEnv* env, jclass, jlong jNumberBytes){
     BEGIN_TRY
         CHECK_BIGGER(jNumberBytes, 0, "illegal array length", 0)
 
