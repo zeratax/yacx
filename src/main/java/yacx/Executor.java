@@ -566,16 +566,24 @@ public class Executor {
 				double download = 0;
 				double launch = 0;
 				double total = 0;
+				double bandwidthUp = 0;
+				double bandwidthDown = 0;
+				double bandwidthLaunch = 0;
 
 				for (int j = 0; j < numberExecutions; j++) {
 					upload += result[i][j].getUpload();
 					download += result[i][j].getDownload();
 					launch += result[i][j].getLaunch();
 					total += result[i][j].getTotal();
+					bandwidthUp += result[i][j].effectiveBandwithUpload();
+					bandwidthDown += result[i][j].effectiveBandwithDownload();
+					bandwidthLaunch += result[i][j].effectiveBandwithLaunch();
 				}
 
 				average[i] = new KernelTime((float) (upload / numberExecutions), (float) (download / numberExecutions),
-						(float) (launch / numberExecutions), (float) (total / numberExecutions));
+						(float) (launch / numberExecutions), (float) (total / numberExecutions),
+						(float) (bandwidthUp / numberExecutions), (float) (bandwidthDown / numberExecutions),
+						(float) (bandwidthLaunch / numberExecutions));
 			}
 		}
 

@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <utility>
 
-using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -97,6 +97,10 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   logger(loglevel::DEBUG) << "freeing module";
 
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
+
+  time.size_upload = args.size(arg_type::UPLOAD);
+  time.size_download = args.size(arg_type::DOWNLOAD);
+  time.size_total = args.size(arg_type::TOTAL);
 
   return time;
 }
