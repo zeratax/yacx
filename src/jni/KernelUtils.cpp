@@ -1,4 +1,5 @@
 #include "KernelUtils.h"
+#include "KernelTime.hpp"
 
 std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 {
@@ -28,9 +29,9 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
     jclass cls = getClass(env, "yacx/KernelTime");
     if (cls == NULL) return NULL;
 
-    auto methodID = env->GetMethodID(cls, "<init>", "(FFFF)V");
+    auto methodID = env->GetMethodID(cls, "<init>", "(FFFFFFF)V");
     auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,
-            kernelTimePtr->launch, kernelTimePtr->total);
+            kernelTimePtr->launch, kernelTimePtr->total, kernelTimePtr->effective_bandwidth_up(), kernelTimePtr->effective_bandwidth_down(), kernelTimePtr->effective_bandwidth_launch());
 
     return obj;
 }

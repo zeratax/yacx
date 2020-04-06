@@ -39,7 +39,8 @@ size_t KernelArgs::size(arg_type type) const {
   for (auto const &arg : m_args) {
     if (arg.m_copy && (type == arg_type::UPLOAD || type == arg_type::TOTAL))
       result += arg.size();
-    if (arg.m_download && (type == arg_type::DOWNLOAD || type == arg_type::TOTAL))
+    if (arg.m_download &&
+        (type == arg_type::DOWNLOAD || type == arg_type::TOTAL))
       result += arg.size();
   }
   return result;

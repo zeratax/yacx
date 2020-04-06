@@ -159,7 +159,7 @@ class KernelArgs {
   float download();
   float download(void *hdata);
   const void **content();
-  size_t size(arg_type=arg_type::TOTAL) const;
+  size_t size(arg_type = arg_type::TOTAL) const;
   size_t maxOutputSize() const;
 
  private:
