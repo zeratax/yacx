@@ -31,7 +31,8 @@ jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
 
     auto methodID = env->GetMethodID(cls, "<init>", "(FFFFFFF)V");
     auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,
-            kernelTimePtr->launch, kernelTimePtr->total, kernelTimePtr->effective_bandwidth_up(), kernelTimePtr->effective_bandwidth_down(), kernelTimePtr->effective_bandwidth_launch());
+            kernelTimePtr->launch, kernelTimePtr->total, kernelTimePtr->effective_bandwidth_up(),
+            kernelTimePtr->effective_bandwidth_down(), kernelTimePtr->effective_bandwidth_launch());
 
     return obj;
 }
