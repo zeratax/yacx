@@ -11,29 +11,12 @@
 #include <string>
 #include <vector>
 
-// we don't have P1275 but this works well enough as a substitute for now
-namespace std {
-std::vector<std::string const> arguments;
-}
-
 namespace yacx {
 enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
 
 using logmap = std::map<loglevel, std::pair<const char *, const char *>>;
 
-logmap state = {
-    {loglevel::NONE,
-     std::pair<const char *, const char *>{"   NONE", gColorBrightDefault}},
-    {loglevel::ERROR,
-     std::pair<const char *, const char *>{"  ERROR", gColorBrightRed}},
-    {loglevel::WARNING,
-     std::pair<const char *, const char *>{"WARNING", gColorBrightYellow}},
-    {loglevel::INFO,
-     std::pair<const char *, const char *>{"   INFO", gColorBrightDefault}},
-    {loglevel::DEBUG,
-     std::pair<const char *, const char *>{"  DEBUG", gColorGray}},
-    {loglevel::DEBUG1,
-     std::pair<const char *, const char *>{" DEBUG1", gColorGray}}};
+extern logmap state;
 
 namespace detail {
 
