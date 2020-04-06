@@ -2,6 +2,11 @@
 
 using yacx::Logger;
 
+// we don't have P1275 but this works well enough as a substitute for now
+namespace std {
+std::vector<std::string> arguments;
+}
+
 namespace yacx::detail {
 
 bool starts_with(const std::string &str, const std::string &substr) {
@@ -26,7 +31,7 @@ void handle_flag(const std::string &flag) {
   }
 }
 
-void handle_flags(const std::vector<const std::string> &flags) {
+void handle_flags(const std::vector<std::string> &flags) {
   for (auto &flag : flags) {
     if (is_flag(flag)) {
       handle_flag(flag);
