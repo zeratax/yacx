@@ -86,14 +86,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a77b442a566bffe4b5ceac055de047241"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#a77b442a566bffe4b5ceac055de047241">DataCopyKernelArgMatrixPadding</a> (int elementSize, unsigned int paddingValue, int src_rows, int src_columns, int dst_rows, int dst_columns)</td></tr>
 <tr class="memdesc:a77b442a566bffe4b5ceac055de047241"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor.  <a href="#a77b442a566bffe4b5ceac055de047241">More...</a><br /></td></tr>
 <tr class="separator:a77b442a566bffe4b5ceac055de047241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b42637092e64f0814b5b2927db2775a"><td class="memItemLeft" align="right" valign="top"><a id="a4b42637092e64f0814b5b2927db2775a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#a4b42637092e64f0814b5b2927db2775a">copyDataHtoD</a> (<a class="el" href="classyacx_1_1_kernel_arg.html">KernelArg</a> *kernelArg) override</td></tr>
-<tr class="memdesc:a4b42637092e64f0814b5b2927db2775a"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data from host to device <br /></td></tr>
-<tr class="separator:a4b42637092e64f0814b5b2927db2775a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a552a5ba188434c95328129c16b35a144"><td class="memItemLeft" align="right" valign="top"><a id="a552a5ba188434c95328129c16b35a144"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#a552a5ba188434c95328129c16b35a144">copyDataDtoH</a> (<a class="el" href="classyacx_1_1_kernel_arg.html">KernelArg</a> *kernelArg) override</td></tr>
-<tr class="memdesc:a552a5ba188434c95328129c16b35a144"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data from device to host <br /></td></tr>
-<tr class="separator:a552a5ba188434c95328129c16b35a144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d4522812e5e0f4d17e1701198aef9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#ac3d4522812e5e0f4d17e1701198aef9e">copyDataHtoD</a> (void *hdata, CUdeviceptr ddata, size_t size) override</td></tr>
+<tr class="separator:ac3d4522812e5e0f4d17e1701198aef9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb468b45bb4470e08c335e80fbc0ed32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#abb468b45bb4470e08c335e80fbc0ed32">copyDataDtoH</a> (CUdeviceptr ddata, void *hdata, size_t size) override</td></tr>
+<tr class="separator:abb468b45bb4470e08c335e80fbc0ed32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classyacx_1_1detail_1_1_data_copy"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classyacx_1_1detail_1_1_data_copy')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classyacx_1_1detail_1_1_data_copy.html">yacx::detail::DataCopy</a></td></tr>
 <tr class="memitem:aec6fe17c8a22b1ad61cb2f1a45f96591 inherit pub_methods_classyacx_1_1detail_1_1_data_copy"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#aec6fe17c8a22b1ad61cb2f1a45f96591">DataCopy</a> ()</td></tr>
 <tr class="separator:aec6fe17c8a22b1ad61cb2f1a45f96591 inherit pub_methods_classyacx_1_1detail_1_1_data_copy"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +165,111 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abb468b45bb4470e08c335e80fbc0ed32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb468b45bb4470e08c335e80fbc0ed32">&#9670;&nbsp;</a></span>copyDataDtoH()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataCopyKernelArgMatrixPadding::copyDataDtoH </td>
+          <td>(</td>
+          <td class="paramtype">CUdeviceptr&#160;</td>
+          <td class="paramname"><em>ddata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>hdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>copy data from device to host </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ddata</td><td>pointer to device data </td></tr>
+    <tr><td class="paramname">hdata</td><td>pointer to host data </td></tr>
+    <tr><td class="paramname">size</td><td>size of the data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a8242e3ead38f44a5d90d30ce66ade027">yacx::detail::DataCopy</a>.</p>
+
+</div>
+</div>
+<a id="ac3d4522812e5e0f4d17e1701198aef9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d4522812e5e0f4d17e1701198aef9e">&#9670;&nbsp;</a></span>copyDataHtoD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DataCopyKernelArgMatrixPadding::copyDataHtoD </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>hdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CUdeviceptr&#160;</td>
+          <td class="paramname"><em>ddata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>copy data from host to device </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hdata</td><td>pointer to host data </td></tr>
+    <tr><td class="paramname">ddata</td><td>pointer to device data </td></tr>
+    <tr><td class="paramname">size</td><td>size of the data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a10d077658c2f09655db9de38cd9d4a58">yacx::detail::DataCopy</a>.</p>
 
 </div>
 </div>

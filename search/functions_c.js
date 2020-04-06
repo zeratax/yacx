@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['options',['Options',['../classyacx_1_1_options.html#aab5a93c38cf39b841eb9cf3064cacba6',1,'yacx.Options::Options()'],['../classyacx_1_1_options.html#a092dc0d805928feb08628b3572e3f465',1,'yacx.Options::Options(const T &amp;t)'],['../classyacx_1_1_options.html#a256d6857835a97f1f0226f0ffadad2a2',1,'yacx.Options::Options(const T &amp;t, const TS &amp;... ts)']]]
+  ['name',['name',['../classyacx_1_1_device.html#a668bf72be504bc38eb433633bb73ccae',1,'yacx::Device']]],
+  ['names',['names',['../classyacx_1_1_headers.html#aacf2017f07c4e9374a95facdf88863d7',1,'yacx::Headers']]],
+  ['numheaders',['numHeaders',['../classyacx_1_1_headers.html#ac4c1a5d6b234844c2dcc71ca8d96fb68',1,'yacx::Headers']]],
+  ['numoptions',['numOptions',['../classyacx_1_1_options.html#aba8bed1be68a9c776232c775806dfbf9',1,'yacx::Options']]]
 ];

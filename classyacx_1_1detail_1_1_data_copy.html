@@ -86,14 +86,10 @@ Inheritance diagram for yacx::detail::DataCopy:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aec6fe17c8a22b1ad61cb2f1a45f96591"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#aec6fe17c8a22b1ad61cb2f1a45f96591">DataCopy</a> ()</td></tr>
 <tr class="separator:aec6fe17c8a22b1ad61cb2f1a45f96591"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ffb59aefd125f881cbc803e5a9f6944"><td class="memItemLeft" align="right" valign="top"><a id="a7ffb59aefd125f881cbc803e5a9f6944"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a7ffb59aefd125f881cbc803e5a9f6944">copyDataHtoD</a> (<a class="el" href="classyacx_1_1_kernel_arg.html">KernelArg</a> *kernelArg)=0</td></tr>
-<tr class="memdesc:a7ffb59aefd125f881cbc803e5a9f6944"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data from host to device <br /></td></tr>
-<tr class="separator:a7ffb59aefd125f881cbc803e5a9f6944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a020de3877275e6e28ed12f6f7eba8a98"><td class="memItemLeft" align="right" valign="top"><a id="a020de3877275e6e28ed12f6f7eba8a98"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a020de3877275e6e28ed12f6f7eba8a98">copyDataDtoH</a> (<a class="el" href="classyacx_1_1_kernel_arg.html">KernelArg</a> *kernelArg)=0</td></tr>
-<tr class="memdesc:a020de3877275e6e28ed12f6f7eba8a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy data from device to host <br /></td></tr>
-<tr class="separator:a020de3877275e6e28ed12f6f7eba8a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d077658c2f09655db9de38cd9d4a58"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a10d077658c2f09655db9de38cd9d4a58">copyDataHtoD</a> (void *hdata, CUdeviceptr ddata, size_t size)=0</td></tr>
+<tr class="separator:a10d077658c2f09655db9de38cd9d4a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8242e3ead38f44a5d90d30ce66ade027"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1detail_1_1_data_copy.html#a8242e3ead38f44a5d90d30ce66ade027">copyDataDtoH</a> (CUdeviceptr ddata, void *hdata, size_t size)=0</td></tr>
+<tr class="separator:a8242e3ead38f44a5d90d30ce66ade027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aec6fe17c8a22b1ad61cb2f1a45f96591"></a>
@@ -124,6 +120,111 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8242e3ead38f44a5d90d30ce66ade027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8242e3ead38f44a5d90d30ce66ade027">&#9670;&nbsp;</a></span>copyDataDtoH()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void yacx::detail::DataCopy::copyDataDtoH </td>
+          <td>(</td>
+          <td class="paramtype">CUdeviceptr&#160;</td>
+          <td class="paramname"><em>ddata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>hdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>copy data from device to host </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ddata</td><td>pointer to device data </td></tr>
+    <tr><td class="paramname">hdata</td><td>pointer to host data </td></tr>
+    <tr><td class="paramname">size</td><td>size of the data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#abb468b45bb4470e08c335e80fbc0ed32">yacx::detail::DataCopyKernelArgMatrixPadding</a>, and <a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg.html#a7a8e9bcbb7e7d1356e01970860c216c7">yacx::detail::DataCopyKernelArg</a>.</p>
+
+</div>
+</div>
+<a id="a10d077658c2f09655db9de38cd9d4a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10d077658c2f09655db9de38cd9d4a58">&#9670;&nbsp;</a></span>copyDataHtoD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void yacx::detail::DataCopy::copyDataHtoD </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>hdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CUdeviceptr&#160;</td>
+          <td class="paramname"><em>ddata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>copy data from host to device </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hdata</td><td>pointer to host data </td></tr>
+    <tr><td class="paramname">ddata</td><td>pointer to device data </td></tr>
+    <tr><td class="paramname">size</td><td>size of the data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding.html#ac3d4522812e5e0f4d17e1701198aef9e">yacx::detail::DataCopyKernelArgMatrixPadding</a>, and <a class="el" href="classyacx_1_1detail_1_1_data_copy_kernel_arg.html#a9448ae47cdf67625e4ed05536dec3963">yacx::detail::DataCopyKernelArg</a>.</p>
 
 </div>
 </div>

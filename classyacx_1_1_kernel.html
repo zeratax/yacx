@@ -107,10 +107,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af0bb713a4f07eb8304525731d0d1a9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel.html">Kernel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel.html#a5f993a9d123092e80ec722ecd4a11a6e">configure</a> (dim3 grid, dim3 block)</td></tr>
 <tr class="separator:a5f993a9d123092e80ec722ecd4a11a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47484f44c2c39b87c82f1d79d12755c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel.html#a47484f44c2c39b87c82f1d79d12755c5">launch</a> (<a class="el" href="classyacx_1_1_kernel_args.html">KernelArgs</a> args, <a class="el" href="classyacx_1_1_device.html">Device</a> device=<a class="el" href="classyacx_1_1_device.html">Device</a>())</td></tr>
-<tr class="separator:a47484f44c2c39b87c82f1d79d12755c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6521e400df718072bcc8320652b61cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classyacx_1_1_kernel_time.html">KernelTime</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel.html#a6521e400df718072bcc8320652b61cf5">benchmark</a> (<a class="el" href="classyacx_1_1_kernel_args.html">KernelArgs</a> args, unsigned int executions, <a class="el" href="classyacx_1_1_device.html">Device</a> device=<a class="el" href="classyacx_1_1_device.html">Device</a>())</td></tr>
-<tr class="separator:a6521e400df718072bcc8320652b61cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6daf13c0526e7746e0419697e7f861d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyacx_1_1_kernel_time.html">KernelTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel.html#a6daf13c0526e7746e0419697e7f861d7">launch</a> (<a class="el" href="classyacx_1_1_kernel_args.html">KernelArgs</a> args, <a class="el" href="classyacx_1_1_device.html">Device</a> &amp;device=<a class="el" href="classyacx_1_1_devices.html#abaae9839d12e79117e2fb292ee0689fb">Devices::findDevice</a>())</td></tr>
+<tr class="separator:a6daf13c0526e7746e0419697e7f861d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fcd39747a74696078246d405e3a671f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classyacx_1_1_kernel_time.html">KernelTime</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel.html#a9fcd39747a74696078246d405e3a671f">benchmark</a> (<a class="el" href="classyacx_1_1_kernel_args.html">KernelArgs</a> args, unsigned int executions, <a class="el" href="classyacx_1_1_device.html">Device</a> &amp;device=<a class="el" href="classyacx_1_1_devices.html#abaae9839d12e79117e2fb292ee0689fb">Devices::findDevice</a>())</td></tr>
+<tr class="separator:a9fcd39747a74696078246d405e3a671f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to help launch and configure a CUDA kernel. </p>
@@ -154,8 +154,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6521e400df718072bcc8320652b61cf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6521e400df718072bcc8320652b61cf5">&#9670;&nbsp;</a></span>benchmark()</h2>
+<a id="a9fcd39747a74696078246d405e3a671f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fcd39747a74696078246d405e3a671f">&#9670;&nbsp;</a></span>benchmark()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,8 +175,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classyacx_1_1_device.html">Device</a>&#160;</td>
-          <td class="paramname"><em>device</em> = <code><a class="el" href="classyacx_1_1_device.html">Device</a>()</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classyacx_1_1_device.html">Device</a> &amp;&#160;</td>
+          <td class="paramname"><em>device</em> = <code><a class="el" href="classyacx_1_1_devices.html#abaae9839d12e79117e2fb292ee0689fb">Devices::findDevice</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -351,8 +351,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a47484f44c2c39b87c82f1d79d12755c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47484f44c2c39b87c82f1d79d12755c5">&#9670;&nbsp;</a></span>launch() <span class="overload">[1/6]</span></h2>
+<a id="a6daf13c0526e7746e0419697e7f861d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6daf13c0526e7746e0419697e7f861d7">&#9670;&nbsp;</a></span>launch() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,8 +366,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classyacx_1_1_device.html">Device</a>&#160;</td>
-          <td class="paramname"><em>device</em> = <code><a class="el" href="classyacx_1_1_device.html">Device</a>()</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classyacx_1_1_device.html">Device</a> &amp;&#160;</td>
+          <td class="paramname"><em>device</em> = <code><a class="el" href="classyacx_1_1_devices.html#abaae9839d12e79117e2fb292ee0689fb">Devices::findDevice</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
