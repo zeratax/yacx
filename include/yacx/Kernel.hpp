@@ -6,20 +6,20 @@
 #include "KernelTime.hpp"
 #include "Logger.hpp"
 
-#include <cuda.h>
 #include <builtin_types.h>
+#include <cuda.h>
+#include <functional>
 #include <memory>
 #include <nvrtc.h>
-#include <functional>
 #include <vector>
 #include <vector_types.h>
 
 namespace yacx {
 typedef struct {
-    CUevent start;
-    CUevent end;
+  CUevent start;
+  CUevent end;
 
-    float elapsed();
+  float elapsed();
 } eventInterval;
 
 /*!
@@ -35,7 +35,6 @@ class Kernel : JNIHandle {
   //! \param kernel_name
   //! \param demangled_name
   Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name);
-  ~Kernel();
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
@@ -51,23 +50,34 @@ class Kernel : JNIHandle {
   //! \param number of executions
   //! \param device
   //! \return vector of KernelTimes for every execution
-  std::vector<KernelTime> benchmark(std::vector<KernelArg>& args, unsigned int executions,
+  std::vector<KernelTime> benchmark(std::vector<KernelArg> &args,
+                                    unsigned int executions,
                                     Device &device = Devices::findDevice());
 
  private:
-  eventInterval asyncOperation(KernelArgs& args, CUstream stream, CUevent syncEvent,
-                                  std::function<void (KernelArgs& args, CUstream stream)> operation);
-  eventInterval uploadAsync(KernelArgs& args, Device& device);
-  eventInterval runAsync(KernelArgs& args, Device& device, CUevent syncEvent);
-  eventInterval downloadAsync(KernelArgs& args, Device& device, CUevent syncEvent, void *downloadDest);
+  eventInterval asyncOperation(
+      KernelArgs &args, CUstream stream, CUevent syncEvent,
+      std::function<void(KernelArgs &args, CUstream stream)> operation);
+  eventInterval uploadAsync(KernelArgs &args, Device &device);
+  eventInterval runAsync(KernelArgs &args, Device &device, CUevent syncEvent);
+  eventInterval downloadAsync(KernelArgs &args, Device &device,
+                              CUevent syncEvent, void *downloadDest);
+
+  struct KernelFunction {
+    CUmodule module;
+    CUfunction kernel;
+
+    KernelFunction(char *ptx, std::string demangled_name);
+
+    ~KernelFunction();
+  };
 
   std::shared_ptr<char[]> m_ptx;
+  std::shared_ptr<struct KernelFunction> m_kernelFunction;
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
   unsigned int m_shared;
-  CUmodule m_module;
-  CUfunction m_kernel;
 };
 
 } // namespace yacx

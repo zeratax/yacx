@@ -42,7 +42,7 @@ void Device::set_device_properties(const CUdevice &device) {
 #endif
 }
 
-Device::Context::Context(CUdevice device){
+Device::Context::Context(CUdevice device) {
   this->device = device;
 
   CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&primaryContext, device));
@@ -53,17 +53,17 @@ Device::Context::Context(CUdevice device){
   CUDA_SAFE_CALL(cuStreamCreate(&download, CU_STREAM_NON_BLOCKING));
 }
 
-Device::Context::~Context(){
+Device::Context::~Context() {
   CUDA_SAFE_CALL(cuCtxSetCurrent(primaryContext));
   CUDA_SAFE_CALL(cuStreamDestroy(upload));
   CUDA_SAFE_CALL(cuStreamDestroy(launch));
   CUDA_SAFE_CALL(cuStreamDestroy(download));
-    
+
   CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(device));
 }
 
 CUcontext Device::getPrimaryContext() {
-  if (!m_context){
+  if (!m_context) {
     m_context = std::make_shared<struct Context>(m_device);
   }
 
@@ -71,28 +71,26 @@ CUcontext Device::getPrimaryContext() {
 }
 
 CUstream Device::getUploadStream() {
-  if (!m_context){
+  if (!m_context) {
     m_context = std::make_shared<struct Context>(m_device);
   }
-  
+
   return m_context.get()->upload;
 }
 
-
 CUstream Device::getLaunchStream() {
-  if (!m_context){
+  if (!m_context) {
     m_context = std::make_shared<struct Context>(m_device);
   }
-  
+
   return m_context.get()->launch;
 }
 
-
 CUstream Device::getDownloadStream() {
-  if (!m_context){
+  if (!m_context) {
     m_context = std::make_shared<struct Context>(m_device);
   }
-  
+
   return m_context.get()->download;
 }
 

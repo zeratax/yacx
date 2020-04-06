@@ -4,10 +4,10 @@
 
 #include <cuda.h>
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 #include <vector_types.h>
-#include <memory>
 
 namespace yacx {
 class Device : JNIHandle {
