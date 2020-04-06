@@ -55,6 +55,20 @@ std::string get_datetime() {
 
 }
 
+yacx::logmap yacx::state = {
+    {loglevel::NONE,
+     std::pair<const char *, const char *>{"   NONE", gColorBrightDefault}},
+    {loglevel::ERROR,
+     std::pair<const char *, const char *>{"  ERROR", gColorBrightRed}},
+    {loglevel::WARNING,
+     std::pair<const char *, const char *>{"WARNING", gColorBrightYellow}},
+    {loglevel::INFO,
+     std::pair<const char *, const char *>{"   INFO", gColorBrightDefault}},
+    {loglevel::DEBUG,
+     std::pair<const char *, const char *>{"  DEBUG", gColorGray}},
+    {loglevel::DEBUG1,
+     std::pair<const char *, const char *>{" DEBUG1", gColorGray}}};
+
 void yacx::handle_logging_args(int argc, char const *const *const argv) {
   for (int i = 1; i < argc; ++i) {
     std::arguments.push_back(argv[i]);
