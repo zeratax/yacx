@@ -150,6 +150,8 @@ class KernelArgMatrixPadding : public KernelArg {
                          int dst_columns);
 };
 
+enum class arg_type { UPLOAD, DOWNLOAD, TOTAL };
+
 class KernelArgs {
  public:
   KernelArgs(std::vector<KernelArg> args);
@@ -157,7 +159,7 @@ class KernelArgs {
   float download();
   float download(void *hdata);
   const void **content();
-  size_t size() const;
+  size_t size(arg_type = arg_type::TOTAL) const;
   size_t maxOutputSize() const;
 
  private:

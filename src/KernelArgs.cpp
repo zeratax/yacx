@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-using yacx::KernelArgs, yacx::KernelArg;
+using yacx::KernelArgs, yacx::KernelArg, yacx::arg_type;
 
 KernelArgs::KernelArgs(std::vector<KernelArg> args) : m_args{args} {}
 
@@ -34,12 +34,13 @@ const void **KernelArgs::content() {
   return m_voArgs.data();
 }
 
-size_t KernelArgs::size() const {
+size_t KernelArgs::size(arg_type type) const {
   size_t result{0};
   for (auto const &arg : m_args) {
-    if (arg.m_copy)
+    if (arg.m_copy && (type == arg_type::UPLOAD || type == arg_type::TOTAL))
       result += arg.size();
-    if (arg.m_download)
+    if (arg.m_download &&
+        (type == arg_type::DOWNLOAD || type == arg_type::TOTAL))
       result += arg.size();
   }
   return result;
