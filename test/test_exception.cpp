@@ -42,7 +42,7 @@ TEST_CASE("CUDA_SAFE_CALL", "[yacx::Exception]") {
 
   SECTION("CUDA_SUCCESS") {
     try {
-      yacx::CUDA_SAFE_CALL(CUDA_SUCCESS);
+      CUDA_SAFE_CALL(CUDA_SUCCESS);
     } catch (yacx::CUresultException &e) {
       REQUIRE(e.type == CUDA_SUCCESS);
       FAIL(
@@ -55,7 +55,7 @@ TEST_CASE("CUDA_SAFE_CALL", "[yacx::Exception]") {
 
   SECTION("CUDA_ERROR_PROFILER_DISABLED") {
     try {
-      yacx::CUDA_SAFE_CALL(CUDA_ERROR_PROFILER_DISABLED);
+      CUDA_SAFE_CALL(CUDA_ERROR_PROFILER_DISABLED);
     } catch (yacx::CUresultException &e) {
       REQUIRE(e.type == CUDA_ERROR_PROFILER_DISABLED);
     } catch (std::exception &e) {
@@ -65,7 +65,7 @@ TEST_CASE("CUDA_SAFE_CALL", "[yacx::Exception]") {
 
   SECTION("CUDA_ERROR_INVALID_PC") {
     try {
-      yacx::CUDA_SAFE_CALL(CUDA_ERROR_INVALID_PC);
+      CUDA_SAFE_CALL(CUDA_ERROR_INVALID_PC);
     } catch (yacx::CUresultException &e) {
       REQUIRE(e.type == CUDA_ERROR_INVALID_PC);
     } catch (std::exception &e) {
@@ -75,7 +75,7 @@ TEST_CASE("CUDA_SAFE_CALL", "[yacx::Exception]") {
 
   SECTION("CUDA_ERROR_INVALID_VALUE") {
     try {
-      yacx::CUDA_SAFE_CALL(cuCtxDestroy(nullptr));
+      CUDA_SAFE_CALL(cuCtxDestroy(nullptr));
     } catch (yacx::CUresultException &e) {
       REQUIRE(e.type == CUDA_ERROR_INVALID_VALUE);
     } catch (std::exception &e) {

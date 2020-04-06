@@ -1,26 +1,32 @@
 #include "Half.hpp"
 
+#include "../../include/yacx/Devices.hpp"
 #include "../../include/yacx/Kernel.hpp"
 #include "../../include/yacx/Program.hpp"
 #include "../../include/yacx/Source.hpp"
 
 #include <stdlib.h>
+#include <vector>
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Device, yacx::Options;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Device, yacx::Devices, yacx::Options;
 
 unsigned int maxGridSize = 0;
 unsigned int maxBlockSize = 0;
 yacx::Kernel* kernelFtoH = NULL;
 yacx::Kernel* kernelHtoF = NULL;
+yacx::Device* device = NULL;
 
 void initKernel(){
-    Device dev;
+    std::vector<Device*> devices = Devices::findDevices([](Device& device){ return device.major_version() >= 6; });
+    if (devices.empty()){
+        throw std::invalid_argument("no CUDA-device with computeversion >= 6 found for conversion from/to halfs");
+    }
+    device = devices[0];
 
-    dim3 grid;
-    dev.max_grid_dim(&grid);
+    dim3 grid = device->max_grid_dim();
     maxGridSize = grid.x;
-    dev.max_block_dim(&grid);
-    maxBlockSize = grid.x;
+    dim3 block = device->max_block_dim();
+    maxBlockSize = block.x;
 
     Source source{
             "#include <cuda_fp16.h>\n"
@@ -73,7 +79,7 @@ void yacx::convertFtoH(void* floats, void* halfs, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelFtoH->configure(grid, block).launch(args);
+    kernelFtoH->configure(grid, block).launch(args, *device);
 }
 
 void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
@@ -90,7 +96,7 @@ void yacx::convertHtoF(void* halfs, void* floats, unsigned int length){
     dim3 grid(grids < maxGridSize ? grids : maxGridSize);
     dim3 block(maxBlockSize);
 
-    kernelHtoF->configure(grid, block).launch(args);
+    kernelHtoF->configure(grid, block).launch(args, *device);
 }
 
 //TODO

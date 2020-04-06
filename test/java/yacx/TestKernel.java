@@ -173,7 +173,7 @@ class TestKernel extends TestJNI {
 
 		// launch Kernel correctly again with other configuration and device-parameter
 		kernelDims.configure(42, 1, 3, 19, 7, 7);
-		Device device = Device.createDevice();
+		Device device = Devices.findDevice();
 
 		kernelDims.launch(device, grid0, grid1, grid2, block0, block1, block2);
 
