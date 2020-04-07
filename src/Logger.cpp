@@ -1,7 +1,7 @@
 #include "../include/yacx/Logger.hpp"
 #include <unordered_map>
 
-using yacx::Logger using yacx::loglevel;
+using yacx::Logger, yacx::loglevel;
 
 // we don't have P1275 but this works well enough as a substitute for now
 namespace std {
