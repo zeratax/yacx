@@ -10,10 +10,10 @@ std::vector<std::string> arguments;
 
 namespace yacx::detail {
 
-static std::unordered_map<std::string, E> const loglevels = {
+static std::unordered_map<std::string, loglevel> const loglevels = {
     {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERROR},
     {"WARNING", loglevel::WARNING}, {"INFO", loglevel::INFO},
-    {"DEBUG1", loglevel::DEBUG1},   {"DEBUG2", loglevel::DEBUG2}};
+    {"DEBUG", loglevel::DEBUG},   {"DEBUG1", loglevel::DEBUG1}};
 
 // wishing for c++20
 bool starts_with(const std::string &str, const std::string &substr) {
