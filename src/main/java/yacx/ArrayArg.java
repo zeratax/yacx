@@ -96,7 +96,7 @@ public abstract class ArrayArg extends KernelArg {
 	 */
 	protected long slice(long start, long end) {
 		assert (start >= 0);
-		assert (end >= 0 && end < getLength());
+		assert (end >= 0 && end <= getSize());
 
 		return sliceInternal(start, end);
 	}

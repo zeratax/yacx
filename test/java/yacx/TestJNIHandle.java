@@ -9,9 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class TestJNIHandle extends TestJNI {
+	static String saxpy;
+
+	@BeforeAll
+	static void loadSaxpy() throws IOException {
+		// Load Saxpy-Kernel as String
+		saxpy = Utils.loadFile("kernels/saxpy.cu");
+	}
 
 	/**
 	 * Check handle-member not 0 and after destroying c-object the handle-member
@@ -55,8 +63,8 @@ class TestJNIHandle extends TestJNI {
 		checkAndDispose(FloatArg.create(new float[] { 1, 2f }));
 		checkAndDispose(DoubleArg.create(4.7d, 6.8d));
 
-		// Check Device, Options and Headers
-		checkAndDispose(Device.createDevice());
+		// Check CProgram, Options and Headers
+		checkAndDispose(CProgram.create("void copy(int i, int* out){*out = i;}", "copy", new String[] {"int", "*"}));
 		checkAndDispose(Options.createOptions());
 		checkAndDispose(Headers.createHeaders());
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.09)
 project(
   yacx
-  VERSION 0.4.1
+  VERSION 0.5.0
   LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -27,6 +27,7 @@ set(JAVA_SOURCE_FILES
     "src/main/java/yacx/ByteArg.java"
     "src/main/java/yacx/CProgram.java"
     "src/main/java/yacx/Device.java"
+    "src/main/java/yacx/Devices.java"
     "src/main/java/yacx/DoubleArg.java"
     "src/main/java/yacx/Executor.java"
     "src/main/java/yacx/ExecutorFailureException.java"

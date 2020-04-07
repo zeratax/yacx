@@ -56,6 +56,7 @@ set(JAVA_TEST_FILES
     "test/java/yacx/TestByteArg.java"
     "test/java/yacx/TestCProgram.java"
     "test/java/yacx/TestDevice.java"
+    "test/java/yacx/TestDevices.java"
     "test/java/yacx/TestDoubleArg.java"
     "test/java/yacx/TestExecuteFilter.java"
     "test/java/yacx/TestExecuteSaxpy.java"

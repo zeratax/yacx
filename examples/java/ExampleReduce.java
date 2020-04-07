@@ -13,7 +13,7 @@ import yacx.Utils;
 public class ExampleReduce {
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int arraySize = 26251;

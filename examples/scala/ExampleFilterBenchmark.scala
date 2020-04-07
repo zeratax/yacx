@@ -9,7 +9,7 @@ object ExampleFilterBenchmark {
 	
     def main(args: Array[String]) : Unit = {
     	//Load Libary
-    	Executor.loadLibary()
+    	Executor.loadLibrary()
     	
       //Benchmark filter-Kernel
       println(Executor.benchmark("filter_k", Options.createOptions(), 10,

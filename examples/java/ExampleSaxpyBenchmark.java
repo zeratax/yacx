@@ -11,7 +11,7 @@ public class ExampleSaxpyBenchmark {
 
 	public static void main(String[] args) throws IOException {
 		// Load Libary
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Benchmark saxpy-Kernel
 		System.out.println(Executor.benchmark("saxpy", Options.createOptions(), 10, new Executor.KernelArgCreator() {

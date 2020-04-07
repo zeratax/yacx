@@ -4,11 +4,11 @@
 #include <catch2/catch.hpp>
 
 using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
-    yacx::type_of, yacx::loglevel;
+    yacx::Devices, yacx::type_of, yacx::loglevel;
 
 TEST_CASE("sumArray with implicit size", "[example_program]") {
 
-  Device device;
+  Device device = Devices::findDevice();
   Options options{yacx::options::GpuArchitecture(device),
                   yacx::options::FMAD(false)};
   options.insert("--std", "c++14");
@@ -193,7 +193,7 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
 }
 
 TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
-  Device device;
+  Device device = Devices::findDevice();
   Options options{yacx::options::GpuArchitecture(device),
                   yacx::options::FMAD(false)};
   options.insert("--std", "c++14");
@@ -244,9 +244,9 @@ TEST_CASE("sumArray (size of array as an argument)", "[example_program]") {
 
     constexpr int warpsize = 32;
     int max_block_DIM = 0;
-    yacx::CUDA_SAFE_CALL(cuDeviceGetAttribute(
+    CUDA_SAFE_CALL(cuDeviceGetAttribute(
         (int *)&max_block_DIM, CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
-        device.cuDevice()));
+        device.get()));
     const int grid_x = (nElem + max_block_DIM - 1) / max_block_DIM;
     const int block_y = (nElem / grid_x + warpsize - 1) / warpsize;
 

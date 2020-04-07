@@ -24,9 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-#include <cuda.h>
+
 #include <mma.h>
+
+using namespace nvcuda;
 
 #define WMMA_M 16
 #define WMMA_N 16
@@ -36,7 +37,8 @@
 //  1) Matrices are packed in memory.
 //  2) M, N and K are multiples of 16. 
 //  3) B is transposed, A isn't.
-__global__ void simple_wmma_gemm(__half* a, __half* b, float* c, float* d, int m_ld, int n_ld, int k_ld, float alpha, float beta)
+extern "C" __global__
+void simple_wmma_gemm(__half* a, __half* b, float* c, float* d, int m_ld, int n_ld, int k_ld, float alpha, float beta)
 {
 	// Leading dimensions. B is transposed.
 	int lda = k_ld;

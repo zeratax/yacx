@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <utility>
 
-using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -21,7 +21,7 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-KernelTime Kernel::launch(KernelArgs args, Device device) {
+KernelTime Kernel::launch(KernelArgs args, Device &device) {
   logger(loglevel::DEBUG) << "creating context";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
@@ -93,11 +93,15 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
 
+  time.size_upload = args.size(arg_type::UPLOAD);
+  time.size_download = args.size(arg_type::DOWNLOAD);
+  time.size_total = args.size(arg_type::TOTAL);
+
   return time;
 }
 
 std::vector<KernelTime>
-Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;
@@ -132,7 +136,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device device) {
   // destroy context
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
-  // free allocated memory
+  // free allocated page-locked memory
   if (maxOutputSize) {
     free(output);
   }

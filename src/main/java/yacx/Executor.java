@@ -8,13 +8,13 @@ import java.util.Arrays;
  * Class for initialization (load native library) and easily execute CUDA
  * kernels. <br>
  * Before using other classes in this package it is necessary to load the native
- * libary.
+ * library.
  */
 public class Executor {
 	/**
 	 * Loads the native library.
 	 */
-	public static void loadLibary() {
+	public static void loadLibrary() {
 		System.loadLibrary("yacx-jni");
 	}
 
@@ -163,7 +163,7 @@ public class Executor {
 	public static KernelTime launch(String kernelString, String kernelName, Options options, String deviceName,
 			int grid, int block, KernelArg... args) {
 		return Program.create(kernelString, kernelName).compile(options).configure(grid, block)
-				.launch(Device.createDevice(deviceName), args);
+				.launch(Devices.findDevice(deviceName), args);
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class Executor {
 	public static KernelTime launch(String kernelString, String kernelName, Options options, String deviceName,
 			String[] templateParameter, int grid, int block, KernelArg... args) {
 		return Program.create(kernelString, kernelName).instantiate(templateParameter).compile(options)
-				.configure(grid, block).launch(Device.createDevice(deviceName), args);
+				.configure(grid, block).launch(Devices.findDevice(deviceName), args);
 	}
 
 	/**
@@ -246,7 +246,7 @@ public class Executor {
 	public static KernelTime launch(String kernelString, String kernelName, Options options, String deviceName,
 			int grid0, int grid1, int grid2, int block0, int block1, int block2, KernelArg... args) {
 		return Program.create(kernelString, kernelName).compile(options)
-				.configure(grid0, grid1, grid2, block0, block1, block2).launch(Device.createDevice(deviceName), args);
+				.configure(grid0, grid1, grid2, block0, block1, block2).launch(Devices.findDevice(deviceName), args);
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class Executor {
 			String[] templateParameter, int grid0, int grid1, int grid2, int block0, int block1, int block2,
 			KernelArg... args) {
 		return Program.create(kernelString, kernelName).instantiate(templateParameter).compile(options)
-				.configure(grid0, grid1, grid2, block0, block1, block2).launch(Device.createDevice(deviceName), args);
+				.configure(grid0, grid1, grid2, block0, block1, block2).launch(Devices.findDevice(deviceName), args);
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class Executor {
 	 */
 	public static BenchmarkResult benchmark(String kernelName, Options options, int numberExecutions,
 			KernelArgCreator creator, int... dataSizesBytes) throws IOException {
-		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Device.createDevice(),
+		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Devices.findDevice(),
 				numberExecutions, creator, dataSizesBytes);
 	}
 
@@ -366,10 +366,10 @@ public class Executor {
 
 			// Create KernelArgs for this dataSize
 			KernelArg[] args = creator.createArgs(dataLength);
-			
+
 			// Execute Kernel numberExecutions times
 			result[i] = benchmark(kernel, device, args, numberExecutions);
-			
+
 			// Destroy corresponding C-Objects
 			for (KernelArg arg : args) {
 				arg.dispose();
@@ -528,16 +528,24 @@ public class Executor {
 				double download = 0;
 				double launch = 0;
 				double total = 0;
+				double bandwidthUp = 0;
+				double bandwidthDown = 0;
+				double bandwidthLaunch = 0;
 
 				for (int j = 0; j < numberExecutions; j++) {
 					upload += result[i][j].getUpload();
 					download += result[i][j].getDownload();
 					launch += result[i][j].getLaunch();
 					total += result[i][j].getTotal();
+					bandwidthUp += result[i][j].effectiveBandwithUpload();
+					bandwidthDown += result[i][j].effectiveBandwithDownload();
+					bandwidthLaunch += result[i][j].effectiveBandwithLaunch();
 				}
 
 				average[i] = new KernelTime((float) (upload / numberExecutions), (float) (download / numberExecutions),
-						(float) (launch / numberExecutions), (float) (total / numberExecutions));
+						(float) (launch / numberExecutions), (float) (total / numberExecutions),
+						(float) (bandwidthUp / numberExecutions), (float) (bandwidthDown / numberExecutions),
+						(float) (bandwidthLaunch / numberExecutions));
 			}
 		}
 
