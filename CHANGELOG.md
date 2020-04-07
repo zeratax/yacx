@@ -1,5 +1,21 @@
 # Changelog
 
+## yacx v0.6.1 (2020-04-08)
+
+### Features
+- usage of dynamic shared memory
+- add JNI-example for execute c-code
+- add JNI-benchmarktests for gemm- and reducekernel
+  
+### Changes
+- JNI
+  - uses pinned memory
+  - createHalfTransosed for convert float-matrix to halfs and transposes it
+  - add example for execute c-code
+  - fix typo libary -> library
+- fix compilerwarnings
+
+
 ## yacx v0.6.0 (2020-04-08)
 
 ### Features
