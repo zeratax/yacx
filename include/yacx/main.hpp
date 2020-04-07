@@ -9,7 +9,7 @@
  *   \brief C++ bindings to easily compile and execute CUDA kernels
  *   \author Jona Abdinghoff
  *
- *   \version 0.5.0
+ *   \version 0.6.0
  *
  */
 
