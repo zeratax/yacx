@@ -1,12 +1,17 @@
 # Changelog
 
-## yacx v0.6.0 (2020-04-07)
+## yacx v0.6.0 (2020-04-08)
 
 ### Features
 - new static Devices class to easily filter devices
   - by name
   - by UUID
   - by lambda function
+- Logger
+  - outputs in color
+  - set logging levels/file output per command line, try with [example_logger.cpp](https://github.com/ZerataX/yacx/blob/master/examples/example_logger.cpp)
+     - `--file=yacx.log`: set file output
+     - `--log=DEBUG`: set logging level
   
 ### Changes
 - KernelTime has been refactored
