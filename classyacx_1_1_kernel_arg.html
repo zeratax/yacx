@@ -97,7 +97,7 @@ Inheritance diagram for yacx.KernelArg:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a10f9f7255e69ef20c0cad5ed4e091c94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a10f9f7255e69ef20c0cad5ed4e091c94">KernelArg</a> (void *data, size_t size, bool <a class="el" href="classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73">download</a>=false, bool copy=true, bool <a class="el" href="classyacx_1_1_kernel_arg.html#aec431dbfc68042e8c3e659d24b3df4b5">upload</a>=true)</td></tr>
+<tr class="memitem:a10f9f7255e69ef20c0cad5ed4e091c94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a10f9f7255e69ef20c0cad5ed4e091c94">KernelArg</a> (void *data, size_t size, bool download=false, bool copy=true, bool upload=true)</td></tr>
 <tr class="memdesc:a10f9f7255e69ef20c0cad5ed4e091c94"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor.  <a href="#a10f9f7255e69ef20c0cad5ed4e091c94">More...</a><br /></td></tr>
 <tr class="separator:a10f9f7255e69ef20c0cad5ed4e091c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a322f72843a8fb16c51b83b0af408da9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a322f72843a8fb16c51b83b0af408da9b">KernelArg</a> (void *data)</td></tr>
@@ -106,12 +106,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae2151181887d6023f66c3198f71c4a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86633f975fb30d725f52299f83a5098"><td class="memItemLeft" align="right" valign="top">CUdeviceptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#af86633f975fb30d725f52299f83a5098">deviceptr</a> ()</td></tr>
 <tr class="separator:af86633f975fb30d725f52299f83a5098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec431dbfc68042e8c3e659d24b3df4b5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#aec431dbfc68042e8c3e659d24b3df4b5">upload</a> ()</td></tr>
-<tr class="separator:aec431dbfc68042e8c3e659d24b3df4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2f01010ec9a3c81e2f178e0ad734a73"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73">download</a> ()</td></tr>
-<tr class="separator:ae2f01010ec9a3c81e2f178e0ad734a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4606f8bbd508260afc98bb1a9e1496db"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a4606f8bbd508260afc98bb1a9e1496db">download</a> (void *hdata)</td></tr>
-<tr class="separator:a4606f8bbd508260afc98bb1a9e1496db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dfe915de60f093466e9313c136aee4a"><td class="memItemLeft" align="right" valign="top"><a id="a5dfe915de60f093466e9313c136aee4a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a5dfe915de60f093466e9313c136aee4a">malloc</a> ()</td></tr>
+<tr class="memdesc:a5dfe915de60f093466e9313c136aee4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">mallocs data on device <br /></td></tr>
+<tr class="separator:a5dfe915de60f093466e9313c136aee4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28c10b39d51a27d30e0f3e60b6aea41e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a28c10b39d51a27d30e0f3e60b6aea41e">uploadAsync</a> (CUstream stream)</td></tr>
+<tr class="separator:a28c10b39d51a27d30e0f3e60b6aea41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7e66a54ae90c82aa810572d62f6fc5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#ac7e66a54ae90c82aa810572d62f6fc5f">downloadAsync</a> (CUstream stream)</td></tr>
+<tr class="separator:ac7e66a54ae90c82aa810572d62f6fc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b58bafa9bb3b438a3a9e1f653ac53eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a0b58bafa9bb3b438a3a9e1f653ac53eb">downloadAsync</a> (void *hdata, CUstream stream)</td></tr>
+<tr class="separator:a0b58bafa9bb3b438a3a9e1f653ac53eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cffe32c3423fbbcfa54223103995b97"><td class="memItemLeft" align="right" valign="top"><a id="a2cffe32c3423fbbcfa54223103995b97"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyacx_1_1_kernel_arg.html#a2cffe32c3423fbbcfa54223103995b97">free</a> ()</td></tr>
+<tr class="memdesc:a2cffe32c3423fbbcfa54223103995b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">frees allocated data on device <br /></td></tr>
+<tr class="separator:a2cffe32c3423fbbcfa54223103995b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac48203fca6a28771cc97d41c05baa9a3"><td class="memItemLeft" align="right" valign="top"><a id="ac48203fca6a28771cc97d41c05baa9a3"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="separator:ac48203fca6a28771cc97d41c05baa9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,7 +127,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDownload</b> () const</td></tr>
 <tr class="separator:aec838a1cc9a254267e568fa1bb3726f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c449e162ce2195b74d95f3e8cce7b6f"><td class="memItemLeft" align="right" valign="top"><a id="a6c449e162ce2195b74d95f3e8cce7b6f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDownload</b> (bool <a class="el" href="classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73">download</a>)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDownload</b> (bool download)</td></tr>
 <tr class="separator:a6c449e162ce2195b74d95f3e8cce7b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8c914af5441de22ac86bc06e68e2cad"><td class="memItemLeft" align="right" valign="top"><a id="ad8c914af5441de22ac86bc06e68e2cad"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isCopy</b> () const</td></tr>
@@ -286,8 +294,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgs</b></td><
 
 </div>
 </div>
-<a id="ae2f01010ec9a3c81e2f178e0ad734a73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2f01010ec9a3c81e2f178e0ad734a73">&#9670;&nbsp;</a></span>download() <span class="overload">[1/2]</span></h2>
+<a id="ac7e66a54ae90c82aa810572d62f6fc5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7e66a54ae90c82aa810572d62f6fc5f">&#9670;&nbsp;</a></span>downloadAsync() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,9 +304,10 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgs</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float yacx.KernelArg.download </td>
+          <td class="memname">void yacx.KernelArg.downloadAsync </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">CUstream&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -308,50 +317,71 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>KernelArgs</b></td><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>downloads data to host </p><dl class="section return"><dt>Returns</dt><dd>time to download from device </dd></dl>
+<p>downloads data to host </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>to enqueue operations </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="a4606f8bbd508260afc98bb1a9e1496db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4606f8bbd508260afc98bb1a9e1496db">&#9670;&nbsp;</a></span>download() <span class="overload">[2/2]</span></h2>
+<a id="a0b58bafa9bb3b438a3a9e1f653ac53eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b58bafa9bb3b438a3a9e1f653ac53eb">&#9670;&nbsp;</a></span>downloadAsync() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float KernelArg::download </td>
+          <td class="memname">void KernelArg::downloadAsync </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>hdata</em></td><td>)</td>
+          <td class="paramname"><em>hdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">CUstream&#160;</td>
+          <td class="paramname"><em>stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>downloads data to host </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pointer</td><td>to host memory </td></tr>
+    <tr><td class="paramname">hdata</td><td>pointer to host memory for the downloaded data </td></tr>
+    <tr><td class="paramname">stream</td><td>to enqueue operations </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>time to download from device </dd></dl>
 
 </div>
 </div>
-<a id="aec431dbfc68042e8c3e659d24b3df4b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec431dbfc68042e8c3e659d24b3df4b5">&#9670;&nbsp;</a></span>upload()</h2>
+<a id="a28c10b39d51a27d30e0f3e60b6aea41e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28c10b39d51a27d30e0f3e60b6aea41e">&#9670;&nbsp;</a></span>uploadAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float KernelArg::upload </td>
+          <td class="memname">void KernelArg::uploadAsync </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">CUstream&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>uploads data to device </p><dl class="section return"><dt>Returns</dt><dd>time to upload to device </dd></dl>
+<p>uploads data to device </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>to enqueue operations </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

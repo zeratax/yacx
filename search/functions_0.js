@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['addkerneltime',['addKernelTime',['../classyacx_1_1_kernel_time.html#a66da38fdc74d40dfb3e71a609e3ac7f6',1,'yacx::KernelTime']]],
   ['asbooleanarray',['asBooleanArray',['../classyacx_1_1_boolean_arg.html#aaca499854148ee81c66439119c7de184',1,'yacx::BooleanArg']]],
   ['asbytearray',['asByteArray',['../classyacx_1_1_byte_arg.html#aa391ec250a5e45cd17b42719f4202720',1,'yacx::ByteArg']]],
   ['asdoublearray',['asDoubleArray',['../classyacx_1_1_double_arg.html#a2775d45cd80c5fe6589d480b40e709a7',1,'yacx::DoubleArg']]],

@@ -5,5 +5,6 @@ var searchData=
   ['finddevicebyuuid',['findDeviceByUUID',['../classyacx_1_1_devices.html#aa1935a585ff3f849b8e7bb3df045da1c',1,'yacx.Devices.findDeviceByUUID(String uuid)'],['../classyacx_1_1_devices.html#afbeb807ea9fac2ba0be9c4fa812c5243',1,'yacx.Devices::findDeviceByUUID(std::string uuid)']]],
   ['finddevices',['findDevices',['../classyacx_1_1_devices.html#aa1a44930c265be1c6593af6c42cd9c12',1,'yacx.Devices.findDevices()'],['../classyacx_1_1_devices.html#acd4d05ad7d11d97d50a53f2faa8248f9',1,'yacx.Devices.findDevices(DeviceCondition condition)'],['../classyacx_1_1_devices.html#a6e6532057d0ff69b70b99fd6d3a4252a',1,'yacx.Devices::findDevices()'],['../classyacx_1_1_devices.html#a274f530c0b46a7fcdd13d36b55330541',1,'yacx.Devices::findDevices(std::function&lt; bool(Device &amp;)&gt; con)']]],
   ['floatarg',['FloatArg',['../classyacx_1_1_float_arg.html',1,'yacx']]],
-  ['fmad',['FMAD',['../classyacx_1_1options_1_1_f_m_a_d.html',1,'yacx::options']]]
+  ['fmad',['FMAD',['../classyacx_1_1options_1_1_f_m_a_d.html',1,'yacx::options']]],
+  ['free',['free',['../classyacx_1_1_kernel_arg.html#a2cffe32c3423fbbcfa54223103995b97',1,'yacx::KernelArg']]]
 ];

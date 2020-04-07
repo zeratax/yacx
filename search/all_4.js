@@ -3,6 +3,8 @@ var searchData=
   ['effectivebandwithdownload',['effectiveBandwithDownload',['../classyacx_1_1_kernel_time.html#af9f9b6943f4fe20d134e6c09b82b8ac3',1,'yacx::KernelTime']]],
   ['effectivebandwithlaunch',['effectiveBandwithLaunch',['../classyacx_1_1_kernel_time.html#a67d4b8ec91b4ad2f70ed06b409bf3f03',1,'yacx::KernelTime']]],
   ['effectivebandwithupload',['effectiveBandwithUpload',['../classyacx_1_1_kernel_time.html#a48f3cfd4b4876245e67741983dc03198',1,'yacx::KernelTime']]],
+  ['error',['ERROR',['../enumyacx_1_1_logger_1_1_log_level.html#a5dae2103d77b7dd1b4f64499590c0334',1,'yacx::Logger::LogLevel']]],
+  ['eventinterval',['eventInterval',['../structyacx_1_1event_interval.html',1,'yacx']]],
   ['execute',['execute',['../classyacx_1_1_c_program.html#a3dec928cdc5aaffc0399f4c0bb2b6ed4',1,'yacx.CProgram.execute(KernelArg... args)'],['../classyacx_1_1_c_program.html#a353a1d5aa467ef283a4b5b35ac8d634e',1,'yacx.CProgram::execute(std::vector&lt; void *&gt; arguments)']]],
   ['executec',['executeC',['../classyacx_1_1_executor.html#afdc26532a4fec31a6373783429a12c5e',1,'yacx.Executor.executeC(String cProgram, String functionName, KernelArg... args)'],['../classyacx_1_1_executor.html#adb476bb2f850cc9a4ed27521c9274779',1,'yacx.Executor.executeC(String cProgram, String functionName, String compiler, KernelArg... args)'],['../classyacx_1_1_executor.html#a165c4395ba0983b859adb58c2dfa0c93',1,'yacx.Executor.executeC(String cProgram, String functionName, String compiler, Options options, KernelArg... args)']]],
   ['executor',['Executor',['../classyacx_1_1_executor.html',1,'yacx']]],

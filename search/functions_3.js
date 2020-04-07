@@ -5,5 +5,5 @@ var searchData=
   ['device',['Device',['../classyacx_1_1_device.html#a4d6a77e872d111010c7f7e246cb412a4',1,'yacx.Device::Device(int ordinal)'],['../classyacx_1_1_device.html#add77370b72db16d7c694499f81aff1ef',1,'yacx.Device::Device()']]],
   ['deviceptr',['deviceptr',['../classyacx_1_1_kernel_arg.html#af86633f975fb30d725f52299f83a5098',1,'yacx::KernelArg']]],
   ['dispose',['dispose',['../classyacx_1_1_j_n_i_handle.html#a2611c9430f01b23581fbde69cc634a38',1,'yacx::JNIHandle']]],
-  ['download',['download',['../classyacx_1_1_kernel_arg.html#ae2f01010ec9a3c81e2f178e0ad734a73',1,'yacx.KernelArg::download()'],['../classyacx_1_1_kernel_arg.html#a4606f8bbd508260afc98bb1a9e1496db',1,'yacx.KernelArg::download(void *hdata)']]]
+  ['downloadasync',['downloadAsync',['../classyacx_1_1_kernel_arg.html#ac7e66a54ae90c82aa810572d62f6fc5f',1,'yacx.KernelArg::downloadAsync(CUstream stream)'],['../classyacx_1_1_kernel_arg.html#a0b58bafa9bb3b438a3a9e1f653ac53eb',1,'yacx.KernelArg::downloadAsync(void *hdata, CUstream stream)']]]
 ];
