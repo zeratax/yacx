@@ -9,11 +9,11 @@ using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
-  logger(loglevel::DEBUG) << "created templated Kernel " << m_demangled_name;
+  Logger(loglevel::DEBUG) << "created templated Kernel " << m_demangled_name;
 }
 
 Kernel &Kernel::configure(dim3 grid, dim3 block) {
-  logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
+  Logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
                           << grid.y << ", " << grid.z << " and block "
                           << block.x << ", " << block.y << ", " << block.z;
   m_grid = grid;
@@ -22,13 +22,13 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
 }
 
 KernelTime Kernel::launch(KernelArgs args, Device &device) {
-  logger(loglevel::DEBUG) << "creating context";
+  Logger(loglevel::DEBUG) << "creating context";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
 
   KernelTime time = launch(args, NULL);
 
-  logger(loglevel::DEBUG) << "destroy context";
+  Logger(loglevel::DEBUG) << "destroy context";
 
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
@@ -39,7 +39,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   KernelTime time;
   cudaEvent_t start, launch, finish, stop;
 
-  logger(loglevel::DEBUG) << "loading module";
+  Logger(loglevel::DEBUG) << "loading module";
 
   CUDA_SAFE_CALL(
       cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
@@ -52,18 +52,18 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 
   CUDA_SAFE_CALL(cuEventRecord(start, 0));
 
-  logger(loglevel::DEBUG1) << m_ptx.get();
+  Logger(loglevel::DEBUG1) << m_ptx.get();
   CUDA_SAFE_CALL(
       cuModuleLoadDataEx(&m_module, m_ptx.get(), 0, nullptr, nullptr));
 
-  logger(loglevel::DEBUG) << "uploading arguments";
+  Logger(loglevel::DEBUG) << "uploading arguments";
   time.upload = args.upload();
-  logger(loglevel::DEBUG) << "getting function for "
+  Logger(loglevel::DEBUG) << "getting function for "
                           << m_demangled_name.c_str();
   CUDA_SAFE_CALL(
       cuModuleGetFunction(&m_kernel, m_module, m_demangled_name.c_str()));
 
-  logger(loglevel::INFO) << "launching " << m_demangled_name;
+  Logger(loglevel::INFO) << "launching " << m_demangled_name;
 
   CUDA_SAFE_CALL(cuEventRecord(launch, 0));
   CUDA_SAFE_CALL(
@@ -75,10 +75,10 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
                      nullptr));
   CUDA_SAFE_CALL(cuEventRecord(finish, 0));
   // CUDA_SAFE_CALL(cuCtxSynchronize());
-  logger(loglevel::INFO) << "done!";
+  Logger(loglevel::INFO) << "done!";
 
   // download results to host
-  logger(loglevel::DEBUG) << "downloading arguments";
+  Logger(loglevel::DEBUG) << "downloading arguments";
   if (!downloadDest)
     time.download = args.download();
   else
@@ -89,7 +89,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
   CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
-  logger(loglevel::DEBUG) << "freeing module";
+  Logger(loglevel::DEBUG) << "freeing module";
 
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
 
@@ -102,7 +102,7 @@ KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
 
 std::vector<KernelTime>
 Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
-  logger(loglevel::DEBUG) << "benchmarking kernel";
+  Logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;
   kernelTimes.reserve(executions);
@@ -116,12 +116,12 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
     output = malloc(maxOutputSize);
   }
 
-  logger(loglevel::DEBUG) << "create context";
+  Logger(loglevel::DEBUG) << "create context";
 
   // create context
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
 
-  logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
+  Logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
   for (unsigned int i = 0; i < executions; i++) {
     // launch kernel, but download results into output-memory (do not override
@@ -131,7 +131,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
     kernelTimes.push_back(kernelTime);
   }
 
-  logger(loglevel::DEBUG) << "destroy context";
+  Logger(loglevel::DEBUG) << "destroy context";
 
   // destroy context
   CUDA_SAFE_CALL(cuCtxDestroy(m_context));

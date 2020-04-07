@@ -54,9 +54,9 @@ void yacx::detail::unload_op(struct dynop *op) {
     char* error = dlerror();
     if (result != 0){
         if (error != NULL){
-            logger(loglevel::ERROR) << "error while closing libary with compiled function: " << error;
+            Logger(loglevel::ERROR) << "error while closing libary with compiled function: " << error;
         } else {
-            logger(loglevel::ERROR) << "unknown error while closing libary with compiled function";
+            Logger(loglevel::ERROR) << "unknown error while closing libary with compiled function";
         }
     }
 

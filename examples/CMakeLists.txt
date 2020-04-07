@@ -18,6 +18,7 @@ add_executable(example_gauss example_gauss.cpp)
 add_executable(example_program example_program.cpp)
 add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
+add_executable(example_logger example_logger.cpp)
 
 set(JAVA_EXAMPLE_FILES
     "java/ExampleDotProduct.java"

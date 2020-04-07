@@ -17,7 +17,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
 
 #define CHECK_NULL(object, returnValue)                                        \
   if (object == NULL) {                                                        \
-    logger(yacx::loglevel::ERROR)                                              \
+    Logger(yacx::loglevel::ERROR)                                              \
         << "[JNI ERROR] NullPointerException in file:[" << __FILE__ << ":"     \
         << __LINE__ - 2 << "]";                                                \
                                                                                \
@@ -31,7 +31,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
 
 #define CHECK_BIGGER(object, than, message, returnValue)                       \
   if (object <= than) {                                                        \
-    logger(yacx::loglevel::ERROR)                                              \
+    Logger(yacx::loglevel::ERROR)                                              \
         << "[JNI ERROR] IllegalArgumentException (" << message                 \
         << ") in file:[" << __FILE__ << ":" << __LINE__ - 2 << "]";            \
                                                                                \
@@ -48,7 +48,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
 #define END_TRY(message)                                                       \
   }                                                                            \
   catch (const std::exception &err) {                                          \
-    logger(yacx::loglevel::ERROR)                                              \
+    Logger(yacx::loglevel::ERROR)                                              \
         << "Executor failure while " << message << ": " << err.what();         \
                                                                                \
     jclass cls = getClass(env, "yacx/ExecutorFailureException");               \
@@ -59,7 +59,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
                              .c_str());                                        \
   }                                                                            \
   catch (...) {                                                                \
-    logger(yacx::loglevel::ERROR) << "Executor failure while " << message;     \
+    Logger(yacx::loglevel::ERROR) << "Executor failure while " << message;     \
                                                                                \
     jclass cls = getClass(env, "yacx/ExecutorFailureException");               \
                                                                                \
@@ -71,7 +71,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
 #define END_TRY_R(message, returnValue)                                        \
   }                                                                            \
   catch (const std::exception &err) {                                          \
-    logger(yacx::loglevel::ERROR)                                              \
+    Logger(yacx::loglevel::ERROR)                                              \
         << "Executor failure while " << message << ":" << err.what();          \
                                                                                \
     jclass cls = getClass(env, "yacx/ExecutorFailureException");               \
@@ -83,7 +83,7 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
     return returnValue;                                                        \
   }                                                                            \
   catch (...) {                                                                \
-    logger(yacx::loglevel::ERROR) << "Executor failure while " << message;     \
+    Logger(yacx::loglevel::ERROR) << "Executor failure while " << message;     \
                                                                                \
     jclass cls = getClass(env, "yacx/ExecutorFailureException");               \
                                                                                \

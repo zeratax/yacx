@@ -56,13 +56,13 @@ std::string Device::uuidToHex(CUuuid &uuid) {
 dim3 Device::max_block_dim() {
   dim3 block;
   block.x = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_X);
-  logger(loglevel::DEBUG1) << "block.x = " << block.x;
+  Logger(loglevel::DEBUG1) << "block.x = " << block.x;
 
   block.y = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Y);
-  logger(loglevel::DEBUG1) << "block.y = " << block.y;
+  Logger(loglevel::DEBUG1) << "block.y = " << block.y;
 
   block.z = attribute(CU_DEVICE_ATTRIBUTE_MAX_BLOCK_DIM_Z);
-  logger(loglevel::DEBUG1) << "block.z = " << block.z;
+  Logger(loglevel::DEBUG1) << "block.z = " << block.z;
 
   return block;
 }
@@ -70,13 +70,13 @@ dim3 Device::max_block_dim() {
 dim3 Device::max_grid_dim() {
   dim3 grid;
   grid.x = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_X);
-  logger(loglevel::DEBUG1) << "grid.x = " << grid.x;
+  Logger(loglevel::DEBUG1) << "grid.x = " << grid.x;
 
   grid.y = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Y);
-  logger(loglevel::DEBUG1) << "grid.y = " << grid.y;
+  Logger(loglevel::DEBUG1) << "grid.y = " << grid.y;
 
   grid.z = attribute(CU_DEVICE_ATTRIBUTE_MAX_GRID_DIM_Z);
-  logger(loglevel::DEBUG1) << "grid.z = " << grid.z;
+  Logger(loglevel::DEBUG1) << "grid.z = " << grid.z;
 
   return grid;
 }

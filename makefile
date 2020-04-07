@@ -37,6 +37,8 @@ example_matrix_multiply: example
 	@echo " $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_matrix_multiply.o $(OBJECTS) -o $(TARGET) $(LIB)
 example_gauss: example
 	@echo " $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)
+example_logger: example
+	@echo " $(CC) build/example_logger.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_logger.o $(OBJECTS) -o $(TARGET) $(LIB)
 example: directories $(OBJECTS)
 	+$(MAKE) -C examples
 
