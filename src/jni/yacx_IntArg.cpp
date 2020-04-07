@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_IntArg_createValue(JNIEnv* env, jclass cls, jint jvalu
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jint), false, false, false, CTYPE};
-        *(static_cast<jint*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jint*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating IntValueArg", NULL)

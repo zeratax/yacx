@@ -13,7 +13,7 @@ jobject JNICALL Java_yacx_HalfArg_createValue(JNIEnv* env, jclass cls, jfloat jv
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jfloat)/2, false, false, false, CTYPE};
-        convertFtoH(&jvalue, kernelArgPtr->getHostData(), 1);
+		convertFtoH(&jvalue, kernelArgPtr->getHostData(), 1);
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating HalfValueArg", NULL)

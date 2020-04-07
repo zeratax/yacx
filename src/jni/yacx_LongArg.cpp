@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_LongArg_createValue(JNIEnv* env, jclass cls, jlong jva
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jlong), false, false, false, CTYPE};
-        *(static_cast<jlong*>(kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jlong*>(kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating LongValueArg", NULL)

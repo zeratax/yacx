@@ -12,7 +12,7 @@ jobject JNICALL Java_yacx_FloatArg_createValue(JNIEnv* env, jclass cls, jfloat j
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jfloat), false, false, false, CTYPE};
-        *(static_cast<jfloat*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jfloat*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating FloatValueArg", NULL)
@@ -26,7 +26,7 @@ jobject Java_yacx_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray 
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
         KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jfloat), jdownload, true, true, CTYPE + "*"};
-        env->GetFloatArrayRegion(jarray, 0, arrayLength, static_cast<jfloat*> (kernelArgPtr->getHostData()));
+		env->GetFloatArrayRegion(jarray, 0, arrayLength, static_cast<jfloat*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);
     END_TRY_R("creating FloatArg", NULL)

@@ -48,7 +48,7 @@ exes() {
     find examples/scala -type f -iname "*.scala" -exec basename '{}' \; | sed 's/\.java$//1'
   else
     pushd "${PWD}/${JAVA_BIN}"
-    scala -J-ea -Djava.library.path=../../ $1
+    scala -J-ea -J-Xmx8G -Djava.library.path=../../ $1
     popd
   fi
 }

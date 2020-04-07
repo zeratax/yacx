@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_BooleanArg_createValue(JNIEnv* env, jclass cls, jboole
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jboolean), false, false, false, CTYPE};
-        *(static_cast<jboolean*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jboolean*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating BooleanValueArg", NULL)

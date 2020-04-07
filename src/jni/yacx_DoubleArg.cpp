@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_DoubleArg_createValue(JNIEnv* env, jclass cls, jdouble
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jdouble), false, false, false, CTYPE};
-        *(static_cast<jdouble*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jdouble*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating DoubleValueArg", NULL)

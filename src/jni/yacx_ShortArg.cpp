@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_ShortArg_createValue(JNIEnv* env, jclass cls, jshort j
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jshort), false, false, false, CTYPE};
-        *(static_cast<jshort*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jshort*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating ShortValueArg", NULL)

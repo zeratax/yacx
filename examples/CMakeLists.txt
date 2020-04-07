@@ -20,14 +20,16 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
 set(JAVA_EXAMPLE_FILES
-	  "java/ExampleCGEMM.java"
+    "java/ExampleCGEMM.java"
     "java/ExampleDotProduct.java"
-    "java/ExampleFastGemm.java"
+    "java/ExampleFastGEMM.java"
+    "java/ExampleFastGEMMBenchmark"
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"
     "java/ExampleFilterExecutor.java"
     "java/ExampleGauss.java"
     "java/ExampleReduce.java"
+    "java/ExampleReduceBenchmark.java"
     "java/ExampleSaxpy.java"
     "java/ExampleSaxpyBenchmark.java"
     "java/ExampleSaxpyExecutor.java"

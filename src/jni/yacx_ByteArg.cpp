@@ -11,7 +11,7 @@ jobject JNICALL Java_yacx_ByteArg_createValue(JNIEnv* env, jclass cls, jbyte jva
 		if (clsKernelArg == NULL) return NULL;
 
 		KernelArgJNI* kernelArgPtr = new KernelArgJNI{sizeof(jbyte), false, false, false, CTYPE};
-        *(static_cast<jbyte*> (kernelArgPtr->getHostData())) = jvalue;
+		*(static_cast<jbyte*> (kernelArgPtr->getHostData())) = jvalue;
 
 		return createJNIObject(env, clsKernelArg, kernelArgPtr);
 	END_TRY_R("creating ByteValueArg", NULL)
