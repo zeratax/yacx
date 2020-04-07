@@ -1,6 +1,6 @@
 #include "yacx/main.hpp"
 
-using yacx::type_of, yacx::loglevel;
+using yacx::loglevel;
 
 int main(int argc, char const *const *const argv) {
   yacx::handle_logging_args(argc, argv);
