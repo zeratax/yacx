@@ -87,9 +87,9 @@ class Logger {
   //! \param value value to be printed.
   template <typename T> void print(T const &value) {
     if (cout_flag)
-      std::cout << value << gColorReset;
+      std::cout << value;
     if (cerr_flag)
-      std::cerr << value << gColorReset;
+      std::cerr << value;
     if (logfile_stream) {
       *logfile_stream << value;
       if (logfile_stream->fail()) {
@@ -109,8 +109,7 @@ class Logger {
     current_loglevel = severity;
     if (current_loglevel <= limit) {
       std::stringstream prefix_ss;
-      prefix_ss << std::endl
-                << detail::get_color(severity) << get_datetime() << " "
+      prefix_ss << detail::get_color(severity) << get_datetime() << " "
                 << get_name(severity) << "[" << src_file << ":" << src_line
                 << "]: ";
       std::string prefix = prefix_ss.str();
@@ -122,6 +121,8 @@ class Logger {
   template <typename T> Logger &operator<<(T const &value) {
     if (current_loglevel <= limit) {
       print(value);
+      print('n');
+      print(gColorReset)
     }
     return *this;
   }
