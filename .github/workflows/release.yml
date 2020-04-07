@@ -7,20 +7,17 @@ on:
     tags:
       - 'v*'
 
-env:
-  RELEASE_VERSION: ${{ GITHUB_REF##*/ }}
-
 jobs:
   build:
-    env:
-      RELEASE_VERSION: ${GITHUB_REF##*/}
     runs-on: ubuntu-latest
     container: nvidia/cuda:latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      - name: Get the version
+        run: echo ::set-output name=RELEASE_VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Announce Version
-        run: echo 'creating library for $RELEASE_VERSION ${{ GITHUB_REF##*/ }} ${ GITHUB_REF##*/ }'
+        run: echo 'creating library for $RELEASE_VERSION'
       - name: Build project
         run: |
           - cmake -H. -Bbuild
