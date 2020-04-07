@@ -11,18 +11,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: nvidia/cuda:latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
       - name: Build project
-        uses: docker://nvidia/cuda:latest
-        with: |
+        run: |
           - echo "creating library for ${RELEASE_VERSION}"
           - cmake -H. -Bbuild
           - make -C build yacx
           - make -C build yacx-jni
           - pushd build
-          - tar -cJf yacx-${RELEASE_VERSION}_unix.tar.xz yacxlib.so java/bin/
+          - tar -cJf yacx-${RELEASE_VERSION}_unix.tar.xz libyacx.so libyacx-jni.so java/bin/yacx
           - popd
       - name: Upload library
         uses: actions/upload-artifact@v1
