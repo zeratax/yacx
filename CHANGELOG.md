@@ -1,4 +1,25 @@
 # Changelog
+
+## yacx v0.6.0 (2020-04-07)
+
+### Features
+- new static Devices class to easily filter devices
+  - by name
+  - by UUID
+  - by lambda function
+  
+### Changes
+- KernelTime has been refactored
+  - every instance calculates effective bandwidth
+    - up
+    - down
+    - total
+  - overloaded `<<` operator
+- Logger is now static
+  - allows setting stream output to cerr or cout
+  - additionally output log to file 
+
+
 ## yacx v0.5.0 (2020-03-04)
 
 ### Features
@@ -23,6 +44,7 @@
 
 
 ## yacx v0.4.1 (2019-12-13)
+
 ### Documentation
 - created a [classDiagram](docs/diagram/classDiagram.pdf)
 - a [Code of Conduct](./CODE_OF_CONDUCT.md)
@@ -37,12 +59,16 @@
   - fixed workflows for pull requests
   - issue templates
   - updated README.md 
-  
+
+
 ## yacx v0.4 (2019-12-07)
+
 ### Changes
 - rename project from **cudaexecutor**/**cudacompiler** to **yacx** - *yet another cudaexecutor*
 
+
 ## cudaexecutor v0.3 (2019-12-07)
+
 ### Features
 - KernelTime: measure time of kernel execution as well as uploading and downloading of KernelArgs
 - fully featured JNI
@@ -53,7 +79,9 @@
 - KernelArgs refactor
   - moved KernelArg uploading into KernelArgs
 
+
 ## cudaexecutor v0.2 (2019-12-03)
+
 ### Features
 - c++ bindings
   - get devices
@@ -67,8 +95,10 @@
   - ProgramArg => KernelArg
   - Program => Source
   - Kernel => Kernel, Program
-  
+
+
 ## cudaexecutor v0.1 (2019-11-22)
+
 ### Features
 - c++ bindings
   - execute abitrary cuda kernels
