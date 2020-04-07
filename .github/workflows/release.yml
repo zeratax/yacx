@@ -20,20 +20,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Announce Version
-        run: echo 'creating library for ${RELEASE_VERSION}'
+        run: echo 'creating library for $RELEASE_VERSION'
       - name: Build project
         run: |
           - cmake -H. -Bbuild
           - make -C build yacx
           - make -C build yacx-jni
           - pushd build
-          - tar -cJf yacx-${RELEASE_VERSION}_unix.tar.xz libyacx.so libyacx-jni.so java/bin/yacx
+          - tar -cJf yacx-$RELEASE_VERSION_unix.tar.xz libyacx.so libyacx-jni.so java/bin/yacx
           - popd
       - name: Upload library
         uses: actions/upload-artifact@v1
         with:
-          name: yacx-${RELEASE_VERSION}_unix.tar.xz
-          path: build/yacx-${RELEASE_VERSION}_unix.tar.xz
+          name: yacx-$RELEASE_VERSION_unix.tar.xz
+          path: build/yacx-$RELEASE_VERSION_unix.tar.xz
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -41,7 +41,7 @@ jobs:
     - name: Download library
       uses: actions/download-artifact@v1
       with:
-        name: yacx-${RELEASE_VERSION}_unix.tar.xz
+        name: yacx-$RELEASE_VERSION_unix.tar.xz
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
