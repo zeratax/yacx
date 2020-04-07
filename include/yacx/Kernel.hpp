@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Device.hpp"
+#include "Devices.hpp"
 #include "JNIHandle.hpp"
 #include "KernelArgs.hpp"
 #include "KernelTime.hpp"
@@ -34,9 +34,18 @@ class Kernel : JNIHandle {
   //!
   //! \param kernel_args
   //! \return KernelTime
-  KernelTime launch(KernelArgs args, Device device = Device());
+  KernelTime launch(KernelArgs args, Device &device = Devices::findDevice());
+  //! benchmark a Kernel
+  //! \param kernel_args
+  //! \param number of executions
+  //! \param device
+  //! \return vector of KernelTimes for every execution
+  std::vector<KernelTime> benchmark(KernelArgs args, unsigned int executions,
+                                    Device &device = Devices::findDevice());
 
  private:
+  KernelTime launch(KernelArgs args, void *downloadDest);
+
   std::shared_ptr<char[]> m_ptx;
   std::string m_demangled_name;
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.09)
 project(
   yacx
-  VERSION 0.4.1
+  VERSION 0.5.0
   LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -12,29 +12,39 @@ add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)
 include_directories(include/yacx)
+include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+
+link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib")
 
 link_libraries(cuda nvrtc)
 
-file(GLOB SOURCES "src/*.cpp")
+
+file(GLOB SOURCES "src/*.cpp" "src/cexecutor/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES
-    "src/java/BooleanArg.java"
-    "src/java/Device.java"
-    "src/java/DoubleArg.java"
-    "src/java/Executor.java"
-    "src/java/ExecutorFailureException.java"
-    "src/java/FloatArg.java"
-    "src/java/Headers.java"
-    "src/java/IntArg.java"
-    "src/java/JNIHandle.java"
-    "src/java/Kernel.java"
-    "src/java/KernelArg.java"
-    "src/java/KernelTime.java"
-    "src/java/LongArg.java"
-    "src/java/Options.java"
-    "src/java/Program.java"
-    "src/java/ShortArg.java"
-    "src/java/Utils.java")
+    "src/main/java/yacx/ArrayArg.java"
+    "src/main/java/yacx/BooleanArg.java"
+    "src/main/java/yacx/ByteArg.java"
+    "src/main/java/yacx/CProgram.java"
+    "src/main/java/yacx/Device.java"
+    "src/main/java/yacx/Devices.java"
+    "src/main/java/yacx/DoubleArg.java"
+    "src/main/java/yacx/Executor.java"
+    "src/main/java/yacx/ExecutorFailureException.java"
+    "src/main/java/yacx/FloatArg.java"
+    "src/main/java/yacx/HalfArg.java"
+    "src/main/java/yacx/Headers.java"
+    "src/main/java/yacx/IntArg.java"
+    "src/main/java/yacx/JNIHandle.java"
+    "src/main/java/yacx/Kernel.java"
+    "src/main/java/yacx/KernelArg.java"
+    "src/main/java/yacx/KernelTime.java"
+    "src/main/java/yacx/LongArg.java"
+    "src/main/java/yacx/Options.java"
+    "src/main/java/yacx/PaddingArg.java"
+    "src/main/java/yacx/Program.java"
+    "src/main/java/yacx/ShortArg.java"
+    "src/main/java/yacx/Utils.java")
 
 add_library(yacx SHARED ${SOURCES})
 
@@ -52,14 +62,14 @@ if(JNI_ENABLED)
     # _java_file: relative file name _class_file: relative class name
     string(REGEX REPLACE "\\.java$" ".class" _class_file "${_java_file}")
     add_custom_command(
-      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/${_class_file}"
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/java/bin/yacx/${_class_file}"
       COMMAND
         ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
-        "${PROJECT_SOURCE_DIR}/src/java" -d
+        "${PROJECT_SOURCE_DIR}/src/main/java/" -d
         "${CMAKE_CURRENT_BINARY_DIR}/java/bin"
-        "${PROJECT_SOURCE_DIR}/src/java/${_java_file}"
-      DEPENDS "${PROJECT_SOURCE_DIR}/src/java/${_java_file}")
-    list(APPEND class_files "java/bin/${_class_file}")
+        "${PROJECT_SOURCE_DIR}/src/main/java/yacx/${_java_file}"
+      DEPENDS "${PROJECT_SOURCE_DIR}/src/main/java/yacx/${_java_file}")
+    list(APPEND class_files "java/bin/yacx/${_class_file}")
   endforeach()
   add_custom_target(JNIClasses ALL DEPENDS ${class_files})
 

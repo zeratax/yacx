@@ -1,7 +1,11 @@
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+
 object ExampleSaxpyExecutor {
     def main(args: Array[String]) : Unit = {
         //Load Libary
-        Executor.loadLibary()
+        Executor.loadLibrary()
 
         //Create OutputArgument
         val n = 4

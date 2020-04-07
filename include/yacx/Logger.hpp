@@ -1,67 +1,160 @@
 #pragma once
 
+#include <bits/unique_ptr.h>
+#include <chrono>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
-#include <map>
-#include <sstream>
+#include <string>
 
 namespace yacx {
 
-/** @enum loglevel
- *  @brief a level at which should be logged
- */
-enum class loglevel {
-  NONE,    /**< don't log at all */
-  ERROR,   /**< an ERROR which should not be ignored */
-  WARNING, /**< a WARNING which might be ignored */
-  INFO,    /**< a INFO which can be ignored */
-  DEBUG,   /**< verbose INFO which can be ignored */
-  DEBUG1   /**< verbose DEBUG which can be ignored */
-};
+enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
+
+static std::string get_name(loglevel l) {
+  switch (l) {
+  case loglevel::NONE:
+    return "   NONE";
+  case loglevel::ERROR:
+    return "  ERROR";
+  case loglevel::WARNING:
+    return "WARNING";
+  case loglevel::INFO:
+    return "   INFO";
+  case loglevel::DEBUG:
+    return "  DEBUG";
+  case loglevel::DEBUG1:
+    return " DEBUG1";
+  default:
+    return "UNKNOWN";
+  }
+}
+
+static std::string get_datetime() {
+  auto t = std::time(nullptr);
+  auto tm = *std::localtime(&t);
+  std::ostringstream oss;
+  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+  return oss.str();
+}
 
 /*!
-  \class logIt Logger.hpp
-  \brief Class to log events at different levels
+  \class logger Logger.hpp
+  \brief Class to log events of varying severity.
 */
-class logIt {
+class logger {
+
  public:
-  //!
-  //! \param level level at which the message is set
-  //! \param current_level the current level of the executable
-  //! \param file file where the logger was called
-  //! \param line line where the logger was called
-  logIt(loglevel level, loglevel current_level, const char *file,
-        const int line)
-      : m_level{level}, m_current_level{current_level} {
-    m_buffer << "LOGGER:[" << file << ":" << line << "]: ";
+  //! returns the logger instance.
+  static logger &getInstance() {
+    static logger instance;
+    return instance;
   }
 
-  template <typename T> logIt &operator<<(T const &value) {
-    m_buffer << value;
+  //!
+  logger() {
+#ifdef LOG_FILE
+    set_logfile(LOG_FILE);
+#endif
+#ifdef LOG_LEVEL
+    limit = static_cast<loglevel>(LOG_LEVEL);
+#endif
+#ifdef LOG_COUT
+    cout_flag = LOG_COUT;
+#endif
+#ifdef LOG_CERR
+    cerr_flag = LOG_CERR;
+#endif
+  }
+
+  logger(logger const &) = delete;
+
+  logger &operator=(logger const &) = delete;
+
+  //! set the loglimit
+  //! \param limit new limit for logging.
+  void set_loglimit(const loglevel limit) { this->limit = limit; }
+
+  //! set/unset cout as a logging output.
+  //! \param flag flag that determines if cout has to be logged to.
+  void set_cout(bool flag) { this->cout_flag = flag; }
+
+  //! set/unset cerr as a logging output.
+  //! \param flag flag that determines if cerr has to be logged to.
+  void set_cerr(bool flag) { this->cerr_flag = flag; }
+
+  //! sets a logfile.
+  //! \param file The filename of the new logfile.
+  void set_logfile(const std::string &file) {
+    logfile_stream = std::make_unique<std::ofstream>(
+        std::ofstream{file, std::ofstream::out | std::ofstream::app});
+  }
+
+  //! Prints to all appropriate logging outputs.
+  //! \param value value to be printed.
+  template <typename T> void print(T const &value) {
+    if (cout_flag)
+      std::cout << value;
+    if (cerr_flag)
+      std::cerr << value;
+    if (logfile_stream) {
+      *logfile_stream << value;
+      if (logfile_stream->fail()) {
+        std::cout << "Couldn't write to logfile.";
+      }
+    }
+  }
+
+  //! Prints a prefix to all appropriate logging outputs.
+  //! Should not be discarded to prevent malformed logging output.
+  //! \param severity The severity of the current logging reason.
+  //! \param src_file The source file where the logging request was issued.
+  //! \param src_line The source line where the logging request was issued.
+  [[nodiscard]] logger &prepare(loglevel severity, std::string src_file,
+                                int src_line) {
+    current_loglevel = severity;
+    if (current_loglevel <= limit) {
+      std::stringstream prefix_ss;
+      prefix_ss << std::endl
+                << get_datetime() << " " << get_name(severity) << "["
+                << src_file << ":" << src_line << "]: ";
+      std::string prefix = prefix_ss.str();
+      print(prefix);
+    }
     return *this;
   }
 
-  ~logIt() {
-    m_buffer << std::endl;
-    if (static_cast<int>(m_level) <= static_cast<int>(m_current_level))
-      std::cerr << m_buffer.str();
+  template <typename T> logger &operator<<(T const &value) {
+    if (current_loglevel <= limit) {
+      print(value);
+    }
+    return *this;
   }
 
  private:
-  loglevel m_level;
-  loglevel m_current_level;
-  std::ostringstream m_buffer;
-}; // namespace yacx
+  bool cout_flag = true;
+  bool cerr_flag = false;
+  loglevel limit = loglevel::WARNING;
 
-//! set log level at compilation
-#ifdef current_log_level
-#define logger(level)                                                          \
-  if (static_cast<int>(level) > static_cast<int>(yacx::current_log_level))     \
-    ;                                                                          \
-  else                                                                         \
-    yacx::logIt(level, yacx::current_log_level, __FILE__, __LINE__)
+  loglevel current_loglevel;
+  std::unique_ptr<std::ofstream> logfile_stream;
+};
+
+/*!
+  \class log_null_sink log_null_sink.hpp
+  \brief Class to discard logging requests of insufficient severity.
+*/
+class log_null_sink {
+ public:
+  template <typename T> log_null_sink &operator<<(T const &value) {
+    return *this;
+  }
+};
+
+#ifdef NO_LOGGING
+#define logger(level) yacx::log_null_sink()
 #else
 #define logger(level)                                                          \
-  yacx::logIt(level, yacx::loglevel::ERROR, __FILE__, __LINE__)
+  yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
-
 } // namespace yacx

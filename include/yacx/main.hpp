@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Jona Abdinghoff
+ * Copyright (c) 2020 Jona Abdinghoff
  *
  * LICENSE TEXT
  ******************************************************************************/
@@ -9,7 +9,7 @@
  *   \brief C++ bindings to easily compile and execute CUDA kernels
  *   \author Jona Abdinghoff
  *
- *   \version 0.4.1
+ *   \version 0.5.0
  *
  */
 
@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include "yacx/Device.hpp"
+#include "yacx/Devices.hpp"
 #include "yacx/Exception.hpp"
 #include "yacx/Headers.hpp"
 #include "yacx/Kernel.hpp"

@@ -81,6 +81,9 @@ std::string yacx::detail::descriptionFkt(const std::string &desc) {
  * and the program itself is in
  * https://github.com/ptillet/isaac/blob/master/include/isaac/external/CUDA/nvrtc.h
  */
+// Ignore -Wswitch
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
 std::string yacx::detail::whichError(const nvrtcResult &error) {
   std::string ret{"Error: "};
   ret.append(std::to_string(error));
@@ -124,7 +127,7 @@ std::string yacx::detail::whichError(const nvrtcResult &error) {
     ret = "11~NVRTC_ERROR_INTERNAL_ERROR";
     return ret;
   default:
-    ret.append("~error_unknown");
+    ret.append("error_unknown");
     description = "''It's a trap! Abort! We never left the CPU o(╥﹏╥)o'' But "
                   "seriously: I don't know what happened, because it isn't "
                   "even documented by NVIDIA.";
@@ -901,4 +904,5 @@ std::string yacx::detail::whichError(const CUresult &error) {
     ret.append(description);
     return ret;
   }
+#pragma GCC diagnostic pop
 }

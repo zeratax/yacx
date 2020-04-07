@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <utility>
 
-using yacx::Kernel, yacx::KernelTime, yacx::loglevel;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -21,15 +21,36 @@ Kernel &Kernel::configure(dim3 grid, dim3 block) {
   return *this;
 }
 
-KernelTime Kernel::launch(KernelArgs args, Device device) {
-  KernelTime time;
-  cudaEvent_t start, stop;
-
-  logger(loglevel::DEBUG) << "creating context and loading module";
+KernelTime Kernel::launch(KernelArgs args, Device &device) {
+  logger(loglevel::DEBUG) << "creating context";
 
   CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
-  CUDA_SAFE_CALL(cuEventCreate(&start, CU_EVENT_DEFAULT));
-  CUDA_SAFE_CALL(cuEventCreate(&stop, CU_EVENT_DEFAULT));
+
+  KernelTime time = launch(args, NULL);
+
+  logger(loglevel::DEBUG) << "destroy context";
+
+  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
+
+  return time;
+}
+
+KernelTime Kernel::launch(KernelArgs args, void *downloadDest) {
+  KernelTime time;
+  cudaEvent_t start, launch, finish, stop;
+
+  logger(loglevel::DEBUG) << "loading module";
+
+  CUDA_SAFE_CALL(
+      cuEventCreate(&start, CU_EVENT_DEFAULT)); // start of Kernel launch
+  CUDA_SAFE_CALL(
+      cuEventCreate(&launch, CU_EVENT_DEFAULT)); // start of Kernel execution
+  CUDA_SAFE_CALL(
+      cuEventCreate(&finish, CU_EVENT_DEFAULT)); // end of Kernel execution
+  CUDA_SAFE_CALL(
+      cuEventCreate(&stop, CU_EVENT_DEFAULT)); // end of Kernel launch
+
+  CUDA_SAFE_CALL(cuEventRecord(start, 0));
 
   logger(loglevel::DEBUG1) << m_ptx.get();
   CUDA_SAFE_CALL(
@@ -44,7 +65,7 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
 
   logger(loglevel::INFO) << "launching " << m_demangled_name;
 
-  CUDA_SAFE_CALL(cuEventRecord(start, 0));
+  CUDA_SAFE_CALL(cuEventRecord(launch, 0));
   CUDA_SAFE_CALL(
       cuLaunchKernel(m_kernel,                        // function from program
                      m_grid.x, m_grid.y, m_grid.z,    // grid dim
@@ -52,22 +73,73 @@ KernelTime Kernel::launch(KernelArgs args, Device device) {
                      0, nullptr,                      // shared mem and stream
                      const_cast<void **>(args.content()), // arguments
                      nullptr));
-  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
+  CUDA_SAFE_CALL(cuEventRecord(finish, 0));
   // CUDA_SAFE_CALL(cuCtxSynchronize());
   logger(loglevel::INFO) << "done!";
 
   // download results to host
   logger(loglevel::DEBUG) << "downloading arguments";
-  time.download = args.download();
+  if (!downloadDest)
+    time.download = args.download();
+  else
+    time.download = args.download(downloadDest);
 
+  CUDA_SAFE_CALL(cuEventRecord(stop, 0));
   CUDA_SAFE_CALL(cuEventSynchronize(stop));
-  CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, start, stop));
+  CUDA_SAFE_CALL(cuEventElapsedTime(&time.launch, launch, finish));
+  CUDA_SAFE_CALL(cuEventElapsedTime(&time.total, start, stop));
 
-  logger(loglevel::DEBUG) << "freeing resources";
+  logger(loglevel::DEBUG) << "freeing module";
+
   CUDA_SAFE_CALL(cuModuleUnload(m_module));
-  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
 
-  time.sum = time.launch + time.download + time.upload;
+  time.size_upload = args.size(arg_type::UPLOAD);
+  time.size_download = args.size(arg_type::DOWNLOAD);
+  time.size_total = args.size(arg_type::TOTAL);
 
   return time;
+}
+
+std::vector<KernelTime>
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
+  logger(loglevel::DEBUG) << "benchmarking kernel";
+
+  std::vector<KernelTime> kernelTimes;
+  kernelTimes.reserve(executions);
+
+  // find a kernelArg that you have to download with maximum size
+  size_t maxOutputSize = args.maxOutputSize();
+
+  // allocate memory
+  void *output;
+  if (maxOutputSize) {
+    output = malloc(maxOutputSize);
+  }
+
+  logger(loglevel::DEBUG) << "create context";
+
+  // create context
+  CUDA_SAFE_CALL(cuCtxCreate(&m_context, 0, device.get()));
+
+  logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
+
+  for (unsigned int i = 0; i < executions; i++) {
+    // launch kernel, but download results into output-memory (do not override
+    // input for next execution)
+    KernelTime kernelTime = launch(args, output);
+
+    kernelTimes.push_back(kernelTime);
+  }
+
+  logger(loglevel::DEBUG) << "destroy context";
+
+  // destroy context
+  CUDA_SAFE_CALL(cuCtxDestroy(m_context));
+
+  // free allocated page-locked memory
+  if (maxOutputSize) {
+    free(output);
+  }
+
+  return kernelTimes;
 }

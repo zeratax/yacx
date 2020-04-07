@@ -1,5 +1,5 @@
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_definitions(-Wall -Dcurrent_log_level=loglevel::INFO)
+  add_definitions(-Wall -Wextra --pedantic -Dcurrent_log_level=loglevel::INFO)
 endif()
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/gauss.h
@@ -20,8 +20,18 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 
 set(JAVA_EXAMPLE_FILES
-    "java/ExampleSaxpy.java" "java/ExampleFilterExecutor.java"
-    "java/ExampleBlockReduce.java")
+    "java/ExampleDotProduct.java"
+    "java/ExampleFastGemm.java"
+    "java/ExampleFilter.java"
+    "java/ExampleFilterBenchmark.java"
+    "java/ExampleFilterExecutor.java"
+    "java/ExampleGauss.java"
+    "java/ExampleReduce.java"
+    "java/ExampleSaxpy.java"
+    "java/ExampleSaxpyBenchmark.java"
+    "java/ExampleSaxpyExecutor.java"
+    "java/ExampleSimpleGemm.java"
+    "java/TemplateKernel.java")
 
 if(JNI_ENABLED)
   foreach(_java_path ${JAVA_EXAMPLE_FILES})

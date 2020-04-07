@@ -1,7 +1,7 @@
 #include "yacx/main.hpp"
 
-using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
-    yacx::load, yacx::type_of;
+using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::load,
+    yacx::type_of;
 
 int main() {
   int result{};

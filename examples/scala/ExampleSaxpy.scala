@@ -1,7 +1,16 @@
+import yacx.Executor;
+import yacx.FloatArg;
+import yacx.IntArg;
+import yacx.Kernel;
+import yacx.KernelArg;
+import yacx.KernelTime;
+import yacx.Program;
+import yacx.Utils;
+
 object ExampleSaxpy {
     def main(args: Array[String]) : Unit = {
         //Load Libary
-        Executor.loadLibary()
+        Executor.loadLibrary()
 
         //Testdata
         val numThreads = 4

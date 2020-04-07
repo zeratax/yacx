@@ -1,5 +1,6 @@
 #include "yacx/Program.hpp"
 #include "yacx/Exception.hpp"
+#include "yacx/Init.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/util.hpp"
 
@@ -14,7 +15,7 @@ using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
   logger(loglevel::DEBUG) << "created Program " << m_kernel_name;
-  CUDA_SAFE_CALL(cuInit(0));
+  yacx::detail::init();
 }
 
 Program::~Program() {
@@ -24,7 +25,8 @@ Program::~Program() {
   nvrtcResult error = nvrtcDestroyProgram(m_prog.get());
   if (error != NVRTC_SUCCESS) {
     auto description = whichError(error);
-    std::cout << descriptionFkt(description) << std::endl;
+    logger(loglevel::ERROR)
+        << "could not destroy program: " << descriptionFkt(description);
   }
 }
 
@@ -58,7 +60,7 @@ Kernel Program::compile(const Options &options) {
   m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    //logger(loglevel::ERROR) << m_log;
+    // logger(loglevel::ERROR) << m_log;
     NVRTC_SAFE_CALL_LOG(compileResult, m_log);
   }
 

@@ -1,4 +1,5 @@
 #include "KernelUtils.h"
+#include "KernelTime.hpp"
 
 std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 {
@@ -10,6 +11,7 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 
     std::vector<KernelArg> args;
     args.reserve(argumentsLength);
+
     for(int i = 0; i < argumentsLength; i++){
         auto jkernelArg = env->GetObjectArrayElement(jArgs, i);
 
@@ -24,18 +26,20 @@ std::vector<KernelArg> getArguments(JNIEnv* env, jobjectArray jArgs)
 }
 
 jobject createJavaKernelTime(JNIEnv* env, KernelTime* kernelTimePtr){
-    jclass cls = getClass(env, "KernelTime");
+    jclass cls = getClass(env, "yacx/KernelTime");
+    if (cls == NULL) return NULL;
 
-    auto methodID = env->GetMethodID(cls, "<init>", "(FFFF)V");
+    auto methodID = env->GetMethodID(cls, "<init>", "(FFFFFFF)V");
     auto obj = env->NewObject(cls, methodID, kernelTimePtr->upload, kernelTimePtr->download,
-            kernelTimePtr->launch, kernelTimePtr->sum);
+            kernelTimePtr->launch, kernelTimePtr->total, kernelTimePtr->effective_bandwidth_up(),
+            kernelTimePtr->effective_bandwidth_down(), kernelTimePtr->effective_bandwidth_launch());
 
     return obj;
 }
 
-jobject launchInternal(JNIEnv *env, Kernel* kernelPtr, Device* devicePtr, std::vector<KernelArg> args)
+jobject launchInternal(JNIEnv *env, Kernel* kernelPtr, Device& device, std::vector<KernelArg> args)
 {
-        auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, *devicePtr);
+    auto kernelTimePtr = kernelPtr->launch(KernelArgs{args}, device);
 
-        return createJavaKernelTime(env, &kernelTimePtr);
+    return createJavaKernelTime(env, &kernelTimePtr);
 }
