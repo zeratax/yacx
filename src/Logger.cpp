@@ -1,4 +1,5 @@
 #include "../include/yacx/Logger.hpp"
+#include <unordered_map>
 
 using yacx::Logger using yacx::loglevel;
 
