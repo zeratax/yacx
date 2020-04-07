@@ -117,7 +117,8 @@ TEST_CASE(
     }
 
     // B2B5. Ensuring that the kernel is launched
-    REQUIRE(kernel_launching.sum > 0);
+    REQUIRE(kernel_launching.total > 0);
+    REQUIRE(kernel_launching.upload > 0);
     REQUIRE(kernel_launching.download > 0);
     REQUIRE(kernel_launching.launch > 0);
   }
