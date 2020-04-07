@@ -16,7 +16,7 @@ KernelArg::KernelArg(void *const data, size_t size, bool download, bool copy,
                      bool upload)
     : m_hdata{data}, m_dataCopy(KernelArg::dataCopyKernelArg), m_size{size},
       m_download{download}, m_copy{copy}, m_upload{upload} {
-  logger(loglevel::DEBUG) << "created KernelArg with size: " << size
+  Logger(loglevel::DEBUG) << "created KernelArg with size: " << size
                           << ", which should " << (m_upload ? "be" : "not be")
                           << " uploaded and should "
                           << (m_download ? "be" : "not be") << " downloaded";
@@ -31,7 +31,7 @@ KernelArgMatrixPadding::KernelArgMatrixPadding(void *data, size_t size,
   m_dataCopy = std::make_shared<DataCopyKernelArgMatrixPadding>(
       elementSize, paddingValue, src_rows, src_columns, dst_rows, dst_columns);
 
-  logger(loglevel::DEBUG) << "created KernelArgMatrixPadding with src_rows: "
+  Logger(loglevel::DEBUG) << "created KernelArgMatrixPadding with src_rows: "
                           << src_rows << ", src_columns: " << src_columns
                           << ", dst_rows: " << dst_rows
                           << ", dst_columns: " << dst_columns
@@ -40,10 +40,10 @@ KernelArgMatrixPadding::KernelArgMatrixPadding(void *data, size_t size,
 
 void KernelArg::malloc() {
   if (m_upload) {
-    logger(loglevel::DEBUG1) << "uploading argument";
+    Logger(loglevel::DEBUG1) << "uploading argument";
     CUDA_SAFE_CALL(cuMemAlloc(&m_ddata, m_size));
   } else {
-    logger(loglevel::DEBUG1) << "NOT uploading argument";
+    Logger(loglevel::DEBUG1) << "NOT uploading argument";
   }
 }
 
@@ -57,29 +57,29 @@ void KernelArg::uploadAsync(CUstream stream) {
 
 void KernelArg::downloadAsync(void *hdata, CUstream stream) {
   if (m_download) {
-    logger(loglevel::DEBUG1) << "downloading argument";
+    Logger(loglevel::DEBUG1) << "downloading argument";
 
     m_dataCopy.get()->copyDataDtoH(m_ddata, hdata, m_size, stream);
   } else {
-    logger(loglevel::DEBUG1) << "NOT downloading argument";
+    Logger(loglevel::DEBUG1) << "NOT downloading argument";
   }
 }
 
 void KernelArg::free() {
   if (m_upload) {
-    logger(loglevel::DEBUG1) << "freeing argument from device";
+    Logger(loglevel::DEBUG1) << "freeing argument from device";
     CUDA_SAFE_CALL(cuMemFree(m_ddata));
   } else {
-    logger(loglevel::DEBUG1) << "NOT freeing argument from device";
+    Logger(loglevel::DEBUG1) << "NOT freeing argument from device";
   }
 }
 
 const void *KernelArg::content() const {
   if (m_upload) {
-    logger(loglevel::DEBUG1) << "returning device pointer";
+    Logger(loglevel::DEBUG1) << "returning device pointer";
     return &m_ddata;
   }
-  logger(loglevel::DEBUG1) << "returning host pointer";
+  Logger(loglevel::DEBUG1) << "returning host pointer";
   return m_hdata;
 }
 

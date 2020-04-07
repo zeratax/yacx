@@ -154,9 +154,8 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   return time;
 }
 
-std::vector<KernelTime> Kernel::benchmark(KernelArgs args,
-                                          unsigned int executions,
-                                          Device &device) {
+std::vector<KernelTime>
+Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;

@@ -5,7 +5,8 @@
 
 using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type_of;
 
-int main() {
+int main(int argc, char const *const *const argv) {
+  yacx::handle_logging_args(argc, argv);
   const int data{1};
   const int times{4};
   const size_t size{32};

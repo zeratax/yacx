@@ -14,40 +14,40 @@ using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
 
 Program::Program(std::string kernel_name, std::shared_ptr<nvrtcProgram> prog)
     : m_kernel_name{std::move(kernel_name)}, m_prog{std::move(prog)} {
-  logger(loglevel::DEBUG) << "created Program " << m_kernel_name;
+  Logger(loglevel::DEBUG) << "created Program " << m_kernel_name;
   yacx::detail::init();
 }
 
 Program::~Program() {
   // Exceptions in destructor usually a bad idea??
   // Release resources.
-  logger(loglevel::DEBUG) << "destroying Program " << m_kernel_name;
+  Logger(loglevel::DEBUG) << "destroying Program " << m_kernel_name;
   nvrtcResult error = nvrtcDestroyProgram(m_prog.get());
   if (error != NVRTC_SUCCESS) {
     auto description = whichError(error);
-    logger(loglevel::ERROR)
+    Logger(loglevel::ERROR)
         << "could not destroy program: " << descriptionFkt(description);
   }
 }
 
 Kernel Program::compile(const Options &options) {
-  logger(loglevel::INFO) << "compiling Program";
+  Logger(loglevel::INFO) << "compiling Program";
   if (!m_template_parameters.empty()) {
-    logger(loglevel::DEBUG) << "with following template parameters:";
+    Logger(loglevel::DEBUG) << "with following template parameters:";
     for (auto &parameter : m_template_parameters)
-      logger(loglevel::DEBUG) << parameter;
+      Logger(loglevel::DEBUG) << parameter;
 
     std::ostringstream buffer;
     std::copy(m_template_parameters.begin(), m_template_parameters.end(),
               std::experimental::make_ostream_joiner(buffer, ", "));
     m_name_expression = m_kernel_name + "<" + buffer.str() + ">";
 
-    logger(loglevel::DEBUG)
+    Logger(loglevel::DEBUG)
         << "which results in the following name expression: "
         << m_name_expression;
     NVRTC_SAFE_CALL(nvrtcAddNameExpression(*m_prog, m_name_expression.c_str()));
   } else {
-    logger(loglevel::DEBUG1) << "with no template parameters";
+    Logger(loglevel::DEBUG1) << "with no template parameters";
   }
 
   nvrtcResult compileResult =
@@ -60,7 +60,7 @@ Kernel Program::compile(const Options &options) {
   m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    // logger(loglevel::ERROR) << m_log;
+    // Logger(loglevel::ERROR) << m_log;
     NVRTC_SAFE_CALL_LOG(compileResult, m_log);
   }
 
@@ -69,11 +69,11 @@ Kernel Program::compile(const Options &options) {
   auto ptx = std::make_unique<char[]>(ptxSize);
   NVRTC_SAFE_CALL(nvrtcGetPTX(*m_prog, ptx.get()));
 
-  logger(loglevel::INFO) << "Program compiled";
+  Logger(loglevel::INFO) << "Program compiled";
   // lowered name
   const char *name = m_kernel_name.c_str(); // copy??
   if (!m_name_expression.empty()) {
-    logger(loglevel::DEBUG) << "getting lowered name for function";
+    Logger(loglevel::DEBUG) << "getting lowered name for function";
     NVRTC_SAFE_CALL(
         nvrtcGetLoweredName(*m_prog, m_name_expression.c_str(), &name))
   }

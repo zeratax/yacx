@@ -1,58 +1,51 @@
 #pragma once
 
-#include <bits/unique_ptr.h>
+#include "Colors.hpp"
+
 #include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <map>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace yacx {
-
 enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
 
-static std::string get_name(loglevel l) {
-  switch (l) {
-  case loglevel::NONE:
-    return "   NONE";
-  case loglevel::ERROR:
-    return "  ERROR";
-  case loglevel::WARNING:
-    return "WARNING";
-  case loglevel::INFO:
-    return "   INFO";
-  case loglevel::DEBUG:
-    return "  DEBUG";
-  case loglevel::DEBUG1:
-    return " DEBUG1";
-  default:
-    return "UNKNOWN";
-  }
-}
+using logmap = std::map<loglevel, std::pair<const char *, const char *>>;
 
-static std::string get_datetime() {
-  auto t = std::time(nullptr);
-  auto tm = *std::localtime(&t);
-  std::ostringstream oss;
-  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
-  return oss.str();
-}
+extern logmap state;
+
+namespace detail {
+
+const char *get_name(loglevel level);
+
+const char *get_color(loglevel level);
+std::string get_datetime();
+
+} // namespace detail
+
+void handle_logging_args(int argc, char const *const *const argv);
 
 /*!
-  \class logger Logger.hpp
+  \class Logger Logger.hpp
   \brief Class to log events of varying severity.
 */
-class logger {
+class Logger {
 
  public:
+  loglevel limit = loglevel::WARNING;
+
   //! returns the logger instance.
-  static logger &getInstance() {
-    static logger instance;
+  static Logger &getInstance() {
+    static Logger instance;
     return instance;
   }
 
   //!
-  logger() {
+  Logger() {
 #ifdef LOG_FILE
     set_logfile(LOG_FILE);
 #endif
@@ -67,9 +60,9 @@ class logger {
 #endif
   }
 
-  logger(logger const &) = delete;
+  Logger(Logger const &) = delete;
 
-  logger &operator=(logger const &) = delete;
+  Logger &operator=(Logger const &) = delete;
 
   //! set the loglimit
   //! \param limit new limit for logging.
@@ -110,23 +103,26 @@ class logger {
   //! \param severity The severity of the current logging reason.
   //! \param src_file The source file where the logging request was issued.
   //! \param src_line The source line where the logging request was issued.
-  [[nodiscard]] logger &prepare(loglevel severity, std::string src_file,
+  [[nodiscard]] Logger &prepare(loglevel severity, std::string src_file,
                                 int src_line) {
+    using namespace detail;
     current_loglevel = severity;
     if (current_loglevel <= limit) {
       std::stringstream prefix_ss;
-      prefix_ss << std::endl
-                << get_datetime() << " " << get_name(severity) << "["
-                << src_file << ":" << src_line << "]: ";
+      prefix_ss << detail::get_color(severity) << get_datetime() << " "
+                << get_name(severity) << "[" << src_file << ":" << src_line
+                << "]: ";
       std::string prefix = prefix_ss.str();
       print(prefix);
     }
     return *this;
   }
 
-  template <typename T> logger &operator<<(T const &value) {
+  template <typename T> Logger &operator<<(T const &value) {
     if (current_loglevel <= limit) {
       print(value);
+      print('n');
+      print(gColorReset);
     }
     return *this;
   }
@@ -134,7 +130,6 @@ class logger {
  private:
   bool cout_flag = true;
   bool cerr_flag = false;
-  loglevel limit = loglevel::WARNING;
 
   loglevel current_loglevel;
   std::unique_ptr<std::ofstream> logfile_stream;
@@ -152,9 +147,9 @@ class log_null_sink {
 };
 
 #ifdef NO_LOGGING
-#define logger(level) yacx::log_null_sink()
+#define Logger(level) yacx::log_null_sink()
 #else
-#define logger(level)                                                          \
-  yacx::logger::getInstance().prepare(level, __FILE__, __LINE__)
+#define Logger(level)                                                          \
+  yacx::Logger::getInstance().prepare(level, __FILE__, __LINE__)
 #endif
 } // namespace yacx
