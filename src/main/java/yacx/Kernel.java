@@ -18,10 +18,27 @@ public class Kernel extends JNIHandle {
 	 * @return <code>this</code>
 	 */
 	public Kernel configure(int grid0, int grid1, int grid2, int block0, int block1, int block2) {
+		return configure(grid0, grid1, grid2, block0, block1, block2, 0);
+	}
+
+	/**
+	 * Configure the kernel.
+	 * 
+	 * @param grid0  number of grids in first dimension
+	 * @param grid1  number of grids in second dimension
+	 * @param grid2  number of grids in third dimension
+	 * @param block0 number of blocks in first dimension
+	 * @param block1 number of blocks in second dimension
+	 * @param block2 number of blocks in third dimension
+	 * @param shared amount of dynamic shared memory in bytes
+	 * @return <code>this</code>
+	 */
+	public Kernel configure(int grid0, int grid1, int grid2, int block0, int block1, int block2, long shared) {
 		assert (grid0 > 0 && grid1 > 0 && grid2 > 0);
 		assert (block0 > 0 && block1 > 0 && block2 > 0);
+		assert (shared >= 0);
 
-		configureInternal(grid0, grid1, grid2, block0, block1, block2);
+		configureInternal(grid0, grid1, grid2, block0, block1, block2, shared);
 
 		configured = true;
 
@@ -36,16 +53,29 @@ public class Kernel extends JNIHandle {
 	 * @return <code>this</code>
 	 */
 	public Kernel configure(int grid, int block) {
-		assert (grid > 0 && block > 0);
+		return configure(grid, block, 0);
+	}
 
-		configureInternal(grid, 1, 1, block, 1, 1);
+	/**
+	 * Configure the kernel.
+	 * 
+	 * @param grid  number of grids
+	 * @param block number of blocks
+	 * @param shared amount of dynamic shared memory in bytes
+	 * @return <code>this</code>
+	 */
+	public Kernel configure(int grid, int block, long shared) {
+		assert (grid > 0 && block > 0);
+		assert (shared >= 0);
+
+		configureInternal(grid, 1, 1, block, 1, 1, shared);
 
 		configured = true;
 
 		return this;
 	}
 
-	private native void configureInternal(int grid0, int grid1, int grid2, int block0, int block1, int block2);
+	private native void configureInternal(int grid0, int grid1, int grid2, int block0, int block1, int block2, long shared);
 
 	/**
 	 * Launch the kernel. <br>
@@ -100,6 +130,18 @@ public class Kernel extends JNIHandle {
 	 * Launch the kernel. <br>
 	 * Before the kernel can be launched the kernel must be configured.
 	 * 
+	 * @param name of the device device on which the kernel should be launched
+	 * @param args KernelArgs
+	 * @return KernelTime for the Execution of this Kernel
+	 */
+	public KernelTime launch(String devicename, KernelArg... args) {
+		return launchInternal(Devices.findDevice(devicename), args);
+	}
+	
+	/**
+	 * Launch the kernel. <br>
+	 * Before the kernel can be launched the kernel must be configured.
+	 * 
 	 * @param device device on which the kernel should be launched
 	 * @param args   KernelArgs
 	 * @return KernelTime for the Execution of this Kernel
@@ -114,25 +156,6 @@ public class Kernel extends JNIHandle {
 	}
 
 	private native KernelTime launchInternal(Device device, KernelArg[] args);
-
-	/**
-	 * Launch the kernel. <br>
-	 * Before the kernel can be launched the kernel must be configured.
-	 * 
-	 * @param name of the device device on which the kernel should be launched
-	 * @param args KernelArgs
-	 * @return KernelTime for the Execution of this Kernel
-	 */
-	public KernelTime launch(String devicename, KernelArg... args) {
-		assert (args != null && args.length > 0);
-		assert (devicename != null && devicename.length() > 0);
-		if (!configured)
-			throw new IllegalStateException("Kernel not configured");
-
-		return launchInternal(devicename, args);
-	}
-
-	private native KernelTime launchInternal(String devicename, KernelArg[] args);
 
 	/**
 	 * Create a new Program.

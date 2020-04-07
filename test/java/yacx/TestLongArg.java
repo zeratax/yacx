@@ -25,8 +25,12 @@ class TestLongArg extends TestJNI {
 		}
 
 		// Kernel for copy long* in to long* out
-		String copyLongArrayString = "extern \"C\" __global__\n" + "void copyLong(long* in, long* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyLongArrayString = "extern \"C\" __global__\n"
+				+ "void copyLong(long* in, long* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n"
+				+ "";
 
 		cpLongArray = Program.create(copyLongArrayString, "copyLong").compile();
 		// Configure with kernel n Threads

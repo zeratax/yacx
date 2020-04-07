@@ -4,6 +4,7 @@
 
 #include <cuda.h>
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 #include <vector_types.h>
@@ -32,9 +33,18 @@ class Device : JNIHandle {
   //! identifer string for the device
   //! \return identifer string
   std::string name() const { return m_name; }
-  //!
-  //! \return
-  CUdevice get() const { return m_device; }
+  //! returns the primary context of this device
+  //! \return primary context
+  CUcontext getPrimaryContext();
+  //! returns the uploadstream for arguments of this device
+  //! \return uploadstream
+  CUstream getUploadStream();
+  //! returns the launchstream for arguments of this device
+  //! \return launchstream
+  CUstream getLaunchStream();
+  //! returns the downloadstream for arguments of this device
+  //! \return downloadstream
+  CUstream getDownloadStream();
   //! Memory available on device for __constant__ variables in a CUDA C kernel
   //! in bytes
   //! \return Memory in bytes
@@ -42,14 +52,22 @@ class Device : JNIHandle {
   //! uuid for the device
   //! \return 16-byte UUID of the device as hexadecimal string
   std::string uuid() const { return m_uuidHex; }
-  //!
+  //! Max blocks available on device
   //! \return block returns block with maximum dimension
   dim3 max_block_dim();
-  //!
+  //! Max grids available on device
   //! \return grid returns grid with maximum dimension
   dim3 max_grid_dim();
+
+  //! Maximum shared memory available per block in bytes
+  //! \return Shared Memory in bytes
   size_t max_shared_memory_per_block() const {
     return m_max_shared_memory_per_block;
+  }
+  //! Maximum shared memory available per multiprocessor in bytes
+  //! \return Shared Memory in bytes
+  size_t max_shared_memory_per_multiprocessor() const {
+    return m_max_shared_memory_per_multiprocessor;
   }
 
   //! Number of multiprocessors on device
@@ -68,18 +86,31 @@ class Device : JNIHandle {
   //! <a
   //! href=https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__DEVICE.html#group__CUDA__DEVICE_1g9c3e1414f0ad901d3278a4d6645fc266>CUdevice_attribute</a>
   //! \param attrib CUDA device attribute
-  //! \return
+  //! \return device attribute value
   int attribute(CUdevice_attribute attrib) const;
 
  private:
   void set_device_properties(const CUdevice &device);
+  void initContext();
   std::string uuidToHex(CUuuid &uuid);
+
+  struct Context {
+    CUcontext primaryContext;
+    CUstream upload, launch, download;
+    CUdevice device;
+
+    Context(CUdevice device);
+
+    ~Context();
+  };
 
   int m_minor, m_major;
   std::string m_name;
   CUdevice m_device;
+  std::shared_ptr<struct Context> m_context;
   std::string m_uuidHex;
-  size_t m_memory, m_max_shared_memory_per_block, m_multiprocessor_count;
+  size_t m_memory, m_max_shared_memory_per_block,
+      m_max_shared_memory_per_multiprocessor, m_multiprocessor_count;
   int m_clock_rate, m_memory_clock_rate, m_bus_width;
 };
 

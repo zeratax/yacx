@@ -69,4 +69,10 @@ public class PaddingArg extends ArrayArg {
 	public ArrayArg slice(int start, int end) {
 		throw new UnsupportedOperationException("slicing a padding arg is not supported");
 	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		arg.dispose();
+	}
 }

@@ -24,8 +24,11 @@ class TestByteArg extends TestJNI {
 		}
 
 		// Kernel for copy byte* in to byte* out
-		String copyByteArrayString = "extern \"C\" __global__\n" + "void copyByte(char* in, char* out) {\n"
-				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n" + "  out[i] = in[i];\n" + "}\n" + "";
+		String copyByteArrayString = "extern \"C\" __global__\n"
+				+ "void copyByte(char* in, char* out) {\n"
+				+ "  int i = (blockIdx.x * blockDim.x) + threadIdx.x;\n"
+				+ "  out[i] = in[i];\n"
+				+ "}\n" + "";
 
 		cpByteArray = Program.create(copyByteArrayString, "copyByte").compile();
 		// Configure with kernel n Threads

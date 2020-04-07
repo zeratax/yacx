@@ -5,7 +5,7 @@
 
 using yacx::Logger;
 
-void Java_yacx_Logger_setLogLevel (JNIEnv* env, jclass cls, jobject jloglevel){
+void Java_yacx_Logger_setLogLevel (JNIEnv* env, jclass, jobject jloglevel){
   BEGIN_TRY
       jclass clsloglevel = getClass(env, "yacx/Logger$LogLevel");
       CHECK_NULL(clsloglevel, )
@@ -20,19 +20,19 @@ void Java_yacx_Logger_setLogLevel (JNIEnv* env, jclass cls, jobject jloglevel){
   END_TRY("setting loglevel")
 }
 
-void Java_yacx_Logger_setCout (JNIEnv* env, jclass cls, jboolean jcout){
+void Java_yacx_Logger_setCout (JNIEnv* env, jclass, jboolean jcout){
   BEGIN_TRY
       Logger::getInstance().set_cout(jcout);
   END_TRY("setting/unsetting cout as ouput for logger")
 }
 
-void Java_yacx_Logger_setCerr (JNIEnv* env, jclass cls, jboolean jcerr){
+void Java_yacx_Logger_setCerr (JNIEnv* env, jclass, jboolean jcerr){
   BEGIN_TRY
     Logger::getInstance().set_cerr(jcerr);
   END_TRY("setting/unsetting cerr as ouput for logger")
 }
 
-void Java_yacx_Logger_setLogfile (JNIEnv* env, jclass cls, jstring jfilename){
+void Java_yacx_Logger_setLogfile (JNIEnv* env, jclass, jstring jfilename){
   BEGIN_TRY
     CHECK_NULL(jfilename, )
 

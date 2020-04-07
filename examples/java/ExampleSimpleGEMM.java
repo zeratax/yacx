@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Arrays;
 
 import yacx.Executor;
 import yacx.FloatArg;
@@ -17,26 +16,26 @@ public class ExampleSimpleGEMM {
 	private final static int WMMA_N = 16;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibrary();
 
 		// Testdata
-		int x = 101;
-		int y = 101;
-		int z = 101;
+		int x = 4;
+		int y = 3;
+		int z = 2;
 		float alpha = 1f;
 		float beta = 1f;
 		float[] aMatrix = new float[x * y];
 		float[] bMatrix = new float[y * z];
 		float[] cMatrix = new float[x * z];
 		for (int i = 0; i < aMatrix.length; i++) {
-			aMatrix[i] = 1f;
+			aMatrix[i] = i + 1;
 		}
 		for (int i = 0; i < bMatrix.length; i++) {
-			bMatrix[i] = 1f;
+			bMatrix[i] = x * y + i + 1;
 		}
 		for (int i = 0; i < cMatrix.length; i++) {
-			cMatrix[i] = 1f;
+			cMatrix[i] = 2 * (i + 1);
 		}
 
 		// Get the next biggest multiple of 16 for each dimension
@@ -55,10 +54,8 @@ public class ExampleSimpleGEMM {
 
 		// Create Arguments
 		HalfArg aMatrixArg = HalfArg.create(aMatrix);
-		//TODO
 		// Kernel expects a transposed B matrix so this has to be done here
-//		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, z);
-		HalfArg bMatrixArg = HalfArg.create(bMatrix);
+		HalfArg bMatrixArg = HalfArg.createTransposed(bMatrix, y, z);
 		FloatArg cMatrixArg = FloatArg.create(cMatrix);
 		FloatArg dMatrixArg = FloatArg.createOutput(x * z);
 		KernelArg mArg = IntArg.createValue(m);
@@ -67,12 +64,15 @@ public class ExampleSimpleGEMM {
 		KernelArg alphaArg = FloatArg.createValue(alpha);
 		KernelArg betaArg = FloatArg.createValue(beta);
 
-		// Do the padding for each input matrix
-		//TODO Padding falls (x,y,z) = (m,n,k)
-		PaddingArg aMatrixArgPadding = PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
-		PaddingArg bMatrixArgPadding = PaddingArg.createMatrixPadding(bMatrixArg, y, z, n, k, 0);
-		PaddingArg cMatrixArgPadding = PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
-		PaddingArg dMatrixArgPadding = PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
+		// Do the padding for each input matrix if necessary
+		KernelArg aMatrixArgPadding = (x == m && y == k) ? aMatrixArg
+				: PaddingArg.createMatrixPadding(aMatrixArg, x, y, m, k, 0);
+		KernelArg bMatrixArgPadding = (z == n && y == k) ? bMatrixArg
+				: PaddingArg.createMatrixPadding(bMatrixArg, z, y, n, k, 0);
+		KernelArg cMatrixArgPadding = (x == m && z == n) ? cMatrixArg
+				: PaddingArg.createMatrixPadding(cMatrixArg, x, z, m, n, 0);
+		KernelArg dMatrixArgPadding = (x == m && z == n) ? dMatrixArg
+				: PaddingArg.createMatrixPadding(dMatrixArg, x, z, m, n, 0);
 
 		// Load Kernel as string
 		String kernelString = Utils.loadFile("kernels/simple_wmma_gemm.cu");
@@ -89,12 +89,12 @@ public class ExampleSimpleGEMM {
 		System.out.println("Kernel simple_wmma_gemm launched " + time.toString());
 		System.out.println();
 		System.out.println("aMatrix:");
-		MatrixUtils.printlnMatrix(aMatrixArg, y);
+		MatrixUtils.printlnMatrix(aMatrix, y);
 		System.out.println("bMatrix:");
-		MatrixUtils.printlnMatrix(bMatrixArg, z);
+		MatrixUtils.printlnMatrix(bMatrix, z);
 		System.out.println("cMatrix:");
-		MatrixUtils.printlnMatrix(cMatrixArg, z);
+		MatrixUtils.printlnMatrix(cMatrix, z);
 		System.out.println("resultmatrix:");
-		MatrixUtils.printlnMatrix(dMatrixArg, z);
+		MatrixUtils.printlnMatrix(dMatrixArg.asFloatArray(), z);
 	}
 }

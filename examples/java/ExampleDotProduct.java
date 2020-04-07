@@ -8,15 +8,15 @@ import yacx.KernelTime;
 public class ExampleDotProduct {
 	public static void main(String[] args) throws IOException {
 		// Load library
-		Executor.loadLibary();
+		Executor.loadLibrary();
 
 		// Testdata
 		int numberElements = 9;
 		
-		float[] x = new float[9];
-		float[] y = new float[9];
+		float[] x = new float[numberElements];
+		float[] y = new float[numberElements];
 
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < numberElements; i++) {
 			x[i] = i;
 			y[i] = 2 * i;
 		}

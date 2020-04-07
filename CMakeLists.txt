@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
+add_definitions(-Wall -Wextra --pedantic)
 add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)
@@ -39,6 +40,7 @@ set(JAVA_SOURCE_FILES
     "src/main/java/yacx/Kernel.java"
     "src/main/java/yacx/KernelArg.java"
     "src/main/java/yacx/KernelTime.java"
+    "src/main/java/yacx/Logger.java"
     "src/main/java/yacx/LongArg.java"
     "src/main/java/yacx/Options.java"
     "src/main/java/yacx/PaddingArg.java"

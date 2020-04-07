@@ -8,14 +8,14 @@ object ExampleFilterBenchmark {
 	private val KB = 1024
 	
     def main(args: Array[String]) : Unit = {
-    	//Load Libary
+    	//Load library
     	Executor.loadLibrary()
     	
       //Benchmark filter-Kernel
       println(Executor.benchmark("filter_k", Options.createOptions(), 10,
               new Executor.KernelArgCreator() {
         
-  					          override def getDataLength(dataSizeBytes: Int) : Int = {
+  					          override def getDataLength(dataSizeBytes: Long) : Int = {
             						return (dataSizeBytes/IntArg.SIZE_BYTES).asInstanceOf[Int]
             					}
             

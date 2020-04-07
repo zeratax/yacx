@@ -80,6 +80,20 @@ public class Device extends JNIHandle {
 	public native int getMajorVersion();
 
 	/**
+	 * Amount of shared memory per block on device.
+	 * 
+	 * @return amount of shared memory per block
+	 */
+	public native int getSharedMemPerBlock();
+
+	/**
+	 * Amount of shared memory per multiprocessor on device.
+	 * 
+	 * @return amount of shared memory per multiprocessor
+	 */
+	public native int getSharedMemPerMultiprocessor();
+
+	/**
 	 * Returns the UUID for this device or <code>null</code> if not available (CUDA
 	 * version 9.2 or higher required).
 	 * 
@@ -110,7 +124,7 @@ public class Device extends JNIHandle {
 					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
 		}
 	}
-	
+
 	//Devices are Singeltons and should be not destroyed
 	@Override
 	public void dispose() {}

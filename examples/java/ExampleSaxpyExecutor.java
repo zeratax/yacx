@@ -7,7 +7,7 @@ import yacx.IntArg;
 
 public class ExampleSaxpyExecutor {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibrary();
 
 		// Create OutputArgument

@@ -8,11 +8,12 @@
 #include "../../include/yacx/KernelTime.hpp"
 
 #include <string>
+#include <limits.h>
 
 using yacx::Kernel, yacx::KernelArg, yacx::KernelArgs, yacx::KernelTime, yacx::Device, yacx::Devices,
       jni::KernelArgJNI;
 
-void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2)
+void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, jint jgrid1, jint jgrid2, jint jblock0, jint jblock1, jint jblock2, jlong jshared)
 {
     BEGIN_TRY
         CHECK_BIGGER(jgrid0, 0, "illegal size for grid0", )
@@ -21,14 +22,17 @@ void Java_yacx_Kernel_configureInternal(JNIEnv *env, jobject obj, jint jgrid0, j
         CHECK_BIGGER(jblock0, 0, "illegal size for block0", )
         CHECK_BIGGER(jblock1, 0, "illegal size for block1", )
         CHECK_BIGGER(jblock2, 0, "illegal size for block2", )
+        CHECK_BIGGER(jshared, -1, "illegal size for shared memory", )
+        CHECK_BIGGER(UINT_MAX, jshared - 1, "illegal size for shared memory", )
 
         auto kernelPtr = getHandle<Kernel>(env, obj);
     	CHECK_NULL(kernelPtr, )
 
         dim3 grid{static_cast<unsigned int> (jgrid0), static_cast<unsigned int> (jgrid1), static_cast<unsigned int> (jgrid2)};
         dim3 block{static_cast<unsigned int> (jblock0), static_cast<unsigned int> (jblock1), static_cast<unsigned int> (jblock2)};
+        unsigned int shared = static_cast<unsigned int> (jshared);
 
-        kernelPtr->configure(grid, block);
+        kernelPtr->configure(grid, block, shared);
     END_TRY("configuring Kernel")
 }
 
@@ -65,26 +69,4 @@ jobject Java_yacx_Kernel_launchInternal__Lyacx_Device_2_3Lyacx_KernelArg_2(JNIEn
 
         return launchInternal(env, kernelPtr, *devicePtr, args);
     END_TRY_R("launching Kernel on specific device", NULL)
-}
-
-jobject Java_yacx_Kernel_launchInternal__Ljava_lang_String_2_3Lyacx_KernelArg_2(JNIEnv *env, jobject obj, jstring jdevicename, jobjectArray jArgs)
-{
-    BEGIN_TRY
-        CHECK_NULL(jdevicename, NULL)
-        CHECK_NULL(jArgs, NULL);
-
-        auto kernelPtr = getHandle<Kernel>(env, obj);
-        CHECK_NULL(kernelPtr, NULL);
-        auto devicenamePtr = env->GetStringUTFChars(jdevicename, nullptr);
-        std::string devicename{devicenamePtr};
-
-        Device* devicePtr = &Devices::findDevice(devicename);
-
-        env->ReleaseStringUTFChars(jdevicename, devicenamePtr);
-
-        auto args = getArguments(env, jArgs);
-        if (args.empty()) return NULL;
-
-        return launchInternal(env, kernelPtr, *devicePtr, args);
-    END_TRY_R("launching Kernel", NULL)
 }

@@ -24,6 +24,8 @@ void Device::set_device_properties(const CUdevice &device) {
   m_minor = attribute(CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR);
   m_max_shared_memory_per_block =
       attribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_BLOCK);
+  m_max_shared_memory_per_multiprocessor =
+      attribute(CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR);
   m_multiprocessor_count = attribute(CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT);
   m_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_CLOCK_RATE);
   m_memory_clock_rate = attribute(CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE);
@@ -38,6 +40,58 @@ void Device::set_device_properties(const CUdevice &device) {
 #else
   m_uuidHex = "";
 #endif
+}
+
+Device::Context::Context(CUdevice device) {
+  this->device = device;
+
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRetain(&primaryContext, device));
+
+  CUDA_SAFE_CALL(cuCtxSetCurrent(primaryContext));
+  CUDA_SAFE_CALL(cuStreamCreate(&upload, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&launch, CU_STREAM_NON_BLOCKING));
+  CUDA_SAFE_CALL(cuStreamCreate(&download, CU_STREAM_NON_BLOCKING));
+}
+
+Device::Context::~Context() {
+  CUDA_SAFE_CALL(cuCtxSetCurrent(primaryContext));
+  CUDA_SAFE_CALL(cuStreamDestroy(upload));
+  CUDA_SAFE_CALL(cuStreamDestroy(launch));
+  CUDA_SAFE_CALL(cuStreamDestroy(download));
+
+  CUDA_SAFE_CALL(cuDevicePrimaryCtxRelease(device));
+}
+
+CUcontext Device::getPrimaryContext() {
+  if (!m_context) {
+    m_context = std::make_shared<struct Context>(m_device);
+  }
+
+  return m_context.get()->primaryContext;
+}
+
+CUstream Device::getUploadStream() {
+  if (!m_context) {
+    m_context = std::make_shared<struct Context>(m_device);
+  }
+
+  return m_context.get()->upload;
+}
+
+CUstream Device::getLaunchStream() {
+  if (!m_context) {
+    m_context = std::make_shared<struct Context>(m_device);
+  }
+
+  return m_context.get()->launch;
+}
+
+CUstream Device::getDownloadStream() {
+  if (!m_context) {
+    m_context = std::make_shared<struct Context>(m_device);
+  }
+
+  return m_context.get()->download;
 }
 
 std::string Device::uuidToHex(CUuuid &uuid) {

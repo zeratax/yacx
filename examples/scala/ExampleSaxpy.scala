@@ -9,7 +9,7 @@ import yacx.Utils;
 
 object ExampleSaxpy {
     def main(args: Array[String]) : Unit = {
-        //Load Libary
+        //Load library
         Executor.loadLibrary()
 
         //Testdata

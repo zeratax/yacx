@@ -7,7 +7,7 @@ import yacx.Utils;
 
 object ExampleTemplateKernel {
     def main(args: Array[String]) : Unit = {
-        //Load Libary
+        //Load library
         Executor.loadLibrary()
 
         //Testdata

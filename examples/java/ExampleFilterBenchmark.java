@@ -6,17 +6,17 @@ import yacx.KernelArg;
 import yacx.Options;
 
 public class ExampleFilterBenchmark {
-	private final static int KB = 1024;
+	private final static long KB = 1024;
 
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load Library
 		Executor.loadLibrary();
 
 		// Benchmark filter-Kernel
 		System.out.println(Executor.benchmark("filter_k", Options.createOptions(), 10, new Executor.KernelArgCreator() {
 
 			@Override
-			public int getDataLength(int dataSizeBytes) {
+			public int getDataLength(long dataSizeBytes) {
 				return (int) (dataSizeBytes / IntArg.SIZE_BYTES);
 			}
 

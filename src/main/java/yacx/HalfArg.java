@@ -37,19 +37,6 @@ public class HalfArg extends ArrayArg {
 		return create(floats, false);
 	}
 
-	 /**
-	 * Create a new HalfArg with the passed values which is going to be transposed. <br>
-	 * This argument will be uploaded, but not be downloaded.
-	 * 
-	 * @param floats values for this argument, which will be convert to halfs
-	 * @param columns amount of columns of the matrix
-	 * @return a new HalfArg with the passes values
-	 */
-	//TODO
-//	public static HalfArg createTransposed(int columns, float... floats) {
-//		return createTransposed(floats, columns, false);
-//	}
-
 	/**
 	 * Create a new HalfArg with the passed values.<br>
 	 * This argument will be uploaded. The argument will be downloaded when
@@ -65,26 +52,27 @@ public class HalfArg extends ArrayArg {
 		return createInternal(floats, download);
 	}
 
-	/**
-	 * Create a new HalfArg with the passed values which is going to be transposed.<br>
-	 * This argument will be uploaded. The argument will be downloaded when
-	 * <code>download</code> is <code>true</code>.
-	 * 
-	 * @param floats   values for this argument, which will be convert to halfs
-	 * @param download set whether the argument should be downloaded
-	 * @return a new HalfArg with the passes values
-	 */
-	//TODO
-//	public static HalfArg createTransposed(float[] floats, int columns, boolean download) {
-//		assert (floats != null && floats.length > 0 && columns > 0);
-//
-//		return createTransposedInternal(floats, columns, download);
-//	}
-
 	private static native HalfArg createInternal(float[] floats, boolean download);
 
-	//TODO
-//	private static native HalfArg createTransposedInternal(float[] floats, int columns, boolean download);
+	/**
+	 * Create a new HalfArg with the passed values which is going to be transposed.
+	 * <br>
+	 * This argument will be uploaded, but not be downloaded.
+	 * 
+	 * @param floats  values for this argument, which will be convert to halfs
+	 * @param rows    amount of rows of the matrix
+	 * @param columns amount of columns of the matrix
+	 * @return a new HalfArg with the passes values
+	 */
+	public static HalfArg createTransposed(float[] floats, int rows, int columns) {
+		assert (floats != null && floats.length > 0);
+		assert (rows > 0 && columns > 0);
+		assert (rows * columns == floats.length);
+
+		return createTransposedInternal(floats, rows, columns, false);
+	}
+
+	private static native HalfArg createTransposedInternal(float[] floats, int rows, int columns, boolean download);
 
 	/**
 	 * Create an output-argument, which will be downloaded but not be uploaded. <br>

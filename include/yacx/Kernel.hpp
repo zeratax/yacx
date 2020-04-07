@@ -6,13 +6,22 @@
 #include "KernelTime.hpp"
 #include "Logger.hpp"
 
+#include <builtin_types.h>
 #include <cuda.h>
+#include <functional>
 #include <memory>
 #include <nvrtc.h>
 #include <vector>
 #include <vector_types.h>
 
 namespace yacx {
+typedef struct {
+  CUevent start;
+  CUevent end;
+
+  float elapsed();
+} eventInterval;
+
 /*!
   \class Kernel Kernel.hpp
   \brief Class to help launch and configure a CUDA kernel
@@ -29,8 +38,9 @@ class Kernel : JNIHandle {
   //!
   //! \param grid vector of grid dimensions
   //! \param block vector of block dimensions
+  //! \param shared amount of dynamic shared memory to allocate
   //! \return this (for method chaining)
-  Kernel &configure(dim3 grid, dim3 block);
+  Kernel &configure(dim3 grid, dim3 block, unsigned int shared = 0);
   //!
   //! \param kernel_args
   //! \return KernelTime
@@ -40,19 +50,34 @@ class Kernel : JNIHandle {
   //! \param number of executions
   //! \param device
   //! \return vector of KernelTimes for every execution
-  std::vector<KernelTime> benchmark(KernelArgs args, unsigned int executions,
+  std::vector<KernelTime> benchmark(KernelArgs args,
+                                    unsigned int executions,
                                     Device &device = Devices::findDevice());
 
  private:
-  KernelTime launch(KernelArgs args, void *downloadDest);
+  eventInterval asyncOperation(
+      KernelArgs &args, CUstream stream, CUevent syncEvent,
+      std::function<void(KernelArgs &args, CUstream stream)> operation);
+  eventInterval uploadAsync(KernelArgs &args, Device &device, CUevent syncEvent);
+  eventInterval runAsync(KernelArgs &args, Device &device, CUevent syncEvent);
+  eventInterval downloadAsync(KernelArgs &args, Device &device,
+                              CUevent syncEvent, void *downloadDest);
+
+  struct KernelFunction {
+    CUmodule module;
+    CUfunction kernel;
+
+    KernelFunction(char *ptx, std::string demangled_name);
+
+    ~KernelFunction();
+  };
 
   std::shared_ptr<char[]> m_ptx;
+  std::shared_ptr<struct KernelFunction> m_kernelFunction;
   std::string m_demangled_name;
 
   dim3 m_grid, m_block;
-  CUcontext m_context;
-  CUmodule m_module;
-  CUfunction m_kernel;
+  unsigned int m_shared;
 };
 
 } // namespace yacx

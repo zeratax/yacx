@@ -7,8 +7,8 @@
 // result for certain reduction functions (e.g. minimum or multiplication).
 // This block-wide reduction is being done by performing a reduction for each warp in this block,
 // before reducing the results of each warp within the first warp of this block.
-__inline__ __device__ 
-long long blockReduce(long long val, const nvstd::function<long long(long long, long long)> &func, int N) {
+extern "C" __inline__ __device__ 
+long long blockReduce(long long val, long long (*func) (long long, long long), int N) {
 
 	// Shared mem for 32 partial sums
 	static __shared__ long long shared[32];

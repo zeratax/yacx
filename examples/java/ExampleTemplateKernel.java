@@ -9,7 +9,7 @@ import yacx.Utils;
 
 public class ExampleTemplateKernel {
 	public static void main(String[] args) throws IOException {
-		// Load Libary
+		// Load library
 		Executor.loadLibrary();
 
 		// Testdata

@@ -4,7 +4,7 @@ import yacx.IntArg;
 
 object ExampleSaxpyExecutor {
     def main(args: Array[String]) : Unit = {
-        //Load Libary
+        //Load library
         Executor.loadLibrary()
 
         //Create OutputArgument

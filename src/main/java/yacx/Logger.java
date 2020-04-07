@@ -1,7 +1,7 @@
 package yacx;
 
 public class Logger {
-	enum LogLevel {
+	public enum LogLevel {
 		/** don't log at all */
 		NONE,
 		/** an ERROR which should not be ignored */

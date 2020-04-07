@@ -121,7 +121,7 @@ object ExampleGauss {
     }
 
   	def main(args: Array[String]) : Unit = {
-    		// Load Libary
+    		// Load library
     		Executor.loadLibrary()
     
     		// Testdata

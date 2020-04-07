@@ -7,7 +7,7 @@ import yacx.Utils;
 
 object ExampleFilter {
     def main(args: Array[String]) : Unit = {
-        //Load Libary
+        //Load library
         Executor.loadLibrary()
 
         //Testdata

@@ -7,18 +7,28 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TestHalfArg extends TestJNI {
-	static final String checkHalfs = "#include <cuda_fp16.h>\n" + "extern \"C\"__global__\n"
-			+ "void checkFtoHSeq(float* floats, __half* halfs, int* counter, int n){\n" + "    int i = threadIdx.x;\n"
-			+ "    if (__heq(__float2half(floats[i]), halfs[i])){\n" + "        atomicAdd(counter, 1);\n" + "    }\n"
+	static final String checkHalfs = "#include <cuda_fp16.h>\n"
+			+ "extern \"C\"__global__\n"
+			+ "void checkFtoHSeq(float* floats, __half* halfs, int* counter, int n){\n"
+			+ "    int i = threadIdx.x;\n"
+			+ "    if (__heq(__float2half(floats[i]), halfs[i])){\n"
+			+ "        atomicAdd(counter, 1);\n"
+			+ "    }\n"
 			+ "}";
-	static final String checkFloats = "#include <cuda_fp16.h>\n" + "extern \"C\" __global__\n"
-			+ "void checkHtoFSeq(float* floats, __half* halfs, int* counter, int n){\n" + "    int i = threadIdx.x;\n"
-			+ "    if (__half2float(halfs[i]) == floats[i]){\n" + "        atomicAdd(counter, 1);\n" + "    }\n" + "}";
+	static final String checkFloats = "#include <cuda_fp16.h>\n"
+			+ "extern \"C\" __global__\n"
+			+ "void checkHtoFSeq(float* floats, __half* halfs, int* counter, int n){\n"
+			+ "    int i = threadIdx.x;\n"
+			+ "    if (__half2float(halfs[i]) == floats[i]){\n"
+			+ "        atomicAdd(counter, 1);\n"
+			+ "    }\n" + "}";
 
 	static Kernel cpHalfArray, cpHalfSingle;
-	static int n;
-	static float[] testArray0, testArray1; // test-data as floats
-	static float[] testArray0Half, testArray1Half; // test-data as floats after conversion to half
+	static int n, dimN0, dimM0, dimN1, dimM1;
+	// test-data as floats
+	static float[] testArray0, testArray1, testArrayMatrix0, testArrayMatrix1;
+	// test-data as floats after conversion to half
+	static float[] testArray0Half, testArray1Half, testMatrix0Half, testMatrix1Half;
 	HalfArg inArg, outArg;
 
 	@BeforeAll
@@ -29,12 +39,25 @@ public class TestHalfArg extends TestJNI {
 
 		// test-data as float-arrays
 		n = 19;
+		dimN0 = 19;
+		dimM0 = 19;
+		dimN1 = 18;
+		dimM1 = 37;
 		testArray0 = new float[n];
 		testArray1 = new float[n];
+		testArrayMatrix0 = new float[dimN0 * dimM0];
+		testArrayMatrix0 = new float[dimN1 * dimM1];
 
 		for (int i = 0; i < n; i++) {
 			testArray0[i] = 1.225475432416689f * i;
 			testArray1[i] = 13.4f + (n - i) * 0.89999f;
+		}
+
+		for (int i = 0; i < dimN0 * dimM0; i++) {
+			testArrayMatrix0[i] = 17.21838232422754f * i;
+		}
+		for (int i = 0; i < dimN1 * dimM1; i++) {
+			testArrayMatrix1[i] = 143.4f + i * -23.9999f;
 		}
 
 		// convert test-data to half-arrays
@@ -323,5 +346,42 @@ public class TestHalfArg extends TestJNI {
 
 		checkFloats(testArray1, arg.asFloatArray());
 		checkTestArray1F(testArray1);
+	}
+
+	@Test
+	void testHalfArrayTransposed() {
+		// Create KernelArgs
+		inArg = HalfArg.createTransposed(testMatrix0Half, dimN0, dimM0);
+		outArg = HalfArg.createOutput(dimN0 * dimM0);
+
+		// Copy inArg to outArg
+		cpHalfArray.launch(inArg, outArg);
+
+		// Check result
+		float[] testArray = outArg.asFloatArray();
+
+		assertEquals(dimN0 * dimM0, testArray.length);
+
+		for (int row = 0; row < dimN0; row++) {
+			for (int column = 0; column < dimM0; column++) {
+				assertEquals(testArray0Half[column * dimN0 + row], testArray[row * dimM0 + column]);
+			}
+		}
+
+		// Same with testMatrix1
+		inArg = HalfArg.createTransposed(testMatrix1Half, dimN1, dimM1);
+		outArg = HalfArg.createOutput(dimN1 * dimM1);
+
+		cpHalfArray.launch(inArg, outArg);
+
+		testArray = outArg.asFloatArray();
+
+		assertEquals(dimN1 * dimM1, testArray.length);
+
+		for (int row = 0; row < dimN1; row++) {
+			for (int column = 0; column < dimM1; column++) {
+				assertEquals(testArray1Half[column * dimN1 + row], testArray[row * dimM1 + column]);
+			}
+		}
 	}
 }

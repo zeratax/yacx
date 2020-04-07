@@ -89,6 +89,22 @@ JNIEXPORT jint JNICALL Java_yacx_Device_getMajorVersion
 
 /*
  * Class:     yacx_Device
+ * Method:    getSharedMemPerBlock
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_yacx_Device_getSharedMemPerBlock
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     yacx_Device
+ * Method:    getSharedMemPerMultiprocessor
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_yacx_Device_getSharedMemPerMultiprocessor
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     yacx_Device
  * Method:    getUUID
  * Signature: ()Ljava/lang/String;
  */

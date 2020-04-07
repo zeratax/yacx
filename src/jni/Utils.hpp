@@ -43,6 +43,10 @@ std::vector<std::string> jStringsToVector(JNIEnv *env,
     return returnValue;                                                        \
   }
 
+#define CHECK_EQUAL(object, than, message, returnValue)                        \
+  CHECK_BIGGER(than, object - 1, message, returnValue)                         \
+  CHECK_BIGGER(object, than - 1, message, returnValue)
+
 #define BEGIN_TRY try {
 
 #define END_TRY(message)                                                       \

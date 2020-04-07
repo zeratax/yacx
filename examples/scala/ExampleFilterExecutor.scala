@@ -3,7 +3,7 @@ import yacx.IntArg;
 
 object ExampleFilterExecutor {
     def main(args: Array[String]) : Unit = {
-        //Load Libary
+        //Load library
         Executor.loadLibrary()
 
         //Create OutputArgument

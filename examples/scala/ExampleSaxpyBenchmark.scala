@@ -9,7 +9,7 @@ object ExampleSaxpyBenchmark {
 	private val KB = 1024
 	
     def main(args: Array[String]) : Unit = {
-    	//Load Libary
+    	//Load library
     	Executor.loadLibrary()
     	
       //Benchmark saxpy-Kernel
@@ -17,7 +17,7 @@ object ExampleSaxpyBenchmark {
               new Executor.KernelArgCreator() {
                       val a = 5.1f
                 			
-          			      override def getDataLength(dataSizeBytes: Int) : Int = {
+          			      override def getDataLength(dataSizeBytes: Long) : Int = {
           						  return (dataSizeBytes/FloatArg.SIZE_BYTES).asInstanceOf[Int]
           					  }
           
