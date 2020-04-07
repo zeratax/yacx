@@ -79,11 +79,12 @@ eventInterval Kernel::asyncOperation(
   return eventInterval{start, end};
 }
 
-eventInterval Kernel::uploadAsync(KernelArgs &args, Device &device) {
+eventInterval Kernel::uploadAsync(KernelArgs &args, Device &device,
+                                  CUevent syncEvent) {
   logger(loglevel::DEBUG) << "uploading arguments";
 
   return asyncOperation(
-      args, device.getUploadStream(), NULL,
+      args, device.getUploadStream(), syncEvent,
       [](KernelArgs &args, CUstream stream) { args.uploadAsync(stream); });
 }
 
@@ -131,7 +132,7 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   CUDA_SAFE_CALL(cuEventRecord(start, NULL));
 
   args.malloc();
-  upload = uploadAsync(args, device);
+  upload = uploadAsync(args, device, NULL);
   launch = runAsync(args, device, upload.end);
   download = downloadAsync(args, device, launch.end, NULL);
 
@@ -153,7 +154,7 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
   return time;
 }
 
-std::vector<KernelTime> Kernel::benchmark(std::vector<KernelArg> &argsVector,
+std::vector<KernelTime> Kernel::benchmark(KernelArgs args,
                                           unsigned int executions,
                                           Device &device) {
   logger(loglevel::DEBUG) << "benchmarking kernel";
@@ -164,16 +165,13 @@ std::vector<KernelTime> Kernel::benchmark(std::vector<KernelArg> &argsVector,
   std::vector<std::array<eventInterval, 3>> events;
   events.resize(executions);
 
-  KernelArgs args[3] = {KernelArgs{argsVector}, KernelArgs{argsVector},
-                        KernelArgs{argsVector}};
-
   // find a kernelArg that you have to download with maximum size
-  size_t maxOutputSize = args[0].maxOutputSize();
+  size_t maxOutputSize = args.maxOutputSize();
 
   logger(loglevel::DEBUG) << "setting context";
   CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
-  // allocate memory
+  // allocate memory for output
   void *output;
   if (maxOutputSize) {
     CUDA_SAFE_CALL(cuMemAllocHost(&output, maxOutputSize));
@@ -181,34 +179,23 @@ std::vector<KernelTime> Kernel::benchmark(std::vector<KernelArg> &argsVector,
 
   logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
-  args[0].malloc();
-  args[1].malloc();
-  args[2].malloc();
+  args.malloc();
 
-  for (unsigned int i = 0; i < 3 && i < executions; i++) {
-    events[i][0] = uploadAsync(args[i % 3], device);
-    events[i][1] = runAsync(args[i % 3], device, events[i][0].end);
-    // download results into output-memory (do not override input for next
-    // execution)
-    events[i][2] = downloadAsync(args[i % 3], device, events[i][1].end, output);
-  }
+  events[0][0] = uploadAsync(args, device, NULL);
+  events[0][1] = runAsync(args, device, events[0][0].end);
+  // download results into output-memory (do not override input for next
+  // execution)
+  events[0][2] = downloadAsync(args, device, events[0][1].end, output);
 
-  for (unsigned int i = 3; i < executions; i++) {
-    CUDA_SAFE_CALL(
-        cuStreamWaitEvent(device.getUploadStream(), events[i - 3][2].end, 0));
-
-    events[i][0] = uploadAsync(args[i % 3], device);
-    events[i][1] = runAsync(args[i % 3], device, events[i][0].end);
-    // download results into output-memory (do not override input for next
-    // execution)
-    events[i][2] = downloadAsync(args[i % 3], device, events[i][1].end, output);
+  for (unsigned int i = 1; i < executions; i++) {
+    events[i][0] = uploadAsync(args, device, events[i-1][2].end);
+    events[i][1] = runAsync(args, device, events[i][0].end);
+    events[i][2] = downloadAsync(args, device, events[i][1].end, output);
   }
 
   CUDA_SAFE_CALL(cuStreamSynchronize(device.getDownloadStream()));
 
-  args[0].free();
-  args[1].free();
-  args[2].free();
+  args.free();
 
   for (unsigned int i = 0; i < executions; i++) {
     KernelTime time;
@@ -216,6 +203,10 @@ std::vector<KernelTime> Kernel::benchmark(std::vector<KernelArg> &argsVector,
     time.launch = events[i][1].elapsed();
     time.download = events[i][2].elapsed();
     time.total = time.upload + time.launch + time.download;
+
+    time.size_upload = args.size(arg_type::UPLOAD);
+    time.size_download = args.size(arg_type::DOWNLOAD);
+    time.size_total = args.size(arg_type::TOTAL);
 
     kernelTimes.push_back(time);
   }
