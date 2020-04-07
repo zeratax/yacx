@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['set_5fcerr',['set_cerr',['../classyacx_1_1logger.html#a4861da2ee3b4632d277bdb944195b9df',1,'yacx::logger']]],
-  ['set_5fcout',['set_cout',['../classyacx_1_1logger.html#aadf9c437b15afd49114731dc22c49b5e',1,'yacx::logger']]],
-  ['set_5flogfile',['set_logfile',['../classyacx_1_1logger.html#a134d8e89c7e278d2b6d46b7e3cc985af',1,'yacx::logger']]],
-  ['set_5floglimit',['set_loglimit',['../classyacx_1_1logger.html#a7bed602402c943482675c667643117e4',1,'yacx::logger']]],
+  ['set_5fcerr',['set_cerr',['../classyacx_1_1_logger.html#a6e0c44a8e4c8c5f0c93ec2ba9dd133fd',1,'yacx::Logger']]],
+  ['set_5fcout',['set_cout',['../classyacx_1_1_logger.html#a32efd739d52c5ffe61669e60625b21ba',1,'yacx::Logger']]],
+  ['set_5flogfile',['set_logfile',['../classyacx_1_1_logger.html#a95dcf4746691e820ebd806aeed10813d',1,'yacx::Logger']]],
+  ['set_5floglimit',['set_loglimit',['../classyacx_1_1_logger.html#a1e3a43cc5e7a4a94e329c5a98ff1d54a',1,'yacx::Logger']]],
   ['setcerr',['setCerr',['../classyacx_1_1_logger.html#a3973c82d8863f64f0cbc06b7de568a36',1,'yacx::Logger']]],
   ['setcout',['setCout',['../classyacx_1_1_logger.html#a0ef2418418f4a7fae6bfb7c51fecba6a',1,'yacx::Logger']]],
   ['setdownload',['setDownload',['../classyacx_1_1_array_arg.html#a987b7dcb48507aa09794372f02943938',1,'yacx::ArrayArg']]],
