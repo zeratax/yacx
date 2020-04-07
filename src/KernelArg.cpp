@@ -49,7 +49,7 @@ void KernelArg::malloc() {
 
 void KernelArg::uploadAsync(CUstream stream) {
   if (m_upload && m_copy) {
-    logger(loglevel::DEBUG1) << "copying data to device";
+    Logger(loglevel::DEBUG1) << "copying data to device";
     m_dataCopy.get()->copyDataHtoD(const_cast<void *>(m_hdata), m_ddata, m_size,
                                    stream);
   }

@@ -9,9 +9,9 @@ using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type, yacx::even
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
-  logger(loglevel::DEBUG) << "created templated Kernel " << m_demangled_name;
+  Logger(loglevel::DEBUG) << "created templated Kernel " << m_demangled_name;
 
-  logger(loglevel::DEBUG1) << m_ptx.get();
+  Logger(loglevel::DEBUG1) << m_ptx.get();
 
   m_kernelFunction =
       std::make_shared<struct KernelFunction>(m_ptx.get(), m_demangled_name);
@@ -20,21 +20,21 @@ Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
 Kernel::KernelFunction::KernelFunction(char *ptx, std::string demangled_name) {
   yacx::detail::initCtx();
 
-  logger(loglevel::DEBUG) << "loading module";
+  Logger(loglevel::DEBUG) << "loading module";
   CUDA_SAFE_CALL(cuModuleLoadDataEx(&module, ptx, 0, nullptr, nullptr));
 
-  logger(loglevel::DEBUG) << "getting function for " << demangled_name.c_str();
+  Logger(loglevel::DEBUG) << "getting function for " << demangled_name.c_str();
   CUDA_SAFE_CALL(cuModuleGetFunction(&kernel, module, demangled_name.c_str()));
 }
 
 Kernel::KernelFunction::~KernelFunction() {
-  logger(loglevel::DEBUG) << "freeing module";
+  Logger(loglevel::DEBUG) << "freeing module";
 
   CUDA_SAFE_CALL(cuModuleUnload(module));
 }
 
 Kernel &Kernel::configure(dim3 grid, dim3 block, unsigned int shared) {
-  logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
+  Logger(loglevel::DEBUG) << "configuring Kernel with grid: " << grid.x << ", "
                           << grid.y << ", " << grid.z << ", block: " << block.x
                           << ", " << block.y << ", " << block.z
                           << " and shared memory size: " << shared;
@@ -43,7 +43,7 @@ Kernel &Kernel::configure(dim3 grid, dim3 block, unsigned int shared) {
   m_shared = shared;
 
   if (m_shared > 0) {
-    logger(loglevel::DEBUG)
+    Logger(loglevel::DEBUG)
         << "kernel use " << shared << " dynamic shared memory";
     CUDA_SAFE_CALL(cuFuncSetAttribute(
         m_kernelFunction.get()->kernel,
@@ -81,7 +81,7 @@ eventInterval Kernel::asyncOperation(
 
 eventInterval Kernel::uploadAsync(KernelArgs &args, Device &device,
                                   CUevent syncEvent) {
-  logger(loglevel::DEBUG) << "uploading arguments";
+  Logger(loglevel::DEBUG) << "uploading arguments";
 
   return asyncOperation(
       args, device.getUploadStream(), syncEvent,
@@ -90,7 +90,7 @@ eventInterval Kernel::uploadAsync(KernelArgs &args, Device &device,
 
 eventInterval Kernel::runAsync(KernelArgs &args, Device &device,
                                CUevent syncEvent) {
-  logger(loglevel::INFO) << "launching " << m_demangled_name;
+  Logger(loglevel::INFO) << "launching " << m_demangled_name;
 
   return asyncOperation(
       args, device.getLaunchStream(), syncEvent,
@@ -107,7 +107,7 @@ eventInterval Kernel::runAsync(KernelArgs &args, Device &device,
 
 eventInterval Kernel::downloadAsync(KernelArgs &args, Device &device,
                                     CUevent syncEvent, void *downloadDest) {
-  logger(loglevel::DEBUG) << "downloading arguments";
+  Logger(loglevel::DEBUG) << "downloading arguments";
 
   return asyncOperation(args, device.getDownloadStream(), syncEvent,
                         [downloadDest](KernelArgs &args, CUstream stream) {
@@ -119,7 +119,7 @@ eventInterval Kernel::downloadAsync(KernelArgs &args, Device &device,
 }
 
 KernelTime Kernel::launch(KernelArgs args, Device &device) {
-  logger(loglevel::DEBUG) << "setting context";
+  Logger(loglevel::DEBUG) << "setting context";
   CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
   KernelTime time;
@@ -156,7 +156,7 @@ KernelTime Kernel::launch(KernelArgs args, Device &device) {
 
 std::vector<KernelTime>
 Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
-  logger(loglevel::DEBUG) << "benchmarking kernel";
+  Logger(loglevel::DEBUG) << "benchmarking kernel";
 
   std::vector<KernelTime> kernelTimes;
   kernelTimes.reserve(executions);
@@ -167,7 +167,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   // find a kernelArg that you have to download with maximum size
   size_t maxOutputSize = args.maxOutputSize();
 
-  logger(loglevel::DEBUG) << "setting context";
+  Logger(loglevel::DEBUG) << "setting context";
   CUDA_SAFE_CALL(cuCtxSetCurrent(device.getPrimaryContext()));
 
   // allocate memory for output
@@ -176,7 +176,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
     CUDA_SAFE_CALL(cuMemAllocHost(&output, maxOutputSize));
   }
 
-  logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
+  Logger(loglevel::DEBUG) << "launch kernel " << executions << " times";
 
   args.malloc();
 
