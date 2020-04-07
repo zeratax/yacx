@@ -29,12 +29,12 @@ jobs:
           cmake -H. -Bbuild
           make -C build yacx
           make -C build yacx-jni
-          export unix_dir=yacx-${GIT_TAG_NAME}_unix/
-          mkdir -p dist/$unix_dir
+          export unix_dir=yacx-v${GIT_TAG_NAME}_unix/
+          mkdir -p dist/$unix_dir/java/bin/
           cp build/libyacx.so dist/$unix_dir
           cp build/libyacx-jni.so dist/$unix_dir
-          cp -R build/java/bin/yacx/ dist/$unix_dir
-      - name: Upload artifacts
+          cp -R build/java/bin/yacx/ dist/$unix_dir/java/bin/
+      - name: Upload release artifacts
         uses: fnkr/github-action-ghr@v1
         env:
           GHR_COMPRESS: xz
