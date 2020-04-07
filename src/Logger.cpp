@@ -14,20 +14,6 @@ static std::unordered_map<std::string, E> const loglevels = {
     {"WARNING", loglevel::WARNING}, {"INFO", loglevel::INFO},
     {"DEBUG1", loglevel::DEBUG1},   {"DEBUG2", loglevel::DEBUG2}};
 
-yacx::logmap yacx::state = {
-    {loglevel::NONE,
-     std::pair<const char *, const char *>{"   NONE", gColorBrightDefault}},
-    {loglevel::ERROR,
-     std::pair<const char *, const char *>{"  ERROR", gColorBrightRed}},
-    {loglevel::WARNING,
-     std::pair<const char *, const char *>{"WARNING", gColorBrightYellow}},
-    {loglevel::INFO,
-     std::pair<const char *, const char *>{"   INFO", gColorBrightDefault}},
-    {loglevel::DEBUG,
-     std::pair<const char *, const char *>{"  DEBUG", gColorGray}},
-    {loglevel::DEBUG1,
-     std::pair<const char *, const char *>{" DEBUG1", gColorGray}}};
-
 // wishing for c++20
 bool starts_with(const std::string &str, const std::string &substr) {
   return (str.rfind(substr, 0) == 0);
@@ -44,7 +30,7 @@ std::string flag_value(const std::string &flag) {
 
 void handle_flag(const std::string &flag) {
   if (starts_with(flag, "-l") || starts_with(flag, "--log")) {
-    if (auto it = loglevels.find(str); it != loglevels.end()) {
+    if (auto it = loglevels.find(flag); it != loglevels.end()) {
       Logger::getInstance().set_loglimit(
           static_cast<yacx::loglevel>(it->second));
     } else {
