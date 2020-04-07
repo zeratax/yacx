@@ -13,14 +13,6 @@
 using yacx::Kernel, yacx::KernelTime, yacx::KernelArg, yacx::Source,
     yacx::Header, yacx::Headers;
 
-// Declaration of a function to handle segmentation faults
-void segmentfunction(int signal);
-
-// Function to handle segmentation faults
-void segmentfunction(int signal) {
-  FAIL("It is impossible to launch a kernel using too few kernel arguments.");
-  exit(EXIT_FAILURE);
-}
 
 TEST_CASE(
     "The kernel - source code will be tested under the following conditions.") {
@@ -72,35 +64,7 @@ TEST_CASE(
     }
   }
 
-  /*B2. Launching a kernel using the following block and grid dimensions as well
-  as naming conventions for the kernel-function.*/
-  // B2A. Checking for consistencies in the naming convention of kernel
-  // function.
-  SECTION("2A. The created kernel must be launched with proper kernel-function "
-          "names.") {
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
-                  "__global__ void cuda_add(int *x, int *y, int *out, int "
-                  "datasize) {\n"
-                  " int i = threadIdx.x;\n"
-                  " out[i] = x[i] + y[i];\n"
-                  "}",
-                  headers};
-
-    dim3 grid_test(1);
-    dim3 block_test(10);
-
-    REQUIRE_THROWS(source.program("cuda_addition")
-                       .compile()
-                       .configure(grid_test, block_test)
-                       .launch(args));
-    REQUIRE_NOTHROW(source.program("cuda_add")
-                        .compile()
-                        .configure(grid_test, block_test)
-                        .launch(args));
-  }
-
-  // B2B. Checking for consistencies in the specification of block and grid
+  // B2A. Checking for consistencies in the specification of block and grid
   // dimensions.
   SECTION("2B. The created kernel is launched using proper block and grid "
           "dimensions.") {
@@ -260,57 +224,6 @@ TEST_CASE(
       REQUIRE(hOut_4[j] == counter);
       counter++;
     }
-  }
-
-  // B2D. Validating, that is impossible to have too few or many
-  // kernel-arguments in an array
-  SECTION("2D. Error results are produced, when the kernels are launched using "
-          "too few or many"
-          " kernel arguments according to the kernel-functions") {
-    // B2D1. Declaration of all necessary kernel function inputs.
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
-                  "__global__ void cuda_add(int *x, int *y, int *out, int "
-                  "datasize) {\n"
-                  " int i = threadIdx.x;\n"
-                  " out[i] = x[i] + y[i];\n"
-                  "}",
-                  headers};
-
-    dim3 grid_test(1), block_test(10);
-    const CUresult error{CUDA_ERROR_LAUNCH_OUT_OF_RESOURCES};
-
-    args.clear();
-    args.emplace_back(KernelArg{hX, bufferSize});
-    args.emplace_back(KernelArg{hY, bufferSize});
-    args.emplace_back(KernelArg{hOut_1, bufferSize, true});
-    args.emplace_back(KernelArg(&datasize));
-    args.emplace_back(KernelArg{hOut_2, bufferSize, true});
-    args.emplace_back(KernelArg{hOut_3, bufferSize, true});
-    args.emplace_back(KernelArg{hOut_4, bufferSize, true});
-
-    REQUIRE_NOTHROW(source.program("cuda_add")
-                        .compile()
-                        .configure(grid_test, block_test)
-                        .launch(args));
-
-    // B2D2. Comparing the results
-    for (int i = 0; i < 10; i++)
-      REQUIRE(hOut_1[i] == hostCompareOutput[i]);
-
-    // B2B3. Validating, that it is impossible to launch a kernel using too few
-    // kernel arguments
-    args.clear();
-    args.emplace_back(KernelArg{hX, bufferSize});
-    args.emplace_back(KernelArg{hY, bufferSize});
-    args.emplace_back(KernelArg{hOut_1, bufferSize, true});
-
-    signal(SIGSEGV, segmentfunction);
-
-    source.program("cuda_add")
-        .compile()
-        .configure(grid_test, block_test)
-        .launch(args);
   }
 
   // Free all storage memory
