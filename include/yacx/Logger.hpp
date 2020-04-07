@@ -122,7 +122,7 @@ class Logger {
     if (current_loglevel <= limit) {
       print(value);
       print('n');
-      print(gColorReset)
+      print(gColorReset);
     }
     return *this;
   }
