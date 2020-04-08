@@ -121,7 +121,7 @@ class Logger {
   template <typename T> Logger &operator<<(T const &value) {
     if (current_loglevel <= limit) {
       print(value);
-      print('n');
+      print('\n');
       print(gColorReset);
     }
     return *this;

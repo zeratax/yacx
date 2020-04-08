@@ -5,7 +5,8 @@
 #include "yacx/KernelTime.hpp"
 #include <utility>
 
-using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type, yacx::eventInterval;
+using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type,
+    yacx::eventInterval;
 
 Kernel::Kernel(std::shared_ptr<char[]> ptx, std::string demangled_name)
     : m_ptx{std::move(ptx)}, m_demangled_name{std::move(demangled_name)} {
@@ -187,7 +188,7 @@ Kernel::benchmark(KernelArgs args, unsigned int executions, Device &device) {
   events[0][2] = downloadAsync(args, device, events[0][1].end, output);
 
   for (unsigned int i = 1; i < executions; i++) {
-    events[i][0] = uploadAsync(args, device, events[i-1][2].end);
+    events[i][0] = uploadAsync(args, device, events[i - 1][2].end);
     events[i][1] = runAsync(args, device, events[i][0].end);
     events[i][2] = downloadAsync(args, device, events[i][1].end, output);
   }

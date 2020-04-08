@@ -13,7 +13,7 @@ namespace yacx::detail {
 static std::unordered_map<std::string, loglevel> const loglevels = {
     {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERROR},
     {"WARNING", loglevel::WARNING}, {"INFO", loglevel::INFO},
-    {"DEBUG", loglevel::DEBUG},   {"DEBUG1", loglevel::DEBUG1}};
+    {"DEBUG", loglevel::DEBUG},     {"DEBUG1", loglevel::DEBUG1}};
 
 // wishing for c++20
 bool starts_with(const std::string &str, const std::string &substr) {
@@ -23,7 +23,7 @@ bool starts_with(const std::string &str, const std::string &substr) {
 bool is_flag(const std::string &arg) { return arg[0] == '-'; }
 
 std::string flag_value(const std::string &flag) {
-  int pos = flag.find_first_of('=');
+  size_t pos = flag.find_first_of('=');
   if (pos != std::string::npos && pos < flag.size() - 1)
     return flag.substr(pos + 1, flag.size());
   throw std::invalid_argument("Value flags have the syntax --key=value");
@@ -31,12 +31,12 @@ std::string flag_value(const std::string &flag) {
 
 void handle_flag(const std::string &flag) {
   if (starts_with(flag, "-l") || starts_with(flag, "--log")) {
-    if (auto it = loglevels.find(flag); it != loglevels.end()) {
+    if (auto it = loglevels.find(flag_value(flag)); it != loglevels.end()) {
       Logger::getInstance().set_loglimit(
           static_cast<yacx::loglevel>(it->second));
     } else {
       std::invalid_argument(
-          "only allowed log levels are ERROR, WARNING, INFO, DEBUG, DEBUG1");
+          "Only allowed log levels are ERROR, WARNING, INFO, DEBUG, DEBUG1");
     }
   } else if (starts_with(flag, "-f") || starts_with(flag, "--file")) {
     Logger::getInstance().set_logfile(flag_value(flag));

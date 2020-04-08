@@ -50,15 +50,15 @@ class Kernel : JNIHandle {
   //! \param number of executions
   //! \param device
   //! \return vector of KernelTimes for every execution
-  std::vector<KernelTime> benchmark(KernelArgs args,
-                                    unsigned int executions,
+  std::vector<KernelTime> benchmark(KernelArgs args, unsigned int executions,
                                     Device &device = Devices::findDevice());
 
  private:
   eventInterval asyncOperation(
       KernelArgs &args, CUstream stream, CUevent syncEvent,
       std::function<void(KernelArgs &args, CUstream stream)> operation);
-  eventInterval uploadAsync(KernelArgs &args, Device &device, CUevent syncEvent);
+  eventInterval uploadAsync(KernelArgs &args, Device &device,
+                            CUevent syncEvent);
   eventInterval runAsync(KernelArgs &args, Device &device, CUevent syncEvent);
   eventInterval downloadAsync(KernelArgs &args, Device &device,
                               CUevent syncEvent, void *downloadDest);

@@ -13,7 +13,6 @@
 using yacx::Kernel, yacx::KernelTime, yacx::KernelArg, yacx::Source,
     yacx::Header, yacx::Headers;
 
-
 TEST_CASE(
     "The kernel - source code will be tested under the following conditions.") {
   // A. Preparing the input for the kernel-compilation using source
