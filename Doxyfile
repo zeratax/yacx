@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = yacx - Yet Another CudaExecutor
-PROJECT_NUMBER         = 0.6.0
+PROJECT_NUMBER         = 0.6.1
 PROJECT_BRIEF          = "wrapper to easily compile and execute cuda kernels"
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = "docs"
