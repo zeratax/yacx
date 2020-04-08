@@ -36,7 +36,7 @@ set(JAVA_EXAMPLE_FILES
     "java/ExampleSaxpyExecutor.java"
     "java/ExampleSimpleGEMM.java"
     "java/ExampleSimpleGEMMBenchmark.java"
-    "java/TemplateKernel.java")
+    "java/ExampleTemplateKernel.java")
 
 if(JNI_ENABLED)
   foreach(_java_path ${JAVA_EXAMPLE_FILES})
