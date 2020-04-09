@@ -2,7 +2,7 @@
 
 PWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BUILD_DIR="build"
-JAVA_BIN="${BUILD_DIR}/java/bin/yacx"
+JAVA_BIN="${BUILD_DIR}/java/bin"
 
 buildj() {
   pushd $PWD
