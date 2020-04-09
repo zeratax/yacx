@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 _yacx() {
   COMPREPLY=()
   local word="${COMP_WORDS[COMP_CWORD]}"
