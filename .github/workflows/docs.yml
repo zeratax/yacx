@@ -14,7 +14,7 @@ jobs:
     - name: Install Dependencies
       run: sudo apt-get install doxygen
     - name: Build
-      run: doxygen Doxyfile
+      run: make docs
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
