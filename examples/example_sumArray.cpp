@@ -1,5 +1,4 @@
 #include "yacx/main.hpp"
-
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -30,12 +29,8 @@ void compare(type *lhs, type *rhs, int array_size) {
 
     if ((lhs_type-rhs_type)!= 0) {
       errors += 1;
-      i_string=std::to_string(i);
-      lhs_string=std::to_string(lhs[i]);
-      rhs_string=std::to_string(rhs[i]);
-
-      std::cout << i_string << " expected " << lhs_string << ": actually "
-      << rhs_string << std::endl;
+      std::cout << i << " expected " << lhs[i] << ": actually "
+      << rhs[i] << std::endl;
     }
   }
 
@@ -45,10 +40,11 @@ void compare(type *lhs, type *rhs, int array_size) {
   array_size_string=static_cast<int>(array_size);
 
   if (errors > 0){
-    std::cout << "\u001b[31m" << errors_string << " errors occured, out of "
-    << array_size_string << " values.\u001b[0m" << std::endl;
+    std::cout << yacx::gColorBrightRed << errors_string << " errors occured,"
+    " out of "<< array_size_string << " values." << yacx::gColorReset  << std::endl;
   }else{
-    std::cout << "\u001b[32mNo errors occured.\u001b[0m" << std::endl;
+    std::cout << yacx::gColorBrightGreen <<"No errors occured." << yacx::gColorReset 
+    << std::endl;
   }
 }
 
@@ -128,12 +124,14 @@ int main(){
     std::cout << "Selected " << dev.name() << " with "
               << (dev.total_memory() / 1024) / 1024 << "mb VRAM\n";
     std::cout << "Kernel Arguments total size: "
-              << ((matrix_size * 3 + sizeof(size_t)) / 1024) << "kb\n\n";
+              << ((matrix_size * 3 + sizeof(float)) / 1024) << "kb\n\n";
     std::cout << "Theoretical Bandwith:        "
               << yacx::theoretical_bandwidth(dev) << " GB/s\n";
 
-    //2B. Set kernel string and compile options
-    Source source{load("examples/kernels/sum_Array.cu")};
+    //2B. Set kernel string, header files and compile options
+    Headers headers;
+    headers.insert(Header{"cuda_runtime.h"});
+    Source source{load("examples/kernels/sum_Array.cu"),headers};
 
     Options options;
     options.insert("--std", "c++14");
@@ -159,16 +157,14 @@ int main(){
     //CPU single threaded sum array
     start = std::clock();
     sumArrayOnHost<float>(A,B,C_seq,NX,NY,NZ);
-    std::cout << "Time\u001b[33m[CPU single threaded]\u001b[0m:   "
-              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-              << " ms" << std::endl;
+    std::cout << "Time"<< yacx::gColorBrightYellow << "[CPU single threaded]" 
+    << yacx::gColorReset << ": "<< (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
+    << " ms" << std::endl;
 
     time = kernel_sumArray.launch(args);
-    std::cout << "Time\u001b[33m[sumArrayOnGPU]\u001b[0m:      "
-              << time.total << " ms\n";
-
+              
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch,  args.size()) << " GB/s\n";
+              << time.effective_bandwidth_launch() << " GB/s\n";
 
     equalSumArray = std::equal(C_cuda,C_cuda+(NX+NY+NY),C_seq,comparator<float>);
 
@@ -181,23 +177,20 @@ int main(){
   }
 
   if (equalSumArray) {
-    std::cout << "\u001b[32meverything was correctly calculated!\u001b[0m\n";
-    std::cout << "upload time:     " << time.upload
-              << " ms\nexecution time:  " << time.launch
-              << " ms\ndownload time    " << time.download
-              << " ms\ntotal time:      " << time.total << " ms.\n";
+    std::cout << yacx::gColorBrightGreen << "Everything was correctly calculated!"<< 
+    yacx::gColorReset<<"\n";
+    std::cout << yacx::gColorGray << time << yacx::gColorReset << std::endl;
   } else {
-    std::cout << "\u001b[31m";
+    std::cout << yacx::gColorBrightRed;
   }
 
   if (!equalSumArray) {
     std::cout << "SumArray went wrong ;_;\n";
   }
 
-  std::cout << "\u001b[0m===================================" << std::endl;
+  std::cout << yacx::gColorReset << "===================================" << std::endl;
 
   // Free resources
-
   delete[] A;
   delete[] B;
   delete[] C_seq;
