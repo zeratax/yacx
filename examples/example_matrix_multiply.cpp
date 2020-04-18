@@ -159,16 +159,16 @@ int main() {
     start = std::clock();
     // MatrixMulSeq(M.data(), N.data(), P_seq.data(), WIDTH);
     MatrixMulSeq(M, N, P_seq, WIDTH);
-    std::cout << "Time\u001b[33m[CPU single threaded]\u001b[0m:   "
-              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-              << " ms" << std::endl;
+    std::cout << "Time"<< yacx::gColorBrightYellow <<"[CPU single threaded]"<<yacx::gColorReset
+    <<":   " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
+    << " ms" << std::endl;
 
     time = kernelNaive.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMultyNaive]\u001b[0m:      "
-              << time.total << " ms\n";
+    std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMultyNaive]"<<yacx::gColorReset
+    <<":      "<< time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
+              << time.effective_bandwidth_launch() << " GB/s\n";
 
     equalMultiplyNaive =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
@@ -177,11 +177,11 @@ int main() {
 
     if (BLOCK_SIZE % 4 == 0) {
       time = kernel1_1.launch(args, dev);
-      std::cout << "Time\u001b[33m[MatrixMulty1unfolded]\u001b[0m:  "
+      std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMulty1unfolded]"<< yacx::gColorReset<<":  "
                 << time.total << " ms\n";
 
       std::cout << "Effective Bandwith:          "
-                << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
+                << time.effective_bandwidth_launch() << " GB/s\n";
       equalMultiply1unfolded =
           std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
       if (!equalMultiply1unfolded)
@@ -191,22 +191,22 @@ int main() {
     }
 
     time = kernel1.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty1]\u001b[0m:          "
-              << time.total << " ms\n";
+    std::cout << "Time" << yacx::gColorBrightYellow <<"[MatrixMulty1]"<< yacx::gColorReset <<
+    ":          " << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
+              << time.effective_bandwidth_launch() << " GB/s\n";
     equalMultiply1 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if (!equalMultiply1)
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     time = kernel2.launch(args, dev);
-    std::cout << "Time\u001b[33m[MatrixMulty2]\u001b[0m:          "
-              << time.total << " ms\n";
+    std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMulty2]" << 
+    yacx::gColorReset << ":          " << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n\n";
+              << time.effective_bandwidth_launch() << " GB/s\n\n";
     equalMultiply2 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if (!equalMultiply2)
@@ -219,9 +219,10 @@ int main() {
 
   if (equalMultiplyNaive && equalMultiply1 && equalMultiply1unfolded &&
       equalMultiply2) {
-    std::cout << "\u001b[32meverything was correctly calculated!\u001b[0m\n";
+    std::cout << yacx::gColorBrightGreen <<"Everything was correctly calculated!" <<
+    yacx::gColorReset;
   } else {
-    std::cout << "\u001b[31m";
+    std::cout << yacx::gColorBrightRed;
   }
   if (!equalMultiplyNaive) {
     std::cout << "Naive went wrong ;_;\n";
@@ -236,10 +237,9 @@ int main() {
     std::cout << "Multy2 went wrong ;_;\n";
   }
 
-  std::cout << "\u001b[0m===================================" << std::endl;
+  std::cout << yacx::gColorReset << "===================================" << std::endl;
 
   // Free resources
-
   delete[] M;
   delete[] N;
   delete[] P_seq;
