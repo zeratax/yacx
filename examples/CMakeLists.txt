@@ -10,6 +10,8 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/lena.ppm
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/kernels)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/matrixMult.cu
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/kernels)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/sum_Array.cu
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/kernels)
 
 link_libraries(yacx)
 
@@ -19,6 +21,7 @@ add_executable(example_program example_program.cpp)
 add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 add_executable(example_logger example_logger.cpp)
+add_executable(example_sumArray example_sumArray.cpp)
 
 set(JAVA_EXAMPLE_FILES
     "java/ExampleCGEMM.java"

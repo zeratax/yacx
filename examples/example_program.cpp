@@ -3,8 +3,8 @@
 #include <experimental/iterator>
 #include <vector>
 
-using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type_of;
-
+using yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type_of, 
+yacx::Devices;
 int main(int argc, char const *const *const argv) {
   yacx::handle_logging_args(argc, argv);
   const int data{1};

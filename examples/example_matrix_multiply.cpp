@@ -11,7 +11,7 @@
 #include <string>
 
 using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
-    yacx::load, yacx::KernelTime;
+    yacx::load, yacx::KernelTime, yacx::Devices;
 
 void compare(float *lhs, float *rhs, int width) {
   int errors = 0;
@@ -168,7 +168,7 @@ int main() {
               << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
 
     equalMultiplyNaive =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
@@ -181,7 +181,7 @@ int main() {
                 << time.total << " ms\n";
 
       std::cout << "Effective Bandwith:          "
-                << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
+                << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
       equalMultiply1unfolded =
           std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
       if (!equalMultiply1unfolded)
@@ -195,7 +195,7 @@ int main() {
               << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n";
     equalMultiply1 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if (!equalMultiply1)
@@ -206,7 +206,7 @@ int main() {
               << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n\n";
+              << yacx::effective_bandwidth(time.launch, args.size()) << " GB/s\n\n";
     equalMultiply2 =
         std::equal(P_cuda, P_cuda + (WIDTH * WIDTH), P_seq, comparator);
     if (!equalMultiply2)

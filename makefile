@@ -39,6 +39,8 @@ example_gauss: example
 	@echo " $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_gauss.o $(OBJECTS) -o $(TARGET) $(LIB)
 example_logger: example
 	@echo " $(CC) build/example_logger.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_logger.o $(OBJECTS) -o $(TARGET) $(LIB)
+example_sumArray: example
+	@echo " $(CC) build/example_sumArray.o $(OBJECTS) -o $(TARGET) $(LIB)"; $(CC) build/example_sumArray.o $(OBJECTS) -o $(TARGET) $(LIB)
 example: directories $(OBJECTS)
 	+$(MAKE) -C examples
 
