@@ -17,7 +17,8 @@ let fhs = pkgs.buildFHSUserEnv {
                  unzip
                  cudatoolkit_10
                  linuxPackages.nvidia_x11
-                 libGLU_combined
+                 libGLU
+                 libGL
 		 xorg.libXi xorg.libXmu freeglut
                  xorg.libXext xorg.libX11 xorg.libXv xorg.libXrandr zlib 
 		 ncurses5
