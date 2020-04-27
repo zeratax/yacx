@@ -24,7 +24,7 @@ set(JAVA_EXAMPLE_FILES
     "java/ExampleCGEMM.java"
     "java/ExampleDotProduct.java"
     "java/ExampleFastGEMM.java"
-    "java/ExampleFastGEMMBenchmark"
+    "java/ExampleFastGEMMBenchmark.java"
     "java/ExampleFilter.java"
     "java/ExampleFilterBenchmark.java"
     "java/ExampleFilterExecutor.java"
@@ -47,14 +47,17 @@ if(JNI_ENABLED)
     add_custom_command(
       OUTPUT "${CMAKE_BINARY_DIR}/java/bin/${_class_file}"
       COMMAND
-        ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
-        "${PROJECT_SOURCE_DIR}/src/java" -d "${CMAKE_BINARY_DIR}/java/bin"
+        ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS}
+        -sourcepath "${PROJECT_SOURCE_DIR}/src/main/java:${PROJECT_SOURCE_DIR}/examples/java/"
+        -d "${CMAKE_BINARY_DIR}/java/bin/"
         "${PROJECT_SOURCE_DIR}/examples/java/${_java_file}"
       DEPENDS "${PROJECT_SOURCE_DIR}/examples/java/${_java_file}")
     add_custom_target(
       ${_java_name} ALL DEPENDS yacx-jni
                                 ${CMAKE_BINARY_DIR}/java/bin/${_class_file})
+    list(APPEND example_class_files "${PROJECT_BINARY_DIR}/java/bin/${_class_file}")
   endforeach()
+  add_custom_target(JNIExampleClasses ALL DEPENDS ${example_class_files} yacx-jni)
   # ADD_TEST( NAME run-jni-example-saxpy COMMAND "${Java_JAVA_EXECUTABLE}" -ea
   # -Djava.library.path=${CMAKE_BINARY_DIR} ExampleSaxpy WORKING_DIRECTORY
   # "${CMAKE_BINARY_DIR} ")
