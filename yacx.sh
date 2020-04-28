@@ -13,9 +13,6 @@ buildj() {
   cmake -H. -B$BUILD_DIR
   make -C $BUILD_DIR JNIExampleClasses
 
-  #pushd $JAVA_BIN
-  #javac *.java -d $PWD -sourcepath $PWD
-  #popd
   popd
   echo 'Build finished.'
 }
