@@ -8,6 +8,7 @@ let fhs = pkgs.buildFHSUserEnv {
                  gnupg
                  autoconf
                  curl
+		 cmake
                  procps
                  gnumake
                  gcc7
