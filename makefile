@@ -36,7 +36,7 @@ lint:
 
 docs:
 	doxygen Doxyfile
-	javadoc -d docs/java -sourcepath src/main/java yacx
+	javadoc -Xdoclint:none -d docs/java -sourcepath src/main/java yacx
 
 .PHONY: clean, lint, directories, format, docs
 
