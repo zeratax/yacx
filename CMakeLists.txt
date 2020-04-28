@@ -8,7 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-add_definitions(-Wall -Wextra --pedantic)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  add_definitions(-Wall -Wextra)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 add_definitions(-DNVRTC_GET_TYPE_NAME=1)
 
 include_directories(include)

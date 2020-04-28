@@ -122,7 +122,7 @@ inline void __checkNvrtcResultError(const nvrtcResult error, const char *file,
 #define NVRTC_SAFE_CALL_LOG(error, m_log)                                      \
   __checkNvrtcResultError_LOG(error, m_log, __FILE__, __LINE__);
 inline void __checkNvrtcResultError_LOG(const nvrtcResult error,
-                                        std::__cxx11::basic_string<char> m_log,
+                                        std::basic_string<char> m_log,
                                         const char *file, const int line) {
   if (NVRTC_SUCCESS != error) {
     // create string for exception

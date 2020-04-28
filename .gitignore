@@ -56,5 +56,6 @@ project
 .metals
 .idea
 .vscode
+.vs
 .bloop
 modules.xml

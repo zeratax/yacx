@@ -1,6 +1,7 @@
 #include "yacx/Exception.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/main.hpp"
+#include "asprintf.h"
 #include <catch2/catch.hpp>
 
 using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,

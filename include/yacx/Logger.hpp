@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace yacx {
-enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
+enum class loglevel { NONE, ERR, WARNING, INFO, DEBUG, DEBUG1 };
 
 using logmap = std::map<loglevel, std::pair<const char *, const char *>>;
 

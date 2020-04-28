@@ -11,7 +11,7 @@ std::vector<std::string> arguments;
 namespace yacx::detail {
 
 static std::unordered_map<std::string, loglevel> const loglevels = {
-    {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERROR},
+    {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERR},
     {"WARNING", loglevel::WARNING}, {"INFO", loglevel::INFO},
     {"DEBUG", loglevel::DEBUG},     {"DEBUG1", loglevel::DEBUG1}};
 
