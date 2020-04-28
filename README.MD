@@ -1,5 +1,5 @@
-[![tests](https://img.shields.io/github/workflow/status/ZerataX/yacx/tests?label=tests&style=for-the-badge)](https://github.com/ZerataX/yacx/actions?query=workflow%3A%22tests%22) [![Matrix](https://img.shields.io/matrix/yacx:matrix.org?label=%23yacx%3Admnd.sh&style=for-the-badge)](https://matrix.to/#/#yacx:dmnd.sh) 
-
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/ZerataX/yacx?include_prereleases&style=for-the-badge)](https://github.com/ZerataX/yacx/releases)
+ [![tests](https://img.shields.io/github/workflow/status/ZerataX/yacx/tests?label=tests&style=for-the-badge)](https://github.com/ZerataX/yacx/actions?query=workflow%3A%22tests%22) [![Matrix](https://img.shields.io/matrix/yacx:matrix.org?label=%23yacx%3Admnd.sh&style=for-the-badge)](https://matrix.to/#/#yacx:dmnd.sh)
 # yacx - Yet Another CudaExecutor
 
 wrapper to easily compile and execute cuda kernels
