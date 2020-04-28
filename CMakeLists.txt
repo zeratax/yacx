@@ -19,7 +19,6 @@ link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib")
 
 link_libraries(cuda nvrtc)
 
-
 file(GLOB SOURCES "src/*.cpp" "src/cexecutor/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
 set(JAVA_SOURCE_FILES

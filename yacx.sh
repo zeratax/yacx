@@ -11,11 +11,11 @@ buildj() {
   cp examples/java/*.java $JAVA_BIN
 
   cmake -H. -B$BUILD_DIR
-  make -C $BUILD_DIR yacx-jni
+  make -C $BUILD_DIR JNIExampleClasses
 
-  pushd $JAVA_BIN
-  javac *.java -d $PWD -sourcepath $PWD
-  popd
+  #pushd $JAVA_BIN
+  #javac *.java -d $PWD -sourcepath $PWD
+  #popd
   popd
   echo 'Build finished.'
 }
