@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,700,900');
+a {
+	text-decoration:none;
+}
 body {
 	font-family: 'Work Sans', sans-serif;
 	background: #111;
