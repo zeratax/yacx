@@ -1,0 +1,19 @@
+\hypertarget{docs_2headers_8cpp-example}{}\section{docs/headers.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{preprocessor}{#include "yacx/Header.hpp"}
+\textcolor{preprocessor}{#include "yacx/Headers.hpp"}
+\textcolor{preprocessor}{#include "yacx/Source.hpp"}
+\textcolor{preprocessor}{#include "kernels/gauss.h"}
+
+\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::Headers, yacx::Header;
+
+Headers headers;
+headers.insert(Header\{\textcolor{stringliteral}{"kernels/gauss.h"}\});
+Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), headers\};
+
+\textcolor{comment}{// Alternatively if you only use one header}
+
+Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), Headers\{\textcolor{stringliteral}{"kernels/gauss.h"}\}\};
+\end{DoxyCodeInclude}
+ 

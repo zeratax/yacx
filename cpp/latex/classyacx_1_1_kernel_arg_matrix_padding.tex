@@ -1,0 +1,54 @@
+\hypertarget{classyacx_1_1_kernel_arg_matrix_padding}{}\section{yacx\+:\+:Kernel\+Arg\+Matrix\+Padding Class Reference}
+\label{classyacx_1_1_kernel_arg_matrix_padding}\index{yacx\+::\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::\+Kernel\+Arg\+Matrix\+Padding}}
+Inheritance diagram for yacx\+:\+:Kernel\+Arg\+Matrix\+Padding\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classyacx_1_1_kernel_arg_matrix_padding}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1_kernel_arg_matrix_padding_ae1deb41319073ffa43589668baa7de63}{Kernel\+Arg\+Matrix\+Padding} (void $\ast$data, size\+\_\+t size, bool download, int element\+Size, unsigned int padding\+Value, int src\+\_\+rows, int src\+\_\+columns, int dst\+\_\+rows, int dst\+\_\+columns)
+\begin{DoxyCompactList}\small\item\em A constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_kernel_arg_matrix_padding_ae1deb41319073ffa43589668baa7de63}\label{classyacx_1_1_kernel_arg_matrix_padding_ae1deb41319073ffa43589668baa7de63}} 
+\index{yacx\+::\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::\+Kernel\+Arg\+Matrix\+Padding}!Kernel\+Arg\+Matrix\+Padding@{Kernel\+Arg\+Matrix\+Padding}}
+\index{Kernel\+Arg\+Matrix\+Padding@{Kernel\+Arg\+Matrix\+Padding}!yacx\+::\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::\+Kernel\+Arg\+Matrix\+Padding}}
+\subsubsection{\texorpdfstring{Kernel\+Arg\+Matrix\+Padding()}{KernelArgMatrixPadding()}}
+{\footnotesize\ttfamily Kernel\+Arg\+Matrix\+Padding\+::\+Kernel\+Arg\+Matrix\+Padding (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{size\+\_\+t}]{size,  }\item[{bool}]{download,  }\item[{int}]{element\+Size,  }\item[{unsigned int}]{padding\+Value,  }\item[{int}]{src\+\_\+rows,  }\item[{int}]{src\+\_\+columns,  }\item[{int}]{dst\+\_\+rows,  }\item[{int}]{dst\+\_\+columns }\end{DoxyParamCaption})}
+
+
+
+A constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & pointer to argument for kernel function \\
+\hline
+{\em size} & size of argument in bytes \\
+\hline
+{\em download} & copy the results from device to host after kernel execution types, e.\+g. int) \\
+\hline
+{\em element\+Size} & size of each element of the matrix in bytes \\
+\hline
+{\em padding\+Value} & value to fill up additional rows and columns \\
+\hline
+{\em src\+\_\+rows} & number of rows of current matrix without padding \\
+\hline
+{\em src\+\_\+columns} & number of columns of currentmatrix without padding \\
+\hline
+{\em dst\+\_\+rows} & number of rows for new matrix with padding \\
+\hline
+{\em dst\+\_\+columns} & number of columns for new matrix with padding \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Kernel\+Args.\+hpp\item 
+src/Kernel\+Arg.\+cpp\end{DoxyCompactItemize}

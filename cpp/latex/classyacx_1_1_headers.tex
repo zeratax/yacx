@@ -1,0 +1,150 @@
+\hypertarget{classyacx_1_1_headers}{}\section{yacx\+:\+:Headers Class Reference}
+\label{classyacx_1_1_headers}\index{yacx\+::\+Headers@{yacx\+::\+Headers}}
+Inheritance diagram for yacx\+:\+:Headers\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_headers}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1_headers_ae04c7a09aac2e2417c7f5cb3410b011f}{Headers} (const \hyperlink{classyacx_1_1_header}{Header} \&header)
+\item 
+\hyperlink{classyacx_1_1_headers_af379ab4de8a97b9af8eff850987ce1d5}{Headers} (const std\+::string \&path)
+\item 
+\hyperlink{classyacx_1_1_headers_a4741fcbd110385f037be9091e20fd4a9}{Headers} (std\+::vector$<$ \hyperlink{classyacx_1_1_header}{Header} $>$ headers)
+\item 
+{\footnotesize template$<$typename T , typename... TS$>$ }\\\hyperlink{classyacx_1_1_headers_a2c695f86d62e478719878b37027e6cde}{Headers} (const T \&arg, const TS \&... args)
+\item 
+const char $\ast$$\ast$ \hyperlink{classyacx_1_1_headers_a80a31e958e7b1248bafdef6ce0c30c3c}{content} () const
+\item 
+const char $\ast$$\ast$ \hyperlink{classyacx_1_1_headers_aacf2017f07c4e9374a95facdf88863d7}{names} () const
+\item 
+size\+\_\+t \hyperlink{classyacx_1_1_headers_aed5718d17f7ab4e82b830708220fd00e}{num\+Headers} () const
+\item 
+void \hyperlink{classyacx_1_1_headers_a0428360b3ce224adc3a22bdbd486bfa0}{insert} (std\+::string const \&path)
+\item 
+void \hyperlink{classyacx_1_1_headers_a43251bcac778655f4b539e4e8f56e672}{insert} (\hyperlink{classyacx_1_1_header}{Header} header)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{docs_2headers_8cpp-example}{docs/headers.\+cpp}, and \hyperlink{example_gauss_8cpp-example}{example\+\_\+gauss.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_headers_ae04c7a09aac2e2417c7f5cb3410b011f}\label{classyacx_1_1_headers_ae04c7a09aac2e2417c7f5cb3410b011f}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!Headers@{Headers}}
+\index{Headers@{Headers}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{Headers()}{Headers()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Headers\+::\+Headers (\begin{DoxyParamCaption}\item[{const \hyperlink{classyacx_1_1_header}{Header} \&}]{header }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+constructs \hyperlink{classyacx_1_1_headers}{Headers} with \hyperlink{classyacx_1_1_header}{Header} 
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_headers_af379ab4de8a97b9af8eff850987ce1d5}\label{classyacx_1_1_headers_af379ab4de8a97b9af8eff850987ce1d5}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!Headers@{Headers}}
+\index{Headers@{Headers}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{Headers()}{Headers()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Headers\+::\+Headers (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+constructs \hyperlink{classyacx_1_1_headers}{Headers} with path to header file 
+\begin{DoxyParams}{Parameters}
+{\em path} & path to header file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_headers_a4741fcbd110385f037be9091e20fd4a9}\label{classyacx_1_1_headers_a4741fcbd110385f037be9091e20fd4a9}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!Headers@{Headers}}
+\index{Headers@{Headers}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{Headers()}{Headers()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Headers\+::\+Headers (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \hyperlink{classyacx_1_1_header}{Header} $>$}]{headers }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+constructs a header from a header vector 
+\begin{DoxyParams}{Parameters}
+{\em headers} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_headers_a2c695f86d62e478719878b37027e6cde}\label{classyacx_1_1_headers_a2c695f86d62e478719878b37027e6cde}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!Headers@{Headers}}
+\index{Headers@{Headers}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{Headers()}{Headers()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T , typename... TS$>$ \\
+Headers\+::\+Headers (\begin{DoxyParamCaption}\item[{const T \&}]{arg,  }\item[{const TS \&...}]{args }\end{DoxyParamCaption})}
+
+constructs \hyperlink{classyacx_1_1_headers}{Headers} with a multiple \hyperlink{classyacx_1_1_header}{Header} or paths to header files 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \hyperlink{classyacx_1_1_header}{Header}, std\+::string or char\mbox{[}\mbox{]} \\
+\hline
+{\em TS} & \hyperlink{classyacx_1_1_header}{Header}, std\+::string or char\mbox{[}\mbox{]} \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & \hyperlink{classyacx_1_1_header}{Header} or Path to header file \\
+\hline
+{\em args} & \hyperlink{classyacx_1_1_header}{Header} or Path to header file \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_headers_a80a31e958e7b1248bafdef6ce0c30c3c}\label{classyacx_1_1_headers_a80a31e958e7b1248bafdef6ce0c30c3c}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!content@{content}}
+\index{content@{content}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{content()}{content()}}
+{\footnotesize\ttfamily const char $\ast$$\ast$ Headers\+::content (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+c-\/style string array of header file contents 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_headers_a0428360b3ce224adc3a22bdbd486bfa0}\label{classyacx_1_1_headers_a0428360b3ce224adc3a22bdbd486bfa0}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!insert@{insert}}
+\index{insert@{insert}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void yacx\+::\+Headers\+::insert (\begin{DoxyParamCaption}\item[{std\+::string const \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+inserts \hyperlink{classyacx_1_1_header}{Header} 
+\begin{DoxyParams}{Parameters}
+{\em path} & path to header file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_headers_a43251bcac778655f4b539e4e8f56e672}\label{classyacx_1_1_headers_a43251bcac778655f4b539e4e8f56e672}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!insert@{insert}}
+\index{insert@{insert}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void yacx\+::\+Headers\+::insert (\begin{DoxyParamCaption}\item[{\hyperlink{classyacx_1_1_header}{Header}}]{header }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+inserts \hyperlink{classyacx_1_1_header}{Header} 
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_headers_aacf2017f07c4e9374a95facdf88863d7}\label{classyacx_1_1_headers_aacf2017f07c4e9374a95facdf88863d7}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!names@{names}}
+\index{names@{names}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{names()}{names()}}
+{\footnotesize\ttfamily const char $\ast$$\ast$ Headers\+::names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+c-\/style string array of header file names 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_headers_aed5718d17f7ab4e82b830708220fd00e}\label{classyacx_1_1_headers_aed5718d17f7ab4e82b830708220fd00e}} 
+\index{yacx\+::\+Headers@{yacx\+::\+Headers}!num\+Headers@{num\+Headers}}
+\index{num\+Headers@{num\+Headers}!yacx\+::\+Headers@{yacx\+::\+Headers}}
+\subsubsection{\texorpdfstring{num\+Headers()}{numHeaders()}}
+{\footnotesize\ttfamily size\+\_\+t yacx\+::\+Headers\+::num\+Headers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+number of header files 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Headers.\+hpp\item 
+src/Headers.\+cpp\end{DoxyCompactItemize}

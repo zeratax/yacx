@@ -1,0 +1,23 @@
+\hypertarget{docs_2nvrtcexception_8cpp-example}{}\section{docs/nvrtcexception.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{preprocessor}{#include "yacx/Exception.hpp"}
+\textcolor{preprocessor}{#include <nvrtc.h>}
+
+\textcolor{keyword}{using} \hyperlink{classyacx_1_1nvrtc_result_exception}{yacx::nvrtcResultException};
+
+\textcolor{keywordflow}{try} \{
+  NVRTC\_SAFE\_CALL(nvrtcCompileProgram(\textcolor{keyword}{nullptr}, 0, NULL));
+\} \textcolor{keywordflow}{catch} (nvrtcResultException<(nvrtcResult)1> &e) \{
+  std::cout << \textcolor{stringliteral}{"Wrong Exception caught"} << std::endl;
+  std::cout << e.what() << std::endl;
+\} \textcolor{keywordflow}{catch} (nvrtcResultException<NVRTC\_ERROR\_COMPILATION> &e) \{
+  std::cout << \textcolor{stringliteral}{"Correct Exception caught"} << std::endl;
+  std::cout << e.what() << std::endl;
+\} \textcolor{keywordflow}{catch} (std::exception &e) \{
+  \textcolor{comment}{// Other errors}
+  std::cout << \textcolor{stringliteral}{"other Error\(\backslash\)n"};
+  std::cout << e.what() << std::endl;
+\}
+\end{DoxyCodeInclude}
+ 

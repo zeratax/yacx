@@ -1,0 +1,13 @@
+\hypertarget{docs_2options_construct_8cpp-example}{}\section{docs/options\+\_\+construct.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{preprocessor}{#include "yacx/Device.hpp"}
+\textcolor{preprocessor}{#include "yacx/Options.hpp"}
+
+Device device;
+Options options\{\hyperlink{classyacx_1_1options_1_1_gpu_architecture}{yacx::options::GpuArchitecture}(device),
+                \hyperlink{classyacx_1_1options_1_1_f_m_a_d}{yacx::options::FMAD}(\textcolor{keyword}{false})\};
+options.insertOption(\hyperlink{classyacx_1_1options_1_1_fast___math}{yacx::options::Fast\_Math}\{\textcolor{keyword}{true}\});
+options.insert(\textcolor{stringliteral}{"--std"}, \textcolor{stringliteral}{"c++14"});
+\end{DoxyCodeInclude}
+ 

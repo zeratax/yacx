@@ -1,0 +1,122 @@
+\hypertarget{_2home_2runner_2work_2yacx_2yacx_2include_2yacx_2_exception_8hpp-example}{}\section{/home/runner/work/yacx/yacx/include/yacx/\+Exception.\+hpp}
+docs/cudaexeption.\+cpp
+
+
+\begin{DoxyCodeInclude}
+\textcolor{preprocessor}{#pragma once}
+
+\textcolor{preprocessor}{#include <cstdio>}
+\textcolor{preprocessor}{#include <exception>}
+\textcolor{preprocessor}{#include <memory>}
+\textcolor{preprocessor}{#include <string>}
+\textcolor{preprocessor}{#include <vector>}
+
+\textcolor{preprocessor}{#include <cuda.h>}
+\textcolor{preprocessor}{#include <nvrtc.h>}
+\textcolor{preprocessor}{#include <vector\_types.h>} \textcolor{comment}{// z.B. für dim3}
+
+\textcolor{preprocessor}{#include "yacx/Logger.hpp"} \textcolor{comment}{//um den logger benutzen zu können}
+
+\textcolor{keyword}{namespace }\hyperlink{namespaceyacx}{yacx} \{
+
+\textcolor{keyword}{namespace }detail \{
+
+\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} askTerminalSize();
+
+\textcolor{keyword}{template} <\textcolor{keyword}{class} Container>
+\textcolor{keywordtype}{void} split(\textcolor{keyword}{const} std::string &str, Container &cont, \textcolor{keywordtype}{char} delim = \textcolor{charliteral}{' '});
+
+std::string descriptionFkt(\textcolor{keyword}{const} std::string &desc);
+
+std::string whichError(\textcolor{keyword}{const} CUresult &error);
+
+std::string whichError(\textcolor{keyword}{const} nvrtcResult &error);
+
+\} \textcolor{comment}{// namespace detail}
+
+\textcolor{keyword}{class }nvidiaException : \textcolor{keyword}{public} std::exception \{
+ \textcolor{keyword}{protected}:
+  std::string error;
+
+ \textcolor{keyword}{public}:
+  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *what() \textcolor{keyword}{const} \textcolor{keywordflow}{throw}() \{ \textcolor{keywordflow}{return} error.c\_str(); \}
+\};
+
+\textcolor{keyword}{class }nvrtcResultException : \textcolor{keyword}{public} nvidiaException \{
+ \textcolor{keyword}{public}:
+  nvrtcResult type;
+  nvrtcResultException(nvrtcResult type, std::string error) \{
+    this->type = type;
+    this->error = error;
+    Logger(loglevel::WARNING)
+        << \textcolor{stringliteral}{"nvrtcResultException "} << (int)type
+        << \textcolor{stringliteral}{" with description: "} << this->error.c\_str() << \textcolor{stringliteral}{" created."};
+  \}
+\};
+
+\textcolor{keyword}{class }CUresultException : \textcolor{keyword}{public} nvidiaException \{
+ \textcolor{keyword}{public}:
+  CUresult type;
+  CUresultException(CUresult type, std::string error) \{
+    this->type = type;
+    this->error = error;
+    Logger(loglevel::WARNING)
+        << \textcolor{stringliteral}{"CUresultException "} << (int)type
+        << \textcolor{stringliteral}{" with description: "} << this->error.c\_str() << \textcolor{stringliteral}{" created."};
+  \}
+\};
+
+\textcolor{preprocessor}{#define NVRTC\_SAFE\_CALL(error)                                                 \(\backslash\)}
+\textcolor{preprocessor}{  \_\_checkNvrtcResultError(error, \_\_FILE\_\_, \_\_LINE\_\_);}
+\textcolor{keyword}{inline} \textcolor{keywordtype}{void} \_\_checkNvrtcResultError(\textcolor{keyword}{const} nvrtcResult error, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *file,
+                                    \textcolor{keyword}{const} \textcolor{keywordtype}{int} line) \{
+  \textcolor{keywordflow}{if} (NVRTC\_SUCCESS != error) \{
+    \textcolor{comment}{// create string for exception}
+    std::string exception =
+        nvrtcGetErrorString(error); \textcolor{comment}{// method to get the error name from NVIDIA}
+    exception = exception + \textcolor{stringliteral}{"\(\backslash\)n->occoured in file <"} + file + \textcolor{stringliteral}{" in line "} +
+                std::to\_string(line) + \textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)n"};
+    \textcolor{keywordflow}{throw} nvrtcResultException(error, exception);
+  \}
+\}
+
+\textcolor{preprocessor}{#define NVRTC\_SAFE\_CALL\_LOG(error, m\_log)                                      \(\backslash\)}
+\textcolor{preprocessor}{  \_\_checkNvrtcResultError\_LOG(error, m\_log, \_\_FILE\_\_, \_\_LINE\_\_);}
+\textcolor{keyword}{inline} \textcolor{keywordtype}{void} \_\_checkNvrtcResultError\_LOG(\textcolor{keyword}{const} nvrtcResult error,
+                                        std::\_\_cxx11::basic\_string<char> m\_log,
+                                        \textcolor{keyword}{const} \textcolor{keywordtype}{char} *file, \textcolor{keyword}{const} \textcolor{keywordtype}{int} line) \{
+  \textcolor{keywordflow}{if} (NVRTC\_SUCCESS != error) \{
+    \textcolor{comment}{// create string for exception}
+    std::string exception =
+        nvrtcGetErrorString(error); \textcolor{comment}{// method to get the error name from NVIDIA}
+    exception = exception + \textcolor{stringliteral}{"\(\backslash\)n->occoured in file <"} + file + \textcolor{stringliteral}{" in line "} +
+                std::to\_string(line) + \textcolor{stringliteral}{"\(\backslash\)n m\_log: "} + m\_log + \textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)n"};
+    \textcolor{keywordflow}{throw} nvrtcResultException(error, exception);
+  \}
+\}
+
+\textcolor{preprocessor}{#define CUDA\_SAFE\_CALL(error)                                                  \(\backslash\)}
+\textcolor{preprocessor}{  yacx::\_\_checkCUresultError(error, \_\_FILE\_\_, \_\_LINE\_\_);}
+\textcolor{keyword}{inline} \textcolor{keywordtype}{void} \_\_checkCUresultError(\textcolor{keyword}{const} CUresult error, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *file,
+                                 \textcolor{keyword}{const} \textcolor{keywordtype}{int} line) \{
+  \textcolor{keywordflow}{if} (CUDA\_SUCCESS != error) \{
+    \textcolor{comment}{// create string for exception}
+    \textcolor{keyword}{const} \textcolor{keywordtype}{char} *name;
+    cuGetErrorName(error, &name); \textcolor{comment}{// method to get the error name from NVIDIA}
+    \textcolor{keyword}{const} \textcolor{keywordtype}{char} *description;
+    cuGetErrorString(
+        error, &description); \textcolor{comment}{// method to get the error description from NVIDIA}
+    std::string exception = name;
+    exception = exception + \textcolor{stringliteral}{"\(\backslash\)n->occoured in file <"} + file + \textcolor{stringliteral}{" in line "} +
+                std::to\_string(line) + \textcolor{stringliteral}{"\(\backslash\)n"} + \textcolor{stringliteral}{"  ->"} + description +
+                \textcolor{stringliteral}{"\(\backslash\)n"}
+                \textcolor{stringliteral}{"  ->"} +
+                detail::whichError(error).c\_str() + \textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)n"};
+    \textcolor{comment}{// choose which error to throw}
+    \textcolor{keywordflow}{throw} CUresultException(error, exception);
+  \}
+\}
+
+\} \textcolor{comment}{// namespace yacx}
+\end{DoxyCodeInclude}
+ 

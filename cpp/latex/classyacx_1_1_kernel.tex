@@ -1,0 +1,111 @@
+\hypertarget{classyacx_1_1_kernel}{}\section{yacx\+:\+:Kernel Class Reference}
+\label{classyacx_1_1_kernel}\index{yacx\+::\+Kernel@{yacx\+::\+Kernel}}
+
+
+Class to help launch and configure a C\+U\+DA kernel.  
+
+
+
+
+{\ttfamily \#include $<$Kernel.\+hpp$>$}
+
+Inheritance diagram for yacx\+:\+:Kernel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_kernel}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1_kernel_af0bb713a4f07eb8304525731d0d1a9f9}{Kernel} (std\+::shared\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}$>$ ptx, std\+::string demangled\+\_\+name)
+\item 
+\hyperlink{classyacx_1_1_kernel}{Kernel} \& \hyperlink{classyacx_1_1_kernel_abebec8a3f9a5dd82fc5df38304806c9d}{configure} (dim3 grid, dim3 block, unsigned int shared=0)
+\item 
+\hyperlink{structyacx_1_1_kernel_time_struct}{Kernel\+Time} \hyperlink{classyacx_1_1_kernel_a6daf13c0526e7746e0419697e7f861d7}{launch} (\hyperlink{classyacx_1_1_kernel_args}{Kernel\+Args} args, \hyperlink{classyacx_1_1_device}{Device} \&device=\hyperlink{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}{Devices\+::find\+Device}())
+\item 
+std\+::vector$<$ \hyperlink{structyacx_1_1_kernel_time_struct}{Kernel\+Time} $>$ \hyperlink{classyacx_1_1_kernel_a9fcd39747a74696078246d405e3a671f}{benchmark} (\hyperlink{classyacx_1_1_kernel_args}{Kernel\+Args} args, unsigned int executions, \hyperlink{classyacx_1_1_device}{Device} \&device=\hyperlink{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}{Devices\+::find\+Device}())
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to help launch and configure a C\+U\+DA kernel. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{docs_2kernel_launch_8cpp-example}{docs/kernel\+\_\+launch.\+cpp}, \hyperlink{example_gauss_8cpp-example}{example\+\_\+gauss.\+cpp}, \hyperlink{example_matrix_multiply_8cpp-example}{example\+\_\+matrix\+\_\+multiply.\+cpp}, \hyperlink{example_saxpy_8cpp-example}{example\+\_\+saxpy.\+cpp}, and \hyperlink{example_template_8cpp-example}{example\+\_\+template.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_kernel_af0bb713a4f07eb8304525731d0d1a9f9}\label{classyacx_1_1_kernel_af0bb713a4f07eb8304525731d0d1a9f9}} 
+\index{yacx\+::\+Kernel@{yacx\+::\+Kernel}!Kernel@{Kernel}}
+\index{Kernel@{Kernel}!yacx\+::\+Kernel@{yacx\+::\+Kernel}}
+\subsubsection{\texorpdfstring{Kernel()}{Kernel()}}
+{\footnotesize\ttfamily Kernel\+::\+Kernel (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ char\mbox{[}$\,$\mbox{]}$>$}]{ptx,  }\item[{std\+::string}]{demangled\+\_\+name }\end{DoxyParamCaption})}
+
+create a \hyperlink{classyacx_1_1_kernel}{Kernel} based on a templated kernel string 
+\begin{DoxyParams}{Parameters}
+{\em ptx} & \\
+\hline
+{\em kernel\+\_\+name} & \\
+\hline
+{\em demangled\+\_\+name} & \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_kernel_a9fcd39747a74696078246d405e3a671f}\label{classyacx_1_1_kernel_a9fcd39747a74696078246d405e3a671f}} 
+\index{yacx\+::\+Kernel@{yacx\+::\+Kernel}!benchmark@{benchmark}}
+\index{benchmark@{benchmark}!yacx\+::\+Kernel@{yacx\+::\+Kernel}}
+\subsubsection{\texorpdfstring{benchmark()}{benchmark()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{structyacx_1_1_kernel_time_struct}{Kernel\+Time} $>$ Kernel\+::benchmark (\begin{DoxyParamCaption}\item[{\hyperlink{classyacx_1_1_kernel_args}{Kernel\+Args}}]{args,  }\item[{unsigned int}]{executions,  }\item[{\hyperlink{classyacx_1_1_device}{Device} \&}]{device = {\ttfamily \hyperlink{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}{Devices\+::find\+Device}()} }\end{DoxyParamCaption})}
+
+benchmark a \hyperlink{classyacx_1_1_kernel}{Kernel} 
+\begin{DoxyParams}{Parameters}
+{\em kernel\+\_\+args} & \\
+\hline
+{\em number} & of executions \\
+\hline
+{\em device} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vector of Kernel\+Times for every execution 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_kernel_abebec8a3f9a5dd82fc5df38304806c9d}\label{classyacx_1_1_kernel_abebec8a3f9a5dd82fc5df38304806c9d}} 
+\index{yacx\+::\+Kernel@{yacx\+::\+Kernel}!configure@{configure}}
+\index{configure@{configure}!yacx\+::\+Kernel@{yacx\+::\+Kernel}}
+\subsubsection{\texorpdfstring{configure()}{configure()}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_kernel}{Kernel} \& Kernel\+::configure (\begin{DoxyParamCaption}\item[{dim3}]{grid,  }\item[{dim3}]{block,  }\item[{unsigned int}]{shared = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & vector of grid dimensions \\
+\hline
+{\em block} & vector of block dimensions \\
+\hline
+{\em shared} & amount of dynamic shared memory to allocate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this (for method chaining) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_kernel_a6daf13c0526e7746e0419697e7f861d7}\label{classyacx_1_1_kernel_a6daf13c0526e7746e0419697e7f861d7}} 
+\index{yacx\+::\+Kernel@{yacx\+::\+Kernel}!launch@{launch}}
+\index{launch@{launch}!yacx\+::\+Kernel@{yacx\+::\+Kernel}}
+\subsubsection{\texorpdfstring{launch()}{launch()}}
+{\footnotesize\ttfamily \hyperlink{structyacx_1_1_kernel_time_struct}{Kernel\+Time} Kernel\+::launch (\begin{DoxyParamCaption}\item[{\hyperlink{classyacx_1_1_kernel_args}{Kernel\+Args}}]{args,  }\item[{\hyperlink{classyacx_1_1_device}{Device} \&}]{device = {\ttfamily \hyperlink{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}{Devices\+::find\+Device}()} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em kernel\+\_\+args} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Kernel\+Time 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Kernel.\+hpp\item 
+src/Kernel.\+cpp\end{DoxyCompactItemize}

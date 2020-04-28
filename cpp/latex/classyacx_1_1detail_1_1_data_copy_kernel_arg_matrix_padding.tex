@@ -1,0 +1,92 @@
+\hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding}{}\section{yacx\+:\+:detail\+:\+:Data\+Copy\+Kernel\+Arg\+Matrix\+Padding Class Reference}
+\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding}\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}}
+Inheritance diagram for yacx\+:\+:detail\+:\+:Data\+Copy\+Kernel\+Arg\+Matrix\+Padding\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a77b442a566bffe4b5ceac055de047241}{Data\+Copy\+Kernel\+Arg\+Matrix\+Padding} (int element\+Size, unsigned int padding\+Value, int src\+\_\+rows, int src\+\_\+columns, int dst\+\_\+rows, int dst\+\_\+columns)
+\begin{DoxyCompactList}\small\item\em A constructor. \end{DoxyCompactList}\item 
+void \hyperlink{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a61ebfbf622e637145db249302c230873}{copy\+Data\+HtoD} (void $\ast$hdata, C\+Udeviceptr ddata, size\+\_\+t size, C\+Ustream stream) override
+\item 
+void \hyperlink{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_ac76365a728b5cd0f7e2bd65051b4912e}{copy\+Data\+DtoH} (C\+Udeviceptr ddata, void $\ast$hdata, size\+\_\+t size, C\+Ustream stream) override
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a77b442a566bffe4b5ceac055de047241}\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a77b442a566bffe4b5ceac055de047241}} 
+\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}!Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}}
+\index{Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}!yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}}
+\subsubsection{\texorpdfstring{Data\+Copy\+Kernel\+Arg\+Matrix\+Padding()}{DataCopyKernelArgMatrixPadding()}}
+{\footnotesize\ttfamily yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding (\begin{DoxyParamCaption}\item[{int}]{element\+Size,  }\item[{unsigned int}]{padding\+Value,  }\item[{int}]{src\+\_\+rows,  }\item[{int}]{src\+\_\+columns,  }\item[{int}]{dst\+\_\+rows,  }\item[{int}]{dst\+\_\+columns }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+A constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em element\+Size} & size of each element of the matrix in bytes \\
+\hline
+{\em padding\+Value} & value to fill up additional rows and columns \\
+\hline
+{\em src\+\_\+rows} & number of rows of current matrix without padding \\
+\hline
+{\em src\+\_\+columns} & number of columns of currentmatrix without padding \\
+\hline
+{\em dst\+\_\+rows} & number of rows for new matrix with padding \\
+\hline
+{\em dst\+\_\+columns} & number of columns for new matrix with padding \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_ac76365a728b5cd0f7e2bd65051b4912e}\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_ac76365a728b5cd0f7e2bd65051b4912e}} 
+\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}!copy\+Data\+DtoH@{copy\+Data\+DtoH}}
+\index{copy\+Data\+DtoH@{copy\+Data\+DtoH}!yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}}
+\subsubsection{\texorpdfstring{copy\+Data\+Dto\+H()}{copyDataDtoH()}}
+{\footnotesize\ttfamily void Data\+Copy\+Kernel\+Arg\+Matrix\+Padding\+::copy\+Data\+DtoH (\begin{DoxyParamCaption}\item[{C\+Udeviceptr}]{ddata,  }\item[{void $\ast$}]{hdata,  }\item[{size\+\_\+t}]{size,  }\item[{C\+Ustream}]{stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+copy data from device to host 
+\begin{DoxyParams}{Parameters}
+{\em ddata} & pointer to device data \\
+\hline
+{\em hdata} & pointer to host data \\
+\hline
+{\em size} & size of the data \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classyacx_1_1detail_1_1_data_copy_ab97df2d6bec15f8247a5da0ff8bd05ff}{yacx\+::detail\+::\+Data\+Copy}.
+
+\mbox{\Hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a61ebfbf622e637145db249302c230873}\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_matrix_padding_a61ebfbf622e637145db249302c230873}} 
+\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}!copy\+Data\+HtoD@{copy\+Data\+HtoD}}
+\index{copy\+Data\+HtoD@{copy\+Data\+HtoD}!yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg\+Matrix\+Padding}}
+\subsubsection{\texorpdfstring{copy\+Data\+Hto\+D()}{copyDataHtoD()}}
+{\footnotesize\ttfamily void Data\+Copy\+Kernel\+Arg\+Matrix\+Padding\+::copy\+Data\+HtoD (\begin{DoxyParamCaption}\item[{void $\ast$}]{hdata,  }\item[{C\+Udeviceptr}]{ddata,  }\item[{size\+\_\+t}]{size,  }\item[{C\+Ustream}]{stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+copy data from host to device 
+\begin{DoxyParams}{Parameters}
+{\em hdata} & pointer to host data \\
+\hline
+{\em ddata} & pointer to device data \\
+\hline
+{\em size} & size of the data \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classyacx_1_1detail_1_1_data_copy_ad528786c51783257b292a06a6dde1c4e}{yacx\+::detail\+::\+Data\+Copy}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Kernel\+Args.\+hpp\item 
+src/Kernel\+Arg.\+cpp\end{DoxyCompactItemize}

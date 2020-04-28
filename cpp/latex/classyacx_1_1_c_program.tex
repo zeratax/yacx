@@ -1,0 +1,60 @@
+\hypertarget{classyacx_1_1_c_program}{}\section{yacx\+:\+:C\+Program Class Reference}
+\label{classyacx_1_1_c_program}\index{yacx\+::\+C\+Program@{yacx\+::\+C\+Program}}
+Inheritance diagram for yacx\+:\+:C\+Program\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_c_program}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1_c_program_aa5c8ed40dc90db7652fd0b0924297a45}{C\+Program} (const char $\ast$c\+Program, const char $\ast$function\+Name, std\+::vector$<$ std\+::string $>$ \&parameter\+Types, const char $\ast$compiler=\char`\"{}gcc\char`\"{}, Options \&options=D\+E\+F\+A\+U\+L\+T\+\_\+\+O\+P\+T\+I\+O\+NS)
+\item 
+void \hyperlink{classyacx_1_1_c_program_a353a1d5aa467ef283a4b5b35ac8d634e}{execute} (std\+::vector$<$ void $\ast$$>$ arguments)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_c_program_aa5c8ed40dc90db7652fd0b0924297a45}\label{classyacx_1_1_c_program_aa5c8ed40dc90db7652fd0b0924297a45}} 
+\index{yacx\+::\+C\+Program@{yacx\+::\+C\+Program}!C\+Program@{C\+Program}}
+\index{C\+Program@{C\+Program}!yacx\+::\+C\+Program@{yacx\+::\+C\+Program}}
+\subsubsection{\texorpdfstring{C\+Program()}{CProgram()}}
+{\footnotesize\ttfamily C\+Program\+::\+C\+Program (\begin{DoxyParamCaption}\item[{const char $\ast$}]{c\+Program,  }\item[{const char $\ast$}]{function\+Name,  }\item[{std\+::vector$<$ std\+::string $>$ \&}]{parameter\+Types,  }\item[{const char $\ast$}]{compiler = {\ttfamily \char`\"{}gcc\char`\"{}},  }\item[{\hyperlink{classyacx_1_1_options}{Options} \&}]{options = {\ttfamily DEFAULT\+\_\+OPTIONS} }\end{DoxyParamCaption})}
+
+Constructs new compiled \hyperlink{classyacx_1_1_c_program}{C\+Program}. ~\newline
+ The decleration of structs, functions or variables with one of the following name within passed C-\/\+Code is permitted\+: ~\newline
+ op$<$function\+Name$>$, opfn$<$function\+Name$>$, execute$<$function\+Name$>$ 
+\begin{DoxyParams}{Parameters}
+{\em c\+Program} & C-\/\+Code for program \\
+\hline
+{\em function\+Name} & name of c-\/function, which should be executed \\
+\hline
+{\em parameter\+Types} & type of the parameters e.\+g {\ttfamily int} or {\ttfamily float$\ast$} ~\newline
+ pointer types can be abbreviated by $\ast$ \\
+\hline
+{\em compiler} & name of the compiler, which should be used to compile this c\+Program \\
+\hline
+{\em options} & options for the compiler \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_c_program_a353a1d5aa467ef283a4b5b35ac8d634e}\label{classyacx_1_1_c_program_a353a1d5aa467ef283a4b5b35ac8d634e}} 
+\index{yacx\+::\+C\+Program@{yacx\+::\+C\+Program}!execute@{execute}}
+\index{execute@{execute}!yacx\+::\+C\+Program@{yacx\+::\+C\+Program}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily void C\+Program\+::execute (\begin{DoxyParamCaption}\item[{std\+::vector$<$ void $\ast$$>$}]{arguments }\end{DoxyParamCaption})}
+
+Executes a the c\+Function 
+\begin{DoxyParams}{Parameters}
+{\em arguments} & arguments for the c\+Function \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/cexecutor/C\+Program.\+hpp\item 
+src/cexecutor/C\+Program.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,125 @@
+\hypertarget{classyacx_1_1_program}{}\section{yacx\+:\+:Program Class Reference}
+\label{classyacx_1_1_program}\index{yacx\+::\+Program@{yacx\+::\+Program}}
+
+
+Class to instantiate and compile \hyperlink{classyacx_1_1_source}{Source} (kernel strings)  
+
+
+
+
+{\ttfamily \#include $<$Program.\+hpp$>$}
+
+Inheritance diagram for yacx\+:\+:Program\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_program}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyacx_1_1_program_a70cf98f664408ede2787e4505365a82a}{Program} (std\+::string kernel\+\_\+name, std\+::shared\+\_\+ptr$<$ nvrtc\+Program $>$ prog)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\hyperlink{classyacx_1_1_program}{Program} \& \hyperlink{classyacx_1_1_program_a220a1c9deb8d04152e3118530dd79d1f}{instantiate} (T type)
+\item 
+{\footnotesize template$<$typename T , typename... TS$>$ }\\\hyperlink{classyacx_1_1_program}{Program} \& \hyperlink{classyacx_1_1_program_ad1800bf0daf8b64c357606a26b6e254d}{instantiate} (T type, T\+S... types)
+\item 
+\hyperlink{classyacx_1_1_kernel}{Kernel} \hyperlink{classyacx_1_1_program_a2834c7f32be3bba037352a5a5e5114d3}{compile} (const \hyperlink{classyacx_1_1_options}{Options} \&options=\hyperlink{classyacx_1_1_options}{Options}())
+\item 
+std\+::string \hyperlink{classyacx_1_1_program_a0d9e7de768dcbfb251b83737bcaec772}{log} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to instantiate and compile \hyperlink{classyacx_1_1_source}{Source} (kernel strings) 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_program_a70cf98f664408ede2787e4505365a82a}\label{classyacx_1_1_program_a70cf98f664408ede2787e4505365a82a}} 
+\index{yacx\+::\+Program@{yacx\+::\+Program}!Program@{Program}}
+\index{Program@{Program}!yacx\+::\+Program@{yacx\+::\+Program}}
+\subsubsection{\texorpdfstring{Program()}{Program()}}
+{\footnotesize\ttfamily Program\+::\+Program (\begin{DoxyParamCaption}\item[{std\+::string}]{kernel\+\_\+name,  }\item[{std\+::shared\+\_\+ptr$<$ nvrtc\+Program $>$}]{prog }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em function\+\_\+name} & function name in kernel string \\
+\hline
+{\em prog} & \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_program_a2834c7f32be3bba037352a5a5e5114d3}\label{classyacx_1_1_program_a2834c7f32be3bba037352a5a5e5114d3}} 
+\index{yacx\+::\+Program@{yacx\+::\+Program}!compile@{compile}}
+\index{compile@{compile}!yacx\+::\+Program@{yacx\+::\+Program}}
+\subsubsection{\texorpdfstring{compile()}{compile()}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_kernel}{Kernel} Program\+::compile (\begin{DoxyParamCaption}\item[{const \hyperlink{classyacx_1_1_options}{Options} \&}]{options = {\ttfamily \hyperlink{classyacx_1_1_options}{Options}()} }\end{DoxyParamCaption})}
+
+compile \hyperlink{classyacx_1_1_program}{Program} to \hyperlink{classyacx_1_1_kernel}{Kernel} 
+\begin{DoxyParams}{Parameters}
+{\em options} & see \href{https://docs.nvidia.com/cuda/nvrtc/index.html#group__options}{\tt N\+V\+R\+TC documentation} for supported \hyperlink{classyacx_1_1_options}{Options} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a compiled \hyperlink{classyacx_1_1_kernel}{Kernel} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_program_a220a1c9deb8d04152e3118530dd79d1f}\label{classyacx_1_1_program_a220a1c9deb8d04152e3118530dd79d1f}} 
+\index{yacx\+::\+Program@{yacx\+::\+Program}!instantiate@{instantiate}}
+\index{instantiate@{instantiate}!yacx\+::\+Program@{yacx\+::\+Program}}
+\subsubsection{\texorpdfstring{instantiate()}{instantiate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{classyacx_1_1_program}{Program} \& yacx\+::\+Program\+::instantiate (\begin{DoxyParamCaption}\item[{T}]{type }\end{DoxyParamCaption})}
+
+instantiate template parameter 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em type} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_program_ad1800bf0daf8b64c357606a26b6e254d}\label{classyacx_1_1_program_ad1800bf0daf8b64c357606a26b6e254d}} 
+\index{yacx\+::\+Program@{yacx\+::\+Program}!instantiate@{instantiate}}
+\index{instantiate@{instantiate}!yacx\+::\+Program@{yacx\+::\+Program}}
+\subsubsection{\texorpdfstring{instantiate()}{instantiate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename... TS$>$ \\
+\hyperlink{classyacx_1_1_program}{Program} \& yacx\+::\+Program\+::instantiate (\begin{DoxyParamCaption}\item[{T}]{type,  }\item[{T\+S...}]{types }\end{DoxyParamCaption})}
+
+instantiate template parameters 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em TS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em type} & \\
+\hline
+{\em types} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_program_a0d9e7de768dcbfb251b83737bcaec772}\label{classyacx_1_1_program_a0d9e7de768dcbfb251b83737bcaec772}} 
+\index{yacx\+::\+Program@{yacx\+::\+Program}!log@{log}}
+\index{log@{log}!yacx\+::\+Program@{yacx\+::\+Program}}
+\subsubsection{\texorpdfstring{log()}{log()}}
+{\footnotesize\ttfamily std\+::string yacx\+::\+Program\+::log (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+log of compilation 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Program.\+hpp\item 
+src/Program.\+cpp\end{DoxyCompactItemize}

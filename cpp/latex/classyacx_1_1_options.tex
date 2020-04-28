@@ -1,0 +1,175 @@
+\hypertarget{classyacx_1_1_options}{}\section{yacx\+:\+:Options Class Reference}
+\label{classyacx_1_1_options}\index{yacx\+::\+Options@{yacx\+::\+Options}}
+
+
+\hyperlink{classyacx_1_1_options}{Options} for compiling a \hyperlink{classyacx_1_1_program}{Program}.  
+
+
+
+
+{\ttfamily \#include $<$Options.\+hpp$>$}
+
+Inheritance diagram for yacx\+:\+:Options\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_options}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classyacx_1_1_options_aa5138fe978ac803061ced24c9c8134ee}\label{classyacx_1_1_options_aa5138fe978ac803061ced24c9c8134ee}} 
+\hyperlink{classyacx_1_1_options_aa5138fe978ac803061ced24c9c8134ee}{Options} ()
+\begin{DoxyCompactList}\small\item\em empty \hyperlink{classyacx_1_1_options}{Options} constructor \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\\hyperlink{classyacx_1_1_options_a73264e0171ac65cdbfb490cdf2b31b58}{Options} (const T \&t)
+\item 
+{\footnotesize template$<$typename T , typename... TS$>$ }\\\hyperlink{classyacx_1_1_options_a50cf08d2d6c3923123c493df1f0946a7}{Options} (const T \&t, const TS \&... ts)
+\item 
+void \hyperlink{classyacx_1_1_options_a717bfff574dc2134fae4a0b3ffc9d656}{insert} (const std\+::string \&op)
+\item 
+void \hyperlink{classyacx_1_1_options_acd9d1aeff97ef155aee30fd3803b0a2a}{insert} (const std\+::string \&name, const std\+::string \&value)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{classyacx_1_1_options_a9a8dba0730ac3c5b3bf48bf0889429de}{insert\+Options} (const T \&t)
+\item 
+{\footnotesize template$<$typename T , typename... TS$>$ }\\void \hyperlink{classyacx_1_1_options_ae24ed09191356cae7c23d55df7f73897}{insert\+Options} (const T \&t, const TS \&... ts)
+\item 
+const char $\ast$$\ast$ \hyperlink{classyacx_1_1_options_addb823fd1b5f5af2b7c4073bac8ec70b}{content} () const
+\item 
+auto \hyperlink{classyacx_1_1_options_af68aa0dd2e790d60e75822d8fb7aa4ee}{num\+Options} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classyacx_1_1_options}{Options} for compiling a \hyperlink{classyacx_1_1_program}{Program}. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{example_gauss_8cpp-example}{example\+\_\+gauss.\+cpp}, \hyperlink{example_matrix_multiply_8cpp-example}{example\+\_\+matrix\+\_\+multiply.\+cpp}, \hyperlink{example_program_8cpp-example}{example\+\_\+program.\+cpp}, and \hyperlink{example_template_8cpp-example}{example\+\_\+template.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyacx_1_1_options_a73264e0171ac65cdbfb490cdf2b31b58}\label{classyacx_1_1_options_a73264e0171ac65cdbfb490cdf2b31b58}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!Options@{Options}}
+\index{Options@{Options}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{Options()}{Options()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+yacx\+::\+Options\+::\+Options (\begin{DoxyParamCaption}\item[{const T \&}]{t }\end{DoxyParamCaption})}
+
+construct \hyperlink{classyacx_1_1_options}{Options} with one Option 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & option \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_options_a50cf08d2d6c3923123c493df1f0946a7}\label{classyacx_1_1_options_a50cf08d2d6c3923123c493df1f0946a7}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!Options@{Options}}
+\index{Options@{Options}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{Options()}{Options()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename... TS$>$ \\
+yacx\+::\+Options\+::\+Options (\begin{DoxyParamCaption}\item[{const T \&}]{t,  }\item[{const TS \&...}]{ts }\end{DoxyParamCaption})}
+
+construct \hyperlink{classyacx_1_1_options}{Options} with multiple Option 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+{\em TS} & Option \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+{\em ts} & Option \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_options_addb823fd1b5f5af2b7c4073bac8ec70b}\label{classyacx_1_1_options_addb823fd1b5f5af2b7c4073bac8ec70b}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!content@{content}}
+\index{content@{content}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{content()}{content()}}
+{\footnotesize\ttfamily const char $\ast$$\ast$ Options\+::content (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+c-\/style string array with all options 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_options_a717bfff574dc2134fae4a0b3ffc9d656}\label{classyacx_1_1_options_a717bfff574dc2134fae4a0b3ffc9d656}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!insert@{insert}}
+\index{insert@{insert}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Options\+::insert (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op }\end{DoxyParamCaption})}
+
+insert Option 
+\begin{DoxyParams}{Parameters}
+{\em op} & e.\+g. \char`\"{}-\/-\/device-\/debug\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_options_acd9d1aeff97ef155aee30fd3803b0a2a}\label{classyacx_1_1_options_acd9d1aeff97ef155aee30fd3803b0a2a}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!insert@{insert}}
+\index{insert@{insert}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Options\+::insert (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+insert Option 
+\begin{DoxyParams}{Parameters}
+{\em name} & e.\+g. \char`\"{}-\/-\/fmad\char`\"{} \\
+\hline
+{\em value} & e.\+g. \char`\"{}false\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_options_a9a8dba0730ac3c5b3bf48bf0889429de}\label{classyacx_1_1_options_a9a8dba0730ac3c5b3bf48bf0889429de}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!insert\+Options@{insert\+Options}}
+\index{insert\+Options@{insert\+Options}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{insert\+Options()}{insertOptions()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void yacx\+::\+Options\+::insert\+Options (\begin{DoxyParamCaption}\item[{const T \&}]{t }\end{DoxyParamCaption})}
+
+insert Option 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & Option \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_options_ae24ed09191356cae7c23d55df7f73897}\label{classyacx_1_1_options_ae24ed09191356cae7c23d55df7f73897}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!insert\+Options@{insert\+Options}}
+\index{insert\+Options@{insert\+Options}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{insert\+Options()}{insertOptions()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename... TS$>$ \\
+void yacx\+::\+Options\+::insert\+Options (\begin{DoxyParamCaption}\item[{const T \&}]{t,  }\item[{const TS \&...}]{ts }\end{DoxyParamCaption})}
+
+insert multiple \hyperlink{classyacx_1_1_options}{Options} with multiple Option 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+{\em TS} & Option \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & optiontype, e.\+g. F\+M\+AD \\
+\hline
+{\em ts} & Option \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_options_af68aa0dd2e790d60e75822d8fb7aa4ee}\label{classyacx_1_1_options_af68aa0dd2e790d60e75822d8fb7aa4ee}} 
+\index{yacx\+::\+Options@{yacx\+::\+Options}!num\+Options@{num\+Options}}
+\index{num\+Options@{num\+Options}!yacx\+::\+Options@{yacx\+::\+Options}}
+\subsubsection{\texorpdfstring{num\+Options()}{numOptions()}}
+{\footnotesize\ttfamily auto yacx\+::\+Options\+::num\+Options (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+number of \hyperlink{classyacx_1_1_options}{Options} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Options.\+hpp\item 
+src/Options.\+cpp\end{DoxyCompactItemize}

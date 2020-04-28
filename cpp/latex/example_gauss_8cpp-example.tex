@@ -1,0 +1,125 @@
+\hypertarget{example_gauss_8cpp-example}{}\section{example\+\_\+gauss.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{preprocessor}{#include "kernels/gauss.h"}
+\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
+
+\textcolor{preprocessor}{#include <cmath>}
+\textcolor{preprocessor}{#include <cstdio>}
+\textcolor{preprocessor}{#include <fstream>}
+\textcolor{preprocessor}{#include <iomanip>}
+\textcolor{preprocessor}{#include <iostream>}
+
+\textcolor{preprocessor}{#define NUM\_THREADS 16}
+\textcolor{preprocessor}{#define NUM\_BLOCKS 32}
+
+\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::load,
+    yacx::type\_of, yacx::Headers, yacx::Header;
+
+\textcolor{keywordtype}{void} writePPM(Pixel *pixels, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename, \textcolor{keywordtype}{int} width, \textcolor{keywordtype}{int} height) \{
+  std::ofstream outputFile(filename, std::ios::binary);
+
+  \textcolor{comment}{// write header:}
+  outputFile << \textcolor{stringliteral}{"P6\(\backslash\)n"} << width << \textcolor{stringliteral}{" "} << height << \textcolor{stringliteral}{"\(\backslash\)n255\(\backslash\)n"};
+
+  outputFile.write(reinterpret\_cast<const char *>(pixels),
+                   \textcolor{keyword}{sizeof}(Pixel) * width * height);
+\}
+
+\textcolor{comment}{// Pointer returned must be explicitly freed!}
+Pixel *readPPM(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename, \textcolor{keywordtype}{int} *width, \textcolor{keywordtype}{int} *height) \{
+  std::ifstream inputFile(filename, std::ios::binary);
+
+  \textcolor{comment}{// parse harder}
+  \textcolor{comment}{// first line: P6\(\backslash\)n}
+  inputFile.ignore(2, \textcolor{charliteral}{'\(\backslash\)n'}); \textcolor{comment}{// ignore P6}
+  \textcolor{comment}{// possible comments:}
+  \textcolor{keywordflow}{while} (inputFile.peek() == \textcolor{charliteral}{'#'}) \{
+    inputFile.ignore(1024, \textcolor{charliteral}{'\(\backslash\)n'});
+  \} \textcolor{comment}{// skip comment}
+  \textcolor{comment}{// next line: width\_height\(\backslash\)n}
+  inputFile >> (*width);
+  inputFile.ignore(1, \textcolor{charliteral}{' '}); \textcolor{comment}{// ignore space}
+  inputFile >> (*height);
+  inputFile.ignore(1, \textcolor{charliteral}{'\(\backslash\)n'}); \textcolor{comment}{// ignore newline}
+  \textcolor{comment}{// possible comments:}
+  \textcolor{keywordflow}{while} (inputFile.peek() == \textcolor{charliteral}{'#'}) \{
+    inputFile.ignore(1024, \textcolor{charliteral}{'\(\backslash\)n'});
+  \} \textcolor{comment}{// skip comment}
+  \textcolor{comment}{// last header line: 255\(\backslash\)n:}
+  inputFile.ignore(3, \textcolor{charliteral}{'\(\backslash\)n'}); \textcolor{comment}{// ignore 255 and newline}
+
+  Pixel *data = \textcolor{keyword}{new} Pixel[(*width) * (*height)];
+
+  inputFile.read(reinterpret\_cast<char *>(data),
+                 \textcolor{keyword}{sizeof}(Pixel) * (*width) * (*height));
+
+  \textcolor{keywordflow}{return} data;
+\}
+
+\textcolor{keywordtype}{void} calculateWeights(\textcolor{keywordtype}{float} weights[5][5]) \{
+  \textcolor{keywordtype}{float} sigma = 1.0;
+  \textcolor{keywordtype}{float} r, s = 2.0 * sigma * sigma;
+
+  \textcolor{comment}{// sum is for normalization}
+  \textcolor{keywordtype}{float} sum = 0.0;
+
+  \textcolor{comment}{// generate weights for 5x5 kernel}
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} x = -2; x <= 2; x++) \{
+    \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} y = -2; y <= 2; y++) \{
+      r = x * x + y * y;
+      weights[x + 2][y + 2] = exp(-(r / s)) / (M\_PI * s);
+      sum += weights[x + 2][y + 2];
+    \}
+  \}
+
+  \textcolor{comment}{// normalize the weights}
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 5; ++i) \{
+    \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < 5; ++j) \{
+      weights[i][j] /= sum;
+    \}
+  \}
+\}
+
+\textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv) \{
+  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *inFilename = (argc > 1) ? argv[1] : \textcolor{stringliteral}{"kernels/lena.ppm"};
+  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *outFilename = (argc > 2) ? argv[2] : \textcolor{stringliteral}{"kernels/output.ppm"};
+
+  \textcolor{keywordtype}{float} weights[5][5];
+  calculateWeights(weights);
+  \textcolor{keywordtype}{int} width;
+  \textcolor{keywordtype}{int} height;
+
+  Pixel *image = readPPM(inFilename, &width, &height);
+
+  \textcolor{keywordflow}{try} \{
+    Headers headers;
+    headers.insert(Header\{\textcolor{stringliteral}{"kernels/gauss.h"}\});
+    Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), headers\};
+
+    \textcolor{keywordtype}{size\_t} size\_pixel = height * width * \textcolor{keyword}{sizeof}(Pixel);
+    \textcolor{keywordtype}{size\_t} size\_weights = 5 * 5 * \textcolor{keyword}{sizeof}(float);
+
+    std::vector<KernelArg> args;
+    args.emplace\_back(KernelArg\{image, size\_pixel, \textcolor{keyword}{true}\});
+    args.emplace\_back(KernelArg\{weights, size\_weights\});
+    args.emplace\_back(KernelArg\{&width\});
+    args.emplace\_back(KernelArg\{&height\});
+
+    dim3 block;
+    dim3 grid(width, height);
+    source.program(\textcolor{stringliteral}{"gaussFilterKernel"})
+        .compile()
+        .configure(grid, block)
+        .launch(args);
+  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
+    std::cerr << \textcolor{stringliteral}{"Error:\(\backslash\)n"} << e.what() << std::endl;
+  \}
+
+  writePPM(image, outFilename, width, height);
+  free(image);
+
+  \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCodeInclude}
+ 

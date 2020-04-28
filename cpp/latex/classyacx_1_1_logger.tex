@@ -1,0 +1,129 @@
+\hypertarget{classyacx_1_1_logger}{}\section{yacx\+:\+:Logger Class Reference}
+\label{classyacx_1_1_logger}\index{yacx\+::\+Logger@{yacx\+::\+Logger}}
+
+
+Class to log events of varying severity.  
+
+
+
+
+{\ttfamily \#include $<$Logger.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classyacx_1_1_logger_a5f9e5ace3cf80d8b6f70589e1c6b2170}\label{classyacx_1_1_logger_a5f9e5ace3cf80d8b6f70589e1c6b2170}} 
+{\bfseries Logger} (\hyperlink{classyacx_1_1_logger}{Logger} const \&)=delete
+\item 
+\mbox{\Hypertarget{classyacx_1_1_logger_a69515e5c573ddeaa46a5eab4f15dc09c}\label{classyacx_1_1_logger_a69515e5c573ddeaa46a5eab4f15dc09c}} 
+\hyperlink{classyacx_1_1_logger}{Logger} \& {\bfseries operator=} (\hyperlink{classyacx_1_1_logger}{Logger} const \&)=delete
+\item 
+void \hyperlink{classyacx_1_1_logger_af33e8d52379eb2147a0b2ff51f7839c4}{set\+\_\+loglimit} (const loglevel limit)
+\item 
+void \hyperlink{classyacx_1_1_logger_a3da3e41f4cb2ddec4c63b8225548ac89}{set\+\_\+cout} (bool flag)
+\item 
+void \hyperlink{classyacx_1_1_logger_adafa134c34c18199c05e49d6ef5dd260}{set\+\_\+cerr} (bool flag)
+\item 
+void \hyperlink{classyacx_1_1_logger_a88b7b8dd9e533198ca879d3e7c0af5f0}{set\+\_\+logfile} (const std\+::string \&file)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{classyacx_1_1_logger_ae415e11962c5d6b3604a6aa4cf198dca}{print} (T const \&value)
+\item 
+\hyperlink{classyacx_1_1_logger}{Logger} \& \hyperlink{classyacx_1_1_logger_ac659e0b4e6d1777bc2538c03d17b5791}{prepare} (loglevel severity, std\+::string src\+\_\+file, int src\+\_\+line)
+\item 
+\mbox{\Hypertarget{classyacx_1_1_logger_afc231a3ebcb40673eac5b456464b562d}\label{classyacx_1_1_logger_afc231a3ebcb40673eac5b456464b562d}} 
+{\footnotesize template$<$typename T $>$ }\\\hyperlink{classyacx_1_1_logger}{Logger} \& {\bfseries operator$<$$<$} (T const \&value)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classyacx_1_1_logger_a021052d3d6ff65d9a20364e8bc174a0d}\label{classyacx_1_1_logger_a021052d3d6ff65d9a20364e8bc174a0d}} 
+static \hyperlink{classyacx_1_1_logger}{Logger} \& \hyperlink{classyacx_1_1_logger_a021052d3d6ff65d9a20364e8bc174a0d}{get\+Instance} ()
+\begin{DoxyCompactList}\small\item\em returns the logger instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classyacx_1_1_logger_a14442f8e8d10038337e0cbab670e751b}\label{classyacx_1_1_logger_a14442f8e8d10038337e0cbab670e751b}} 
+loglevel {\bfseries limit} = loglevel\+::\+W\+A\+R\+N\+I\+NG
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to log events of varying severity. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_logger_ac659e0b4e6d1777bc2538c03d17b5791}\label{classyacx_1_1_logger_ac659e0b4e6d1777bc2538c03d17b5791}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!prepare@{prepare}}
+\index{prepare@{prepare}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{prepare()}{prepare()}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_logger}{Logger}\& yacx\+::\+Logger\+::prepare (\begin{DoxyParamCaption}\item[{loglevel}]{severity,  }\item[{std\+::string}]{src\+\_\+file,  }\item[{int}]{src\+\_\+line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Prints a prefix to all appropriate logging outputs. Should not be discarded to prevent malformed logging output. 
+\begin{DoxyParams}{Parameters}
+{\em severity} & The severity of the current logging reason. \\
+\hline
+{\em src\+\_\+file} & The source file where the logging request was issued. \\
+\hline
+{\em src\+\_\+line} & The source line where the logging request was issued. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_logger_ae415e11962c5d6b3604a6aa4cf198dca}\label{classyacx_1_1_logger_ae415e11962c5d6b3604a6aa4cf198dca}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!print@{print}}
+\index{print@{print}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void yacx\+::\+Logger\+::print (\begin{DoxyParamCaption}\item[{T const \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Prints to all appropriate logging outputs. 
+\begin{DoxyParams}{Parameters}
+{\em value} & value to be printed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_logger_adafa134c34c18199c05e49d6ef5dd260}\label{classyacx_1_1_logger_adafa134c34c18199c05e49d6ef5dd260}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!set\+\_\+cerr@{set\+\_\+cerr}}
+\index{set\+\_\+cerr@{set\+\_\+cerr}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{set\+\_\+cerr()}{set\_cerr()}}
+{\footnotesize\ttfamily void yacx\+::\+Logger\+::set\+\_\+cerr (\begin{DoxyParamCaption}\item[{bool}]{flag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+set/unset cerr as a logging output. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & flag that determines if cerr has to be logged to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_logger_a3da3e41f4cb2ddec4c63b8225548ac89}\label{classyacx_1_1_logger_a3da3e41f4cb2ddec4c63b8225548ac89}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!set\+\_\+cout@{set\+\_\+cout}}
+\index{set\+\_\+cout@{set\+\_\+cout}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{set\+\_\+cout()}{set\_cout()}}
+{\footnotesize\ttfamily void yacx\+::\+Logger\+::set\+\_\+cout (\begin{DoxyParamCaption}\item[{bool}]{flag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+set/unset cout as a logging output. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & flag that determines if cout has to be logged to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_logger_a88b7b8dd9e533198ca879d3e7c0af5f0}\label{classyacx_1_1_logger_a88b7b8dd9e533198ca879d3e7c0af5f0}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!set\+\_\+logfile@{set\+\_\+logfile}}
+\index{set\+\_\+logfile@{set\+\_\+logfile}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{set\+\_\+logfile()}{set\_logfile()}}
+{\footnotesize\ttfamily void yacx\+::\+Logger\+::set\+\_\+logfile (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+sets a logfile. 
+\begin{DoxyParams}{Parameters}
+{\em file} & The filename of the new logfile. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_logger_af33e8d52379eb2147a0b2ff51f7839c4}\label{classyacx_1_1_logger_af33e8d52379eb2147a0b2ff51f7839c4}} 
+\index{yacx\+::\+Logger@{yacx\+::\+Logger}!set\+\_\+loglimit@{set\+\_\+loglimit}}
+\index{set\+\_\+loglimit@{set\+\_\+loglimit}!yacx\+::\+Logger@{yacx\+::\+Logger}}
+\subsubsection{\texorpdfstring{set\+\_\+loglimit()}{set\_loglimit()}}
+{\footnotesize\ttfamily void yacx\+::\+Logger\+::set\+\_\+loglimit (\begin{DoxyParamCaption}\item[{const loglevel}]{limit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+set the loglimit 
+\begin{DoxyParams}{Parameters}
+{\em limit} & new limit for logging. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Logger.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,62 @@
+\hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg}{}\section{yacx\+:\+:detail\+:\+:Data\+Copy\+Kernel\+Arg Class Reference}
+\label{classyacx_1_1detail_1_1_data_copy_kernel_arg}\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg}}
+Inheritance diagram for yacx\+:\+:detail\+:\+:Data\+Copy\+Kernel\+Arg\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1detail_1_1_data_copy_kernel_arg}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classyacx_1_1detail_1_1_data_copy_kernel_arg_a0cf2b2af95ca2c01b1a221a14a95e558}{copy\+Data\+HtoD} (void $\ast$hdata, C\+Udeviceptr ddata, size\+\_\+t size, C\+Ustream stream) override
+\item 
+void \hyperlink{classyacx_1_1detail_1_1_data_copy_kernel_arg_a1a6b70eea2dde6b360a1af77414dfa9f}{copy\+Data\+DtoH} (C\+Udeviceptr ddata, void $\ast$hdata, size\+\_\+t size, C\+Ustream stream) override
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_a1a6b70eea2dde6b360a1af77414dfa9f}\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_a1a6b70eea2dde6b360a1af77414dfa9f}} 
+\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg}!copy\+Data\+DtoH@{copy\+Data\+DtoH}}
+\index{copy\+Data\+DtoH@{copy\+Data\+DtoH}!yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg}}
+\subsubsection{\texorpdfstring{copy\+Data\+Dto\+H()}{copyDataDtoH()}}
+{\footnotesize\ttfamily void Data\+Copy\+Kernel\+Arg\+::copy\+Data\+DtoH (\begin{DoxyParamCaption}\item[{C\+Udeviceptr}]{ddata,  }\item[{void $\ast$}]{hdata,  }\item[{size\+\_\+t}]{size,  }\item[{C\+Ustream}]{stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+copy data from device to host 
+\begin{DoxyParams}{Parameters}
+{\em ddata} & pointer to device data \\
+\hline
+{\em hdata} & pointer to host data \\
+\hline
+{\em size} & size of the data \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classyacx_1_1detail_1_1_data_copy_ab97df2d6bec15f8247a5da0ff8bd05ff}{yacx\+::detail\+::\+Data\+Copy}.
+
+\mbox{\Hypertarget{classyacx_1_1detail_1_1_data_copy_kernel_arg_a0cf2b2af95ca2c01b1a221a14a95e558}\label{classyacx_1_1detail_1_1_data_copy_kernel_arg_a0cf2b2af95ca2c01b1a221a14a95e558}} 
+\index{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg}!copy\+Data\+HtoD@{copy\+Data\+HtoD}}
+\index{copy\+Data\+HtoD@{copy\+Data\+HtoD}!yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg@{yacx\+::detail\+::\+Data\+Copy\+Kernel\+Arg}}
+\subsubsection{\texorpdfstring{copy\+Data\+Hto\+D()}{copyDataHtoD()}}
+{\footnotesize\ttfamily void Data\+Copy\+Kernel\+Arg\+::copy\+Data\+HtoD (\begin{DoxyParamCaption}\item[{void $\ast$}]{hdata,  }\item[{C\+Udeviceptr}]{ddata,  }\item[{size\+\_\+t}]{size,  }\item[{C\+Ustream}]{stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+copy data from host to device 
+\begin{DoxyParams}{Parameters}
+{\em hdata} & pointer to host data \\
+\hline
+{\em ddata} & pointer to device data \\
+\hline
+{\em size} & size of the data \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classyacx_1_1detail_1_1_data_copy_ad528786c51783257b292a06a6dde1c4e}{yacx\+::detail\+::\+Data\+Copy}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Kernel\+Args.\+hpp\item 
+src/Kernel\+Arg.\+cpp\end{DoxyCompactItemize}

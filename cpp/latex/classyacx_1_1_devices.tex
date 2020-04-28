@@ -1,0 +1,96 @@
+\hypertarget{classyacx_1_1_devices}{}\section{yacx\+:\+:Devices Class Reference}
+\label{classyacx_1_1_devices}\index{yacx\+::\+Devices@{yacx\+::\+Devices}}
+Inheritance diagram for yacx\+:\+:Devices\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classyacx_1_1_devices}
+\end{center}
+\end{figure}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classyacx_1_1_device}{Device} \& \hyperlink{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}{find\+Device} ()
+\item 
+static \hyperlink{classyacx_1_1_device}{Device} \& \hyperlink{classyacx_1_1_devices_a89eb86ce0ad70dd0390375ee04f549f6}{find\+Device} (std\+::string name)
+\item 
+static \hyperlink{classyacx_1_1_device}{Device} \& \hyperlink{classyacx_1_1_devices_afbeb807ea9fac2ba0be9c4fa812c5243}{find\+Device\+By\+U\+U\+ID} (std\+::string uuid)
+\item 
+static std\+::vector$<$ \hyperlink{classyacx_1_1_device}{Device} $>$ \& \hyperlink{classyacx_1_1_devices_aa1a44930c265be1c6593af6c42cd9c12}{find\+Devices} ()
+\item 
+static std\+::vector$<$ \hyperlink{classyacx_1_1_device}{Device} $\ast$ $>$ \hyperlink{classyacx_1_1_devices_a274f530c0b46a7fcdd13d36b55330541}{find\+Devices} (std\+::function$<$ bool(\hyperlink{classyacx_1_1_device}{Device} \&)$>$ con)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{example_saxpy_8cpp-example}{example\+\_\+saxpy.\+cpp}.\end{Desc}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}\label{classyacx_1_1_devices_abaae9839d12e79117e2fb292ee0689fb}} 
+\index{yacx\+::\+Devices@{yacx\+::\+Devices}!find\+Device@{find\+Device}}
+\index{find\+Device@{find\+Device}!yacx\+::\+Devices@{yacx\+::\+Devices}}
+\subsubsection{\texorpdfstring{find\+Device()}{findDevice()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_device}{Device} \& Devices\+::find\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+returns a \hyperlink{classyacx_1_1_device}{Device} with the first C\+U\+DA capable device it finds 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_devices_a89eb86ce0ad70dd0390375ee04f549f6}\label{classyacx_1_1_devices_a89eb86ce0ad70dd0390375ee04f549f6}} 
+\index{yacx\+::\+Devices@{yacx\+::\+Devices}!find\+Device@{find\+Device}}
+\index{find\+Device@{find\+Device}!yacx\+::\+Devices@{yacx\+::\+Devices}}
+\subsubsection{\texorpdfstring{find\+Device()}{findDevice()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_device}{Device} \& Devices\+::find\+Device (\begin{DoxyParamCaption}\item[{std\+::string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+returns a \hyperlink{classyacx_1_1_device}{Device} if a C\+U\+DA capable device with the identifier is available 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the cuda device, e.\+g.\textquotesingle{}Tesla K20c\textquotesingle{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_devices_afbeb807ea9fac2ba0be9c4fa812c5243}\label{classyacx_1_1_devices_afbeb807ea9fac2ba0be9c4fa812c5243}} 
+\index{yacx\+::\+Devices@{yacx\+::\+Devices}!find\+Device\+By\+U\+U\+ID@{find\+Device\+By\+U\+U\+ID}}
+\index{find\+Device\+By\+U\+U\+ID@{find\+Device\+By\+U\+U\+ID}!yacx\+::\+Devices@{yacx\+::\+Devices}}
+\subsubsection{\texorpdfstring{find\+Device\+By\+U\+U\+I\+D()}{findDeviceByUUID()}}
+{\footnotesize\ttfamily \hyperlink{classyacx_1_1_device}{Device} \& Devices\+::find\+Device\+By\+U\+U\+ID (\begin{DoxyParamCaption}\item[{std\+::string}]{uuid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+returns a \hyperlink{classyacx_1_1_device}{Device} if a C\+U\+DA capable device with the passed 16-\/byte U\+U\+ID as hexadecimal string 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & U\+U\+ID of the cuda device \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classyacx_1_1_devices_aa1a44930c265be1c6593af6c42cd9c12}\label{classyacx_1_1_devices_aa1a44930c265be1c6593af6c42cd9c12}} 
+\index{yacx\+::\+Devices@{yacx\+::\+Devices}!find\+Devices@{find\+Devices}}
+\index{find\+Devices@{find\+Devices}!yacx\+::\+Devices@{yacx\+::\+Devices}}
+\subsubsection{\texorpdfstring{find\+Devices()}{findDevices()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{classyacx_1_1_device}{Device} $>$ \& Devices\+::find\+Devices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+vector with all C\+U\+D\+A-\/capable devices 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classyacx_1_1_devices_a274f530c0b46a7fcdd13d36b55330541}\label{classyacx_1_1_devices_a274f530c0b46a7fcdd13d36b55330541}} 
+\index{yacx\+::\+Devices@{yacx\+::\+Devices}!find\+Devices@{find\+Devices}}
+\index{find\+Devices@{find\+Devices}!yacx\+::\+Devices@{yacx\+::\+Devices}}
+\subsubsection{\texorpdfstring{find\+Devices()}{findDevices()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{classyacx_1_1_device}{Device} $\ast$ $>$ Devices\+::find\+Devices (\begin{DoxyParamCaption}\item[{std\+::function$<$ bool(\hyperlink{classyacx_1_1_device}{Device} \&)$>$}]{con }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+filters the devices satisfying passed condition 
+\begin{DoxyParams}{Parameters}
+{\em con} & condition for devices e.\+g.\textquotesingle{}\mbox{[}\mbox{]}(\hyperlink{classyacx_1_1_device}{Device}\& d)\{return d.\+total\+\_\+memory() $>$= 1024;\}\textquotesingle{} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list of devices satisfying passed condition 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/yacx/Devices.\+hpp\item 
+src/Devices.\+cpp\end{DoxyCompactItemize}
