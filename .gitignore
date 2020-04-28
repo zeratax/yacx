@@ -46,6 +46,8 @@ target
 
 # documentation
 docs/*
+!docs/index.html
+!docs/style.css
 !docs/diagram/
 !examples/docs/
 
