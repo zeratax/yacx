@@ -1,5 +1,22 @@
 # Changelog
 
+## yacx v0.6.2 (2020-04-28)
+
+### Features
+- added a JNIExampleClasses cmake target to build all java examples
+- added a file with posix autocompletions for [yacx.sh](./yacx.sh)
+- add nix-shell file
+
+if you're on nixos or using nix package manager you can now easily create an enviroment with cudatoolkit and jdk by just entering:
+```console
+$ nix-shell
+```
+
+### Bugfixes
+
+- multiple small issues with the CMakeLists
+- fix logger colors and newline issues
+
 ## yacx v0.6.1 (2020-04-08)
 
 ### Features

@@ -51,7 +51,7 @@ include(Catch)
 catch_discover_tests(tests)
 
 set(JAVA_TEST_FILES
-	"test/java/yacx/TestArrayArg.java"
+    "test/java/yacx/TestArrayArg.java"
     "test/java/yacx/TestBooleanArg.java"
     "test/java/yacx/TestByteArg.java"
     "test/java/yacx/TestCProgram.java"
@@ -79,16 +79,16 @@ if(JNI_ENABLED)
   set(class_files)
   include(ExternalProject)
   ExternalProject_Add(
-          junit-platform-console
-          PREFIX "${PROJECT_BINARY_DIR}/java/bin"
-          URL https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.5.2/junit-platform-console-standalone-1.5.2.jar
-          URL_HASH SHA512=3adfa07f95aad8f0104059b3b4256ea2e8f57b38fc6987551a8591a43849ac2953915d3f7eac71cac28a0b364d4a205dd80771860ab5d1757c14005e4f18400c
-          DOWNLOAD_NO_EXTRACT 1
-          DOWNLOAD_DIR ""
-          CONFIGURE_COMMAND ""
-          BUILD_COMMAND ""
-          INSTALL_COMMAND ""
-  )
+    junit-platform-console
+    PREFIX "${PROJECT_BINARY_DIR}/java/bin"
+    URL https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.5.2/junit-platform-console-standalone-1.5.2.jar
+    URL_HASH
+      SHA512=3adfa07f95aad8f0104059b3b4256ea2e8f57b38fc6987551a8591a43849ac2953915d3f7eac71cac28a0b364d4a205dd80771860ab5d1757c14005e4f18400c
+    DOWNLOAD_NO_EXTRACT 1
+    DOWNLOAD_DIR ""
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND "")
 
   foreach(_java_path ${JAVA_TEST_FILES})
     get_filename_component(_java_file ${_java_path} NAME)
@@ -96,13 +96,14 @@ if(JNI_ENABLED)
     add_custom_command(
       OUTPUT "${PROJECT_BINARY_DIR}/java/bin/${_class_file}"
       COMMAND
-        ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS}
-            -sourcepath "${PROJECT_SOURCE_DIR}/src/main/java:${PROJECT_SOURCE_DIR}/test/java"
-            -d "${PROJECT_BINARY_DIR}/java/bin"
-            -cp "${PROJECT_BINARY_DIR}/java/bin/src/junit-platform-console-standalone-1.5.2.jar"
-            "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}"
+        ${Java_JAVAC_EXECUTABLE} ${CMAKE_JAVA_COMPILE_FLAGS} -sourcepath
+        "${PROJECT_SOURCE_DIR}/src/main/java:${PROJECT_SOURCE_DIR}/test/java" -d
+        "${PROJECT_BINARY_DIR}/java/bin" -cp
+        "${PROJECT_BINARY_DIR}/java/bin/src/junit-platform-console-standalone-1.5.2.jar"
+        "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}"
       DEPENDS "${PROJECT_SOURCE_DIR}/test/java/yacx/${_java_file}")
     list(APPEND class_files "${PROJECT_BINARY_DIR}/java/bin/${_class_file}")
   endforeach()
-  add_custom_target(JNITestClasses ALL DEPENDS ${class_files} yacx-jni junit-platform-console)
+  add_custom_target(JNITestClasses ALL DEPENDS ${class_files} yacx-jni
+                                               junit-platform-console)
 endif()

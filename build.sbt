@@ -13,7 +13,7 @@ buildExecutor := {
 lazy val CUexecutor = (project in file("."))
   .settings(
     name    := "CUDA executor",
-    version := "0.6.1",
+    version := "0.6.2",
     libraryDependencies += "junit" % "junit" % "4.11",
 
     compileOrder := CompileOrder.JavaThenScala,
