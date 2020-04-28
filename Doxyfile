@@ -8,7 +8,7 @@ PROJECT_NAME           = yacx - Yet Another CudaExecutor
 PROJECT_NUMBER         = 0.6.2
 PROJECT_BRIEF          = "wrapper to easily compile and execute cuda kernels"
 PROJECT_LOGO           =
-OUTPUT_DIRECTORY       = "docs"
+OUTPUT_DIRECTORY       = "docs/cpp"
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
@@ -122,49 +122,19 @@ FILE_PATTERNS          = *.c \
                          *.cxx \
                          *.cpp \
                          *.c++ \
-                         *.java \
-                         *.ii \
-                         *.ixx \
-                         *.ipp \
-                         *.i++ \
-                         *.inl \
-                         *.idl \
-                         *.ddl \
-                         *.odl \
                          *.h \
                          *.hh \
                          *.hxx \
                          *.hpp \
                          *.h++ \
-                         *.cs \
-                         *.d \
-                         *.php \
-                         *.php4 \
-                         *.php5 \
-                         *.phtml \
-                         *.inc \
                          *.m \
                          *.markdown \
                          *.md \
                          *.mm \
-                         *.dox \
-                         *.py \
-                         *.pyw \
-                         *.f90 \
-                         *.f95 \
-                         *.f03 \
-                         *.f08 \
-                         *.f \
-                         *.for \
-                         *.tcl \
-                         *.vhd \
-                         *.vhdl \
-                         *.ucf \
-                         *.qsf \
-                         *.ice
+                         *.dox
 RECURSIVE              = YES
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = */jni/*
 EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           = "examples"
 EXAMPLE_PATTERNS       = *

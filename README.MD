@@ -10,19 +10,24 @@ wrapper to easily compile and execute cuda kernels
 - online compilation with NVRTC
 - template kernels
 - logging system
-- simple to understand exceptions
-- time kernel execution as well as uploading and downloading arguments to and from the device
+- descriptive exceptions
+- benchmarking
+  - time kernel execution as well as uploading and downloading arguments to and from the device
 
 for more see the [changelog](./CHANGELOG.md)
 
 ## Requirements
 
-  - [Cuda Toolkit >= V7.0](https://developer.nvidia.com/cuda-toolkit)
-  - c++17 (just to build)
+  - [Cuda Toolkit >= V7.0 (recommended 9.3)](https://developer.nvidia.com/cuda-toolkit)
+  - C++17 (just to build)
+  - JDK >= 8 (to build the JNI)
 
-## Usage
+## C++
+
+### Usage
 
 ```c++
+// file.cpp
 #include "yacx/main.hpp"
 #include <algorithm>
 #include <experimental/iterator>
@@ -85,7 +90,7 @@ int main() {
 }
 ```
 
-### Compile
+#### Compile
 
 download the latest version of the library from the [releases](https://github.com/ZerataX/yacx/releases/latest) section or build it yourself:
 
@@ -98,7 +103,7 @@ make -C build yacx-jni
 
 and then compile with:
 ```console 
-g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
+g++ -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 file.cpp
 ```
 
 some syntatic sugar is given using templates, which requires you to include the headers when building:
@@ -106,13 +111,7 @@ some syntatic sugar is given using templates, which requires you to include the 
 g++ -Wall -Wextra --pedantic -lyacx -lnvrtc -lcuda -L $(CUDA_PATH)/lib64 -Wl,-rpath,$(CUDA_PATH)/lib64 -I include/yacx file.cpp
 ```
 
-## Examples
-
-yacx comes with many examples using a multitude of different kernels with hostcode in c++,java and scala
-
-### C++
-
-#### Run Examples
+### Run Examples
 
 ```console
 # list examples
@@ -123,21 +122,79 @@ examples/example_saxpy.cpp
 examples/example_program.cpp
 examples/example_gauss.cpp
 # compile example
-$ make example_program
+$ cmake -H. -Bbuild
+$ make -C build example_program
 # run example
-$ make run
+$ ./build/examples/bin/example_program
 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8
 ```
 
-## Tests
+### Tests
 
 Require the [Catch2](https://github.com/catchorg/Catch2) test-framework
 
 ```console
-$ make check
+$ cmake -H. -Bbuild
+$ make -C build tests
+$ pushd build/test/bin/
+$ ./tests
+$ popd
 ```
 
 For more info read the [contribution guideline](https://github.com/ZerataX/yacx/blob/master/CONTRIBUTING.md#test)
+
+## Java
+
+### Run Examples
+
+```console
+# for autocompletion
+$ source yacx-completion.bash
+# compile example
+$ ./yacx build-java
+# list examples
+$ ./yacx execute-java
+!! parameter needed, select one of the following
+ExampleSimpleGEMMBenchmark
+ExampleFastGEMM
+ExampleSimpleGEMM
+...
+$ ./yacx.sh execute-java ExampleFastGEMM
+```
+
+### Tests
+
+```console
+# build JNI and Test Classes
+$ cmake -H. -Bbuild
+$ make -C build JNITestClasses
+# link kernels to execution folder
+$ mkdir build/java/bin/examples
+$ ln -s $(realpath examples/kernels/) build/java/bin/examples/kernels
+# execute tests
+$ pushd build/java/bin
+$ java -Djava.library.path=../../ -jar src/junit-platform-console-standalone-1.5.2.jar --class-path . --scan-class-path
+$ popd
+```
+
+## Scala
+
+### Run Examples
+
+```console
+# for autocompletion
+$ source yacx-completion.bash
+# compile example
+$ ./yacx build-scala
+# list examples
+$ ./yacx execute-scala
+!! parameter needed, select one of the following
+ExampleFilterBenchmark
+ExampleFilter
+ExampleFastGEMM
+...
+$ ./yacx.sh execute-scala ExampleFastGEMM
+```
 
 ## Contributing
 
