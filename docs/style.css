@@ -32,6 +32,7 @@ h2 {
 	opacity: 0.6;
 	color: #fff;
 	width: 30vw;
+	min-width: 350px;
 }
  .button__text {
 	display: block;
