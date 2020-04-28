@@ -14,11 +14,11 @@ jobs:
     - name: Install Dependencies
       run: sudo apt-get install doxygen
     - name: Build
-      run: doxygen Doxyfile
+      run: make docs
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BASE_BRANCH: master # The branch the action should deploy from.
         BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: docs/html # The folder the action should deploy.
+        FOLDER: docs/ # The folder the action should deploy.

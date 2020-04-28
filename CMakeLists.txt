@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.09)
 project(
   yacx
-  VERSION 0.6.1
+  VERSION 0.6.2
   LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -18,7 +18,6 @@ include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib")
 
 link_libraries(cuda nvrtc)
-
 
 file(GLOB SOURCES "src/*.cpp" "src/cexecutor/*.cpp")
 file(GLOB JNI_SOURCE_FILES "src/jni/*.cpp")
