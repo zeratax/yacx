@@ -97,7 +97,7 @@ int main() {
 
     // Set kernel string and compile options
 
-    Source source{load("kernels/matrixMult.cu")};
+    Source source{load("examples/kernels/matrixMult.cu")};
     Options options;
     options.insert("--std", "c++14");
     options.insert("--device-debug");

@@ -14,8 +14,8 @@
 
 namespace yacx {
 
-void debug(const std::string &message);
-
+//! loads the contents of a file as a string
+//! \param path path relative to the root of this project
 std::string load(const std::string &path);
 
 template <typename T> std::string type_of(const T &variable);

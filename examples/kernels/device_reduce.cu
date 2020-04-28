@@ -1,4 +1,4 @@
-#include "kernels/block_reduce.h"
+#include "examples/kernels/block_reduce.h"
 
 // Reduction function, currently the minimum of a and b
 // Common alternatives would be:
