@@ -56,7 +56,8 @@
     std::cout << \textcolor{stringliteral}{"Theoretical Bandwith:        "}
               << yacx::theoretical\_bandwidth(dev) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
     std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << yacx::effective\_bandwidth(time.launch, args) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
+              << yacx::effective\_bandwidth(time.launch, args.size())
+              << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
   \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
     std::cerr << \textcolor{stringliteral}{"Error:\(\backslash\)n"} << e.what() << std::endl;
     exit(1);

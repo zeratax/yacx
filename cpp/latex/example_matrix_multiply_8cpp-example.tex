@@ -14,7 +14,7 @@
 \textcolor{preprocessor}{#include <string>}
 
 \textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
-    yacx::load, yacx::KernelTime;
+    yacx::load, yacx::KernelTime, yacx::Devices;
 
 \textcolor{keywordtype}{void} compare(\textcolor{keywordtype}{float} *lhs, \textcolor{keywordtype}{float} *rhs, \textcolor{keywordtype}{int} width) \{
   \textcolor{keywordtype}{int} errors = 0;
@@ -162,16 +162,17 @@ std::function<bool(const float &, const float &)> comparator =
     start = std::clock();
     \textcolor{comment}{// MatrixMulSeq(M.data(), N.data(), P\_seq.data(), WIDTH);}
     MatrixMulSeq(M, N, P\_seq, WIDTH);
-    std::cout << \textcolor{stringliteral}{"Time\(\backslash\)u001b[33m[CPU single threaded]\(\backslash\)u001b[0m:   "}
+    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[CPU single threaded]"}
+              << yacx::gColorReset << \textcolor{stringliteral}{":   "}
               << (std::clock() - start) / (\textcolor{keywordtype}{double})(CLOCKS\_PER\_SEC / 1000)
               << \textcolor{stringliteral}{" ms"} << std::endl;
 
     time = kernelNaive.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time\(\backslash\)u001b[33m[MatrixMultyNaive]\(\backslash\)u001b[0m:      "}
-              << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
+    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMultyNaive]"}
+              << yacx::gColorReset << \textcolor{stringliteral}{":      "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
 
     std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << yacx::effective\_bandwidth(time.launch, args) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
+              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
 
     equalMultiplyNaive =
         std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
@@ -180,11 +181,12 @@ std::function<bool(const float &, const float &)> comparator =
 
     \textcolor{keywordflow}{if} (BLOCK\_SIZE % 4 == 0) \{
       time = kernel1\_1.launch(args, dev);
-      std::cout << \textcolor{stringliteral}{"Time\(\backslash\)u001b[33m[MatrixMulty1unfolded]\(\backslash\)u001b[0m:  "}
+      std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow
+                << \textcolor{stringliteral}{"[MatrixMulty1unfolded]"} << yacx::gColorReset << \textcolor{stringliteral}{":  "}
                 << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
 
       std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-                << yacx::effective\_bandwidth(time.launch, args) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
+                << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
       equalMultiply1unfolded =
           std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
       \textcolor{keywordflow}{if} (!equalMultiply1unfolded)
@@ -194,22 +196,22 @@ std::function<bool(const float &, const float &)> comparator =
     \}
 
     time = kernel1.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time\(\backslash\)u001b[33m[MatrixMulty1]\(\backslash\)u001b[0m:          "}
-              << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
+    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty1]"}
+              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
 
     std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << yacx::effective\_bandwidth(time.launch, args) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
+              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
     equalMultiply1 =
         std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
     \textcolor{keywordflow}{if} (!equalMultiply1)
       compare(P\_seq, P\_cuda, WIDTH * WIDTH);
 
     time = kernel2.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time\(\backslash\)u001b[33m[MatrixMulty2]\(\backslash\)u001b[0m:          "}
-              << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
+    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty2]"}
+              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
 
     std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << yacx::effective\_bandwidth(time.launch, args) << \textcolor{stringliteral}{" GB/s\(\backslash\)n\(\backslash\)n"};
+              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n\(\backslash\)n"};
     equalMultiply2 =
         std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
     \textcolor{keywordflow}{if} (!equalMultiply2)
@@ -222,9 +224,10 @@ std::function<bool(const float &, const float &)> comparator =
 
   \textcolor{keywordflow}{if} (equalMultiplyNaive && equalMultiply1 && equalMultiply1unfolded &&
       equalMultiply2) \{
-    std::cout << \textcolor{stringliteral}{"\(\backslash\)u001b[32meverything was correctly calculated!\(\backslash\)u001b[0m\(\backslash\)n"};
+    std::cout << yacx::gColorBrightGreen
+              << \textcolor{stringliteral}{"Everything was correctly calculated!"} << yacx::gColorReset;
   \} \textcolor{keywordflow}{else} \{
-    std::cout << \textcolor{stringliteral}{"\(\backslash\)u001b[31m"};
+    std::cout << yacx::gColorBrightRed;
   \}
   \textcolor{keywordflow}{if} (!equalMultiplyNaive) \{
     std::cout << \textcolor{stringliteral}{"Naive went wrong ;\_;\(\backslash\)n"};
@@ -239,10 +242,10 @@ std::function<bool(const float &, const float &)> comparator =
     std::cout << \textcolor{stringliteral}{"Multy2 went wrong ;\_;\(\backslash\)n"};
   \}
 
-  std::cout << \textcolor{stringliteral}{"\(\backslash\)u001b[0m==================================="} << std::endl;
+  std::cout << yacx::gColorReset
+            << \textcolor{stringliteral}{"==================================="} << std::endl;
 
   \textcolor{comment}{// Free resources}
-
   \textcolor{keyword}{delete}[] M;
   \textcolor{keyword}{delete}[] N;
   \textcolor{keyword}{delete}[] P\_seq;
