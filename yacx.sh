@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BUILD_DIR="build"
@@ -23,7 +23,7 @@ buildj() {
 exej() {
   if [ "$1" == "" ]; then
     echo "!! parameter needed, select one of the following"
-    find examples/java -type f -iname "*.java" -exec basename '{}' \; | sed 's/\.java$//1'
+    find examples/java -type f -iname "Example*.java" -exec basename '{}' \; | sed 's/\.java$//1'
   else
     pushd "${PWD}/${JAVA_BIN}"
     java -ea -Xmx8G -Djava.library.path=../../ $1
@@ -45,7 +45,7 @@ builds() {
 exes() {
   if [ "$1" == "" ]; then
     echo "!! parameter needed, select one of the following"
-    find examples/scala -type f -iname "*.scala" -exec basename '{}' \; | sed 's/\.java$//1'
+    find examples/scala -type f -iname "Example*.scala" -exec basename '{}' \; | sed 's/\.scala$//1'
   else
     pushd "${PWD}/${JAVA_BIN}"
     scala -J-ea -J-Xmx8G -Djava.library.path=../../ $1
@@ -55,25 +55,17 @@ exes() {
 
 if [ "$1" != "" ]; then
     case $1 in
-    --buildj)
-      buildj
-      ;;
-    --execute-java | --exej)
-      exej $2
-      ;;
-    --builds)
-      builds
-      ;;
-    --execute-scala | --exes) exes $2 ;;
+    build-java) buildj;;
+    execute-java) exej $2;;
+    build-scala) builds;;
+    execute-scala) exes $2;;
     esac
     shift
 else
-  echo
   echo 'yacx'
   echo 'Options: ./yacx.sh'
-  echo '--buildj                Builds JNI and Java Classes'
-  echo '--execute-java <class>  execute Java Class'
-  echo '--builds                Builds JNI and Scala Classes'
-  echo '--execute-scala <class> execute Scala Class'
-  echo
+  echo 'build-java            Builds JNI and Java Classes'
+  echo 'execute-java <class>  Execute Java Class'
+  echo 'build-scala           Builds JNI, Java and Scala Classes'
+  echo 'execute-scala <class> Execute Scala Class'
 fi
