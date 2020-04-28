@@ -159,13 +159,14 @@ int main() {
     start = std::clock();
     // MatrixMulSeq(M.data(), N.data(), P_seq.data(), WIDTH);
     MatrixMulSeq(M, N, P_seq, WIDTH);
-    std::cout << "Time"<< yacx::gColorBrightYellow <<"[CPU single threaded]"<<yacx::gColorReset
-    <<":   " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
-    << " ms" << std::endl;
+    std::cout << "Time" << yacx::gColorBrightYellow << "[CPU single threaded]"
+              << yacx::gColorReset << ":   "
+              << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000)
+              << " ms" << std::endl;
 
     time = kernelNaive.launch(args, dev);
-    std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMultyNaive]"<<yacx::gColorReset
-    <<":      "<< time.total << " ms\n";
+    std::cout << "Time" << yacx::gColorBrightYellow << "[MatrixMultyNaive]"
+              << yacx::gColorReset << ":      " << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << time.effective_bandwidth_launch() << " GB/s\n";
@@ -177,7 +178,8 @@ int main() {
 
     if (BLOCK_SIZE % 4 == 0) {
       time = kernel1_1.launch(args, dev);
-      std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMulty1unfolded]"<< yacx::gColorReset<<":  "
+      std::cout << "Time" << yacx::gColorBrightYellow
+                << "[MatrixMulty1unfolded]" << yacx::gColorReset << ":  "
                 << time.total << " ms\n";
 
       std::cout << "Effective Bandwith:          "
@@ -191,8 +193,8 @@ int main() {
     }
 
     time = kernel1.launch(args, dev);
-    std::cout << "Time" << yacx::gColorBrightYellow <<"[MatrixMulty1]"<< yacx::gColorReset <<
-    ":          " << time.total << " ms\n";
+    std::cout << "Time" << yacx::gColorBrightYellow << "[MatrixMulty1]"
+              << yacx::gColorReset << ":          " << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << time.effective_bandwidth_launch() << " GB/s\n";
@@ -202,8 +204,8 @@ int main() {
       compare(P_seq, P_cuda, WIDTH * WIDTH);
 
     time = kernel2.launch(args, dev);
-    std::cout << "Time"<< yacx::gColorBrightYellow <<"[MatrixMulty2]" << 
-    yacx::gColorReset << ":          " << time.total << " ms\n";
+    std::cout << "Time" << yacx::gColorBrightYellow << "[MatrixMulty2]"
+              << yacx::gColorReset << ":          " << time.total << " ms\n";
 
     std::cout << "Effective Bandwith:          "
               << time.effective_bandwidth_launch() << " GB/s\n\n";
@@ -219,8 +221,8 @@ int main() {
 
   if (equalMultiplyNaive && equalMultiply1 && equalMultiply1unfolded &&
       equalMultiply2) {
-    std::cout << yacx::gColorBrightGreen <<"Everything was correctly calculated!" <<
-    yacx::gColorReset;
+    std::cout << yacx::gColorBrightGreen
+              << "Everything was correctly calculated!" << yacx::gColorReset;
   } else {
     std::cout << yacx::gColorBrightRed;
   }
@@ -237,7 +239,8 @@ int main() {
     std::cout << "Multy2 went wrong ;_;\n";
   }
 
-  std::cout << yacx::gColorReset << "===================================" << std::endl;
+  std::cout << yacx::gColorReset
+            << "===================================" << std::endl;
 
   // Free resources
   delete[] M;
