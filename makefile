@@ -5,7 +5,7 @@ MKDIR_P = mkdir -p
 
 SRCDIR := src
 INCDIR := include
-VENDOR := exclude
+VENDOR := extern
 TESTDIR := test
 BUILDDIR := build
 EXAMPLEDIR := examples
@@ -16,7 +16,7 @@ HEADDEREXT := hpp
 SOURCES := $(shell find $(SRCDIR) -maxdepth 1 -type f -name '*.$(SRCEXT)')
 TESTS := $(shell find $(TESTDIR) -type f -name '*.$(SRCEXT)')
 EXAMPLES := $(shell find $(EXAMPLEDIR) -maxdepth 1 -type f -name '*.$(SRCEXT)')
-HEADERS := $(shell find $(LIBDIR) -type f -name '*.$(HEADDEREXT)')
+HEADERS := $(shell find $(INCDIR) -type f -name '*.$(HEADDEREXT)')
 
 directories: ${DIRS}
 
