@@ -3,7 +3,7 @@
 namespace yacx {
 
 float effective_bandwidth(float miliseconds, size_t sizeInBytes) {
-  return sizeInBytes / miliseconds / 1e6;
+  return sizeInBytes / miliseconds / 1e9;
 }
 
 float theoretical_bandwidth(Device &device) {

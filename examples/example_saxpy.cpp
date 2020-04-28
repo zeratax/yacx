@@ -53,7 +53,8 @@ int main() {
     std::cout << "Theoretical Bandwith:        "
               << yacx::theoretical_bandwidth(dev) << " GB/s\n";
     std::cout << "Effective Bandwith:          "
-              << yacx::effective_bandwidth(time.launch, args) << " GB/s\n";
+              << yacx::effective_bandwidth(time.launch, args.size())
+              << " GB/s\n";
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
     exit(1);
