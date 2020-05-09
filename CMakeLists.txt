@@ -8,14 +8,27 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-add_definitions(-Wall -Wextra --pedantic)
-add_definitions(-DNVRTC_GET_TYPE_NAME=1)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-Dcurrent_log_level=loglevel::DEBUG)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_definitions(--pedantic -Wextra)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+add_definitions(-DNVRTC_GET_TYPE_NAME=1 -Wall)
 
 include_directories(include)
 include_directories(include/yacx)
 include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
-link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib/x64")
+    link_libraries(DbgHelp)
+else()
+    link_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}/../lib")
+endif()
 
 link_libraries(cuda nvrtc)
 
@@ -47,7 +60,11 @@ set(JAVA_SOURCE_FILES
     "src/main/java/yacx/ShortArg.java"
     "src/main/java/yacx/Utils.java")
 
-add_library(yacx SHARED ${SOURCES})
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_library(yacx STATIC ${SOURCES})
+else()
+    add_library(yacx SHARED ${SOURCES})
+endif()
 
 option(JNI_ENABLED "Build JNI" ON)
 if(JNI_ENABLED)

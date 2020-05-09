@@ -1,7 +1,3 @@
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_definitions(-Wall -Wextra --pedantic -Dcurrent_log_level=loglevel::INFO)
-endif()
-
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/gauss.h
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/kernels)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/kernels/gauss.cu
@@ -22,6 +18,7 @@ add_executable(example_template example_template.cpp)
 add_executable(example_matrix_multiply example_matrix_multiply.cpp)
 add_executable(example_logger example_logger.cpp)
 add_executable(example_sumArray example_sumArray.cpp)
+
 
 set(JAVA_EXAMPLE_FILES
     "java/ExampleCGEMM.java"

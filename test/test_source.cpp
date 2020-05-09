@@ -32,15 +32,13 @@ SCENARIO("Various sources of kernels are created and through them are created"
     args.emplace_back(KernelArg(&datasize));
 
     Headers headers_default;
-    headers_default.insert(Header{"cuda_runtime.h"});
 
     // A2. Preparing the output for kernel-compilation
     int *hostCompareOutput_Controlled = new int[5]{7, 9, 11, 13, 15};
     int *hostCompareOutput_1 = new int[5]{12, 14, 16, 18, 20};
     int *hostCompareOutput_2 = new int[5]{6, 14, 24, 36, 50};
 
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
+    Source source{"extern \"C\"\n"
                   "__global__ void cuda_add(int *x, int *y, int *out, int "
                   "datasize) {\n"
                   " int i = threadIdx.x;\n"
@@ -64,14 +62,12 @@ SCENARIO("Various sources of kernels are created and through them are created"
     // simulated.
     WHEN("More than one headers are used.") {
       Headers headersNew1;
-      headersNew1.insert(Header{"cuda_runtime.h"});
       headersNew1.insert(Header{"test_compare.hpp"});
 
       /*B2. Compilation of Kernels through the creation of a
       program from kernel - source*/
       THEN("The results are consistent with the given controlled output.") {
         Source sourceNew1{
-            "#include \"cuda_runtime.h\"\n"
             "#include \"test_compare.hpp\"\n"
             "extern \"C\"\n"
             "__global__ void cuda_add_with_header(int *x, int *y, int *out, int"
@@ -103,7 +99,6 @@ SCENARIO("Various sources of kernels are created and through them are created"
      */
     WHEN("More one functions in a kernel-code are used.") {
       Headers headersNew2;
-      headersNew2.insert(Header{"cuda_runtime.h"});
 
       // C2. Compilation of Kernels through the creation of a program from
       // kernel - source
@@ -120,7 +115,6 @@ SCENARIO("Various sources of kernels are created and through them are created"
         args.emplace_back(KernelArg(&datasize));
 
         Source sourceNew2{
-            "#include \"cuda_runtime.h\"\n"
             "extern \"C\"\n"
             "__global__ void cuda_add_normal(int *x, int *y, int *out, int "
             "datasize) {\n"
@@ -184,7 +178,6 @@ SCENARIO("Various sources of kernels are created and through them are created"
       args.emplace_back(KernelArg(&datasize));
 
       Headers headersNew3;
-      headersNew3.insert(Header{"cuda_runtime.h"});
 
       /*D3. Compilation of Kernels through the creation of a
       program from kernel - source*/
@@ -193,7 +186,6 @@ SCENARIO("Various sources of kernels are created and through them are created"
         const CUresult error{CUDA_ERROR_NOT_FOUND};
 
         Source sourceNew3{
-            "#include \"cuda_runtime.h\"\n"
             "extern \"C\"\n"
             "__global__ void cuda_multiply(int *x, int *y, int *out, int"
             " datasize) {\n"

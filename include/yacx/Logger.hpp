@@ -9,10 +9,11 @@
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 #include <vector>
 
 namespace yacx {
-enum class loglevel { NONE, ERROR, WARNING, INFO, DEBUG, DEBUG1 };
+enum class loglevel { NONE, ERR, WARNING, INFO, DEBUG, DEBUG1 };
 
 using logmap = std::map<loglevel, std::pair<const char *, const char *>>;
 
@@ -21,7 +22,6 @@ extern logmap state;
 namespace detail {
 
 const char *get_name(loglevel level);
-
 const char *get_color(loglevel level);
 std::string get_datetime();
 
@@ -109,7 +109,7 @@ class Logger {
     current_loglevel = severity;
     if (current_loglevel <= limit) {
       std::stringstream prefix_ss;
-      prefix_ss << detail::get_color(severity) << get_datetime() << " "
+      prefix_ss /*<< get_color(severity)*/ << get_datetime() << " "
                 << get_name(severity) << "[" << src_file << ":" << src_line
                 << "]: ";
       std::string prefix = prefix_ss.str();

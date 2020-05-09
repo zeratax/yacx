@@ -1,6 +1,7 @@
 #include "yacx/Exception.hpp"
 #include "yacx/Logger.hpp"
 #include "yacx/main.hpp"
+#include <asprintf.h>
 #include <catch2/catch.hpp>
 
 using yacx::Kernel, yacx::Source, yacx::KernelArg, yacx::Options, yacx::Device,
@@ -64,7 +65,7 @@ TEST_CASE("sumArray with implicit size", "[example_program]") {
     double epsilon = 1.0E-8;
     for (int i = 0; i < nElem; ++i) {
       if (abs(hostRef[i] - gpuRef[i]) > epsilon) {
-        char *error_string;
+        char *error_string; 
         asprintf(
             &error_string,
             "Arrays do not match! \n->host %5.2f gpu %5.2f at current %d\n",

@@ -3,7 +3,6 @@
 #include "Exception.hpp"
 
 #include <cstdio>
-#include <cxxabi.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>

@@ -1,3 +1,8 @@
+#if _MSC_VER
+#define popen _popen
+#define pclose _pclose
+#endif
+
 #include "yacx/Devices.hpp"
 #include "yacx/Exception.hpp"
 
@@ -27,9 +32,14 @@ std::string exec(const char *cmd) {
 
 TEST_CASE("Device can be constructed", "[yacx::device]") {
   try {
+    #if defined(_MSC_VER)
+    std::string name = exec("powershell -command \"wmic path win32_VideoController get name | "
+                            "Select-String -Pattern 'NVIDIA ([a-zA-Z0-9\-]+)' "
+                            "-AllMatches | % { $_.matches.groups[1].value }\"");
+    #else
     std::string name =
         exec("lspci | grep -Poi \"nvidia.+\\[\\K[a-zA-Z0-9 ]+(?=\\])\"");
-
+    #endif
     name.erase(std::remove(name.begin(), name.end(), '\n'), name.end());
 
     SECTION("first device") {

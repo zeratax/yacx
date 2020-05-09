@@ -1,4 +1,5 @@
-#include "../include/yacx/Logger.hpp"
+#include "yacx/Logger.hpp"
+#include "yacx/Colors.hpp"
 #include <unordered_map>
 
 using yacx::Logger, yacx::loglevel;
@@ -11,7 +12,7 @@ std::vector<std::string> arguments;
 namespace yacx::detail {
 
 static std::unordered_map<std::string, loglevel> const loglevels = {
-    {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERROR},
+    {"NONE", loglevel::NONE},       {"ERROR", loglevel::ERR},
     {"WARNING", loglevel::WARNING}, {"INFO", loglevel::INFO},
     {"DEBUG", loglevel::DEBUG},     {"DEBUG1", loglevel::DEBUG1}};
 
@@ -69,17 +70,19 @@ std::string get_datetime() {
 
 yacx::logmap yacx::state = {
     {loglevel::NONE,
-     std::pair<const char *, const char *>{"   NONE", gColorBrightDefault}},
-    {loglevel::ERROR,
-     std::pair<const char *, const char *>{"  ERROR", gColorBrightRed}},
+     std::pair<const char *, const char *>{"   NONE", yacx::gColorBrightDefault}},
+    {loglevel::ERR,
+     std::pair<const char *, const char *>{"  ERROR", yacx::gColorBrightRed}},
     {loglevel::WARNING,
-     std::pair<const char *, const char *>{"WARNING", gColorBrightYellow}},
+     std::pair<const char *, const char *>{"WARNING",
+                                           yacx::gColorBrightYellow}},
     {loglevel::INFO,
-     std::pair<const char *, const char *>{"   INFO", gColorBrightDefault}},
+     std::pair<const char *, const char *>{"   INFO",
+                                           yacx::gColorBrightDefault}},
     {loglevel::DEBUG,
-     std::pair<const char *, const char *>{"  DEBUG", gColorGray}},
+     std::pair<const char *, const char *>{"  DEBUG", yacx::gColorGray}},
     {loglevel::DEBUG1,
-     std::pair<const char *, const char *>{" DEBUG1", gColorGray}}};
+     std::pair<const char *, const char *>{" DEBUG1", yacx::gColorGray}}};
 
 void yacx::handle_logging_args(int argc, char const *const *const argv) {
   for (int i = 1; i < argc; ++i) {

@@ -5,12 +5,12 @@ jclass getClass(JNIEnv* env, const char* name) {
     jclass cls = env->FindClass(name);
 
     if (!cls) {
-        Logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find the " << name << " class";
+        Logger(yacx::loglevel::ERR) << "[JNI ERROR] Cannot find the " << name << " class";
 
         cls = env->FindClass("java/lang/ClassNotFoundException");
 
         if (!cls) {
-            Logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find java.lang.ClassNotFoundException";
+            Logger(yacx::loglevel::ERR) << "[JNI ERROR] Cannot find java.lang.ClassNotFoundException";
 			return NULL;
         }
 
@@ -63,7 +63,7 @@ std::vector<std::string> jStringsToVector(JNIEnv* env, jobjectArray jstringArray
 std::string getStaticJString(JNIEnv* env, jclass cls, const char* attributeName) {
     jfieldID jfid = env->GetStaticFieldID(cls, attributeName, "Ljava/lang/String;");
     if (jfid == NULL){
-        Logger(yacx::loglevel::ERROR) << "[JNI ERROR] Cannot find attribute " << attributeName
+        Logger(yacx::loglevel::ERR) << "[JNI ERROR] Cannot find attribute " << attributeName
         << " in class " << cls;
         throw std::runtime_error(std::string("Cannot find attribute ") + attributeName);
         return NULL;

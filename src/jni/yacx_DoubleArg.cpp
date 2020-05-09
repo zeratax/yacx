@@ -24,7 +24,7 @@ jobject Java_yacx_DoubleArg_createInternal (JNIEnv* env, jclass cls, jdoubleArra
         auto arrayLength = env->GetArrayLength(jarray);
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jdouble), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jdouble), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
         env->GetDoubleArrayRegion(jarray, 0, arrayLength, static_cast<jdouble*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);

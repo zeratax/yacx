@@ -24,7 +24,7 @@ jobject Java_yacx_IntArg_createInternal (JNIEnv* env, jclass cls, jintArray jarr
         auto arrayLength = env->GetArrayLength(jarray);
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jint), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jint), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
         env->GetIntArrayRegion(jarray, 0, arrayLength, static_cast<jint*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);

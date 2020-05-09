@@ -1,5 +1,6 @@
 #include "yacx/main.hpp"
 #include <stdlib.h>
+#include <array>
 
 #define NUM_THREADS 512
 #define NUM_BLOCKS 1024
