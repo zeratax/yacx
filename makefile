@@ -46,12 +46,13 @@ build: cmake
 	
 test-jni: build
 	make -C build JNITestClasses
-	cp -R examples/kernels $JAVA_DIR
-	pushd $JAVA_DIR
+	cp -R examples/kernels build/java/bin
+	pushd build/java/bin
 	java -Djava.library.path=../../ -jar src/junit-platform-console-standalone-1.5.2.jar --class-path . --scan-class-path
 	popd
 	
 test-cpp: build
+	make -C build tests
 	pushd build/test/bin/
 	./tests
 	popd
