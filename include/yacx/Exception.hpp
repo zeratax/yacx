@@ -129,7 +129,7 @@ inline void __checkNvrtcResultError_LOG(const nvrtcResult error,
     std::string exception =
         nvrtcGetErrorString(error); // method to get the error name from NVIDIA
     exception = exception + "\n->occoured in file <" + file + " in line " +
-                std::to_string(line) + "\n m_log: " + m_log + "\n\n";
+                std::to_string(line) + "\n log: " + m_log + "\n\n";
     throw nvrtcResultException(error, exception);
   }
 }

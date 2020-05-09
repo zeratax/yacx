@@ -28,12 +28,10 @@ SCENARIO("Various programs are created and compiled under the following "
     error_String.erase(0, 2);
 
     Headers headers;
-    headers.insert(Header{"cuda_runtime.h"});
 
     // A2. Using the same source program for all conditions of source program
     // compilation using various options
-    Source source1{"#include \"cuda_runtime.h\"\n"
-                   "extern \"C\"\n"
+    Source source1{"extern \"C\"\n"
                    "__global__ void cuda_add(int *x, int *y, int *out, int "
                    "datasize) {\n"
                    " int i = threadIdx.x;\n"

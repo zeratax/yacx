@@ -1,4 +1,3 @@
-// Copyright 2019 André Hodapp
 #include "yacx/Exception.hpp"
 #if _MSC_VER
 #define popen _popen

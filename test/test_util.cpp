@@ -28,9 +28,18 @@ TEST_CASE("Displays the type of a variable", "[yacx::type_of]") {
   unsigned long long llui;
   yacx::Options options;
 
+  #if defined(__clang__)
+  #elif defined(__GNUC__) || defined(__GNUG__)
   REQUIRE(type_of(vec) == "std::vector<int, std::allocator<int> >");
   REQUIRE(type_of(options) == "yacx::Options");
   REQUIRE(type_of(llui) == "unsigned long long");
+  #elif defined(_MSC_VER)
+  REQUIRE(type_of(vec) == "class std::vector<int,class std::allocator<int> >");
+  REQUIRE(type_of(options) == "class yacx::Options");
+  REQUIRE(type_of(llui) == "unsigned __int64");
+  #endif
+  
+  
 }
 
 TEST_CASE("load file to std::string", "[yacx::load]") {

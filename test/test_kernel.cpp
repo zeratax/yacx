@@ -33,15 +33,13 @@ TEST_CASE(
   args.emplace_back(KernelArg(&datasize));
 
   Headers headers;
-  headers.insert(Header{"cuda_runtime.h"});
 
   // A2. Preparing the output for kernel-compilation
   int *hostCompareOutput = new int[10]{7, 9, 11, 13, 15, 17, 19, 21, 23, 25};
 
   // B1. A Kernel must be created in a controlled manner.
   SECTION("1. A Kernel must be created in a controlled manner.") {
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
+    Source source{"extern \"C\"\n"
                   "__global__ void cuda_add(int *x, int *y, int *out, int "
                   "datasize) {\n"
                   " int i = threadIdx.x;\n"
@@ -67,8 +65,7 @@ TEST_CASE(
   // dimensions.
   SECTION("2B. The created kernel is launched using proper block and grid "
           "dimensions.") {
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
+    Source source{"extern \"C\"\n"
                   "__global__ void cuda_add(int *x, int *y, int *out, int "
                   "datasize) {\n"
                   " int i = threadIdx.x;\n"
@@ -127,8 +124,7 @@ TEST_CASE(
   SECTION("2C. The created kernel is launched using different block and grid "
           "dimensions.") {
     // B2C1. Declaration of all necessary kernel function inputs.
-    Source source{"#include \"cuda_runtime.h\"\n"
-                  "extern \"C\"\n"
+    Source source{"extern \"C\"\n"
                   "__global__ void cuda_add(int *x, int *y, int *out, int "
                   "datasize) {\n"
                   " int i = threadIdx.x;\n"
