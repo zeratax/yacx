@@ -25,7 +25,7 @@ jobject Java_yacx_FloatArg_createInternal (JNIEnv* env, jclass cls, jfloatArray 
         auto arrayLength = env->GetArrayLength(jarray);
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jfloat), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jfloat), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
 		env->GetFloatArrayRegion(jarray, 0, arrayLength, static_cast<jfloat*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);

@@ -24,7 +24,7 @@ jobject Java_yacx_ByteArg_createInternal (JNIEnv* env, jclass cls, jbyteArray ja
         auto arrayLength = env->GetArrayLength(jarray);
         CHECK_BIGGER(arrayLength, 0, "illegal array length", NULL)
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jbyte), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * sizeof(jbyte), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
         env->GetByteArrayRegion(jarray, 0, arrayLength, static_cast<jbyte*> (kernelArgPtr->getHostData()));
 
         return createJNIObject(env, cls, kernelArgPtr);

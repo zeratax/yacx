@@ -28,7 +28,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
 
         auto arrayPtr = env->GetFloatArrayElements(jarray, NULL);
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * (sizeof(jfloat)/2), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * (sizeof(jfloat)/2), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
         convertFtoH(arrayPtr, kernelArgPtr->getHostData(), arrayLength);
 
         env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);
@@ -50,7 +50,7 @@ jobject Java_yacx_HalfArg_createInternal (JNIEnv* env, jclass cls, jfloatArray j
 
         auto arrayPtr = env->GetFloatArrayElements(jarray, NULL);
 
-        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * (sizeof(jfloat)/2), jdownload, true, true, CTYPE + "*"};
+        KernelArgJNI* kernelArgPtr = new KernelArgJNI{arrayLength * (sizeof(jfloat)/2), static_cast<bool>(jdownload), true, true, CTYPE + "*"};
         convertFtoHT(arrayPtr, kernelArgPtr->getHostData(), rows, columns, arrayLength);
 
         env->ReleaseFloatArrayElements(jarray, arrayPtr, JNI_ABORT);

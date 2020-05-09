@@ -4,6 +4,7 @@
 #include "../../include/yacx/KernelArgs.hpp"
 
 #include <memory>
+#include <string>
 
 namespace jni {
 namespace detail {
