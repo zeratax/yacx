@@ -1,5 +1,4 @@
-#ifndef ASPRINTF_H
-#define ASPRINTF_H
+#pragma once
 
 #if defined(__GNUC__) && !defined(_GNU_SOURCE)
 #define _GNU_SOURCE /* needed for (v)asprintf, affects '#include <stdio.h>' */
@@ -58,5 +57,3 @@ int asprintf(char **strp, const char *format, ...) {
   return retval;
 }
 #endif
-
-#endif // ASPRINTF_H

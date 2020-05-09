@@ -1,6 +1,6 @@
-#ifndef _UNISTD_H
-#define _UNISTD_H 1
+#pragma once
 
+#ifdef _MSC_VER
 #include <io.h>
 #include <stdlib.h>
 
@@ -10,5 +10,6 @@
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
-
-#endif /* unistd.h  */
+#else
+#include <unistd.h>
+#endif
