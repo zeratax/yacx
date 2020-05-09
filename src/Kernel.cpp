@@ -3,6 +3,7 @@
 #include "yacx/Init.hpp"
 #include "yacx/KernelArgs.hpp"
 #include "yacx/KernelTime.hpp"
+#include <array>
 #include <utility>
 
 using yacx::Kernel, yacx::KernelTime, yacx::loglevel, yacx::arg_type,

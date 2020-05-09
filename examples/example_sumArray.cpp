@@ -137,7 +137,7 @@ int main() {
 
     // 2B. Set kernel string, header files and compile options
     Headers headers;
-    headers.insert(Header{"cuda_runtime.h"});
+    // headers.insert(Header{"cuda_runtime.h"});
     Source source{load("kernels/sum_Array.cu"), headers};
 
     Options options;

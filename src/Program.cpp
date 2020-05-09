@@ -4,10 +4,16 @@
 #include "yacx/Logger.hpp"
 #include "yacx/util.hpp"
 
+#if _MSC_VER
+#include <iterator>
+#else
 #include <experimental/iterator>
+#endif
+
 #include <iostream>
 #include <memory>
 #include <utility>
+
 
 using yacx::Program, yacx::Kernel, yacx::Options, yacx::KernelArg,
     yacx::loglevel, yacx::detail::whichError, yacx::detail::descriptionFkt;
@@ -25,8 +31,7 @@ Program::~Program() {
   nvrtcResult error = nvrtcDestroyProgram(m_prog.get());
   if (error != NVRTC_SUCCESS) {
     auto description = whichError(error);
-    Logger(loglevel::ERROR)
-        << "could not destroy program: " << descriptionFkt(description);
+    Logger(loglevel::ERR) << "could not destroy program: " << descriptionFkt(description);
   }
 }
 
@@ -38,9 +43,20 @@ Kernel Program::compile(const Options &options) {
       Logger(loglevel::DEBUG) << parameter;
 
     std::ostringstream buffer;
+    std::string csv; // template parameters comma separated
+    #if _MSC_VER
+    std::copy(m_template_parameters.begin(), m_template_parameters.end(),
+              std::ostream_iterator<std::string>(buffer, ", "));
+    // ostream_iterator adds a ", " which we need to erase
+    csv = buffer.str();
+    csv = csv.erase(buffer.str().size()-2, 2);
+    #else
     std::copy(m_template_parameters.begin(), m_template_parameters.end(),
               std::experimental::make_ostream_joiner(buffer, ", "));
-    m_name_expression = m_kernel_name + "<" + buffer.str() + ">";
+    csv = buffer.str();
+    #endif
+    
+    m_name_expression = m_kernel_name + "<" + csv + ">";
 
     Logger(loglevel::DEBUG)
         << "which results in the following name expression: "
@@ -60,7 +76,7 @@ Kernel Program::compile(const Options &options) {
   m_log = clog.get();
 
   if (compileResult != NVRTC_SUCCESS) {
-    // Logger(loglevel::ERROR) << m_log;
+    // Logger(loglevel::ERR) << m_log;
     NVRTC_SAFE_CALL_LOG(compileResult, m_log);
   }
 

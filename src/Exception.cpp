@@ -1,5 +1,9 @@
 // Copyright 2019 André Hodapp
 #include "yacx/Exception.hpp"
+#if _MSC_VER
+#define popen _popen
+#define pclose _pclose
+#endif
 
 /*
  * returns the number of columns of the terminal
@@ -10,6 +14,7 @@ unsigned int yacx::detail::askTerminalSize() {
   char var[40];
 
   //"tput cols" tells you the number of columns
+
   fp = popen("tput cols", "r");
   while (fgets(var, sizeof(var), fp) != nullptr) {
     // printf("command line has columns size: %s\n", var);

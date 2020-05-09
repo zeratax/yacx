@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <sstream>
+#if _MSC_VER
+#else
 #include <dlfcn.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -14,6 +17,7 @@ using yacx::loglevel, yacx::detail::dynop, yacx::detail::opfn;
 
 void yacx::detail::load_op(struct dynop *dest, std::string filename, std::string opSymbolName) {
     //open libary
+    #ifndef _MSC_VER
     void* handle = dlopen((std::string("./") + filename).c_str(), RTLD_LAZY);
     char* error = dlerror();
     if (handle == NULL){
@@ -42,9 +46,11 @@ void yacx::detail::load_op(struct dynop *dest, std::string filename, std::string
     //Save result in passed struct
     dest->op = ((struct opfn*) op)->op;
     dest->libhandle = handle;
+    #endif
 }
 
 void yacx::detail::unload_op(struct dynop *op) {
+    #ifndef _MSC_VER
     if (op == NULL){
         return;
     }
@@ -54,13 +60,14 @@ void yacx::detail::unload_op(struct dynop *op) {
     char* error = dlerror();
     if (result != 0){
         if (error != NULL){
-            Logger(loglevel::ERROR) << "error while closing libary with compiled function: " << error;
+            Logger(loglevel::ERR) << "error while closing libary with compiled function: " << error;
         } else {
-            Logger(loglevel::ERROR) << "unknown error while closing libary with compiled function";
+            Logger(loglevel::ERR) << "unknown error while closing libary with compiled function";
         }
     }
 
     //clear struct
     op->libhandle = NULL;
     op->op = NULL;
+    #endif
 }
