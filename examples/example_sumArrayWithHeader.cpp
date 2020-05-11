@@ -1,4 +1,5 @@
 #include "yacx/main.hpp"
+#include "kernels/value.hpp"
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -82,6 +83,7 @@ void sumArrayOnHost(const type *A, const type *B, type *C, const size_t nx,
   // 1. Declaring the variables required to add values from two 3D-array
   // elements
   size_t i;
+  value value_default;
 
   // 2. Loop to calculate the sum of values of two array elements
   for (size_t ix = 0; ix < nx; ++ix) {
@@ -89,6 +91,9 @@ void sumArrayOnHost(const type *A, const type *B, type *C, const size_t nx,
       for (size_t iz = 0; iz < nz; ++iz) {
         i = iz * (nz * ny) + iy * ny + ix;
         C[i] = A[i] + B[i];
+
+         if (C[i]>=5.0f)
+          C[i]+=value_default.float_default;
       }
     }
   }
@@ -136,7 +141,9 @@ int main() {
               << ((matrix_size * 3 + sizeof(float)) / 1024 / 1024) << "mb\n" << std::endl;
 
     // 2B. Set kernel string, header files and compile options
-    Source source{load("examples/kernels/sum_Array.cu")};
+    Headers headers;
+    headers.insert(Header{"examples/kernels/value.hpp"});
+    Source source{load("examples/kernels/sum_ArrayHeader.cu"), headers};
 
     Options options;
     options.insert("--std", "c++14");
@@ -154,7 +161,7 @@ int main() {
     dim3 block(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
     dim3 grid(GRID_SIZE);
 
-    Kernel kernel_sumArray = source.program("sumArrayOnGPU")
+    Kernel kernel_sumArray = source.program("sumArrayOnGPUWithHeader")
                                  .instantiate(type_of(data))
                                  .compile(options)
                                  .configure(grid, block);

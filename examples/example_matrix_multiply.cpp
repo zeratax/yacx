@@ -16,7 +16,7 @@ using yacx::Source, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
 void compare(float *lhs, float *rhs, int width) {
   int errors = 0;
   for (int i{0}; i < width; i += 1) {
-    // printf("[%d] expected %f : actually %f\n", i, lhs[i], rhs[i]);
+    //printf("[%d] expected %f : actually %f\n", i, lhs[i], rhs[i]);
     if ((lhs[i] - rhs[i]) != 0) {
       errors += 1;
     }
@@ -97,7 +97,7 @@ int main() {
 
     // Set kernel string and compile options
 
-    Source source{load("kernels/matrixMult.cu")};
+    Source source{load("examples/kernels/matrixMult.cu")};
     Options options;
     options.insert("--std", "c++14");
     options.insert("--device-debug");

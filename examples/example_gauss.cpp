@@ -79,8 +79,8 @@ void calculateWeights(float weights[5][5]) {
 }
 
 int main(int argc, char **argv) {
-  const char *inFilename = (argc > 1) ? argv[1] : "kernels/lena.ppm";
-  const char *outFilename = (argc > 2) ? argv[2] : "kernels/output.ppm";
+  const char *inFilename = (argc > 1) ? argv[1] : "examples/kernels/lena.ppm";
+  const char *outFilename = (argc > 2) ? argv[2] : "examples/kernels/output.ppm";
 
   float weights[5][5];
   calculateWeights(weights);
@@ -91,8 +91,8 @@ int main(int argc, char **argv) {
 
   try {
     Headers headers;
-    headers.insert(Header{"kernels/gauss.h"});
-    Source source{load("kernels/gauss.cu"), headers};
+    headers.insert(Header{"examples/kernels/gauss.h"});
+    Source source{load("examples/kernels/gauss.cu"), headers};
 
     size_t size_pixel = height * width * sizeof(Pixel);
     size_t size_weights = 5 * 5 * sizeof(float);
@@ -109,6 +109,7 @@ int main(int argc, char **argv) {
         .compile()
         .configure(grid, block)
         .launch(args);
+
   } catch (const std::exception &e) {
     std::cerr << "Error:\n" << e.what() << std::endl;
   }
