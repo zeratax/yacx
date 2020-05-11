@@ -82,8 +82,8 @@ Pixel *readPPM(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filenam
 \}
 
 \textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv) \{
-  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *inFilename = (argc > 1) ? argv[1] : \textcolor{stringliteral}{"kernels/lena.ppm"};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *outFilename = (argc > 2) ? argv[2] : \textcolor{stringliteral}{"kernels/output.ppm"};
+  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *inFilename = (argc > 1) ? argv[1] : \textcolor{stringliteral}{"examples/kernels/lena.ppm"};
+  \textcolor{keyword}{const} \textcolor{keywordtype}{char} *outFilename = (argc > 2) ? argv[2] : \textcolor{stringliteral}{"examples/kernels/output.ppm"};
 
   \textcolor{keywordtype}{float} weights[5][5];
   calculateWeights(weights);
@@ -94,8 +94,8 @@ Pixel *readPPM(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filenam
 
   \textcolor{keywordflow}{try} \{
     Headers headers;
-    headers.insert(Header\{\textcolor{stringliteral}{"kernels/gauss.h"}\});
-    Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), headers\};
+    headers.insert(Header\{\textcolor{stringliteral}{"examples/kernels/gauss.h"}\});
+    Source source\{load(\textcolor{stringliteral}{"examples/kernels/gauss.cu"}), headers\};
 
     \textcolor{keywordtype}{size\_t} size\_pixel = height * width * \textcolor{keyword}{sizeof}(Pixel);
     \textcolor{keywordtype}{size\_t} size\_weights = 5 * 5 * \textcolor{keyword}{sizeof}(float);
@@ -112,6 +112,7 @@ Pixel *readPPM(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filenam
         .compile()
         .configure(grid, block)
         .launch(args);
+
   \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
     std::cerr << \textcolor{stringliteral}{"Error:\(\backslash\)n"} << e.what() << std::endl;
   \}

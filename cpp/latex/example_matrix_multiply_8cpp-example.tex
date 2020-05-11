@@ -19,7 +19,7 @@
 \textcolor{keywordtype}{void} compare(\textcolor{keywordtype}{float} *lhs, \textcolor{keywordtype}{float} *rhs, \textcolor{keywordtype}{int} width) \{
   \textcolor{keywordtype}{int} errors = 0;
   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i\{0\}; i < width; i += 1) \{
-    \textcolor{comment}{// printf("[%d] expected %f : actually %f\(\backslash\)n", i, lhs[i], rhs[i]);}
+    \textcolor{comment}{//printf("[%d] expected %f : actually %f\(\backslash\)n", i, lhs[i], rhs[i]);}
     \textcolor{keywordflow}{if} ((lhs[i] - rhs[i]) != 0) \{
       errors += 1;
     \}
@@ -100,7 +100,7 @@ std::function<bool(const float &, const float &)> comparator =
 
     \textcolor{comment}{// Set kernel string and compile options}
 
-    Source source\{load(\textcolor{stringliteral}{"kernels/matrixMult.cu"})\};
+    Source source\{load(\textcolor{stringliteral}{"examples/kernels/matrixMult.cu"})\};
     Options options;
     options.insert(\textcolor{stringliteral}{"--std"}, \textcolor{stringliteral}{"c++14"});
     options.insert(\textcolor{stringliteral}{"--device-debug"});
