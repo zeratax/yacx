@@ -1,19 +1,19 @@
-\hypertarget{docs_2headers_8cpp-example}{}\section{docs/headers.\+cpp}
+\hypertarget{docs_2headers_8cpp-example}{}\doxysection{docs/headers.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "yacx/Header.hpp"}
-\textcolor{preprocessor}{#include "yacx/Headers.hpp"}
-\textcolor{preprocessor}{#include "yacx/Source.hpp"}
-\textcolor{preprocessor}{#include "kernels/gauss.h"}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::Headers, yacx::Header;
-
-Headers headers;
-headers.insert(Header\{\textcolor{stringliteral}{"kernels/gauss.h"}\});
-Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), headers\};
-
-\textcolor{comment}{// Alternatively if you only use one header}
-
-Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), Headers\{\textcolor{stringliteral}{"kernels/gauss.h"}\}\};
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Header.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Headers.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Source.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "kernels/gauss.h"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_headers}{yacx::Headers}}, \mbox{\hyperlink{classyacx_1_1_header}{yacx::Header}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{Headers headers;}
+\DoxyCodeLine{headers.insert(Header\{\textcolor{stringliteral}{"kernels/gauss.h"}\});}
+\DoxyCodeLine{Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), headers\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// Alternatively if you only use one header}}
+\DoxyCodeLine{}
+\DoxyCodeLine{Source source\{load(\textcolor{stringliteral}{"kernels/gauss.cu"}), Headers\{\textcolor{stringliteral}{"kernels/gauss.h"}\}\};}
 \end{DoxyCodeInclude}
  

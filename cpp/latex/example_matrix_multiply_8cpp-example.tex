@@ -1,257 +1,257 @@
-\hypertarget{example_matrix_multiply_8cpp-example}{}\section{example\+\_\+matrix\+\_\+multiply.\+cpp}
+\hypertarget{example_matrix_multiply_8cpp-example}{}\doxysection{example\+\_\+matrix\+\_\+multiply.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
-
-\textcolor{preprocessor}{#include <algorithm>}
-\textcolor{preprocessor}{#include <array>}
-\textcolor{preprocessor}{#include <cstdio>}
-\textcolor{preprocessor}{#include <ctime>}
-\textcolor{preprocessor}{#include <functional>}
-\textcolor{preprocessor}{#include <iostream>}
-\textcolor{preprocessor}{#include <iterator>}
-\textcolor{preprocessor}{#include <random>}
-\textcolor{preprocessor}{#include <string>}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::Device,
-    yacx::load, yacx::KernelTime, yacx::Devices;
-
-\textcolor{keywordtype}{void} compare(\textcolor{keywordtype}{float} *lhs, \textcolor{keywordtype}{float} *rhs, \textcolor{keywordtype}{int} width) \{
-  \textcolor{keywordtype}{int} errors = 0;
-  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i\{0\}; i < width; i += 1) \{
-    \textcolor{comment}{//printf("[%d] expected %f : actually %f\(\backslash\)n", i, lhs[i], rhs[i]);}
-    \textcolor{keywordflow}{if} ((lhs[i] - rhs[i]) != 0) \{
-      errors += 1;
-    \}
-  \}
-  \textcolor{keywordflow}{if} (errors > 0)
-    printf(\textcolor{stringliteral}{"\(\backslash\)u001b[31m%d errors occured, out of %d values.\(\backslash\)u001b[0m\(\backslash\)n"}, errors,
-           width);
-  \textcolor{keywordflow}{else}
-    printf(\textcolor{stringliteral}{"\(\backslash\)u001b[32mno errors occured.\(\backslash\)u001b[0m\(\backslash\)n"});
-\}
-
-std::function<bool(const float &, const float &)> comparator =
-    [](\textcolor{keyword}{const} \textcolor{keywordtype}{float} &left, \textcolor{keyword}{const} \textcolor{keywordtype}{float} &right) \{
-      \textcolor{comment}{// double epsilon\{1.0E-8\};}
-      \textcolor{keywordtype}{double} epsilon\{1\};
-      \textcolor{keywordflow}{return} (abs(left - right) < epsilon);
-    \};
-
-\textcolor{keyword}{template} <\textcolor{keyword}{class} Iter>
-\textcolor{keywordtype}{void} fill(Iter start, Iter end, \textcolor{keywordtype}{int} min = 0, \textcolor{keywordtype}{int} max = 100) \{
-  \textcolor{keyword}{static} std::random\_device rd;
-  \textcolor{keyword}{static} std::mt19937 mte(rd());
-
-  std::uniform\_int\_distribution<int> dist(min, max);
-
-  std::generate(start, end, [&]() \{ \textcolor{keywordflow}{return} dist(mte); \});
-\}
-
-\textcolor{keywordtype}{void} MatrixMulSeq(\textcolor{keyword}{const} \textcolor{keywordtype}{float} *M, \textcolor{keyword}{const} \textcolor{keywordtype}{float} *N, \textcolor{keywordtype}{float} *P, \textcolor{keywordtype}{size\_t} width) \{
-  \textcolor{keywordtype}{size\_t} Col, Row, k;
-  \textcolor{keywordflow}{for} (Col = 0; Col < width; ++Col)
-    \textcolor{keywordflow}{for} (Row = 0; Row < width; ++Row) \{
-      \textcolor{keywordtype}{float} sum = 0;
-      \textcolor{keywordflow}{for} (k = 0; k < width; k += 1) \{
-        sum += M[Row * width + k] * N[k * width + Col];
-      \}
-      P[Row * width + Col] = sum;
-    \}
-\}
-
-\textcolor{keywordtype}{int} main() \{
-  std::clock\_t start;
-
-  \textcolor{keywordtype}{bool} equalMultiply1, equalMultiply1unfolded, equalMultiply2,
-      equalMultiplyNaive;
-
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} WIDTH\{1024\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} BLOCK\_SIZE\{16\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} GRANULARITY\{4\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} matrix\_size\{WIDTH * WIDTH * \textcolor{keyword}{sizeof}(float)\};
-  static\_assert(WIDTH % BLOCK\_SIZE == 0);
-  static\_assert(BLOCK\_SIZE % GRANULARITY == 0);
-  \textcolor{comment}{// problem with WIDTH > 500}
-  \textcolor{comment}{// std::array<float, WIDTH * WIDTH> M, N, P\_cuda, P\_seq;}
-  \textcolor{keywordtype}{float} *M = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];
-  \textcolor{keywordtype}{float} *N = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];
-  \textcolor{keywordtype}{float} *P\_seq = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];
-  \textcolor{keywordtype}{float} *P\_cuda = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];
-
-  KernelTime time;
-
-  \textcolor{comment}{// Fill arrays with random values}
-  \textcolor{comment}{// fill(N.begin(), N.end());}
-  \textcolor{comment}{// fill(M.begin(), M.end());}
-  fill(M, M + (WIDTH * WIDTH));
-  fill(N, N + (WIDTH * WIDTH));
-
-  \textcolor{keywordflow}{try} \{
-    \textcolor{comment}{// Select Device}
-    Device dev = Devices::findDevice();
-    std::cout << \textcolor{stringliteral}{"===================================\(\backslash\)n"};
-    std::cout << \textcolor{stringliteral}{"Selected "} << dev.name() << \textcolor{stringliteral}{" with "}
-              << (dev.total\_memory() / 1024) / 1024 << \textcolor{stringliteral}{"mb VRAM\(\backslash\)n"};
-    std::cout << \textcolor{stringliteral}{"Kernel Arguments total size: "}
-              << ((matrix\_size * 3 + \textcolor{keyword}{sizeof}(size\_t)) / 1024) << \textcolor{stringliteral}{"kb\(\backslash\)n\(\backslash\)n"};
-    std::cout << \textcolor{stringliteral}{"Theoretical Bandwith:        "}
-              << yacx::theoretical\_bandwidth(dev) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-
-    \textcolor{comment}{// Set kernel string and compile options}
-
-    Source source\{load(\textcolor{stringliteral}{"examples/kernels/matrixMult.cu"})\};
-    Options options;
-    options.insert(\textcolor{stringliteral}{"--std"}, \textcolor{stringliteral}{"c++14"});
-    options.insert(\textcolor{stringliteral}{"--device-debug"});
-    options.insertOptions(\hyperlink{classyacx_1_1options_1_1_gpu_architecture}{yacx::options::GpuArchitecture}\{dev\});
-
-    \textcolor{comment}{// Set arguments}
-
-    std::vector<KernelArg> args;
-    \textcolor{comment}{// args.emplace\_back(KernelArg\{M.data(), matrix\_size\});}
-    \textcolor{comment}{// args.emplace\_back(KernelArg\{N.data(), matrix\_size\});}
-    \textcolor{comment}{// args.emplace\_back(KernelArg\{P\_cuda.data(), matrix\_size, true, false\});}
-    args.emplace\_back(KernelArg\{M, matrix\_size\});
-    args.emplace\_back(KernelArg\{N, matrix\_size\});
-    args.emplace\_back(KernelArg\{P\_cuda, matrix\_size, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});
-    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{size\_t} *\textcolor{keyword}{>}(&WIDTH)\});
-
-    \textcolor{comment}{// Compile Kernels}
-
-    dim3 grid(WIDTH, WIDTH);
-    dim3 block(1, 1);
-    Kernel kernelNaive = source.program(\textcolor{stringliteral}{"MatrixMultyNaive"})
-                             .compile(options)
-                             .configure(grid, block);
-
-    block.x = BLOCK\_SIZE;
-    block.y = BLOCK\_SIZE / GRANULARITY;
-    grid.x = WIDTH / block.x;
-    grid.y = WIDTH / GRANULARITY / block.y;
-    \textcolor{comment}{//    std::cout << "get\_global\_size(0): " << block.x * grid.x << std::endl;}
-    \textcolor{comment}{//    std::cout << "get\_global\_size(1): " << block.y * grid.y << std::endl;}
-    \textcolor{comment}{//    std::cout << "get\_local\_size(0): " << block.x << std::endl;}
-    \textcolor{comment}{//    std::cout << "get\_local\_size(1): " << block.y << std::endl;}
-    Kernel kernel1 = source.program(\textcolor{stringliteral}{"MatrixMulty1"})
-                         .instantiate(BLOCK\_SIZE, GRANULARITY)
-                         .compile(options)
-                         .configure(grid, block);
-
-    block.x = BLOCK\_SIZE;
-    block.y = BLOCK\_SIZE / 4;
-    grid.x = WIDTH / block.x;
-    grid.y = WIDTH / 4 / block.y;
-    Kernel kernel1\_1 = source.program(\textcolor{stringliteral}{"MatrixMulty1unfolded"})
-                           .instantiate(BLOCK\_SIZE)
-                           .compile(options)
-                           .configure(grid, block);
-
-    block.x = BLOCK\_SIZE;
-    block.y = BLOCK\_SIZE;
-    grid.x = WIDTH / BLOCK\_SIZE;
-    grid.y = WIDTH / BLOCK\_SIZE;
-    Kernel kernel2 = source.program(\textcolor{stringliteral}{"MatrixMulty2"})
-                         .instantiate(BLOCK\_SIZE)
-                         .compile(options)
-                         .configure(grid, block);
-
-    \textcolor{comment}{// Launch kernels}
-
-    \textcolor{comment}{// CPU single threaded matrix multiplication}
-    start = std::clock();
-    \textcolor{comment}{// MatrixMulSeq(M.data(), N.data(), P\_seq.data(), WIDTH);}
-    MatrixMulSeq(M, N, P\_seq, WIDTH);
-    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[CPU single threaded]"}
-              << yacx::gColorReset << \textcolor{stringliteral}{":   "}
-              << (std::clock() - start) / (\textcolor{keywordtype}{double})(CLOCKS\_PER\_SEC / 1000)
-              << \textcolor{stringliteral}{" ms"} << std::endl;
-
-    time = kernelNaive.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMultyNaive]"}
-              << yacx::gColorReset << \textcolor{stringliteral}{":      "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
-
-    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-
-    equalMultiplyNaive =
-        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
-    \textcolor{keywordflow}{if} (!equalMultiplyNaive)
-      compare(P\_seq, P\_cuda, WIDTH * WIDTH);
-
-    \textcolor{keywordflow}{if} (BLOCK\_SIZE % 4 == 0) \{
-      time = kernel1\_1.launch(args, dev);
-      std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow
-                << \textcolor{stringliteral}{"[MatrixMulty1unfolded]"} << yacx::gColorReset << \textcolor{stringliteral}{":  "}
-                << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
-
-      std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-                << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-      equalMultiply1unfolded =
-          std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
-      \textcolor{keywordflow}{if} (!equalMultiply1unfolded)
-        compare(P\_seq, P\_cuda, WIDTH * WIDTH);
-    \} \textcolor{keywordflow}{else} \{
-      equalMultiply1unfolded = \textcolor{keyword}{true};
-    \}
-
-    time = kernel1.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty1]"}
-              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
-
-    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-    equalMultiply1 =
-        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
-    \textcolor{keywordflow}{if} (!equalMultiply1)
-      compare(P\_seq, P\_cuda, WIDTH * WIDTH);
-
-    time = kernel2.launch(args, dev);
-    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty2]"}
-              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};
-
-    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n\(\backslash\)n"};
-    equalMultiply2 =
-        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);
-    \textcolor{keywordflow}{if} (!equalMultiply2)
-      compare(P\_seq, P\_cuda, WIDTH * WIDTH);
-
-  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
-    std::cerr << e.what() << std::endl;
-    exit(1);
-  \}
-
-  \textcolor{keywordflow}{if} (equalMultiplyNaive && equalMultiply1 && equalMultiply1unfolded &&
-      equalMultiply2) \{
-    std::cout << yacx::gColorBrightGreen
-              << \textcolor{stringliteral}{"Everything was correctly calculated!"} << yacx::gColorReset;
-  \} \textcolor{keywordflow}{else} \{
-    std::cout << yacx::gColorBrightRed;
-  \}
-  \textcolor{keywordflow}{if} (!equalMultiplyNaive) \{
-    std::cout << \textcolor{stringliteral}{"Naive went wrong ;\_;\(\backslash\)n"};
-  \}
-  \textcolor{keywordflow}{if} (!equalMultiply1) \{
-    std::cout << \textcolor{stringliteral}{"Multy1 went wrong ;\_;\(\backslash\)n"};
-  \}
-  \textcolor{keywordflow}{if} (!equalMultiply1unfolded) \{
-    std::cout << \textcolor{stringliteral}{"Multy1unfolded went wrong ;\_;\(\backslash\)n"};
-  \}
-  \textcolor{keywordflow}{if} (!equalMultiply2) \{
-    std::cout << \textcolor{stringliteral}{"Multy2 went wrong ;\_;\(\backslash\)n"};
-  \}
-
-  std::cout << yacx::gColorReset
-            << \textcolor{stringliteral}{"==================================="} << std::endl;
-
-  \textcolor{comment}{// Free resources}
-  \textcolor{keyword}{delete}[] M;
-  \textcolor{keyword}{delete}[] N;
-  \textcolor{keyword}{delete}[] P\_seq;
-  \textcolor{keyword}{delete}[] P\_cuda;
-
-  \textcolor{keywordflow}{return} 0;
-\}
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{main_8hpp}{yacx/main.hpp}}"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <cstdio>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <ctime>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <random>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}}, \mbox{\hyperlink{classyacx_1_1_kernel}{yacx::Kernel}}, \mbox{\hyperlink{classyacx_1_1_options}{yacx::Options}}, \mbox{\hyperlink{classyacx_1_1_device}{yacx::Device}},}
+\DoxyCodeLine{    yacx::load, \mbox{\hyperlink{structyacx_1_1_kernel_time_struct}{yacx::KernelTime}}, \mbox{\hyperlink{classyacx_1_1_devices}{yacx::Devices}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void} compare(\textcolor{keywordtype}{float} *lhs, \textcolor{keywordtype}{float} *rhs, \textcolor{keywordtype}{int} width) \{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int} errors = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i\{0\}; i < width; i += 1) \{}
+\DoxyCodeLine{    \textcolor{comment}{//printf("[\%d] expected \%f : actually \%f\(\backslash\)n", i, lhs[i], rhs[i]);}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} ((lhs[i] -\/ rhs[i]) != 0) \{}
+\DoxyCodeLine{      errors += 1;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (errors > 0)}
+\DoxyCodeLine{    printf(\textcolor{stringliteral}{"\(\backslash\)u001b[31m\%d errors occured, out of \%d values.\(\backslash\)u001b[0m\(\backslash\)n"}, errors,}
+\DoxyCodeLine{           width);}
+\DoxyCodeLine{  \textcolor{keywordflow}{else}}
+\DoxyCodeLine{    printf(\textcolor{stringliteral}{"\(\backslash\)u001b[32mno errors occured.\(\backslash\)u001b[0m\(\backslash\)n"});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{std::function<bool(\textcolor{keyword}{const} \textcolor{keywordtype}{float} \&, \textcolor{keyword}{const} \textcolor{keywordtype}{float} \&)> comparator =}
+\DoxyCodeLine{    [](\textcolor{keyword}{const} \textcolor{keywordtype}{float} \&left, \textcolor{keyword}{const} \textcolor{keywordtype}{float} \&right) \{}
+\DoxyCodeLine{      \textcolor{comment}{// double epsilon\{1.0E-\/8\};}}
+\DoxyCodeLine{      \textcolor{keywordtype}{double} epsilon\{1\};}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} (abs(left -\/ right) < epsilon);}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{template} <\textcolor{keyword}{class} Iter>}
+\DoxyCodeLine{\textcolor{keywordtype}{void} fill(Iter start, Iter end, \textcolor{keywordtype}{int} min = 0, \textcolor{keywordtype}{int} max = 100) \{}
+\DoxyCodeLine{  \textcolor{keyword}{static} std::random\_device rd;}
+\DoxyCodeLine{  \textcolor{keyword}{static} std::mt19937 mte(rd());}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::uniform\_int\_distribution<int> dist(min, max);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::generate(start, end, [\&]() \{ \textcolor{keywordflow}{return} dist(mte); \});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{void} MatrixMulSeq(\textcolor{keyword}{const} \textcolor{keywordtype}{float} *M, \textcolor{keyword}{const} \textcolor{keywordtype}{float} *N, \textcolor{keywordtype}{float} *P, \textcolor{keywordtype}{size\_t} width) \{}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t} Col, Row, k;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (Col = 0; Col < width; ++Col)}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (Row = 0; Row < width; ++Row) \{}
+\DoxyCodeLine{      \textcolor{keywordtype}{float} sum = 0;}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (k = 0; k < width; k += 1) \{}
+\DoxyCodeLine{        sum += M[Row * width + k] * N[k * width + Col];}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      P[Row * width + Col] = sum;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main() \{}
+\DoxyCodeLine{  std::clock\_t start;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordtype}{bool} equalMultiply1, equalMultiply1unfolded, equalMultiply2,}
+\DoxyCodeLine{      equalMultiplyNaive;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} WIDTH\{1024\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} BLOCK\_SIZE\{16\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} GRANULARITY\{4\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} matrix\_size\{WIDTH * WIDTH * \textcolor{keyword}{sizeof}(float)\};}
+\DoxyCodeLine{  static\_assert(WIDTH \% BLOCK\_SIZE == 0);}
+\DoxyCodeLine{  static\_assert(BLOCK\_SIZE \% GRANULARITY == 0);}
+\DoxyCodeLine{  \textcolor{comment}{// problem with WIDTH > 500}}
+\DoxyCodeLine{  \textcolor{comment}{// std::array<float, WIDTH * WIDTH> M, N, P\_cuda, P\_seq;}}
+\DoxyCodeLine{  \textcolor{keywordtype}{float} *M = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];}
+\DoxyCodeLine{  \textcolor{keywordtype}{float} *N = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];}
+\DoxyCodeLine{  \textcolor{keywordtype}{float} *P\_seq = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];}
+\DoxyCodeLine{  \textcolor{keywordtype}{float} *P\_cuda = \textcolor{keyword}{new} \textcolor{keywordtype}{float}[WIDTH * WIDTH];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  KernelTime time;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{// Fill arrays with random values}}
+\DoxyCodeLine{  \textcolor{comment}{// fill(N.begin(), N.end());}}
+\DoxyCodeLine{  \textcolor{comment}{// fill(M.begin(), M.end());}}
+\DoxyCodeLine{  fill(M, M + (WIDTH * WIDTH));}
+\DoxyCodeLine{  fill(N, N + (WIDTH * WIDTH));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{    \textcolor{comment}{// Select Device}}
+\DoxyCodeLine{    Device dev = Devices::findDevice();}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"===================================\(\backslash\)n"};}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Selected "} << dev.name() << \textcolor{stringliteral}{" with "}}
+\DoxyCodeLine{              << (dev.total\_memory() / 1024) / 1024 << \textcolor{stringliteral}{"mb VRAM\(\backslash\)n"};}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Kernel Arguments total size: "}}
+\DoxyCodeLine{              << ((matrix\_size * 3 + \textcolor{keyword}{sizeof}(size\_t)) / 1024) << \textcolor{stringliteral}{"kb\(\backslash\)n\(\backslash\)n"};}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Theoretical Bandwith:        "}}
+\DoxyCodeLine{              << yacx::theoretical\_bandwidth(dev) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Set kernel string and compile options}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    Source source\{load(\textcolor{stringliteral}{"examples/kernels/matrixMult.cu"})\};}
+\DoxyCodeLine{    Options options;}
+\DoxyCodeLine{    options.insert(\textcolor{stringliteral}{"-\/-\/std"}, \textcolor{stringliteral}{"c++14"});}
+\DoxyCodeLine{    options.insert(\textcolor{stringliteral}{"-\/-\/device-\/debug"});}
+\DoxyCodeLine{    options.insertOptions(\mbox{\hyperlink{classyacx_1_1options_1_1_gpu_architecture}{yacx::options::GpuArchitecture}}\{dev\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Set arguments}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::vector<KernelArg> args;}
+\DoxyCodeLine{    \textcolor{comment}{// args.emplace\_back(KernelArg\{M.data(), matrix\_size\});}}
+\DoxyCodeLine{    \textcolor{comment}{// args.emplace\_back(KernelArg\{N.data(), matrix\_size\});}}
+\DoxyCodeLine{    \textcolor{comment}{// args.emplace\_back(KernelArg\{P\_cuda.data(), matrix\_size, true, false\});}}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{M, matrix\_size\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{N, matrix\_size\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{P\_cuda, matrix\_size, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{size\_t} *\textcolor{keyword}{>}(\&WIDTH)\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Compile Kernels}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    dim3 grid(WIDTH, WIDTH);}
+\DoxyCodeLine{    dim3 block(1, 1);}
+\DoxyCodeLine{    Kernel kernelNaive = source.program(\textcolor{stringliteral}{"MatrixMultyNaive"})}
+\DoxyCodeLine{                             .compile(options)}
+\DoxyCodeLine{                             .configure(grid, block);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    block.x = BLOCK\_SIZE;}
+\DoxyCodeLine{    block.y = BLOCK\_SIZE / GRANULARITY;}
+\DoxyCodeLine{    grid.x = WIDTH / block.x;}
+\DoxyCodeLine{    grid.y = WIDTH / GRANULARITY / block.y;}
+\DoxyCodeLine{    \textcolor{comment}{//    std::cout << "get\_global\_size(0): " << block.x * grid.x << std::endl;}}
+\DoxyCodeLine{    \textcolor{comment}{//    std::cout << "get\_global\_size(1): " << block.y * grid.y << std::endl;}}
+\DoxyCodeLine{    \textcolor{comment}{//    std::cout << "get\_local\_size(0): " << block.x << std::endl;}}
+\DoxyCodeLine{    \textcolor{comment}{//    std::cout << "get\_local\_size(1): " << block.y << std::endl;}}
+\DoxyCodeLine{    Kernel kernel1 = source.program(\textcolor{stringliteral}{"MatrixMulty1"})}
+\DoxyCodeLine{                         .instantiate(BLOCK\_SIZE, GRANULARITY)}
+\DoxyCodeLine{                         .compile(options)}
+\DoxyCodeLine{                         .configure(grid, block);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    block.x = BLOCK\_SIZE;}
+\DoxyCodeLine{    block.y = BLOCK\_SIZE / 4;}
+\DoxyCodeLine{    grid.x = WIDTH / block.x;}
+\DoxyCodeLine{    grid.y = WIDTH / 4 / block.y;}
+\DoxyCodeLine{    Kernel kernel1\_1 = source.program(\textcolor{stringliteral}{"MatrixMulty1unfolded"})}
+\DoxyCodeLine{                           .instantiate(BLOCK\_SIZE)}
+\DoxyCodeLine{                           .compile(options)}
+\DoxyCodeLine{                           .configure(grid, block);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    block.x = BLOCK\_SIZE;}
+\DoxyCodeLine{    block.y = BLOCK\_SIZE;}
+\DoxyCodeLine{    grid.x = WIDTH / BLOCK\_SIZE;}
+\DoxyCodeLine{    grid.y = WIDTH / BLOCK\_SIZE;}
+\DoxyCodeLine{    Kernel kernel2 = source.program(\textcolor{stringliteral}{"MatrixMulty2"})}
+\DoxyCodeLine{                         .instantiate(BLOCK\_SIZE)}
+\DoxyCodeLine{                         .compile(options)}
+\DoxyCodeLine{                         .configure(grid, block);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Launch kernels}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// CPU single threaded matrix multiplication}}
+\DoxyCodeLine{    start = std::clock();}
+\DoxyCodeLine{    \textcolor{comment}{// MatrixMulSeq(M.data(), N.data(), P\_seq.data(), WIDTH);}}
+\DoxyCodeLine{    MatrixMulSeq(M, N, P\_seq, WIDTH);}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[CPU single threaded]"}}
+\DoxyCodeLine{              << yacx::gColorReset << \textcolor{stringliteral}{":   "}}
+\DoxyCodeLine{              << (std::clock() -\/ start) / (\textcolor{keywordtype}{double})(CLOCKS\_PER\_SEC / 1000)}
+\DoxyCodeLine{              << \textcolor{stringliteral}{" ms"} << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    time = kernelNaive.launch(args, dev);}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMultyNaive]"}}
+\DoxyCodeLine{              << yacx::gColorReset << \textcolor{stringliteral}{":      "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}}
+\DoxyCodeLine{              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    equalMultiplyNaive =}
+\DoxyCodeLine{        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!equalMultiplyNaive)}
+\DoxyCodeLine{      compare(P\_seq, P\_cuda, WIDTH * WIDTH);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (BLOCK\_SIZE \% 4 == 0) \{}
+\DoxyCodeLine{      time = kernel1\_1.launch(args, dev);}
+\DoxyCodeLine{      std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow}
+\DoxyCodeLine{                << \textcolor{stringliteral}{"[MatrixMulty1unfolded]"} << yacx::gColorReset << \textcolor{stringliteral}{":  "}}
+\DoxyCodeLine{                << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{      std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}}
+\DoxyCodeLine{                << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{      equalMultiply1unfolded =}
+\DoxyCodeLine{          std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (!equalMultiply1unfolded)}
+\DoxyCodeLine{        compare(P\_seq, P\_cuda, WIDTH * WIDTH);}
+\DoxyCodeLine{    \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      equalMultiply1unfolded = \textcolor{keyword}{true};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    time = kernel1.launch(args, dev);}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty1]"}}
+\DoxyCodeLine{              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}}
+\DoxyCodeLine{              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{    equalMultiply1 =}
+\DoxyCodeLine{        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!equalMultiply1)}
+\DoxyCodeLine{      compare(P\_seq, P\_cuda, WIDTH * WIDTH);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    time = kernel2.launch(args, dev);}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Time"} << yacx::gColorBrightYellow << \textcolor{stringliteral}{"[MatrixMulty2]"}}
+\DoxyCodeLine{              << yacx::gColorReset << \textcolor{stringliteral}{":          "} << time.total << \textcolor{stringliteral}{" ms\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}}
+\DoxyCodeLine{              << time.effective\_bandwidth\_launch() << \textcolor{stringliteral}{" GB/s\(\backslash\)n\(\backslash\)n"};}
+\DoxyCodeLine{    equalMultiply2 =}
+\DoxyCodeLine{        std::equal(P\_cuda, P\_cuda + (WIDTH * WIDTH), P\_seq, comparator);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!equalMultiply2)}
+\DoxyCodeLine{      compare(P\_seq, P\_cuda, WIDTH * WIDTH);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception \&e) \{}
+\DoxyCodeLine{    std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{    exit(1);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (equalMultiplyNaive \&\& equalMultiply1 \&\& equalMultiply1unfolded \&\&}
+\DoxyCodeLine{      equalMultiply2) \{}
+\DoxyCodeLine{    std::cout << yacx::gColorBrightGreen}
+\DoxyCodeLine{              << \textcolor{stringliteral}{"Everything was correctly calculated!"} << yacx::gColorReset;}
+\DoxyCodeLine{  \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    std::cout << yacx::gColorBrightRed;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!equalMultiplyNaive) \{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Naive went wrong ;\_;\(\backslash\)n"};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!equalMultiply1) \{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Multy1 went wrong ;\_;\(\backslash\)n"};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!equalMultiply1unfolded) \{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Multy1unfolded went wrong ;\_;\(\backslash\)n"};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!equalMultiply2) \{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Multy2 went wrong ;\_;\(\backslash\)n"};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::cout << yacx::gColorReset}
+\DoxyCodeLine{            << \textcolor{stringliteral}{"==================================="} << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{// Free resources}}
+\DoxyCodeLine{  \textcolor{keyword}{delete}[] M;}
+\DoxyCodeLine{  \textcolor{keyword}{delete}[] N;}
+\DoxyCodeLine{  \textcolor{keyword}{delete}[] P\_seq;}
+\DoxyCodeLine{  \textcolor{keyword}{delete}[] P\_cuda;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
 \end{DoxyCodeInclude}
  

@@ -1,32 +1,32 @@
-\hypertarget{docs_2kernel_args_8cpp-example}{}\section{docs/kernel\+\_\+args.\+cpp}
+\hypertarget{docs_2kernel_args_8cpp-example}{}\doxysection{docs/kernel\+\_\+args.\+cpp}
 Will execute the Kernel with {\ttfamily add(1, 2, 3, 4, result)}; and the result will be downloaded from device to host
 
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "yacx/Kernel.hpp"}
-\textcolor{preprocessor}{#include "yacx/KernelArgs.hpp"}
-\textcolor{preprocessor}{#include "yacx/Program.hpp"}
-\textcolor{preprocessor}{#include "yacx/Source.hpp"}
-
-\textcolor{preprocessor}{#include <vector\_types.h>}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg};
-
-\textcolor{keywordtype}{int} a = 1;
-\textcolor{keywordtype}{int} b = 2;
-\textcolor{keywordtype}{int} c = 3;
-\textcolor{keywordtype}{int} d = 4;
-\textcolor{keywordtype}{int} result = 0;
-
-std::vector<KernelArg> args;
-args.emplace\_back(KernelArg\{&a\});
-args.emplace\_back(KernelArg\{&b\});
-args.emplace\_back(KernelArg\{&c\});
-args.emplace\_back(KernelArg\{&d\});
-args.emplace\_back(KernelArg\{&result, \textcolor{keyword}{sizeof}(int), \textcolor{keyword}{true}\});
-
-dim3 grid(1);
-dim3 block(1);
-source.program(\textcolor{stringliteral}{"add"}).compile().configure(grid, block).launch(args);
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Kernel.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/KernelArgs.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Program.hpp"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Source.hpp"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <vector\_types.h>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} a = 1;}
+\DoxyCodeLine{\textcolor{keywordtype}{int} b = 2;}
+\DoxyCodeLine{\textcolor{keywordtype}{int} c = 3;}
+\DoxyCodeLine{\textcolor{keywordtype}{int} d = 4;}
+\DoxyCodeLine{\textcolor{keywordtype}{int} result = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{std::vector<KernelArg> args;}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&a\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&b\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&c\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&d\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&result, \textcolor{keyword}{sizeof}(int), \textcolor{keyword}{true}\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{dim3 grid(1);}
+\DoxyCodeLine{dim3 block(1);}
+\DoxyCodeLine{source.program(\textcolor{stringliteral}{"add"}).compile().configure(grid, block).launch(args);}
 \end{DoxyCodeInclude}
  

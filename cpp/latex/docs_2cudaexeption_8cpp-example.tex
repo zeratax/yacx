@@ -1,24 +1,24 @@
-\hypertarget{docs_2cudaexeption_8cpp-example}{}\section{docs/cudaexeption.\+cpp}
+\hypertarget{docs_2cudaexeption_8cpp-example}{}\doxysection{docs/cudaexeption.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "yacx/Exception.hpp"}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_c_uresult_exception}{yacx::CUresultException};
-
-\textcolor{keywordtype}{int} nBytes = 10;
-CUdeviceptr d\_A;
-\textcolor{keywordflow}{try} \{
-  checkCUresultError(cuMemAlloc(&d\_A, (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})nBytes));
-\} \textcolor{keywordflow}{catch} (CUresultException<(CUresult)1> &e) \{ \textcolor{comment}{// CUDA\_ERROR\_INVALID\_VALUE}
-  std::cout << \textcolor{stringliteral}{"Wrong Exception caught"} << std::endl;
-  std::cout << e.what() << std::endl;
-\} \textcolor{keywordflow}{catch} (CUresultException<CUDA\_ERROR\_NOT\_INITIALIZED> &e) \{
-  std::cout << \textcolor{stringliteral}{"Correct Exception caught"} << std::endl;
-  std::cout << e.what() << std::endl;
-\} \textcolor{keywordflow}{catch} (std::exception &e) \{
-  \textcolor{comment}{// Other errors}
-  std::cout << \textcolor{stringliteral}{"other Error\(\backslash\)n"};
-  std::cout << e.what() << std::endl;
-\}
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "yacx/Exception.hpp"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_c_uresult_exception}{yacx::CUresultException}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} nBytes = 10;}
+\DoxyCodeLine{CUdeviceptr d\_A;}
+\DoxyCodeLine{\textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{  checkCUresultError(cuMemAlloc(\&d\_A, (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})nBytes));}
+\DoxyCodeLine{\} \textcolor{keywordflow}{catch} (CUresultException<(CUresult)1> \&e) \{ \textcolor{comment}{// CUDA\_ERROR\_INVALID\_VALUE}}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"Wrong Exception caught"} << std::endl;}
+\DoxyCodeLine{  std::cout << e.what() << std::endl;}
+\DoxyCodeLine{\} \textcolor{keywordflow}{catch} (CUresultException<CUDA\_ERROR\_NOT\_INITIALIZED> \&e) \{}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"Correct Exception caught"} << std::endl;}
+\DoxyCodeLine{  std::cout << e.what() << std::endl;}
+\DoxyCodeLine{\} \textcolor{keywordflow}{catch} (std::exception \&e) \{}
+\DoxyCodeLine{  \textcolor{comment}{// Other errors}}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"other Error\(\backslash\)n"};}
+\DoxyCodeLine{  std::cout << e.what() << std::endl;}
+\DoxyCodeLine{\}}
 \end{DoxyCodeInclude}
  

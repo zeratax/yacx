@@ -1,89 +1,89 @@
-\hypertarget{example_saxpy_8cpp-example}{}\section{example\+\_\+saxpy.\+cpp}
+\hypertarget{example_saxpy_8cpp-example}{}\doxysection{example\+\_\+saxpy.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
-\textcolor{preprocessor}{#include <stdlib.h>}
-
-\textcolor{preprocessor}{#define NUM\_THREADS 512}
-\textcolor{preprocessor}{#define NUM\_BLOCKS 1024}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::KernelTime, yacx::Kernel,
-    yacx::Device, yacx::Devices, yacx::load, yacx::type\_of;
-
-\textcolor{keywordtype}{int} main() \{
-  \textcolor{keyword}{const} \textcolor{keywordtype}{float} DELTA\{0.01f\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} N\{NUM\_THREADS * NUM\_BLOCKS\};
-  \textcolor{keywordtype}{size\_t} bufferSize\{N * \textcolor{keyword}{sizeof}(float)\};
-  \textcolor{keywordtype}{float} a\{5.1f\};
-  std::array<float, N> hX, hY, hOut;
-  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i\{0\}; i < N; ++i) \{
-    hX.at(i) = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(i * 0.01);
-    hY.at(i) = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(i * 0.02);
-  \}
-  KernelTime time;
-
-  \textcolor{keywordflow}{try} \{
-    Device dev = Devices::findDevice();
-    Source source\{
-        \textcolor{stringliteral}{"extern \(\backslash\)"C\(\backslash\)" \_\_global\_\_\(\backslash\)n"}
-        \textcolor{stringliteral}{"void saxpy(float a, float *x, float *y, float *out, size\_t n) \{\(\backslash\)n"}
-        \textcolor{stringliteral}{"  size\_t tid = blockIdx.x * blockDim.x + threadIdx.x;\(\backslash\)n"}
-        \textcolor{stringliteral}{"  if (tid < n) \{\(\backslash\)n"}
-        \textcolor{stringliteral}{"    out[tid] = a * x[tid] + y[tid];\(\backslash\)n"}
-        \textcolor{stringliteral}{"  \}\(\backslash\)n"}
-        \textcolor{stringliteral}{"\}"}\};
-
-    std::vector<KernelArg> args;
-    args.emplace\_back(KernelArg\{&a\});
-    args.emplace\_back(KernelArg\{hX.data(), bufferSize\});
-    args.emplace\_back(KernelArg\{hY.data(), bufferSize\});
-    args.emplace\_back(KernelArg\{hOut.data(), bufferSize, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});
-    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{size\_t} *\textcolor{keyword}{>}(&N)\});
-
-    std::cout << \textcolor{stringliteral}{"Selected "} << dev.name() << \textcolor{stringliteral}{" with "}
-              << (dev.total\_memory() / 1024) / 1024 << \textcolor{stringliteral}{"mb"} << std::endl;
-    std::cout << \textcolor{stringliteral}{"Arguments have a combined size of "}
-              << ((bufferSize * 3 + 2 * \textcolor{keyword}{sizeof}(int)) / 1024) << \textcolor{stringliteral}{"kb"}
-              << std::endl;
-
-    dim3 grid(NUM\_BLOCKS);
-    dim3 block(NUM\_THREADS);
-    time = source.program(\textcolor{stringliteral}{"saxpy"})
-               .compile()
-               .configure(grid, block)
-               .launch(args, dev);
-
-    std::cout << \textcolor{stringliteral}{"Theoretical Bandwith:        "}
-              << yacx::theoretical\_bandwidth(dev) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}
-              << yacx::effective\_bandwidth(time.launch, args.size())
-              << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};
-  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
-    std::cerr << \textcolor{stringliteral}{"Error:\(\backslash\)n"} << e.what() << std::endl;
-    exit(1);
-  \}
-
-  \textcolor{keywordtype}{bool} correct = \textcolor{keyword}{true};
-
-  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = 0; j < hOut.size(); ++j) \{
-    \textcolor{keywordtype}{float} expected = hX.at(j) * a + hY.at(j);
-    \textcolor{keywordflow}{if} (abs(expected - hOut.at(j)) > DELTA) \{
-      correct = \textcolor{keyword}{false};
-      std::cout << \textcolor{stringliteral}{"Expected: "} << expected << \textcolor{stringliteral}{" != "}
-                << \textcolor{stringliteral}{" Result: "} << hOut.at(j) << std::endl;
-    \}
-  \}
-
-  \textcolor{keywordflow}{if} (correct)
-    std::cout << \textcolor{stringliteral}{"\(\backslash\)nEverything was correctly calculated!\(\backslash\)n"} << std::endl;
-
-  std::cout << \textcolor{stringliteral}{"upload time:     "} << time.upload
-            << \textcolor{stringliteral}{" ms\(\backslash\)nexecution time:  "} << time.launch
-            << \textcolor{stringliteral}{" ms\(\backslash\)ndownload time    "} << time.download
-            << \textcolor{stringliteral}{" ms\(\backslash\)ntotal time:      "} << time.total << \textcolor{stringliteral}{" ms.\(\backslash\)n"};
-
-  std::cout << \textcolor{stringliteral}{"==================================="} << std::endl;
-  \textcolor{keywordflow}{return} 0;
-\}
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{main_8hpp}{yacx/main.hpp}}"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define NUM\_THREADS 512}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define NUM\_BLOCKS 1024}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}}, \mbox{\hyperlink{structyacx_1_1_kernel_time_struct}{yacx::KernelTime}}, \mbox{\hyperlink{classyacx_1_1_kernel}{yacx::Kernel}},}
+\DoxyCodeLine{    \mbox{\hyperlink{classyacx_1_1_device}{yacx::Device}}, \mbox{\hyperlink{classyacx_1_1_devices}{yacx::Devices}}, yacx::load, yacx::type\_of;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main() \{}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{float} DELTA\{0.01f\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} N\{NUM\_THREADS * NUM\_BLOCKS\};}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t} bufferSize\{N * \textcolor{keyword}{sizeof}(float)\};}
+\DoxyCodeLine{  \textcolor{keywordtype}{float} a\{5.1f\};}
+\DoxyCodeLine{  std::array<float, N> hX, hY, hOut;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i\{0\}; i < N; ++i) \{}
+\DoxyCodeLine{    hX.at(i) = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(i * 0.01);}
+\DoxyCodeLine{    hY.at(i) = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(i * 0.02);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  KernelTime time;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{    Device dev = Devices::findDevice();}
+\DoxyCodeLine{    Source source\{}
+\DoxyCodeLine{        \textcolor{stringliteral}{"extern \(\backslash\)"C\(\backslash\)" \_\_global\_\_\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"void saxpy(float a, float *x, float *y, float *out, size\_t n) \{\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"  size\_t tid = blockIdx.x * blockDim.x + threadIdx.x;\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"  if (tid < n) \{\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"    out[tid] = a * x[tid] + y[tid];\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"  \}\(\backslash\)n"}}
+\DoxyCodeLine{        \textcolor{stringliteral}{"\}"}\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::vector<KernelArg> args;}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{\&a\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{hX.data(), bufferSize\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{hY.data(), bufferSize\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{hOut.data(), bufferSize, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{size\_t} *\textcolor{keyword}{>}(\&N)\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Selected "} << dev.name() << \textcolor{stringliteral}{" with "}}
+\DoxyCodeLine{              << (dev.total\_memory() / 1024) / 1024 << \textcolor{stringliteral}{"mb"} << std::endl;}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Arguments have a combined size of "}}
+\DoxyCodeLine{              << ((bufferSize * 3 + 2 * \textcolor{keyword}{sizeof}(int)) / 1024) << \textcolor{stringliteral}{"kb"}}
+\DoxyCodeLine{              << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    dim3 grid(NUM\_BLOCKS);}
+\DoxyCodeLine{    dim3 block(NUM\_THREADS);}
+\DoxyCodeLine{    time = source.program(\textcolor{stringliteral}{"saxpy"})}
+\DoxyCodeLine{               .compile()}
+\DoxyCodeLine{               .configure(grid, block)}
+\DoxyCodeLine{               .launch(args, dev);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Theoretical Bandwith:        "}}
+\DoxyCodeLine{              << yacx::theoretical\_bandwidth(dev) << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"Effective Bandwith:          "}}
+\DoxyCodeLine{              << yacx::effective\_bandwidth(time.launch, args.size())}
+\DoxyCodeLine{              << \textcolor{stringliteral}{" GB/s\(\backslash\)n"};}
+\DoxyCodeLine{  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception \&e) \{}
+\DoxyCodeLine{    std::cerr << \textcolor{stringliteral}{"Error:\(\backslash\)n"} << e.what() << std::endl;}
+\DoxyCodeLine{    exit(1);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordtype}{bool} correct = \textcolor{keyword}{true};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = 0; j < hOut.size(); ++j) \{}
+\DoxyCodeLine{    \textcolor{keywordtype}{float} expected = hX.at(j) * a + hY.at(j);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (abs(expected -\/ hOut.at(j)) > DELTA) \{}
+\DoxyCodeLine{      correct = \textcolor{keyword}{false};}
+\DoxyCodeLine{      std::cout << \textcolor{stringliteral}{"Expected: "} << expected << \textcolor{stringliteral}{" != "}}
+\DoxyCodeLine{                << \textcolor{stringliteral}{" Result: "} << hOut.at(j) << std::endl;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (correct)}
+\DoxyCodeLine{    std::cout << \textcolor{stringliteral}{"\(\backslash\)nEverything was correctly calculated!\(\backslash\)n"} << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"upload time:     "} << time.upload}
+\DoxyCodeLine{            << \textcolor{stringliteral}{" ms\(\backslash\)nexecution time:  "} << time.launch}
+\DoxyCodeLine{            << \textcolor{stringliteral}{" ms\(\backslash\)ndownload time    "} << time.download}
+\DoxyCodeLine{            << \textcolor{stringliteral}{" ms\(\backslash\)ntotal time:      "} << time.total << \textcolor{stringliteral}{" ms.\(\backslash\)n"};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"==================================="} << std::endl;}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
 \end{DoxyCodeInclude}
  

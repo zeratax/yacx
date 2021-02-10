@@ -1,65 +1,65 @@
-\hypertarget{example_program_8cpp-example}{}\section{example\+\_\+program.\+cpp}
+\hypertarget{example_program_8cpp-example}{}\doxysection{example\+\_\+program.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
-\textcolor{preprocessor}{#include <algorithm>}
-\textcolor{preprocessor}{#include <experimental/iterator>}
-\textcolor{preprocessor}{#include <vector>}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Options, yacx::Device, yacx::type\_of,
-    yacx::Devices;
-\textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} \textcolor{keyword}{const} *\textcolor{keyword}{const} *\textcolor{keyword}{const} argv) \{
-  yacx::handle\_logging\_args(argc, argv);
-  \textcolor{keyword}{const} \textcolor{keywordtype}{int} data\{1\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{int} times\{4\};
-  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} size\{32\};
-
-  static\_assert(!(size % times));
-
-  std::vector<int> v;
-  v.resize(size);
-  std::fill(v.begin(), v.end(), 0);
-
-  \textcolor{keywordflow}{try} \{
-    Device device = Devices::findDevice();
-    Options options\{\hyperlink{classyacx_1_1options_1_1_gpu_architecture}{yacx::options::GpuArchitecture}(device),
-                    \hyperlink{classyacx_1_1options_1_1_f_m_a_d}{yacx::options::FMAD}(\textcolor{keyword}{false})\};
-    options.insert(\textcolor{stringliteral}{"--std"}, \textcolor{stringliteral}{"c++14"});
-    Source source\{\textcolor{stringliteral}{"template<typename type, int size>\(\backslash\)n"}
-                  \textcolor{stringliteral}{"\_\_global\_\_ void my\_kernel(type* c, type val) \{\(\backslash\)n"}
-                  \textcolor{stringliteral}{"    auto idx\{blockIdx.x * blockDim.x + threadIdx.x\};\(\backslash\)n"}
-                  \textcolor{stringliteral}{"\(\backslash\)n"}
-                  \textcolor{stringliteral}{"    #pragma unroll(size)\(\backslash\)n"}
-                  \textcolor{stringliteral}{"    for (auto i\{0\}; i < size; ++i) \{\(\backslash\)n"}
-                  \textcolor{stringliteral}{"        c[i] = idx + val;\(\backslash\)n"}
-                  \textcolor{stringliteral}{"    \}\(\backslash\)n"}
-                  \textcolor{stringliteral}{"\}"}\};
-
-    std::vector<KernelArg> args;
-    args.emplace\_back(KernelArg\{v.data(), \textcolor{keyword}{sizeof}(int) * v.size(), \textcolor{keyword}{true}\});
-    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{int} *\textcolor{keyword}{>}(&data)\});
-
-    dim3 grid(v.size() / times);
-    dim3 block(1);
-    source.program(\textcolor{stringliteral}{"my\_kernel"})
-        .instantiate(type\_of(data), times)
-        .compile(options)
-        .configure(grid, block)
-        .launch(args, device);
-  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
-    std::cerr << e.what() << std::endl;
-    exit(1);
-  \}
-
-  std::cout << \textcolor{charliteral}{'\(\backslash\)n'};
-  std::copy(v.begin(), v.end(),
-            std::experimental::make\_ostream\_joiner(std::cout, \textcolor{stringliteral}{", "}));
-  std::cout << std::endl;
-
-  \textcolor{comment}{// 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7,}
-  \textcolor{comment}{// 7, 7, 7, 8, 8, 8, 8}
-
-  \textcolor{keywordflow}{return} 0;
-\}
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{main_8hpp}{yacx/main.hpp}}"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <experimental/iterator>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}}, \mbox{\hyperlink{classyacx_1_1_options}{yacx::Options}}, \mbox{\hyperlink{classyacx_1_1_device}{yacx::Device}}, yacx::type\_of,}
+\DoxyCodeLine{    \mbox{\hyperlink{classyacx_1_1_devices}{yacx::Devices}};}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} \textcolor{keyword}{const} *\textcolor{keyword}{const} *\textcolor{keyword}{const} argv) \{}
+\DoxyCodeLine{  yacx::handle\_logging\_args(argc, argv);}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{int} data\{1\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{int} times\{4\};}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} size\{32\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  static\_assert(!(size \% times));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::vector<int> v;}
+\DoxyCodeLine{  v.resize(size);}
+\DoxyCodeLine{  std::fill(v.begin(), v.end(), 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{    Device device = Devices::findDevice();}
+\DoxyCodeLine{    Options options\{\mbox{\hyperlink{classyacx_1_1options_1_1_gpu_architecture}{yacx::options::GpuArchitecture}}(device),}
+\DoxyCodeLine{                    \mbox{\hyperlink{classyacx_1_1options_1_1_f_m_a_d}{yacx::options::FMAD}}(\textcolor{keyword}{false})\};}
+\DoxyCodeLine{    options.insert(\textcolor{stringliteral}{"-\/-\/std"}, \textcolor{stringliteral}{"c++14"});}
+\DoxyCodeLine{    Source source\{\textcolor{stringliteral}{"template<typename type, int size>\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"\_\_global\_\_ void my\_kernel(type* c, type val) \{\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"    auto idx\{blockIdx.x * blockDim.x + threadIdx.x\};\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"    \#pragma unroll(size)\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"    for (auto i\{0\}; i < size; ++i) \{\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"        c[i] = idx + val;\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"    \}\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"\}"}\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::vector<KernelArg> args;}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{v.data(), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{int}) * v.size(), \textcolor{keyword}{true}\});}
+\DoxyCodeLine{    args.emplace\_back(KernelArg\{\textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{int} *\textcolor{keyword}{>}(\&data)\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    dim3 grid(v.size() / times);}
+\DoxyCodeLine{    dim3 block(1);}
+\DoxyCodeLine{    source.program(\textcolor{stringliteral}{"my\_kernel"})}
+\DoxyCodeLine{        .instantiate(type\_of(data), times)}
+\DoxyCodeLine{        .compile(options)}
+\DoxyCodeLine{        .configure(grid, block)}
+\DoxyCodeLine{        .launch(args, device);}
+\DoxyCodeLine{  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception \&e) \{}
+\DoxyCodeLine{    std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{    exit(1);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::cout << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{  std::copy(v.begin(), v.end(),}
+\DoxyCodeLine{            std::experimental::make\_ostream\_joiner(std::cout, \textcolor{stringliteral}{", "}));}
+\DoxyCodeLine{  std::cout << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{// 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7,}}
+\DoxyCodeLine{  \textcolor{comment}{// 7, 7, 7, 8, 8, 8, 8}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
 \end{DoxyCodeInclude}
  

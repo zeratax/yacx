@@ -1,40 +1,40 @@
-\hypertarget{docs_2kernel_launch_8cpp-example}{}\section{docs/kernel\+\_\+launch.\+cpp}
+\hypertarget{docs_2kernel_launch_8cpp-example}{}\doxysection{docs/kernel\+\_\+launch.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Kernel,
-    yacx::Device;
-
-Source source\{
-    \textcolor{stringliteral}{"extern \(\backslash\)"C\(\backslash\)" \_\_global\_\_\(\backslash\)n"}
-    \textcolor{stringliteral}{"void saxpy(float a, float *x, float *y, float *out, size\_t n) \{\(\backslash\)n"}
-    \textcolor{stringliteral}{"  size\_t tid = blockIdx.x * blockDim.x + threadIdx.x;\(\backslash\)n"}
-    \textcolor{stringliteral}{"  if (tid < n) \{\(\backslash\)n"}
-    \textcolor{stringliteral}{"    out[tid] = a * x[tid] + y[tid];\(\backslash\)n"}
-    \textcolor{stringliteral}{"  \}\(\backslash\)n"}
-    \textcolor{stringliteral}{"\}"}\};
-
-std::vector<KernelArg> args;
-args.emplace\_back(KernelArg\{&a\});
-args.emplace\_back(KernelArg\{hX.data(), bufferSize\});
-args.emplace\_back(KernelArg\{hY.data(), bufferSize\});
-args.emplace\_back(KernelArg\{hOut.data(), bufferSize, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});
-args.emplace\_back(KernelArg\{&N\});
-
-dim3 grid(NUM\_BLOCKS);
-dim3 block(NUM\_THREADS);
-
-Program program = source.program(\textcolor{stringliteral}{"saxpy"});
-Kernel kernel = program.compile();
-kernel.configure(grid, block);
-kernel.launch(args);
-
-\textcolor{comment}{// Alternatively method chaining}
-
-source.program(\textcolor{stringliteral}{"saxpy"})
-      .compile()
-      .configure(grid, block)
-      .launch(args);
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{main_8hpp}{yacx/main.hpp}}"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}}, \mbox{\hyperlink{classyacx_1_1_kernel}{yacx::Kernel}},}
+\DoxyCodeLine{    \mbox{\hyperlink{classyacx_1_1_device}{yacx::Device}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{Source source\{}
+\DoxyCodeLine{    \textcolor{stringliteral}{"extern \(\backslash\)"C\(\backslash\)" \_\_global\_\_\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"void saxpy(float a, float *x, float *y, float *out, size\_t n) \{\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"  size\_t tid = blockIdx.x * blockDim.x + threadIdx.x;\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"  if (tid < n) \{\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"    out[tid] = a * x[tid] + y[tid];\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"  \}\(\backslash\)n"}}
+\DoxyCodeLine{    \textcolor{stringliteral}{"\}"}\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{std::vector<KernelArg> args;}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&a\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{hX.data(), bufferSize\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{hY.data(), bufferSize\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{hOut.data(), bufferSize, \textcolor{keyword}{true}, \textcolor{keyword}{false}\});}
+\DoxyCodeLine{args.emplace\_back(KernelArg\{\&N\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{dim3 grid(NUM\_BLOCKS);}
+\DoxyCodeLine{dim3 block(NUM\_THREADS);}
+\DoxyCodeLine{}
+\DoxyCodeLine{Program program = source.program(\textcolor{stringliteral}{"saxpy"});}
+\DoxyCodeLine{Kernel kernel = program.compile();}
+\DoxyCodeLine{kernel.configure(grid, block);}
+\DoxyCodeLine{kernel.launch(args);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// Alternatively method chaining}}
+\DoxyCodeLine{}
+\DoxyCodeLine{source.program(\textcolor{stringliteral}{"saxpy"})}
+\DoxyCodeLine{      .compile()}
+\DoxyCodeLine{      .configure(grid, block)}
+\DoxyCodeLine{      .launch(args);}
 \end{DoxyCodeInclude}
  

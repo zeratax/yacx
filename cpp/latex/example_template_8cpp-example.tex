@@ -1,34 +1,34 @@
-\hypertarget{example_template_8cpp-example}{}\section{example\+\_\+template.\+cpp}
+\hypertarget{example_template_8cpp-example}{}\doxysection{example\+\_\+template.\+cpp}
 
-\begin{DoxyCodeInclude}
-\textcolor{preprocessor}{#include "\hyperlink{main_8hpp}{yacx/main.hpp}"}
-
-\textcolor{keyword}{using} \hyperlink{classyacx_1_1_source}{yacx::Source}, yacx::KernelArg, yacx::Kernel, yacx::Options, yacx::load,
-    yacx::type\_of;
-
-\textcolor{keywordtype}{int} main() \{
-  \textcolor{keywordtype}{int} result\{\};
-  \textcolor{keywordflow}{try} \{
-    Source source\{\textcolor{stringliteral}{"template<typename T>\(\backslash\)n"}
-                  \textcolor{stringliteral}{"\_\_global\_\_ void f3(int *result) \{ *result = sizeof(T); \}"}\};
-
-    std::vector<KernelArg> args;
-    args.push\_back(KernelArg\{&result, \textcolor{keyword}{sizeof}(int), \textcolor{keyword}{true}\});
-
-    dim3 grid(1);
-    dim3 block(1);
-    source.program(\textcolor{stringliteral}{"f3"})
-        .instantiate(\textcolor{stringliteral}{"int"})
-        .compile()
-        .configure(grid, block)
-        .launch(args);
-  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception &e) \{
-    std::cerr << e.what() << std::endl;
-  \}
-
-  std::cout << \textcolor{stringliteral}{"Expected: "} << \textcolor{keyword}{sizeof}(int) << \textcolor{stringliteral}{" Actual: "} << result
-            << std::endl;
-  \textcolor{keywordflow}{return} 0;
-\}
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{main_8hpp}{yacx/main.hpp}}"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classyacx_1_1_source}{yacx::Source}}, \mbox{\hyperlink{classyacx_1_1_kernel_arg}{yacx::KernelArg}}, \mbox{\hyperlink{classyacx_1_1_kernel}{yacx::Kernel}}, \mbox{\hyperlink{classyacx_1_1_options}{yacx::Options}}, yacx::load,}
+\DoxyCodeLine{    yacx::type\_of;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main() \{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int} result\{\};}
+\DoxyCodeLine{  \textcolor{keywordflow}{try} \{}
+\DoxyCodeLine{    Source source\{\textcolor{stringliteral}{"template<typename T>\(\backslash\)n"}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"\_\_global\_\_ void f3(int *result) \{ *result = sizeof(T); \}"}\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    std::vector<KernelArg> args;}
+\DoxyCodeLine{    args.push\_back(KernelArg\{\&result, \textcolor{keyword}{sizeof}(int), \textcolor{keyword}{true}\});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    dim3 grid(1);}
+\DoxyCodeLine{    dim3 block(1);}
+\DoxyCodeLine{    source.program(\textcolor{stringliteral}{"f3"})}
+\DoxyCodeLine{        .instantiate(\textcolor{stringliteral}{"int"})}
+\DoxyCodeLine{        .compile()}
+\DoxyCodeLine{        .configure(grid, block)}
+\DoxyCodeLine{        .launch(args);}
+\DoxyCodeLine{  \} \textcolor{keywordflow}{catch} (\textcolor{keyword}{const} std::exception \&e) \{}
+\DoxyCodeLine{    std::cerr << e.what() << std::endl;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  std::cout << \textcolor{stringliteral}{"Expected: "} << \textcolor{keyword}{sizeof}(int) << \textcolor{stringliteral}{" Actual: "} << result}
+\DoxyCodeLine{            << std::endl;}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
 \end{DoxyCodeInclude}
  
