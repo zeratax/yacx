@@ -7,7 +7,7 @@ buildExecutor := {
   import scala.language.postfixOps
   import scala.sys.process._
   //noinspection PostfixMethodCall
-  "echo y" #| (baseDirectory.value + "/yacx.sh --buildj") !
+  "echo y" #| (baseDirectory.value + "/yacx.sh build-java") !
 }
 
 lazy val CUexecutor = (project in file("."))
