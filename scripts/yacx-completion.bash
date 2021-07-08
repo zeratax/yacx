@@ -4,7 +4,6 @@ _yacx() {
   local word="${COMP_WORDS[COMP_CWORD]}"
 
   if [ "$COMP_CWORD" -eq 1 ]; then
-  #  COMPREPLY=( $(compgen -W "$(./yacx.sh commands)" -- "$word") )
   COMPREPLY=( $(compgen -W "execute-java execute-scala build-java build-scala" -- "$word") )
   elif [ "$COMP_CWORD" -eq 2 ]; then
     local words=("${COMP_WORDS[@]}")
