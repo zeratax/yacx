@@ -1,6 +1,7 @@
 package yacx;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
@@ -332,8 +333,8 @@ public class Executor {
 	 * @param dataSizesBytes   data sizes of the kernel arguments in bytes
 	 * @return result of benchmark-test
 	 */
-	public static BenchmarkResult benchmark(String kernelName, Options options, int numberExecutions,
-			KernelArgCreator creator, long... dataSizesBytes) throws IOException {
+	public static <DataSize> BenchmarkResult<DataSize> benchmark(String kernelName, Options options, int numberExecutions,
+			KernelArgCreator<DataSize> creator, DataSize... dataSizesBytes) throws IOException {
 		return benchmark(Utils.loadFile("kernels/" + kernelName + ".cu"), kernelName, options, Devices.findDevice(),
 				numberExecutions, creator, dataSizesBytes);
 	}
@@ -352,8 +353,8 @@ public class Executor {
 	 *                         tested, in bytes
 	 * @return result of benchmark-test
 	 */
-	public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device,
-			int numberExecutions, KernelArgCreator creator, long... dataSizesBytes) {
+	public static <DataSize> BenchmarkResult<DataSize> benchmark(String kernelString, String kernelName, Options options, Device device,
+			int numberExecutions, KernelArgCreator<DataSize> creator, DataSize... dataSizesBytes) {
 		return benchmark(kernelString, kernelName, options, device, new String[0], numberExecutions, creator,
 				dataSizesBytes);
 	}
@@ -372,15 +373,15 @@ public class Executor {
 	 *                          size
 	 * @param creator           KernelArgCreator for creating KernelArgs for the
 	 *                          kernel
-	 * @param dataSizesBytes    data sizes of the kernel arguments, which should be
+	 * @param dataSizes    data sizes of the kernel arguments, which should be
 	 *                          tested, in bytes
 	 * @return result of benchmark-test
 	 */
-	public static BenchmarkResult benchmark(String kernelString, String kernelName, Options options, Device device,
-			String[] templateParameter, int numberExecutions, KernelArgCreator creator, long... dataSizesBytes) {
-		if (dataSizesBytes == null)
+	public static <DataSize> BenchmarkResult<DataSize> benchmark(String kernelString, String kernelName, Options options, Device device,
+			String[] templateParameter, int numberExecutions, KernelArgCreator<DataSize> creator, DataSize... dataSizes) {
+		if (dataSizes == null)
 			throw new NullPointerException();
-		if (dataSizesBytes.length == 0)
+		if (dataSizes.length == 0)
 			throw new IllegalArgumentException("not data sizes specificated");
 		if (numberExecutions <= 0)
 			throw new IllegalArgumentException("illegal number of executions: " + numberExecutions);
@@ -395,23 +396,19 @@ public class Executor {
 		Kernel kernel = program.compile(options);
 
 		// Array for result
-		KernelTime[][] result = new KernelTime[dataSizesBytes.length][numberExecutions];
+		KernelTime[][] result = new KernelTime[dataSizes.length][numberExecutions];
 
 		// Start run for every dataSize
-		for (int i = 0; i < dataSizesBytes.length; i++) {
-			long dataSize = dataSizesBytes[i];
-
-			if (dataSize <= 0)
-				throw new IllegalArgumentException();
+		for (int i = 0; i < dataSizes.length; i++) {
+			DataSize dataSize = dataSizes[i];
 
 			// Configure Kernel
-			int dataLength = creator.getDataLength(dataSize);
-			kernel.configure(creator.getGrid0(dataLength), creator.getGrid1(dataLength), creator.getGrid2(dataLength),
-					creator.getBlock0(dataLength), creator.getBlock1(dataLength), creator.getBlock2(dataLength),
+			kernel.configure(creator.getGrid0(dataSize), creator.getGrid1(dataSize), creator.getGrid2(dataSize),
+					creator.getBlock0(dataSize), creator.getBlock1(dataSize), creator.getBlock2(dataSize),
 					creator.getSharedMemory(dataSize));
 
 			// Create KernelArgs for this dataSize
-			KernelArg[] args = creator.createArgs(dataLength);
+			KernelArg[] args = creator.createArgs(dataSize);
 
 			// Execute Kernel numberExecutions times
 			result[i] = benchmark(kernel, device, args, numberExecutions);
@@ -425,7 +422,7 @@ public class Executor {
 		// Absolute time Measurement
 		long dt = System.currentTimeMillis() - t0;
 
-		return new BenchmarkResult(device, numberExecutions, dataSizesBytes, result, kernelName, dt);
+		return new BenchmarkResult<DataSize>(device, numberExecutions, dataSizes, result, kernelName, dt);
 	}
 
 	/**
@@ -442,86 +439,78 @@ public class Executor {
 	/**
 	 * Abstract class for generate KernelArgs with a specific size.
 	 */
-	public static abstract class KernelArgCreator {
-		/**
-		 * Returns the length of the data (number of elements).
-		 * 
-		 * @param dataSizeBytes size of data in bytes
-		 * @return length of the data
-		 */
-		public abstract int getDataLength(long dataSizeBytes);
-
+	public static abstract class KernelArgCreator<DataSize> {
 		/**
 		 * Generate KernelArgs.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return KernelArgs
 		 */
-		public abstract KernelArg[] createArgs(int dataLength);
+		public abstract KernelArg[] createArgs(DataSize dataSize);
 
 		/**
 		 * Returns the number of grids for kernellaunch in first dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of grids for kernellaunch in first dimension
 		 */
-		public abstract int getGrid0(int dataLength);
+		public abstract int getGrid0(DataSize dataSize);
 
 		/**
 		 * Returns the number of grids for kernellaunch in second dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of grids for kernellaunch in second dimension
 		 */
-		public int getGrid1(int dataLength) {
+		public int getGrid1(DataSize dataSize) {
 			return 1;
 		}
 
 		/**
 		 * Returns the number of grids for kernellaunch in third dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of grids for kernellaunch in third dimension
 		 */
-		public int getGrid2(int dataLength) {
+		public int getGrid2(DataSize dataSize) {
 			return 1;
 		}
 
 		/**
 		 * Returns the number of blocks for kernellaunch in first dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of blocks for kernellaunch in first dimension
 		 */
-		public abstract int getBlock0(int dataLength);
+		public abstract int getBlock0(DataSize dataSize);
 
 		/**
 		 * Returns the number of blocks for kernellaunch in second dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of blocks for kernellaunch in second dimension
 		 */
-		public int getBlock1(int dataLength) {
+		public int getBlock1(DataSize dataSize) {
 			return 1;
 		}
 
 		/**
 		 * Returns the number of blocks for kernellaunch in third dimension.
 		 * 
-		 * @param dataLength length of the data (number of elements)
+		 * @param dataSize length of the data (number of elements)
 		 * @return number of blocks for kernellaunch in third dimension
 		 */
-		public int getBlock2(int dataLength) {
+		public int getBlock2(DataSize dataSize) {
 			return 1;
 		}
 
 		/**
 		 * Returns the amount of dynamic shared memory in bytes.
 		 * 
-		 * @param dataSizeBytes dataSizeBytes size of data in bytes
+		 * @param dataSize dataSizeBytes size of data in bytes
 		 * @return dynamic shared memory in bytes
 		 */
-		public long getSharedMemory(long dataSizeBytes) {
+		public long getSharedMemory(DataSize dataSize) {
 			return 0;
 		}
 	}
@@ -529,10 +518,10 @@ public class Executor {
 	/**
 	 * Class representing the result of a benchmark-test.
 	 */
-	public static class BenchmarkResult {
+	public static class BenchmarkResult<DataSize> implements Serializable {
 		private final String deviceInformation;
 		private final int numberExecutions;
-		private final long[] dataSizes;
+		private final DataSize[] dataSizes;
 		private final KernelTime[][] result;
 		private final KernelTime[] average;
 		private final String kernelName;
@@ -541,15 +530,15 @@ public class Executor {
 		/**
 		 * Create a new result of benchmark-test.
 		 * 
-		 * @param device       device on which the benchmark-test was executed
-		 * @param executions   number of executions for the kernel for every data size
-		 * @param dataSizes    data sizes of the kernel arguments, which was tested, in
-		 *                     bytes
-		 * @param result       KernelTimes for every kernel execution for every datasize
-		 * @param kernelName   name of the tested kernel
-		 * @param testDuration duration of the test in milliseconds
+		 * @param device           device on which the benchmark-test was executed
+		 * @param numberExecutions number of executions for the kernel for every data size
+		 * @param dataSizes        data sizes of the kernel arguments, which was tested, in
+		 *                         bytes
+		 * @param result           KernelTimes for every kernel execution for every datasize
+		 * @param kernelName       name of the tested kernel
+		 * @param testDuration     duration of the test in milliseconds
 		 */
-		protected BenchmarkResult(Device device, int numberExecutions, long[] dataSizes, KernelTime[][] result,
+		public BenchmarkResult(Device device, int numberExecutions, DataSize[] dataSizes, KernelTime[][] result,
 				String kernelName, long testDuration) {
 			this.numberExecutions = numberExecutions;
 			this.dataSizes = dataSizes;
@@ -601,7 +590,7 @@ public class Executor {
 		 * @param kernelName        name of the tested kernel
 		 * @param testDuration      duration of the test in milliseconds
 		 */
-		private BenchmarkResult(String deviceInformation, int numberExecutions, long[] dataSizes, KernelTime[][] result,
+		private BenchmarkResult(String deviceInformation, int numberExecutions, DataSize[] dataSizes, KernelTime[][] result,
 				KernelTime[] average, String kernelName, long testDuration) {
 			this.deviceInformation = deviceInformation;
 			this.numberExecutions = numberExecutions;
@@ -626,7 +615,7 @@ public class Executor {
 		 * 
 		 * @return data sizes, which was tested
 		 */
-		public long[] getDataSizes() {
+		public DataSize[] getDataSizes() {
 			return dataSizes;
 		}
 
@@ -663,7 +652,7 @@ public class Executor {
 		 * @param benchmark BenchmarkResult, which should be added
 		 * @return sum of the benchmarks
 		 */
-		public BenchmarkResult addBenchmarkResult(BenchmarkResult benchmark) {
+		public BenchmarkResult<DataSize> addBenchmarkResult(BenchmarkResult<DataSize> benchmark) {
 			if (numberExecutions != benchmark.numberExecutions)
 				throw new IllegalArgumentException("Both benchmark result must have the same number of executions");
 			for (int i = 0; i < dataSizes.length; i++)
@@ -690,29 +679,38 @@ public class Executor {
 				average[i] = this.average[i].addKernelTime(benchmark.average[i]);
 			}
 
-			return new BenchmarkResult(deviceInformation, this.numberExecutions, this.dataSizes, result, average,
+			return new BenchmarkResult<DataSize>(deviceInformation, this.numberExecutions, this.dataSizes, result, average,
 					kernelName, testDuration);
 		}
 
 		@Override
 		public String toString() {
-			StringBuffer buffer = new StringBuffer(200);
-			buffer.append("\nBenchmark " + kernelName + "-Kernel ");
-			buffer.append(deviceInformation + "\n");
+			StringBuilder buffer = new StringBuilder(200);
+			buffer.append("\nBenchmark ").append(kernelName).append("-Kernel ");
+			buffer.append(deviceInformation).append("\n");
 
 			buffer.append("  Datasize  Result (Average)\n");
 
-			// For every dataSize: Append average for one kernel execution
+			String[] dataSizesString = new String[dataSizes.length];
+			int maxDataSizeStringLength = 0;
 			for (int i = 0; i < dataSizes.length; i++) {
-				String dataSize = "" + humanReadableByteCountBin(dataSizes[i]);
-				while (dataSize.length() < 10)
-					dataSize = " " + dataSize;
+				dataSizesString[i] = dataSizes[i].toString();
+				if (dataSizesString[i].length() > maxDataSizeStringLength)
+					maxDataSizeStringLength = dataSizesString[i].length();
+			}
 
-				String result = average[i].toString();
+			// For every dataSize: Append average for one kernel execution
+			for (int i = 0; i < dataSizesString.length; i++) {
+				String dataSize = dataSizesString[i];
+				int lengthDiff = maxDataSizeStringLength - dataSize.length();
+				for (int j = 0; j < lengthDiff; j++) {
+					buffer.append(" ");
+				}
 
+				buffer.append("  ");
 				buffer.append(dataSize);
 				buffer.append(": ");
-				buffer.append(result);
+				buffer.append(average[i].toString());
 				buffer.append("\n");
 			}
 
@@ -723,18 +721,11 @@ public class Executor {
 			String[] s = time.split(" ");
 
 			if (s.length == 3)
-				buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[2] + "\n");
+				buffer.append("\nBenchmark-Duration: ").append(df.format(Double.parseDouble(s[0]))).append(" ").append(s[2]).append("\n");
 			else
-				buffer.append("\nBenchmark-Duration: " + df.format(Double.parseDouble(s[0])) + " " + s[1] + "\n");
+				buffer.append("\nBenchmark-Duration: ").append(df.format(Double.parseDouble(s[0]))).append(" ").append(s[1]).append("\n");
 
 			return buffer.toString();
-		}
-
-		static String humanReadableByteCountBin(long bytes) {
-			return bytes < 1024L ? bytes + " B"
-					: bytes <= 0xfffccccccccccccL >> 40 ? String.format("%.1f KiB", bytes / 0x1p10)
-							: bytes <= 0xfffccccccccccccL >> 30 ? String.format("%.1f MiB", bytes / 0x1p20)
-									: String.format("%.1f GiB", bytes / 0x1p30);
 		}
 	}
 }

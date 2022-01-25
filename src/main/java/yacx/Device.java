@@ -119,7 +119,7 @@ public class Device extends JNIHandle {
 					+ Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid())
 					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
 		} else {
-			return "Device: " + getName() + " (UUID: " + uuid + " ,Memory: " + getMemorySize() / 1024 / 1024
+			return "Device: " + getName() + " (UUID: " + uuid + ", Memory: " + getMemorySize() / 1024 / 1024
 					+ " MB, Blocks: " + Arrays.toString(getMaxBlock()) + ", Grids: " + Arrays.toString(getMaxGrid())
 					+ ", computeversions: " + getMinorVersion() + "-" + getMajorVersion() + ")";
 		}

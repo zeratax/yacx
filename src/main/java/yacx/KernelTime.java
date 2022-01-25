@@ -1,11 +1,12 @@
 package yacx;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
  * Wrapperclass for representing the execution-time of a kernel.
  */
-public class KernelTime {
+public class KernelTime implements Serializable {
 	private final float upload;
 	private final float download;
 	private final float launch;
@@ -27,7 +28,7 @@ public class KernelTime {
 	 * @param bandwidthLaunch bandwidth of launching kernel inclusive uploading and
 	 *                        downloading arguments
 	 */
-	protected KernelTime(float upload, float download, float launch, float total, float bandwidthUp,
+	public KernelTime(float upload, float download, float launch, float total, float bandwidthUp,
 			float bandwidthDown, float bandwidthLaunch) {
 		this.upload = upload;
 		this.download = download;

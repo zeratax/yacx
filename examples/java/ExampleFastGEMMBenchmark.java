@@ -53,23 +53,24 @@ public class ExampleFastGEMMBenchmark {
 		new MatrixUtils.BenchmarkGEMM() {
 
 			@Override
-			public int getGrid0(int dim) {
+			public int getGrid0(MatrixUtils.MatrixDimensions dims) {
 				return device.getMultiprocessorCount();
 			}
 
 			@Override
-			public int getBlock0(int dim) {
+			public int getBlock0(MatrixUtils.MatrixDimensions dims) {
 				return 32 * 8;
 			}
 
 			@Override
-			public long getSharedMemory(long dataSizeBytes) {
+			public long getSharedMemory(MatrixUtils.MatrixDimensions dims) {
 				return SHMEM_SZ;
 			}
 
 			@Override
-			public int getPaddingDim(int dim) {
-				return (dim % 128 == 0) ? dim : (dim / 128 + 1) * 128;
+			public MatrixUtils.MatrixDimensions getPaddingDim(MatrixUtils.MatrixDimensions dims) {
+				return new MatrixUtils.MatrixDimensions((dims.m % 128) == 0 ? dims.m : (dims.m / 128 + 1) * 128,
+						(dims.n % 128) == 0 ? dims.n : (dims.n / 128 + 1) * 128, (dims.k % 128) == 0 ? dims.k : (dims.k / 128 + 1) * 128);
 			}
 		}.benchmark("fast_wmma_gemm");
 	}

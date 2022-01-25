@@ -42,7 +42,7 @@ public class CProgram extends JNIHandle {
 	 * @return created and compiled cProgram
 	 */
 	public static CProgram create(String cProgram, String functionName, String[] parameterTypes, String compiler) {
-		return create(cProgram, functionName, parameterTypes, DEFAULT_COMPILER, Options.createOptions(DEFAULT_OPTIONS));
+		return create(cProgram, functionName, parameterTypes, compiler, Options.createOptions(DEFAULT_OPTIONS));
 	}
 
 	/**

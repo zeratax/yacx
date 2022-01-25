@@ -7,33 +7,27 @@ import yacx.KernelArg;
 import yacx.Options;
 
 public class ExampleSaxpyBenchmark {
-	private final static long KB = 1024;
 
 	public static void main(String[] args) throws IOException {
 		// Load library
 		Executor.loadLibrary();
 
 		// Benchmark saxpy-Kernel
-		System.out.println(Executor.benchmark("saxpy", Options.createOptions(), 10, new Executor.KernelArgCreator() {
+		System.out.println(Executor.benchmark("saxpy", Options.createOptions(), 10, new Executor.KernelArgCreator<Integer>() {
 			final float a = 5.1f;
 
 			@Override
-			public int getDataLength(long dataSizeBytes) {
-				return (int) (dataSizeBytes / FloatArg.SIZE_BYTES);
-			}
-
-			@Override
-			public int getGrid0(int dataLength) {
+			public int getGrid0(Integer dataLength) {
 				return dataLength;
 			}
 
 			@Override
-			public int getBlock0(int dataLength) {
+			public int getBlock0(Integer dataLength) {
 				return 1;
 			}
 
 			@Override
-			public KernelArg[] createArgs(int dataLength) {
+			public KernelArg[] createArgs(Integer dataLength) {
 				float[] x = new float[dataLength];
 				float[] y = new float[dataLength];
 
@@ -45,6 +39,6 @@ public class ExampleSaxpyBenchmark {
 				return new KernelArg[] { FloatArg.createValue(a), FloatArg.create(x), FloatArg.create(y),
 						FloatArg.createOutput(dataLength), IntArg.createValue(dataLength) };
 			}
-		}, 1 * KB, 4 * KB, 8 * KB, 1024 * KB, 4096 * KB, 16384 * KB));
+		}, 1024, 4096, 8192, 1024 * 1024, 4096 * 1024, 16384 * 1024));
 	}
 }
